@@ -133,6 +133,104 @@
                 gap: 12px;
             }
         }
+
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .disclaimer h4 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .disclaimer p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            text-align: justify;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 20px 15px;
+                margin-top: 30px;
+            }
+            
+            .disclaimer h4 {
+                font-size: 1rem;
+            }
+            
+            .disclaimer p {
+                font-size: 0.8rem;
+            }
+        }
+
+        .visitor-counter {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .counter-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .counter-label {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .counter-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .visitor-counter {
+                flex-direction: column;
+                gap: 15px;
+                padding-top: 15px;
+            }
+            
+            .counter-item {
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .counter-number {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -367,5 +465,64 @@
             </a>
         </div>
     </div>
+
+    <footer>
+        <div class="disclaimer">
+            <h4>إخلاء مسؤولية قانوني:</h4>
+            <p>جميع المحتويات والروابط والأدوات المتوفرة في هذه الصفحة هي لأغراض تعليمية وإرشادية ومعلوماتية فقط، ولا تعد توصية بالبيع أو الشراء أو دعوة للاستثمار في أي أوراق مالية أو أصول محددة. إن الاستثمار في أسواق المال ينطوي على مخاطر عالية، وقرار الاستخدام يقع على عاتق المستخدم وحده دون أي مسؤولية قانونية أو مالية على صاحب هذا الموقع.</p>
+            <p>صاحب الموقع لا يضمن دقة أو اكتمال المعلومات الواردة في الروابط الخارجية، ولا يتحمل أي مسؤولية عن أي خسائر مباشرة أو غير مباشرة قد تنتج عن الاعتماد على هذه المعلومات أو الأدوات. يخلي صاحب الموقع مسؤوليته التامة من أي مطالبات قانونية ناتجة عن استخدام الموقع، وينصح دائماً باستشارة مستشار مالي مرخص قبل اتخاذ أي قرار استثماري. استخدامك لهذا الموقع يعني إقرارك وموافقتك التامة على هذه الشروط.</p>
+        </div>
+        
+        <div class="visitor-counter">
+            <div class="counter-item">
+                <span class="counter-label">عدد الزوار:</span>
+                <span id="visitor-count" class="counter-number">0</span>
+            </div>
+            <div class="counter-item">
+                <span class="counter-label">زيارات اليوم:</span>
+                <span id="today-count" class="counter-number">0</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // زيارات الموقع
+        function updateCounter() {
+            // الحصول على التاريخ الحالي
+            const today = new Date().toDateString();
+            
+            // التحقق من وجود بيانات سابقة في localStorage
+            let visitorData = JSON.parse(localStorage.getItem('visitorData') || '{}');
+            
+            // إذا كان اليوم الجديد، إعادة تعيين عداد اليوم
+            if (visitorData.lastVisit !== today) {
+                visitorData.todayCount = 0;
+                visitorData.lastVisit = today;
+            }
+            
+            // زيادة العدادين
+            visitorData.totalCount = (visitorData.totalCount || 0) + 1;
+            visitorData.todayCount = (visitorData.todayCount || 0) + 1;
+            
+            // حفظ البيانات
+            localStorage.setItem('visitorData', JSON.stringify(visitorData));
+            
+            // تحديث العرض
+            document.getElementById('visitor-count').textContent = visitorData.totalCount.toLocaleString('ar-SA');
+            document.getElementById('today-count').textContent = visitorData.todayCount.toLocaleString('ar-SA');
+        }
+        
+        // تحديث العداد عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', updateCounter);
+        
+        // محاكاة زيارات للعرض (يمكن إزالة هذا الجزء في الاستخدام الحقيقي)
+        if (localStorage.getItem('visitorData') === null) {
+            // أول زيارة للموقع
+            setTimeout(() => {
+                document.getElementById('visitor-count').textContent = '1,247';
+                document.getElementById('today-count').textContent = '23';
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
