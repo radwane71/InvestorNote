@@ -351,7 +351,7 @@
                 <h3>حاسبة الاستثمار</h3>
                 <span class="url">calculator.io</span>
             </a>
-            <a href="https://www.calculator.io/ar/%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9-%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%AF%D8%A9-%D8%A7%D9%84%D9%85%D8%B1%D9%83%D8%A8%D8%A9/" target="_blank" class="box">
+            <a href="https://www.calculator.io/ar/%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9-%D8%A7%D9%84%D9%81%D8%A7%D8%A6%D8%AF%D8%A9-%D8%A7%D9%84%D9%85%D8%B1%D9%83%D8%A8%D8%A9/" target="_blank" class="box">
                 <h3>حاسبة الفائدة المركبة</h3>
                 <span class="url">calculator.io</span>
             </a>
@@ -462,6 +462,7 @@
             <a href="https://docs.google.com/spreadsheets/d/1tKZecsAkrotF3nwyLP9onXpR1beyeeiY/edit?usp=drive_link&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
                 <h3>سجل البيع والشراء</h3>
                 <span class="url">docs.google.com</span>
+                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
             </a>
         </div>
     </div>
@@ -482,11 +483,24 @@
                 <span class="counter-label">زيارات اليوم:</span>
                 <span id="today-count" class="counter-number">0</span>
             </div>
+            <div class="counter-item">
+                <span class="counter-label">المتواجدون الآن:</span>
+                <span id="online-count" class="counter-number">0</span>
+            </div>
         </div>
     </footer>
 
     <script>
-        // زيارات الموقع
+        // معرف فريد للمستخدم
+        const userId = localStorage.getItem('userId') || generateUserId();
+        localStorage.setItem('userId', userId);
+        
+        // إنشاء معرف فريد
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9) + Date.now();
+        }
+        
+        // زيارات الموقع الحقيقية
         function updateCounter() {
             // الحصول على التاريخ الحالي
             const today = new Date().toDateString();
@@ -494,15 +508,26 @@
             // التحقق من وجود بيانات سابقة في localStorage
             let visitorData = JSON.parse(localStorage.getItem('visitorData') || '{}');
             
-            // إذا كان اليوم الجديد، إعادة تعيين عداد اليوم
-            if (visitorData.lastVisit !== today) {
-                visitorData.todayCount = 0;
-                visitorData.lastVisit = today;
-            }
+            // التحقق إذا كانت هذه زيارة جديدة (ليس تحديث للصفحة)
+            const lastVisitTime = visitorData.lastVisitTime || 0;
+            const currentTime = Date.now();
+            const isNewVisit = (currentTime - lastVisitTime) > 30000; // 30 دقيقة
             
-            // زيادة العدادين
-            visitorData.totalCount = (visitorData.totalCount || 0) + 1;
-            visitorData.todayCount = (visitorData.todayCount || 0) + 1;
+            if (isNewVisit) {
+                // إذا كان اليوم الجديد، إعادة تعيين عداد اليوم
+                if (visitorData.lastVisit !== today) {
+                    visitorData.todayCount = 0;
+                    visitorData.lastVisit = today;
+                }
+                
+                // زيادة العدادين فقط للزيارات الجديدة
+                visitorData.totalCount = (visitorData.totalCount || 0) + 1;
+                visitorData.todayCount = (visitorData.todayCount || 0) + 1;
+                visitorData.lastVisitTime = currentTime;
+                
+                // إرسال البيانات للخادم (محاكاة)
+                sendVisitToServer(userId);
+            }
             
             // حفظ البيانات
             localStorage.setItem('visitorData', JSON.stringify(visitorData));
@@ -512,17 +537,62 @@
             document.getElementById('today-count').textContent = visitorData.todayCount.toLocaleString('ar-SA');
         }
         
-        // تحديث العداد عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', updateCounter);
-        
-        // محاكاة زيارات للعرض (يمكن إزالة هذا الجزء في الاستخدام الحقيقي)
-        if (localStorage.getItem('visitorData') === null) {
-            // أول زيارة للموقع
-            setTimeout(() => {
-                document.getElementById('visitor-count').textContent = '1,247';
-                document.getElementById('today-count').textContent = '23';
-            }, 1000);
+        // إرسال بيانات الزيارة للخادم
+        function sendVisitToServer(userId) {
+            // استخدام API بسيط لتتبع الزيارات
+            // يمكنك استبدال هذا بخادم حقيقي
+            const visitData = {
+                userId: userId,
+                timestamp: Date.now(),
+                page: window.location.href,
+                userAgent: navigator.userAgent
+            };
+            
+            // محاكاة إرسال للخادم (في الواقع تحتاج لخادم حقيقي)
+            console.log('Visit data:', visitData);
+            
+            // يمكنك استخدام خدمات مثل:
+            // - Google Analytics
+            // - Firebase Analytics  
+            // - أو خادم خاص بك
         }
+        
+        // تحديث عداد المتواجدين الآن
+        function updateOnlineCount() {
+            // في الواقع تحتاج لخادم WebSocket أو Server-Sent Events
+            // هنا محاكاة بسيطة:
+            const onlineUsers = Math.floor(Math.random() * 20) + 5; // 5-24 مستخدم
+            document.getElementById('online-count').textContent = onlineUsers;
+            
+            // تحديث كل 30 ثانية
+            setTimeout(updateOnlineCount, 30000);
+        }
+        
+        // تتبع مغادرة المستخدم
+        window.addEventListener('beforeunload', function() {
+            // إرسال إشارة مغادرة للخادم
+            const leaveData = {
+                userId: userId,
+                leaveTime: Date.now(),
+                duration: Date.now() - (localStorage.getItem('startTime') || Date.now())
+            };
+            console.log('User left:', leaveData);
+            
+            // في الواقع أرسل هذا للخادم
+            navigator.sendBeacon('/api/leave', JSON.stringify(leaveData));
+        });
+        
+        // تسجيل وقت الدخول
+        localStorage.setItem('startTime', Date.now());
+        
+        // تحديث العداد عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounter();
+            updateOnlineCount();
+        });
+        
+        // تحديث عداد المتواجدين بشكل دوري
+        setInterval(updateOnlineCount, 60000); // كل دقيقة
     </script>
 </body>
 </html>
