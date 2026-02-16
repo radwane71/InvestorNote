@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفكرة مستثمر</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .box:hover::before {
+            transform: scaleX(1);
+        }
+
+        .box h3 {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .box .url {
+            color: #666;
+            font-size: 0.85rem;
+            word-break: break-all;
+            opacity: 0.8;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+            }
+            
+            .box {
+                padding: 15px;
+            }
+            
+            .box h3 {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>مفكرة مستثمر</h1>
+        
+        <div class="category">أسعار اليوم وتقييمات</div>
+        <div class="grid">
+            <a href="https://www.argaam.com/ar/company/companies-prices/3" target="_blank" class="box">
+                <h3>أسعار اليوم</h3>
+                <span class="url">argaam.com</span>
+            </a>
+            <a href="https://www.alphaspread.com/" target="_blank" class="box">
+                <h3>القيمة العادلة DCF</h3>
+                <span class="url">alphaspread.com</span>
+            </a>
+            <a href="https://www.gurufocus.com/" target="_blank" class="box">
+                <h3>القيمة العادلة GFV</h3>
+                <span class="url">gurufocus.com</span>
+            </a>
+        </div>
+
+        <div class="category">الإكتتابات والأخبار</div>
+        <div class="grid">
+            <a href="https://x.com/IPOsOfSaudi" target="_blank" class="box">
+                <h3>الإكتتابات القادمة</h3>
+                <span class="url">x.com/IPOsOfSaudi</span>
+            </a>
+            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements?locale=ar&page=1" target="_blank" class="box">
+                <h3>أخبار السوق</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://www.saudiexchange.sa/Resources/Reports-v2/ShareBuyback_ar.html" target="_blank" class="box">
+                <h3>ملكية الشركات لأسهمها</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://x.com/stock_ownership" target="_blank" class="box">
+                <h3>تغييرات كبار الملاك</h3>
+                <span class="url">x.com/stock_ownership</span>
+            </a>
+        </div>
+
+        <div class="category">التوزيعات وأداء السوق</div>
+        <div class="grid">
+            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-financial-calendars/dividends?locale=ar" target="_blank" class="box">
+                <h3>التوزيعات النقدية</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/main-market-performance?locale=ar" target="_blank" class="box">
+                <h3>أداء السوق اليومي</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/marketsummary?locale=ar" target="_blank" class="box">
+                <h3>ملخص السوق اليومي</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://x.com/cash_dividends7" target="_blank" class="box">
+                <h3>أسهم التوزيعات</h3>
+                <span class="url">x.com/cash_dividends7</span>
+            </a>
+            <a href="https://x.com/DividendHunterX" target="_blank" class="box">
+                <h3>أسهم التوزيعات1</h3>
+                <span class="url">x.com/DividendHunterX</span>
+            </a>
+        </div>
+
+        <div class="category">دورات تعليمية</div>
+        <div class="grid">
+            <a href="https://www.youtube.com/playlist?list=PL83MGt0lY37uRJqgj3qLrEkjQZrKGC9PM" target="_blank" class="box">
+                <h3>دورة إستثمر بوعي</h3>
+                <span class="url">youtube.com</span>
+            </a>
+            <a href="https://www.youtube.com/playlist?list=PLGPtIl_d816otQpbqBuyjisugkHwyH1HH" target="_blank" class="box">
+                <h3>دورة تحليل الأسهم</h3>
+                <span class="url">youtube.com</span>
+            </a>
+        </div>
+
+        <div class="category">مؤشرات وقوائم مالية</div>
+        <div class="grid">
+            <a href="https://www.saudiexchange.sa/Resources/Reports-v2/DailyFinancialIndicators_ar.html" target="_blank" class="box">
+                <h3>المؤشرات المالية</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/rules-guidance/capital-market-overview/Restrictions-Periods-and-Financials-Deadline?locale=ar" target="_blank" class="box">
+                <h3>إعلانات القوائم المالية</h3>
+                <span class="url">saudiexchange.sa</span>
+            </a>
+            <a href="https://www.argaam.com/ar/company/financial-pdf/3/2025" target="_blank" class="box">
+                <h3>أرقام - القوائم</h3>
+                <span class="url">argaam.com</span>
+            </a>
+            <a href="https://www.argaam.com/ar/company/shariahcompanies/3/3/3" target="_blank" class="box">
+                <h3>الأسهم الشرعية</h3>
+                <span class="url">argaam.com</span>
+            </a>
+            <a href="https://www.argaam.com/ar/company/companies-volume/3" target="_blank" class="box">
+                <h3>أحجام التداول</h3>
+                <span class="url">argaam.com</span>
+            </a>
+            <a href="https://www.argaam.com/ar/company/disclosure/sectionid/245/marketid/3/pageno" target="_blank" class="box">
+                <h3>الإفصاحات اليومية</h3>
+                <span class="url">argaam.com</span>
+            </a>
+        </div>
+
+        <div class="category">مواقع إخبارية</div>
+        <div class="grid">
+            <a href="https://arabicstock.com/" target="_blank" class="box">
+                <h3>السهم العربي</h3>
+                <span class="url">arabicstock.com</span>
+            </a>
+        </div>
+
+        <div class="category">حاسبات استثمارية</div>
+        <div class="grid">
+            <a href="https://www.calculator.io/ar/%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9-%D8%AE%D8%B7%D8%A9-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D9%85%D9%86%D9%87%D8%AC%D9%8A/" target="_blank" class="box">
+                <h3>حاسبة الاستثمار</h3>
+                <span class="url">calculator.io</span>
+            </a>
+            <a href="https://www.calculator.io/ar/%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9-%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%AF%D8%A9-%D8%A7%D9%84%D9%85%D8%B1%D9%83%D8%A8%D8%A9/" target="_blank" class="box">
+                <h3>حاسبة الفائدة المركبة</h3>
+                <span class="url">calculator.io</span>
+            </a>
+            <a href="https://www.calculator.io/ar/%D8%AD%D8%A7%D8%B3%D8%A8%D8%A9-%D8%A7%D9%84%D8%B9%D8%A7%D8%A6%D8%AF-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1/" target="_blank" class="box">
+                <h3>حاسبة العائد</h3>
+                <span class="url">calculator.io</span>
+            </a>
+            <a href="https://elsafqa.net/calculator" target="_blank" class="box">
+                <h3>حاسبات أخرى</h3>
+                <span class="url">elsafqa.net</span>
+            </a>
+        </div>
+
+        <div class="category">تقارير الشركات</div>
+        <div class="grid">
+            <a href="https://alrajhi-capital.sa/ar/research/" target="_blank" class="box">
+                <h3>تقارير الراجحي</h3>
+                <span class="url">alrajhi-capital.sa</span>
+            </a>
+            <a href="https://www.riyadcapital.com/ar/research-reports/equity-reports" target="_blank" class="box">
+                <h3>تقارير الرياض</h3>
+                <span class="url">riyadcapital.com</span>
+            </a>
+            <a href="https://alinmacapital.com/Market-Research" target="_blank" class="box">
+                <h3>تقارير الإنماء</h3>
+                <span class="url">alinmacapital.com</span>
+            </a>
+            <a href="https://www.aljaziracapital.com.sa/insights/research-reports/" target="_blank" class="box">
+                <h3>تقارير الجزيرة</h3>
+                <span class="url">aljaziracapital.com.sa</span>
+            </a>
+            <a href="https://research.snbcapital.com/ar/web/snb-research/welcome-page" target="_blank" class="box">
+                <h3>تقارير الأهلي</h3>
+                <span class="url">snbcapital.com</span>
+            </a>
+        </div>
+
+        <div class="category">تداول</div>
+        <div class="grid">
+            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/hidden/report-listing?locale=ar" target="_blank" class="box">
+                <h3>التقرير السنوي تداول</h3>
+                <span class="url">tadawulgroup.sa</span>
+            </a>
+            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/factsheet?locale=ar" target="_blank" class="box">
+                <h3>الأداء المالي تداول</h3>
+                <span class="url">tadawulgroup.sa</span>
+            </a>
+            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/company-announcements?locale=ar" target="_blank" class="box">
+                <h3>إفصاحات الشركات تداول</h3>
+                <span class="url">tadawulgroup.sa</span>
+            </a>
+            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/share-information?locale=ar" target="_blank" class="box">
+                <h3>معلومات السهم تداول</h3>
+                <span class="url">tadawulgroup.sa</span>
+            </a>
+        </div>
+
+        <div class="category">حسابات تويتر (X)</div>
+        <div class="grid">
+            <a href="https://x.com/FutrueGlimpse" target="_blank" class="box">
+                <h3>لمحة أستثمارية (X)</h3>
+                <span class="url">x.com/FutrueGlimpse</span>
+            </a>
+            <a href="https://x.com/Anas_S_Alrajhi" target="_blank" class="box">
+                <h3>أنس الراجحي (X)</h3>
+                <span class="url">x.com/Anas_S_Alrajhi</span>
+            </a>
+            <a href="https://x.com/AZK_SA" target="_blank" class="box">
+                <h3>عبدالله الخميس (X)</h3>
+                <span class="url">x.com/AZK_SA</span>
+            </a>
+            <a href="https://x.com/malmuqti" target="_blank" class="box">
+                <h3>ماجد المقاطي (X)</h3>
+                <span class="url">x.com/malmuqti</span>
+            </a>
+            <a href="https://x.com/Stock_Affairs" target="_blank" class="box">
+                <h3>شؤون الأسهم (X)</h3>
+                <span class="url">x.com/Stock_Affairs</span>
+            </a>
+            <a href="https://x.com/Saeed_AJ" target="_blank" class="box">
+                <h3>سعيد عبدالجبار (X)</h3>
+                <span class="url">x.com/Saeed_AJ</span>
+            </a>
+        </div>
+
+        <div class="category">أدوات ذكاء اصطناعي</div>
+        <div class="grid">
+            <a href="https://chatgpt.com/g/g-6907e6c4b3cc81918e06bb6b81126c12-swq-lshm-ls-wdy" target="_blank" class="box">
+                <h3>بوت شات جي بي تي</h3>
+                <span class="url">chatgpt.com</span>
+            </a>
+            <a href="https://docs.google.com/document/d/1VsEAJsSXvlZqcaaeZxryZOuSBlRto7xYHg7EPyx0Wpo/edit?usp=drive_link" target="_blank" class="box">
+                <h3>برومت تحليل المحفظة</h3>
+                <span class="url">docs.google.com</span>
+            </a>
+            <a href="https://docs.google.com/document/d/1GLYSuyAjFv6k4Tbru_AkvsUEJMAPpyNR-oAAOXLABlo/edit?usp=drive_link" target="_blank" class="box">
+                <h3>برومت تحليل السهم</h3>
+                <span class="url">docs.google.com</span>
+            </a>
+        </div>
+
+        <div class="category">جداول ومستندات</div>
+        <div class="grid">
+            <a href="https://docs.google.com/spreadsheets/d/1MDlB4bREIwoP4q6QmOcz5AS5r44GZzh9XlAnxV673VM/edit?usp=drive_link" target="_blank" class="box">
+                <h3>ملف التوزيعات (Sheet)</h3>
+                <span class="url">docs.google.com</span>
+            </a>
+            <a href="https://docs.google.com/spreadsheets/d/1tKZecsAkrotF3nwyLP9onXpR1beyeeiY/edit?usp=drive_link&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
+                <h3>سجل البيع والشراء</h3>
+                <span class="url">docs.google.com</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
