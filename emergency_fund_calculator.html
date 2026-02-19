@@ -317,22 +317,48 @@
                     <a href="investor_tips.html" class="navbar-item tips">
                         ⚠️ نصائح الاستثمار
                     </a>
-                    <a href="emergency_fund_calculator.html" class="navbar-item emergency active">
+                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
                         🛡️ صندوق الطوارئ
                     </a>
-                    <a href="stock_valuation_calculator.html" class="navbar-item calculator">
-                        📊 حاسبة التقييم
+                    <a href="salary_calculator.html" class="navbar-item salary">
+                        💼 حاسبة تقسيم الراتب
+                    </a>
+                    <a href="rebalancing.html" class="navbar-item rebalance">
+                        ⚖️ إعادة توازن المحفظة
+                    </a>
+                    <a href="zakat_purification.html" class="navbar-item zakat">
+                        🕌 التطهير والزكاة
+                    </a>
+                    <a href="financial_freedom.html" class="navbar-item fire">
+                        🔥 الحرية المالية
+                    </a>
+                    <a href="sector_analysis.html" class="navbar-item sector">
+                        📊 التحليل القطاعي
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
             </div>
         </nav>
-        
+
         <script>
         function toggleNavbar() {
             const menu = document.getElementById('navbarMenu');
             menu.classList.toggle('collapsed');
         }
+
+        // تحديد الصفحة النشطة
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.navbar-item');
+            
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('href');
+                if (itemPage === currentPage || 
+                    (currentPage === '' && itemPage === 'index.html')) {
+                    item.classList.add('active');
+                }
+            });
+        });
         </script>
 
         <div class="header">
@@ -657,5 +683,7 @@
             calculateEmergencyFund();
         });
     </script>
+    <script data-goatcounter="https://investornote.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

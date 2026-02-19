@@ -258,7 +258,7 @@
                     <a href="index.html" class="navbar-item">
                         🏠 الرئيسية
                     </a>
-                    <a href="snowball_calculator.html" class="navbar-item calculator active">
+                    <a href="snowball_calculator.html" class="navbar-item calculator">
                         ❄️ حاسبة كرة الثلج
                     </a>
                     <a href="advice.html" class="navbar-item calculator">
@@ -270,19 +270,51 @@
                     <a href="emergency_fund_calculator.html" class="navbar-item emergency">
                         🛡️ صندوق الطوارئ
                     </a>
-                    <a href="stock_valuation_calculator.html" class="navbar-item calculator">
-                        📊 حاسبة التقييم
+                    <a href="salary_calculator.html" class="navbar-item salary">
+                        💼 حاسبة تقسيم الراتب
+                    </a>
+                    <a href="rebalancing.html" class="navbar-item rebalance">
+                        ⚖️ إعادة توازن المحفظة
+                    </a>
+                    <a href="zakat_purification.html" class="navbar-item zakat">
+                        🕌 التطهير والزكاة
+                    </a>
+                    <a href="financial_freedom.html" class="navbar-item fire">
+                        🔥 الحرية المالية
+                    </a>
+                    <a href="sector_analysis.html" class="navbar-item sector">
+                        📊 التحليل القطاعي
+                    </a>
+                    <a href="roi_calculator.html" class="navbar-item roi">
+                        📈 حاسبة الأداء
+                    </a>
+                    <a href="average_down.html" class="navbar-item average">
+                        📉 تعديل المتوسط
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
             </div>
         </nav>
-        
+
         <script>
         function toggleNavbar() {
             const menu = document.getElementById('navbarMenu');
             menu.classList.toggle('collapsed');
         }
+
+        // تحديد الصفحة النشطة
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.navbar-item');
+            
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('href');
+                if (itemPage === currentPage || 
+                    (currentPage === '' && itemPage === 'index.html')) {
+                    item.classList.add('active');
+                }
+            });
+        });
         </script>
         
         <div class="header">
@@ -645,5 +677,7 @@
             calculateCompoundInterest();
         });
     </script>
+    <script data-goatcounter="https://investornote.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

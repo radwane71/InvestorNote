@@ -244,7 +244,7 @@
                     📈 مفكرة مستثمر
                 </a>
                 <div class="navbar-menu" id="navbarMenu">
-                    <a href="index.html" class="navbar-item active">
+                    <a href="index.html" class="navbar-item">
                         🏠 الرئيسية
                     </a>
                     <a href="snowball_calculator.html" class="navbar-item calculator">
@@ -259,19 +259,51 @@
                     <a href="emergency_fund_calculator.html" class="navbar-item emergency">
                         🛡️ صندوق الطوارئ
                     </a>
-                    <a href="stock_valuation_calculator.html" class="navbar-item calculator">
-                        📊 حاسبة التقييم
+                    <a href="salary_calculator.html" class="navbar-item salary">
+                        💼 حاسبة تقسيم الراتب
+                    </a>
+                    <a href="rebalancing.html" class="navbar-item rebalance">
+                        ⚖️ إعادة توازن المحفظة
+                    </a>
+                    <a href="zakat_purification.html" class="navbar-item zakat">
+                        🕌 التطهير والزكاة
+                    </a>
+                    <a href="financial_freedom.html" class="navbar-item fire">
+                        🔥 الحرية المالية
+                    </a>
+                    <a href="sector_analysis.html" class="navbar-item sector">
+                        📊 التحليل القطاعي
+                    </a>
+                    <a href="roi_calculator.html" class="navbar-item roi">
+                        📈 حاسبة الأداء
+                    </a>
+                    <a href="average_down.html" class="navbar-item average">
+                        📉 تعديل المتوسط
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
             </div>
         </nav>
-        
+
         <script>
         function toggleNavbar() {
             const menu = document.getElementById('navbarMenu');
             menu.classList.toggle('collapsed');
         }
+
+        // تحديد الصفحة النشطة
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.navbar-item');
+            
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('href');
+                if (itemPage === currentPage || 
+                    (currentPage === '' && itemPage === 'index.html')) {
+                    item.classList.add('active');
+                }
+            });
+        });
         </script>
         
         <h1>مفكرة مستثمر</h1>
@@ -507,6 +539,21 @@
                 <span class="url">docs.google.com</span>
                 <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
             </a>
+            <a href="https://docs.google.com/spreadsheets/d/1RG_YlnGiDXDSeGmAYqUD08v910Xs9iq-/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
+                <h3>ملف إدارة المحفظة</h3>
+                <span class="url">docs.google.com</span>
+                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
+            </a>
+            <a href="https://docs.google.com/spreadsheets/d/1gzWrEw-UyXFujmv6Fj3wR-xfBhqjnOrf/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
+                <h3>ملف إدارة المحفظة 2</h3>
+                <span class="url">docs.google.com</span>
+                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
+            </a>
+            <a href="https://docs.google.com/spreadsheets/d/16LSBGFIxSNZ8T1zqQkhV2_jjoChaJRuf/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
+                <h3>ملف إدارة المحفظة 3</h3>
+                <span class="url">docs.google.com</span>
+                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
+            </a>
         </div>
     </div>
 
@@ -530,6 +577,18 @@
                 <span class="counter-label">المتواجدون الآن:</span>
                 <span id="online-count" class="counter-number">0</span>
             </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+            <small style="color: rgba(236,240,241,0.7);">
+                📊 إحصائيات الموقع محمية بـ <a href="https://goatcounter.com" target="_blank" style="color: #3498db; text-decoration: none;">GoatCounter</a>
+            </small>
+        </div>
+        
+        <div style="text-align: center; margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+            <small style="color: rgba(236,240,241,0.6); font-size: 0.8rem;">
+                🔒 خصوصية البيانات: الموقع يستخدم GoatCounter لجمع إحصائيات عامة فقط (مثل عدد الزيارات) دون جمع بيانات شخصية عن المستخدمين.
+            </small>
         </div>
     </footer>
 
@@ -682,5 +741,7 @@
             }
         }, 60000); // كل دقيقة
     </script>
+    <script data-goatcounter="https://investornote.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
