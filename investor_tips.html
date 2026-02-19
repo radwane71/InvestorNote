@@ -199,12 +199,40 @@
                 font-size: 1rem;
                 padding: 20px;
             }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-button">← العودة للصفحة الرئيسية</a>
+        <!-- شريط التنقل الموحد -->
+        <link rel="stylesheet" href="navigation.css">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="navbar-brand">
+                    📈 مفكرة مستثمر
+                </a>
+                <div class="navbar-menu" id="navbarMenu">
+                    <a href="index.html" class="navbar-item">
+                        🏠 الرئيسية
+                    </a>
+                    <a href="snowball_calculator.html" class="navbar-item calculator">
+                        ❄️ حاسبة كرة الثلج
+                    </a>
+                    <a href="advice.html" class="navbar-item calculator">
+                        💰 حاسبة الثروة
+                    </a>
+                    <a href="investor_tips.html" class="navbar-item tips active">
+                        ⚠️ نصائح الاستثمار
+                    </a>
+                </div>
+                <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            </div>
+        </nav>
+        
+        <script>
+        function toggleNavbar() {
+            const menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('collapsed');
+        }
+        </script>
         
         <h1>نصائح مستثمر - قواعد سوق المال</h1>
         

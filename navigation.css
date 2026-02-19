@@ -1,0 +1,147 @@
+/* شريط التنقل الموحد */
+.navbar {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    padding: 15px 0;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 20px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+}
+
+.navbar-brand:hover {
+    color: #3498db;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.navbar-item {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-item.active {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-color: #3498db;
+}
+
+.navbar-item.calculator {
+    background: linear-gradient(135deg, #27ae60, #229954);
+}
+
+.navbar-item.calculator:hover {
+    background: linear-gradient(135deg, #229954, #1e8449);
+}
+
+.navbar-item.tips {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.navbar-item.tips:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+.navbar-toggle {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        position: static;
+        margin-bottom: 20px;
+    }
+    
+    .navbar-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .navbar-menu {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .navbar-item {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .navbar-toggle {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .navbar-menu.collapsed {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .navbar-item {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        gap: 5px;
+    }
+    
+    .navbar-menu {
+        gap: 10px;
+    }
+}

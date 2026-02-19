@@ -1,0 +1,45 @@
+<!-- شريط التنقل الموحد -->
+<link rel="stylesheet" href="navigation.css">
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+            📈 مفكرة مستثمر
+        </a>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="index.html" class="navbar-item">
+                🏠 الرئيسية
+            </a>
+            <a href="snowball_calculator.html" class="navbar-item calculator">
+                ❄️ حاسبة كرة الثلج
+            </a>
+            <a href="advice.html" class="navbar-item calculator">
+                💰 حاسبة الثروة
+            </a>
+            <a href="investor_tips.html" class="navbar-item tips">
+                ⚠️ نصائح الاستثمار
+            </a>
+        </div>
+        <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+    </div>
+</nav>
+
+<script>
+function toggleNavbar() {
+    const menu = document.getElementById('navbarMenu');
+    menu.classList.toggle('collapsed');
+}
+
+// تحديد الصفحة النشطة
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navItems = document.querySelectorAll('.navbar-item');
+    
+    navItems.forEach(item => {
+        const itemPage = item.getAttribute('href');
+        if (itemPage === currentPage || 
+            (currentPage === '' && itemPage === 'index.html')) {
+            item.classList.add('active');
+        }
+    });
+});
+</script>
