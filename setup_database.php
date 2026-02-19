@@ -261,6 +261,8 @@
                     <li>✅ salary_distribution - توزيع الراتب</li>
                     <li>✅ stock_transactions - صفقات الأسهم</li>
                     <li>✅ investment_plans - خطط الاستثمار</li>
+                    <li>✅ portfolio_transactions - عمليات المحفظة</li>
+                    <li>✅ dividends - توزيعات الأرباح</li>
                 </ul>
             </div>
             
@@ -277,20 +279,12 @@
         <div class="nav-buttons">
             <a href="login_db.php" class="nav-btn">🔐 تسجيل الدخول</a>
             <a href="private_page_db.php" class="nav-btn">🏛️ لوحة التحكم</a>
+            <a href="received_dividends.php" class="nav-btn">💰 توزيعات الأرباح</a>
+            <a href="transactions.php" class="nav-btn">📈 عمليات المحفظة</a>
         </div>
     </div>
 </body>
 </html>
-    ");
-    echo "✅ تم إنشاء جدول المستخدمين<br>";
-    
-    // جدول توزيع الراتب
-    $pdo->exec("
-        CREATE TABLE IF NOT EXISTS salary_distribution (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
-            item_name VARCHAR(200) NOT NULL,
-            amount DECIMAL(15,2) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
