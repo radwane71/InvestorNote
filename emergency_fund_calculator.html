@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة صندوق الطوارئ - مفكرة مستثمر</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .select-group {
+            margin-bottom: 20px;
+        }
+
+        .select-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .select-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .select-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #424242;
+            line-height: 1.6;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(33, 150, 243, 0.3);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .result-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .result-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-period {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-height: 400px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .advice-card {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);
+        }
+
+        .advice-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .advice-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .advice-card li {
+            margin-bottom: 12px;
+            padding-right: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .advice-card li:before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .breakdown-table {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .breakdown-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .breakdown-table th {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .breakdown-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: right;
+        }
+
+        .breakdown-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .percentage-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .percentage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2196f3);
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 968px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .result-amount {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- شريط التنقل الموحد -->
+        <link rel="stylesheet" href="navigation.css">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="navbar-brand">
+                    📈 مفكرة مستثمر
+                </a>
+                <div class="navbar-menu" id="navbarMenu">
+                    <a href="index.html" class="navbar-item">
+                        🏠 الرئيسية
+                    </a>
+                    <a href="snowball_calculator.html" class="navbar-item calculator">
+                        ❄️ حاسبة كرة الثلج
+                    </a>
+                    <a href="advice.html" class="navbar-item calculator">
+                        💰 حاسبة الثروة
+                    </a>
+                    <a href="investor_tips.html" class="navbar-item tips">
+                        ⚠️ نصائح الاستثمار
+                    </a>
+                    <a href="emergency_fund_calculator.html" class="navbar-item emergency active">
+                        🛡️ صندوق الطوارئ
+                    </a>
+                    <a href="stock_valuation_calculator.html" class="navbar-item calculator">
+                        📊 حاسبة التقييم
+                    </a>
+                </div>
+                <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            </div>
+        </nav>
+        
+        <script>
+        function toggleNavbar() {
+            const menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('collapsed');
+        }
+        </script>
+
+        <div class="header">
+            <h1>🛡️ حاسبة صندوق الطوارئ</h1>
+            <p>احسب المبلغ الذي تحتاجه للطوارئ بناءً على مصاريفك الشهرية</p>
+        </div>
+
+        <div class="calculator-grid">
+            <div class="card">
+                <h2 class="section-title">📊 المصاريف الشهرية</h2>
+                
+                <div class="input-group">
+                    <label for="housing">🏠 السكن (إيجار أو قسط عقاري)</label>
+                    <input type="number" id="housing" value="3000" min="0" step="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="utilities">💡 الفواتير (كهرباء، مياه، اتصال، إنترنت)</label>
+                    <input type="number" id="utilities" value="500" min="0" step="50">
+                </div>
+
+                <div class="input-group">
+                    <label for="living">🛒 المعيشة (مواد غذائية، مستلزمات المنزل)</label>
+                    <input type="number" id="living" value="1500" min="0" step="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="transport">🚗 النقل (وقود، صيانة، تأمين، أقساط سيارة)</label>
+                    <input type="number" id="transport" value="800" min="0" step="50">
+                </div>
+
+                <div class="input-group">
+                    <label for="commitments">💳 الالتزامات (أقساط قروض شخصية أو بطاقات ائتمانية)</label>
+                    <input type="number" id="commitments" value="600" min="0" step="50">
+                </div>
+
+                <div class="input-group">
+                    <label for="others">📚 أخرى (مصاريف تعليم، تأمين طبي، مصاريف دورية)</label>
+                    <input type="number" id="others" value="400" min="0" step="50">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">⚙️ إعدادات هدف الطوارئ</h2>
+                
+                <div class="select-group">
+                    <label for="coveragePeriod">مدة التغطية المطلوبة</label>
+                    <select id="coveragePeriod" onchange="updateSecurityLevel()">
+                        <option value="3">3 أشهر</option>
+                        <option value="6" selected>6 أشهر</option>
+                        <option value="9">9 أشهر</option>
+                        <option value="12">12 شهرًا</option>
+                    </select>
+                </div>
+
+                <div class="info-box">
+                    <h4>📋 مستوى الأمان الموصى به</h4>
+                    <p id="securityLevelInfo">6 أشهر - مناسب للعمل الحر والقطاعات المتذبذبة</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 نصيحة مهمة</h4>
+                    <p>يجب أن يكون صندوق الطوارئ في حساب بنكي منفصل، سهل الوصول إليه، ولا يستثمر في أصول عالية المخاطر. هذا المبلغ هو صمام الأمان المالي لك.</p>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateEmergencyFund()">
+                    احسب صندوق الطوارئ
+                </button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="result-card">
+                <h2>💰 المبلغ المستهدف لصندوق الطوارئ</h2>
+                <div class="result-amount" id="targetAmount">-</div>
+                <div class="result-period" id="coverageInfo">-</div>
+            </div>
+
+            <div class="chart-container">
+                <h2 class="section-title">📊 توزيع المصاريف الشهرية</h2>
+                <div class="chart-wrapper">
+                    <canvas id="expensesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="advice-card">
+                <h3>🎯 نصائح مالية ذكية</h3>
+                <ul id="adviceList">
+                </ul>
+            </div>
+
+            <div class="breakdown-table">
+                <h2 class="section-title">📋 تفصيل المصاريف</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>البند</th>
+                            <th>المبلغ الشهري</th>
+                            <th>النسبة المئوية</th>
+                            <th>التمثيل البصري</th>
+                        </tr>
+                    </thead>
+                    <tbody id="breakdownBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let expensesChart = null;
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ar-SA', {
+                style: 'currency',
+                currency: 'SAR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function updateSecurityLevel() {
+            const period = document.getElementById('coveragePeriod').value;
+            const infoElement = document.getElementById('securityLevelInfo');
+            
+            switch(period) {
+                case '3':
+                    infoElement.textContent = '3 أشهر - مناسب للموظف المستقر مع دخل ثابت';
+                    break;
+                case '6':
+                    infoElement.textContent = '6 أشهر - مناسب للعمل الحر والقطاعات المتذبذبة';
+                    break;
+                case '9':
+                    infoElement.textContent = '9 أشهر - مناسب للمشاريع التجارية والدخل غير المنتظم';
+                    break;
+                case '12':
+                    infoElement.textContent = '12 شهرًا - مناسب لأصحاب الأعمال والظروف الاقتصادية غير المستقرة';
+                    break;
+            }
+        }
+
+        function calculateEmergencyFund() {
+            // جمع المصاريف الشهرية
+            const expenses = {
+                housing: parseFloat(document.getElementById('housing').value) || 0,
+                utilities: parseFloat(document.getElementById('utilities').value) || 0,
+                living: parseFloat(document.getElementById('living').value) || 0,
+                transport: parseFloat(document.getElementById('transport').value) || 0,
+                commitments: parseFloat(document.getElementById('commitments').value) || 0,
+                others: parseFloat(document.getElementById('others').value) || 0
+            };
+
+            const totalMonthlyExpenses = Object.values(expenses).reduce((sum, val) => sum + val, 0);
+            const coveragePeriod = parseInt(document.getElementById('coveragePeriod').value);
+            const targetAmount = totalMonthlyExpenses * coveragePeriod;
+
+            // عرض النتائج الرئيسية
+            document.getElementById('targetAmount').textContent = formatCurrency(targetAmount);
+            document.getElementById('coverageInfo').textContent = `لتغطية ${coveragePeriod} أشهر من المصاريف الشهرية (${formatCurrency(totalMonthlyExpenses)})`;
+
+            // إنشاء الرسم البياني
+            createExpensesChart(expenses);
+
+            // إنشاء النصائح
+            generateAdvice(totalMonthlyExpenses, targetAmount, coveragePeriod);
+
+            // إنشاء جدول التفصيل
+            createBreakdownTable(expenses, totalMonthlyExpenses);
+
+            // عرض قسم النتائج
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // التمرير للنتائج
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function createExpensesChart(expenses) {
+            const ctx = document.getElementById('expensesChart').getContext('2d');
+            
+            const labels = {
+                housing: 'السكن',
+                utilities: 'الفواتير',
+                living: 'المعيشة',
+                transport: 'النقل',
+                commitments: 'الالتزامات',
+                others: 'أخرى'
+            };
+
+            const data = Object.values(expenses);
+            const chartLabels = Object.keys(expenses).map(key => labels[key]);
+
+            // تدمير الرسم البياني القديم إذا وجد
+            if (expensesChart) {
+                expensesChart.destroy();
+            }
+
+            expensesChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#3498db',
+                            '#e74c3c',
+                            '#f39c12',
+                            '#2ecc71',
+                            '#9b59b6',
+                            '#95a5a6'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: 14
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + formatCurrency(context.parsed) + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateAdvice(monthlyExpenses, targetAmount, coveragePeriod) {
+            const adviceList = document.getElementById('adviceList');
+            const advice = [];
+
+            // نصائح أساسية
+            advice.push(`احتفظ بهذا المبلغ (${formatCurrency(targetAmount)}) في حساب توفير منفصل عن حسابك اليومي`);
+            
+            // نصائح حسب حجم المبلغ
+            if (targetAmount > 50000) {
+                advice.push('نظرًا لارتفاع المبلغ، يمكنك تقسيمه بين حساب توفير وودائع قصيرة الأجل لتحقيق بعض العائد');
+            } else if (targetAmount < 10000) {
+                advice.push('حاول توفير المبلغ خلال 6-12 شهرًا عبر تقليل المصاريف غير الضرورية');
+            }
+
+            // نصائح حسب مدة التغطية
+            if (coveragePeriod >= 9) {
+                advice.push('مدة التغطية طويلة جدًا - تأكد من عدم استثمار هذا المبلغ في أصول عالية المخاطر');
+            } else if (coveragePeriod <= 3) {
+                advice.push('مدة التغطية قصيرة - فكر في زيادتها إلى 6 أشهر على الأقل لزيادة الأمان المالي');
+            }
+
+            // نصائح حسب المصاريف
+            if (monthlyExpenses > 10000) {
+                advice.push('مصاريفك الشهرية مرتفعة - راجع إمكانية تقليل بعض البنود لزيادة قدرتك على الادخار');
+            }
+
+            advice.push('لا تستخدم صندوق الطوارئ إلا للظروف الطارئة الحقيقية (فقدان الوظيفة، مشاكل صحية، إصلاحات عاجلة)');
+            advice.push('أعد تعبئة الصندوق فورًا إذا سحبت منه أي مبلغ');
+
+            adviceList.innerHTML = advice.map(item => `<li>${item}</li>`).join('');
+        }
+
+        function createBreakdownTable(expenses, total) {
+            const tbody = document.getElementById('breakdownBody');
+            const labels = {
+                housing: '🏠 السكن',
+                utilities: '💡 الفواتير',
+                living: '🛒 المعيشة',
+                transport: '🚗 النقل',
+                commitments: '💳 الالتزامات',
+                others: '📚 أخرى'
+            };
+
+            let rows = '';
+            for (const [key, value] of Object.entries(expenses)) {
+                const percentage = total > 0 ? (value / total * 100).toFixed(1) : 0;
+                rows += `
+                    <tr>
+                        <td><strong>${labels[key]}</strong></td>
+                        <td>${formatCurrency(value)}</td>
+                        <td>${percentage}%</td>
+                        <td>
+                            <div class="percentage-bar">
+                                <div class="percentage-fill" style="width: ${percentage}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            // إضافة صف المجموع
+            rows += `
+                <tr style="background: #f8f9fa; font-weight: bold;">
+                    <td>الإجمالي</td>
+                    <td>${formatCurrency(total)}</td>
+                    <td>100%</td>
+                    <td>
+                        <div class="percentage-bar">
+                            <div class="percentage-fill" style="width: 100%"></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            tbody.innerHTML = rows;
+        }
+
+        // حساب تلقائي عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            updateSecurityLevel();
+            calculateEmergencyFund();
+        });
+    </script>
+</body>
+</html>

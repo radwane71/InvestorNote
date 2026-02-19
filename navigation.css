@@ -85,6 +85,14 @@
     background: linear-gradient(135deg, #c0392b, #a93226);
 }
 
+.navbar-item.emergency {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.navbar-item.emergency:hover {
+    background: linear-gradient(135deg, #f57c00, #ef6c00);
+}
+
 .navbar-toggle {
     display: none;
     background: rgba(255, 255, 255, 0.1);
