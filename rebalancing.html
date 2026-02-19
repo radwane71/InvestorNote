@@ -233,6 +233,14 @@
             .chart-wrapper {
                 height: 300px;
             }
+
+            .backup-buttons {
+                flex-direction: column;
+            }
+
+            .backup-btn {
+                min-width: unset;
+            }
         }
     </style>
 </head>
@@ -516,6 +524,100 @@
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
             }).format(amount);
+        }
+    </script>
+
+    <div class="backup-section">
+        <h3>💾 إدارة البيانات</h3>
+        <div class="backup-buttons">
+            <button class="backup-btn export-btn" onclick="exportData()">📤 تصدير نسخة احتياطية Excel</button>
+            <button class="backup-btn import-btn" onclick="document.getElementById('importFile').click()">📥 استيراد نسخة احتياطية</button>
+            <input type="file" id="importFile" accept=".csv" style="display: none;" onchange="importData(this)">
+            <button class="backup-btn clear-btn" onclick="clearAllData()">🗑️ مسح كافة البيانات</button>
+        </div>
+        <p class="backup-note">بياناتك مخزنة في جهازك فقط، ننصح بتصدير نسخة احتياطية دورياً لضمان عدم فقدانها.</p>
+    </div>
+
+    <script>
+        // وظائف إدارة البيانات
+        function exportData() {
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                data[key] = localStorage.getItem(key);
+            }
+
+            // تحويل إلى CSV
+            const csvContent = 'key,value\n' + Object.entries(data).map(([key, value]) => `"${key}","${value}"`).join('\n');
+
+            // إضافة BOM لدعم العربية
+            const BOM = '\uFEFF';
+            const csvWithBOM = BOM + csvContent;
+
+            // إنشاء ملف
+            const blob = new Blob([csvWithBOM], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            link.href = URL.createObjectURL(blob);
+            link.download = `investor_backup_${date}.csv`;
+            link.click();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csvText = e.target.result;
+                const lines = csvText.split('\n');
+                
+                // مسح البيانات الحالية
+                localStorage.clear();
+                
+                // تخطي العنوان
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line) {
+                        const parts = parseCSVLine(line);
+                        if (parts.length >= 2) {
+                            localStorage.setItem(parts[0], parts[1]);
+                        }
+                    }
+                }
+                
+                alert('تم استيراد البيانات بنجاح، سيتم تحديث الصفحة الآن.');
+                location.reload();
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.replace(/^"|"$/g, ''));
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.replace(/^"|"$/g, ''));
+            return result;
+        }
+
+        function clearAllData() {
+            if (confirm('هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                localStorage.clear();
+                alert('تم مسح جميع البيانات.');
+                location.reload();
+            }
         }
     </script>
     <script data-goatcounter="https://investornote.goatcounter.com/count"
