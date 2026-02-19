@@ -284,6 +284,9 @@
                     <a href="sector_analysis.html" class="navbar-item sector">
                         📊 التحليل القطاعي
                     </a>
+                    <a href="portfolio_risk_grader.html" class="navbar-item risk">
+                        📈 مقيم خطورة المحفظة
+                    </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
             </div>
@@ -307,6 +310,9 @@
                     item.classList.add('active');
                 }
             });
+
+            // تحميل البيانات المحفوظة
+            loadSavedData();
         });
         </script>
 
@@ -349,6 +355,17 @@
             <div id="alerts"></div>
             <div id="recommendations" class="recommendations"></div>
         </div>
+    </div>
+
+    <div class="backup-section">
+        <h3>💾 إدارة البيانات</h3>
+        <div class="backup-buttons">
+            <button class="backup-btn export-btn" onclick="exportData()">📤 تصدير نسخة احتياطية Excel</button>
+            <button class="backup-btn import-btn" onclick="document.getElementById('importFile').click()">📥 استيراد نسخة احتياطية</button>
+            <input type="file" id="importFile" accept=".csv" style="display: none;" onchange="importData(this)">
+            <button class="backup-btn clear-btn" onclick="clearAllData()">🗑️ مسح كافة البيانات</button>
+        </div>
+        <p class="backup-note">بياناتك مخزنة في جهازك فقط، ننصح بتصدير نسخة احتياطية دورياً لضمان عدم فقدانها.</p>
     </div>
 
     <script>
@@ -416,6 +433,15 @@
             // عرض النتائج
             displayResults(stocks, newCash);
             updateChart(stocks);
+
+            // حفظ البيانات في localStorage لاستخدامها في صفحة مقيم المخاطر
+            localStorage.setItem('portfolioData', JSON.stringify(stocks.map(stock => ({
+                name: stock.name,
+                value: stock.value,
+                target: stock.target,
+                sector: stock.sector
+            }))));
+            localStorage.setItem('cashAmount', newCash.toString());
 
             document.getElementById('resultsSection').style.display = 'block';
         }
@@ -525,18 +551,47 @@
                 maximumFractionDigits: 0
             }).format(amount);
         }
-    </script>
 
-    <div class="backup-section">
-        <h3>💾 إدارة البيانات</h3>
-        <div class="backup-buttons">
-            <button class="backup-btn export-btn" onclick="exportData()">📤 تصدير نسخة احتياطية Excel</button>
-            <button class="backup-btn import-btn" onclick="document.getElementById('importFile').click()">📥 استيراد نسخة احتياطية</button>
-            <input type="file" id="importFile" accept=".csv" style="display: none;" onchange="importData(this)">
-            <button class="backup-btn clear-btn" onclick="clearAllData()">🗑️ مسح كافة البيانات</button>
-        </div>
-        <p class="backup-note">بياناتك مخزنة في جهازك فقط، ننصح بتصدير نسخة احتياطية دورياً لضمان عدم فقدانها.</p>
-    </div>
+        // تحميل البيانات المحفوظة من localStorage
+        function loadSavedData() {
+            try {
+                const rawPortfolioData = localStorage.getItem('portfolioData');
+                console.log('Raw portfolioData from localStorage:', rawPortfolioData);
+                const portfolioData = JSON.parse(rawPortfolioData || '[]');
+                const cashAmount = parseFloat(localStorage.getItem('cashAmount') || '0');
+
+                console.log('Parsed portfolioData:', portfolioData);
+                console.log('Loaded cashAmount:', cashAmount);
+
+                if (portfolioData.length > 0) {
+                    // إزالة الصفوف الحالية
+                    const stockInputs = document.getElementById('stock-inputs');
+                    stockInputs.innerHTML = '';
+
+                    // إضافة الصفوف من البيانات المحفوظة
+                    portfolioData.forEach(stock => {
+                        const newRow = document.createElement('div');
+                        newRow.className = 'stock-row';
+                        newRow.innerHTML = `
+                            <input type="text" placeholder="اسم السهم" class="stock-name" value="${stock.name || ''}">
+                            <input type="number" placeholder="القيمة الحالية (ريال)" class="stock-value" min="0" value="${stock.value || ''}">
+                            <input type="number" placeholder="النسبة المستهدفة (%)" class="stock-target" min="0" max="100" value="${stock.target || 8}">
+                            <input type="number" placeholder="القطاع (%)" class="stock-sector" min="0" max="100" value="${stock.sector || 10}">
+                            <button class="remove-btn" onclick="removeStock(this)">إزالة</button>
+                        `;
+                        stockInputs.appendChild(newRow);
+                    });
+
+                    // ملء مبلغ الكاش
+                    document.getElementById('newCash').value = cashAmount || '';
+
+                    console.log('تم تحميل البيانات المحفوظة بنجاح');
+                }
+            } catch (e) {
+                console.error('خطأ في تحليل البيانات المحفوظة:', e);
+            }
+        }
+    </script>
 
     <script>
         // وظائف إدارة البيانات
@@ -547,8 +602,18 @@
                 data[key] = localStorage.getItem(key);
             }
 
-            // تحويل إلى CSV
-            const csvContent = 'key,value\n' + Object.entries(data).map(([key, value]) => `"${key}","${value}"`).join('\n');
+            // دالة للهروب من القيم في CSV
+            function escapeCSV(value) {
+                if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n') || value.includes('\r'))) {
+                    return '"' + value.replace(/"/g, '""') + '"';
+                }
+                return value;
+            }
+
+            // تحويل إلى CSV مع الهروب الصحيح
+            const csvContent = 'key,value\n' + Object.entries(data).map(([key, value]) => {
+                return `${escapeCSV(key)},${escapeCSV(value)}`;
+            }).join('\n');
 
             // إضافة BOM لدعم العربية
             const BOM = '\uFEFF';
@@ -569,7 +634,9 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const csvText = e.target.result;
+                let csvText = e.target.result;
+                // إزالة BOM إذا كان موجوداً
+                csvText = csvText.replace(/^\uFEFF/, '');
                 const lines = csvText.split('\n');
                 
                 // مسح البيانات الحالية
@@ -577,11 +644,17 @@
                 
                 // تخطي العنوان
                 for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
+                    let line = lines[i].replace(/\r/g, '').trim();
                     if (line) {
-                        const parts = parseCSVLine(line);
-                        if (parts.length >= 2) {
-                            localStorage.setItem(parts[0], parts[1]);
+                        try {
+                            const parts = parseCSVLine(line);
+                            if (parts.length >= 2) {
+                                localStorage.setItem(parts[0], parts[1]);
+                                console.log('Imported:', parts[0], '=', parts[1]);
+                            }
+                        } catch (error) {
+                            console.error('خطأ في تحليل السطر:', line, error);
+                            alert('خطأ في تحليل بعض البيانات. تحقق من console للتفاصيل.');
                         }
                     }
                 }
@@ -600,7 +673,13 @@
             for (let i = 0; i < line.length; i++) {
                 const char = line[i];
                 if (char === '"') {
-                    inQuotes = !inQuotes;
+                    if (inQuotes && line[i + 1] === '"') {
+                        // اقتباس مضاعف داخل الاقتباسات
+                        current += '"';
+                        i++; // تخطي الاقتباس الثاني
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
                 } else if (char === ',' && !inQuotes) {
                     result.push(current.replace(/^"|"$/g, ''));
                     current = '';

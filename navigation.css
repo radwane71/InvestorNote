@@ -149,6 +149,14 @@
     background: linear-gradient(135deg, #f39c12, #e67e22);
 }
 
+.navbar-item.risk {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.navbar-item.risk:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
 .navbar-toggle {
     display: none;
     background: rgba(255, 255, 255, 0.1);
