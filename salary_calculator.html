@@ -13,7 +13,7 @@
 
         body {
             font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -25,7 +25,7 @@
 
         .header {
             text-align: center;
-            color: white;
+            color: #2c3e50;
             margin-bottom: 40px;
         }
 
@@ -45,11 +45,12 @@
         .header .dua {
             font-style: italic;
             font-size: 1rem;
-            opacity: 0.8;
+            opacity: 0.9;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(74, 111, 165, 0.15);
             border-radius: 10px;
             backdrop-filter: blur(10px);
+            color: #2c3e50;
         }
 
         .calculator-section {
@@ -82,7 +83,7 @@
 
         .input-group input:focus, .input-group select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #5a7fb5;
         }
 
         .results {
@@ -97,7 +98,7 @@
             border-radius: 10px;
             padding: 20px;
             text-align: center;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #5a7fb5;
         }
 
         .result-card h3 {
@@ -109,7 +110,7 @@
         .result-card .amount {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #667eea;
+            color: #5a7fb5;
         }
 
         .chart-container {
@@ -146,7 +147,7 @@
         }
 
         .rule-explanation h3 {
-            color: #667eea;
+            color: #5a7fb5;
             margin-bottom: 10px;
         }
 
@@ -217,20 +218,11 @@
                     <a href="salary_calculator.html" class="navbar-item salary">
                         💼 حاسبة تقسيم الراتب
                     </a>
-                    <a href="rebalancing.html" class="navbar-item rebalance">
-                        ⚖️ إعادة توازن المحفظة
-                    </a>
                     <a href="zakat_purification.html" class="navbar-item zakat">
                         🕌 التطهير والزكاة
                     </a>
                     <a href="financial_freedom.html" class="navbar-item fire">
                         🔥 الحرية المالية
-                    </a>
-                    <a href="sector_analysis.html" class="navbar-item sector">
-                        📊 التحليل القطاعي
-                    </a>
-                    <a href="portfolio_risk_grader.html" class="navbar-item risk">
-                        📈 مقيم خطورة المحفظة
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
@@ -339,10 +331,10 @@
                 datasets: [{
                     data: [],
                     backgroundColor: [
-                        '#667eea',
-                        '#764ba2',
-                        '#f093fb',
-                        '#f5576c'
+                        '#5a7fb5',
+                        '#6a8fc5',
+                        '#8a9fc5',
+                        '#7a8fb5'
                     ]
                 }]
             },

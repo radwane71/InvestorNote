@@ -12,10 +12,11 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #2c3e50;
         }
 
         .container {
@@ -25,11 +26,11 @@
 
         h1 {
             text-align: center;
-            color: white;
+            color: #2c3e50;
             margin-bottom: 30px;
             font-size: 2.5rem;
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .grid {
@@ -56,10 +57,10 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            right: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #5a7fb5, #6a8fc5);
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
@@ -89,8 +90,8 @@
         }
 
         .category {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: rgba(74, 111, 165, 0.15);
+            color: #2c3e50;
             padding: 8px 16px;
             border-radius: 20px;
             margin: 10px 0;
@@ -135,15 +136,15 @@
         }
 
         footer {
-            background: #2c3e50;
-            color: #ecf0f1;
+            background: rgba(74, 111, 165, 0.2);
+            color: #2c3e50;
             padding: 30px 20px;
             margin-top: 40px;
             border-radius: 15px 15px 0 0;
         }
 
         .disclaimer h4 {
-            color: #fff;
+            color: #2c3e50;
             font-size: 1.1rem;
             margin-bottom: 15px;
             text-align: center;
@@ -179,7 +180,7 @@
             gap: 30px;
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .counter-item {
@@ -191,7 +192,7 @@
 
         .counter-label {
             font-size: 0.8rem;
-            color: #bdc3c7;
+            color: #5a7fb5;
             margin-bottom: 5px;
             font-weight: normal;
         }
@@ -199,8 +200,8 @@
         .counter-number {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #3498db;
-            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+            color: #5a9d7a;
+            text-shadow: 0 0 10px rgba(90, 157, 122, 0.3);
             animation: pulse 2s infinite;
         }
 
@@ -247,6 +248,15 @@
                     <a href="index.html" class="navbar-item">
                         🏠 الرئيسية
                     </a>
+                    <a href="salary_calculator.html" class="navbar-item salary">
+                        💼 حاسبة تقسيم الراتب
+                    </a>
+                    <a href="zakat_purification.html" class="navbar-item zakat">
+                        🕌 التطهير والزكاة
+                    </a>
+                    <a href="financial_freedom.html" class="navbar-item fire">
+                        🔥 الحرية المالية
+                    </a>
                     <a href="snowball_calculator.html" class="navbar-item calculator">
                         ❄️ حاسبة كرة الثلج
                     </a>
@@ -256,59 +266,9 @@
                     <a href="investor_tips.html" class="navbar-item tips">
                         ⚠️ نصائح الاستثمار
                     </a>
-                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
-                        🛡️ صندوق الطوارئ
-                    </a>
-                    <a href="salary_calculator.html" class="navbar-item salary">
-                        💼 حاسبة تقسيم الراتب
-                    </a>
-                    <a href="rebalancing.html" class="navbar-item rebalance">
-                        ⚖️ إعادة توازن المحفظة
-                    </a>
-                    <a href="zakat_purification.html" class="navbar-item zakat">
-                        🕌 التطهير والزكاة
-                    </a>
-                    <a href="financial_freedom.html" class="navbar-item fire">
-                        🔥 الحرية المالية
-                    </a>
-                    <a href="sector_analysis.html" class="navbar-item sector">
-                        📊 التحليل القطاعي
-                    </a>
-                    <a href="portfolio_risk_grader.html" class="navbar-item risk">
-                        📈 مقيم خطورة المحفظة
-                    </a>
-                    <a href="roi_calculator.html" class="navbar-item roi">
-                        📈 حاسبة الأداء
-                    </a>
-                    <a href="average_down.html" class="navbar-item average">
-                        📉 تعديل المتوسط
-                    </a>
-                </div>
-                <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
             </div>
         </nav>
 
-        <script>
-        function toggleNavbar() {
-            const menu = document.getElementById('navbarMenu');
-            menu.classList.toggle('collapsed');
-        }
-
-        // تحديد الصفحة النشطة
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navItems = document.querySelectorAll('.navbar-item');
-            
-            navItems.forEach(item => {
-                const itemPage = item.getAttribute('href');
-                if (itemPage === currentPage || 
-                    (currentPage === '' && itemPage === 'index.html')) {
-                    item.classList.add('active');
-                }
-            });
-        });
-        </script>
-        
         <h1>مفكرة مستثمر</h1>
         
         <div class="category">أسعار اليوم وتقييمات</div>
@@ -582,14 +542,14 @@
             </div>
         </div>
         
-        <div style="text-align: center; margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-            <small style="color: rgba(236,240,241,0.7);">
-                📊 إحصائيات الموقع محمية بـ <a href="https://goatcounter.com" target="_blank" style="color: #3498db; text-decoration: none;">GoatCounter</a>
+        <div style="text-align: center; margin-top: 20px; padding: 10px; background: rgba(74, 111, 165, 0.1); border-radius: 8px;">
+            <small style="color: #2c3e50; opacity: 0.8;">
+                📊 إحصائيات الموقع محمية بـ <a href="https://goatcounter.com" target="_blank" style="color: #5a9d7a; text-decoration: none;">GoatCounter</a>
             </small>
         </div>
         
-        <div style="text-align: center; margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
-            <small style="color: rgba(236,240,241,0.6); font-size: 0.8rem;">
+        <div style="text-align: center; margin-top: 10px; padding: 10px; background: rgba(74, 111, 165, 0.08); border-radius: 8px;">
+            <small style="color: #2c3e50; opacity: 0.7; font-size: 0.8rem;">
                 🔒 خصوصية البيانات: الموقع يستخدم GoatCounter لجمع إحصائيات عامة فقط (مثل عدد الزيارات) دون جمع بيانات شخصية عن المستخدمين.
             </small>
         </div>

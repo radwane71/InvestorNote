@@ -6,17 +6,17 @@
     <title>حاسبة صافي الثروة - مفكرة مستثمر</title>
     <style>
         :root {
-            --red: #e74c3c; --orange: #e67e22; --yellow: #f1c40f; 
-            --light-green: #2ecc71; --dark-green: #27ae60; --dark: #2c3e50;
+            --red: #d67a6a; --orange: #e89d5a; --yellow: #f1c40f; 
+            --light-green: #5a9d7a; --dark-green: #5a9d7a; --dark: #2c3e50;
         }
-        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: var(--dark); min-height: 100vh; }
+        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%); margin: 0; padding: 20px; color: var(--dark); min-height: 100vh; }
         .container { max-width: 900px; margin: 0 auto; }
         .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1, h2 { text-align: center; color: var(--dark); margin-bottom: 20px; }
         
         /* قسم الفلسفة */
         .philosophy-section { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: 12px; margin-bottom: 30px; }
-        .philosophy-section h3 { color: #495057; border-right: 4px solid #667eea; padding-right: 15px; margin-bottom: 15px; }
+        .philosophy-section h3 { color: #495057; border-right: 4px solid #5a7fb5; padding-right: 15px; margin-bottom: 15px; }
         .philosophy-section p { line-height: 1.8; margin-bottom: 15px; color: #495057; }
         .philosophy-section ul { margin-right: 20px; line-height: 2; }
         .philosophy-section li { margin-bottom: 10px; }
@@ -26,13 +26,13 @@
         .input-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; color: #495057; }
         input { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; box-sizing: border-box; transition: border-color 0.3s; }
-        input:focus { outline: none; border-color: #667eea; }
+        input:focus { outline: none; border-color: #5a7fb5; }
         
         /* تنسيق الأصول والخصوم */
-        .assets-section { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border: 2px solid #27ae60; border-radius: 12px; padding: 20px; }
+        .assets-section { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border: 2px solid #5a9d7a; border-radius: 12px; padding: 20px; }
         .assets-section h3 { color: #155724; margin-bottom: 15px; text-align: center; }
         
-        .debts-section { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border: 2px solid #e74c3c; border-radius: 12px; padding: 20px; }
+        .debts-section { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border: 2px solid #d67a6a; border-radius: 12px; padding: 20px; }
         .debts-section h3 { color: #721c24; margin-bottom: 15px; text-align: center; }
         
         /* العداد (Gauge) */
@@ -72,12 +72,12 @@
         }
         
         .top-level {
-            background: linear-gradient(135deg, #27ae60, #229954);
+            background: linear-gradient(135deg, #5a9d7a, #4a8d6a);
             width: 120px;
         }
         
         .bottom-level {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: linear-gradient(135deg, #d67a6a, #c66a5a);
             width: 320px;
         }
         
@@ -130,11 +130,11 @@
             .pyramid-svg { width: 220px; }
         }
     </style>
+    <link rel="stylesheet" href="navigation.css">
 </head>
 <body>
     <div class="container">
         <!-- شريط التنقل الموحد -->
-        <link rel="stylesheet" href="navigation.css">
         <nav class="navbar">
             <div class="navbar-container">
                 <a href="index.html" class="navbar-brand">
@@ -159,26 +159,11 @@
                     <a href="salary_calculator.html" class="navbar-item salary">
                         💼 حاسبة تقسيم الراتب
                     </a>
-                    <a href="rebalancing.html" class="navbar-item rebalance">
-                        ⚖️ إعادة توازن المحفظة
-                    </a>
                     <a href="zakat_purification.html" class="navbar-item zakat">
                         🕌 التطهير والزكاة
                     </a>
                     <a href="financial_freedom.html" class="navbar-item fire">
                         🔥 الحرية المالية
-                    </a>
-                    <a href="sector_analysis.html" class="navbar-item sector">
-                        📊 التحليل القطاعي
-                    </a>
-                    <a href="portfolio_risk_grader.html" class="navbar-item risk">
-                        📈 مقيم خطورة المحفظة
-                    </a>
-                    <a href="roi_calculator.html" class="navbar-item roi">
-                        📈 حاسبة الأداء
-                    </a>
-                    <a href="average_down.html" class="navbar-item average">
-                        📉 تعديل المتوسط
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
@@ -262,10 +247,10 @@
                 <path d="M10 70 A50 50 0 0 1 130 70" fill="none" stroke="#e0e0e0" stroke-width="20" stroke-linecap="round"/>
                 
                 <!-- الألوان المنفصلة -->
-                <path d="M10 70 A50 50 0 0 1 35 30" fill="none" stroke="#e74c3c" stroke-width="12" stroke-linecap="round"/>
-                <path d="M35 30 A50 50 0 0 1 70 20" fill="none" stroke="#e67e22" stroke-width="12" stroke-linecap="round"/>
+                <path d="M10 70 A50 50 0 0 1 35 30" fill="none" stroke="#d67a6a" stroke-width="12" stroke-linecap="round"/>
+                <path d="M35 30 A50 50 0 0 1 70 20" fill="none" stroke="#e89d5a" stroke-width="12" stroke-linecap="round"/>
                 <path d="M70 20 A50 50 0 0 1 105 30" fill="none" stroke="#f1c40f" stroke-width="12" stroke-linecap="round"/>
-                <path d="M105 30 A50 50 0 0 1 130 70" fill="none" stroke="#27ae60" stroke-width="12" stroke-linecap="round"/>
+                <path d="M105 30 A50 50 0 0 1 130 70" fill="none" stroke="#5a9d7a" stroke-width="12" stroke-linecap="round"/>
                 
                 <!-- إبرة رفيعة وطويلة ومدببة -->
                 <line id="needle" x1="70" y1="70" x2="70" y2="25" stroke="#000000" stroke-width="2" stroke-linecap="round" transform="rotate(-90 70 70)" style="filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));"/>
@@ -292,22 +277,22 @@
                     <span class="level-indicator">👤</span>
                 </div>
                 
-                <div id="level-4" class="pyramid-level" data-level="4" style="width: 180px; background: linear-gradient(135deg, #2ecc71, #27ae60);">
+                <div id="level-4" class="pyramid-level" data-level="4" style="width: 180px; background: linear-gradient(135deg, #5a9d7a, #4a8d6a);">
                     الأثرياء
                     <span class="level-indicator">👤</span>
                 </div>
                 
-                <div id="level-3" class="pyramid-level" data-level="3" style="width: 240px; background: linear-gradient(135deg, #f1c40f, #f39c12);">
+                <div id="level-3" class="pyramid-level" data-level="3" style="width: 240px; background: linear-gradient(135deg, #f1c40f, #e89d5a);">
                     المتوسطة العليا
                     <span class="level-indicator">👤</span>
                 </div>
                 
-                <div id="level-2" class="pyramid-level" data-level="2" style="width: 300px; background: linear-gradient(135deg, #e67e22, #d68910);">
+                <div id="level-2" class="pyramid-level" data-level="2" style="width: 300px; background: linear-gradient(135deg, #e89d5a, #d88d4a);">
                     المتوسطة
                     <span class="level-indicator">👤</span>
                 </div>
                 
-                <div id="level-1" class="pyramid-level bottom-level" data-level="1" style="width: 360px; background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                <div id="level-1" class="pyramid-level bottom-level" data-level="1" style="width: 360px; background: linear-gradient(135deg, #d67a6a, #c66a5a);">
                     المستورة / المديونة
                     <span class="level-indicator">👤</span>
                 </div>
@@ -330,11 +315,11 @@
         <div style="margin-top:15px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: right;">
             <strong>تصنيف الطبقات المالية (حسب الإحصائيات السعودية):</strong>
             <ul style="margin: 10px 0; padding-right: 20px; font-size: 0.85em;">
-                <li style="color: #e74c3c;">🔴 أقل من 75 ألف ريال: الطبقة المستورة / المديونة</li>
-                <li style="color: #e67e22;">🟠 76 ألف ريال – 330.000 ريال: الطبقة المتوسطة</li>
+                <li style="color: #d67a6a;">🔴 أقل من 75 ألف ريال: الطبقة المستورة / المديونة</li>
+                <li style="color: #e89d5a;">🟠 76 ألف ريال – 330.000 ريال: الطبقة المتوسطة</li>
                 <li style="color: #f1c40f;">🟡 331.000 ريال – 1.875.000 ريال: الطبقة المتوسطة العليا</li>
-                <li style="color: #2ecc71;">🟢 1.876.000 ريال – 37.499.999 ريال: طبقة الأثرياء</li>
-                <li style="color: #27ae60;">🟢 أكثر من 37.500.000 ريال: طبقة فاحشة الثراء</li>
+                <li style="color: #5a9d7a;">🟢 1.876.000 ريال – 37.499.999 ريال: طبقة الأثرياء</li>
+                <li style="color: #5a9d7a;">🟢 أكثر من 37.500.000 ريال: طبقة فاحشة الثراء</li>
             </ul>
             <p style="font-size: 0.8em; color: #666; margin-top: 10px;">
                 * التصنيف يعكس المواطن السعودي حسب إحصائيات من مصادر موثوقة:
@@ -342,10 +327,10 @@
             <div style="font-size: 0.75em; color: #555; margin-top: 8px; line-height: 1.6;">
                 <p>📊 <strong>المصادر:</strong></p>
                 <ul style="margin: 5px 0; padding-right: 15px;">
-                    <li>• تحليل ادخار الأسر العربية السعودية - <a href="https://assets.kpmg.com/content/dam/kpmg/sa/pdf/2021/house-holding-ar.pdf" target="_blank" style="color: #667eea;">KPMG</a></li>
-                    <li>• ثروة السعودية تصل لمستوى قياسي - <a href="https://mediaavataarme.com/media-avataar-insights/29304/saudi-arabias-net-wealth-hits-record-high-reaching-3-70trln-in-2024/" target="_blank" style="color: #667eea;">Media Avataar</a></li>
-                    <li>• الهرم العالمي للثروة - <a href="https://wealth-monitor.co.uk/the-global-wealth-pyramid/" target="_blank" style="color: #667eea;">Wealth Monitor</a></li>
-                    <li>• أكبر عدد من المليونيرات في المنطقة - <a href="https://enterpriseam.com/ksa/2025/06/23/we-have-the-largest-number-of-mnaires-in-the-region/" target="_blank" style="color: #667eea;">Enterprise AM</a></li>
+                    <li>• تحليل ادخار الأسر العربية السعودية - <a href="https://assets.kpmg.com/content/dam/kpmg/sa/pdf/2021/house-holding-ar.pdf" target="_blank" style="color: #5a7fb5;">KPMG</a></li>
+                    <li>• ثروة السعودية تصل لمستوى قياسي - <a href="https://mediaavataarme.com/media-avataar-insights/29304/saudi-arabias-net-wealth-hits-record-high-reaching-3-70trln-in-2024/" target="_blank" style="color: #5a7fb5;">Media Avataar</a></li>
+                    <li>• الهرم العالمي للثروة - <a href="https://wealth-monitor.co.uk/the-global-wealth-pyramid/" target="_blank" style="color: #5a7fb5;">Wealth Monitor</a></li>
+                    <li>• أكبر عدد من المليونيرات في المنطقة - <a href="https://enterpriseam.com/ksa/2025/06/23/we-have-the-largest-number-of-mnaires-in-the-region/" target="_blank" style="color: #5a7fb5;">Enterprise AM</a></li>
                 </ul>
             </div>
         </div>

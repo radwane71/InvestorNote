@@ -14,10 +14,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
             min-height: 100vh;
             padding: 20px;
-            color: #ecf0f1;
+            color: #2c3e50;
         }
 
         .container {
@@ -27,7 +27,7 @@
 
         .header {
             text-align: center;
-            color: #ecf0f1;
+            color: #2c3e50;
             margin-bottom: 30px;
         }
 
@@ -43,20 +43,21 @@
         }
 
         .calculator-section {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(74, 111, 165, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .section-title {
             font-size: 1.4rem;
-            color: #ecf0f1;
+            color: #2c3e50;
             margin-bottom: 25px;
             padding-bottom: 10px;
-            border-bottom: 3px solid #3498db;
+            border-bottom: 3px solid #5a7fb5;
         }
 
         .input-grid {
@@ -67,40 +68,40 @@
         }
 
         .input-group {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.7);
             padding: 20px;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(74, 111, 165, 0.2);
         }
 
         .input-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #ecf0f1;
+            color: #2c3e50;
         }
 
         .input-group input,
         .input-group select {
             width: 100%;
             padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(74, 111, 165, 0.3);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ecf0f1;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
             font-size: 1rem;
             transition: border-color 0.3s;
         }
 
         .input-group input::placeholder {
-            color: rgba(236, 240, 241, 0.6);
+            color: rgba(44, 62, 80, 0.5);
         }
 
         .input-group input:focus,
         .input-group select:focus {
             outline: none;
-            border-color: #3498db;
-            background: rgba(255, 255, 255, 0.2);
+            border-color: #5a7fb5;
+            background: rgba(255, 255, 255, 1);
         }
 
         .wealth-link {
@@ -125,7 +126,7 @@
         .calculate-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: linear-gradient(135deg, #5a9d7a, #6aad8a);
             color: white;
             border: none;
             border-radius: 10px;
@@ -137,16 +138,17 @@
 
         .calculate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 5px 20px rgba(90, 157, 122, 0.3);
         }
 
         .results-section {
             display: none;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 30px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(74, 111, 165, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .results-grid {
@@ -157,20 +159,20 @@
         }
 
         .result-card {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
             color: white;
             padding: 25px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(90, 127, 181, 0.3);
         }
 
         .result-card.fire-number {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: linear-gradient(135deg, #d67a6a, #c66a5a);
         }
 
         .result-card.progress {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
+            background: linear-gradient(135deg, #e89d5a, #d88d4a);
         }
 
         .result-card h3 {
@@ -206,20 +208,20 @@
         }
 
         .tips-section {
-            background: rgba(255, 152, 0, 0.2);
-            border: 1px solid rgba(255, 152, 0, 0.3);
+            background: rgba(232, 157, 90, 0.2);
+            border: 1px solid rgba(232, 157, 90, 0.3);
             border-radius: 10px;
             padding: 20px;
             margin-top: 20px;
         }
 
         .tips-section h3 {
-            color: #f39c12;
+            color: #d88d4a;
             margin-bottom: 10px;
         }
 
         .tips-section p {
-            color: #ecf0f1;
+            color: #2c3e50;
             line-height: 1.6;
         }
 
@@ -274,20 +276,11 @@
                     <a href="salary_calculator.html" class="navbar-item salary">
                         💼 حاسبة تقسيم الراتب
                     </a>
-                    <a href="rebalancing.html" class="navbar-item rebalance">
-                        ⚖️ إعادة توازن المحفظة
-                    </a>
                     <a href="zakat_purification.html" class="navbar-item zakat">
                         🕌 التطهير والزكاة
                     </a>
                     <a href="financial_freedom.html" class="navbar-item fire">
                         🔥 الحرية المالية
-                    </a>
-                    <a href="sector_analysis.html" class="navbar-item sector">
-                        📊 التحليل القطاعي
-                    </a>
-                    <a href="portfolio_risk_grader.html" class="navbar-item risk">
-                        📈 مقيم خطورة المحفظة
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>

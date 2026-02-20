@@ -1,6 +1,6 @@
 /* شريط التنقل الموحد */
 .navbar {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(135deg, #4a6fa5 0%, #5a7fb5 100%);
     padding: 15px 0;
     margin-bottom: 30px;
     border-radius: 15px;
@@ -33,7 +33,7 @@
 }
 
 .navbar-brand:hover {
-    color: #3498db;
+    color: #a8c5e8;
 }
 
 .navbar-menu {
@@ -65,40 +65,40 @@
 }
 
 .navbar-item.active {
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    border-color: #3498db;
+    background: linear-gradient(135deg, #6b9bd1, #5a8bc0);
+    border-color: #6b9bd1;
 }
 
 .navbar-item.calculator {
-    background: linear-gradient(135deg, #27ae60, #229954);
+    background: linear-gradient(135deg, #5a9d7a, #4a8d6a);
 }
 
 .navbar-item.calculator:hover {
-    background: linear-gradient(135deg, #229954, #1e8449);
+    background: linear-gradient(135deg, #4a8d6a, #3a7d5a);
 }
 
 .navbar-item.tips {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    background: linear-gradient(135deg, #8a7ba8, #7a6b98);
 }
 
 .navbar-item.tips:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
+    background: linear-gradient(135deg, #7a6b98, #6a5b88);
 }
 
 .navbar-item.emergency {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
+    background: linear-gradient(135deg, #e89d5a, #d88d4a);
 }
 
 .navbar-item.emergency:hover {
-    background: linear-gradient(135deg, #f57c00, #ef6c00);
+    background: linear-gradient(135deg, #d88d4a, #c87d3a);
 }
 
 .navbar-item.salary {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    background: linear-gradient(135deg, #8a7ba8, #7a6b98);
 }
 
 .navbar-item.salary:hover {
-    background: linear-gradient(135deg, #8e44ad, #7d3c98);
+    background: linear-gradient(135deg, #7a6b98, #6a5b88);
 }
 
 .navbar-item.rebalance {
@@ -110,51 +110,51 @@
 }
 
 .navbar-item.zakat {
-    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    background: linear-gradient(135deg, #7a6b98, #8a7ba8);
 }
 
 .navbar-item.zakat:hover {
-    background: linear-gradient(135deg, #9b59b6, #7d3c98);
+    background: linear-gradient(135deg, #8a7ba8, #6a5b88);
 }
 
 .navbar-item.fire {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    background: linear-gradient(135deg, #e89d5a, #d88d4a);
 }
 
 .navbar-item.fire:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
+    background: linear-gradient(135deg, #d88d4a, #c87d3a);
 }
 
 .navbar-item.sector {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
+    background: linear-gradient(135deg, #e89d5a, #d88d4a);
 }
 
 .navbar-item.sector:hover {
-    background: linear-gradient(135deg, #e67e22, #d68910);
+    background: linear-gradient(135deg, #d88d4a, #c87d3a);
 }
 
 .navbar-item.roi {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    background: linear-gradient(135deg, #8a7ba8, #7a6b98);
 }
 
 .navbar-item.roi:hover {
-    background: linear-gradient(135deg, #8e44ad, #7d3c98);
+    background: linear-gradient(135deg, #7a6b98, #6a5b88);
 }
 
 .navbar-item.average {
-    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    background: linear-gradient(135deg, #e89d5a, #d88d4a);
 }
 
 .navbar-item.average:hover {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
+    background: linear-gradient(135deg, #d88d4a, #c87d3a);
 }
 
-.navbar-item.risk {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
+.navbar-item.dashboard {
+    background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
 }
 
-.navbar-item.risk:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
+.navbar-item.dashboard:hover {
+    background: linear-gradient(135deg, #4a6fa5, #3a5f95);
 }
 
 .navbar-toggle {
