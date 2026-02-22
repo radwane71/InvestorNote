@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة القيمة العادلة للأسهم - مفكرة مستثمر</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #5a7fb5;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #5a7fb5;
+        }
+
+        .select-group {
+            margin-bottom: 20px;
+        }
+
+        .select-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .select-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .select-group select:focus {
+            outline: none;
+            border-color: #5a7fb5;
+        }
+
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group label {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-left: 10px;
+        }
+
+        .info-box {
+            background: rgba(90, 127, 181, 0.1);
+            border: 2px solid #5a7fb5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h4 {
+            color: #4a6fa5;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #424242;
+            line-height: 1.6;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(90, 127, 181, 0.3);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #5a9d7a, #4a8d6a);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(90, 157, 122, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .result-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .result-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-period {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .disclaimer-text {
+            background-color: #FFD700;
+            border: 2px solid #FFA500;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #000000;
+            font-size: 0.8rem;
+            font-weight: bold;
+            line-height: 1.4;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .warning-box {
+            background-color: #FFD700;
+            border: 2px solid #FFA500;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.6;
+            text-align: right;
+            direction: rtl;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .advice-card {
+            background: linear-gradient(135deg, #e89d5a, #d88d4a);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(232, 157, 90, 0.2);
+        }
+
+        .advice-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .advice-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .advice-card li {
+            margin-bottom: 12px;
+            padding-right: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .advice-card li:before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .breakdown-table {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .breakdown-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .breakdown-table th {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .breakdown-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: right;
+        }
+
+        .breakdown-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .percentage-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .percentage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5a7fb5, #4a6fa5);
+            transition: width 0.5s ease;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .dashboard-card h4 {
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #5a7fb5;
+        }
+
+        @media (max-width: 968px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .result-amount {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Legal Modal Styles */
+        .legal-modal {
+            display: flex;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .legal-modal.hidden {
+            display: none;
+        }
+
+        .legal-modal-content {
+            background-color: #FFD700; /* Golden yellow */
+            border: 2px solid #FFA500;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .legal-modal-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .legal-modal-text {
+            margin-bottom: 30px;
+        }
+
+        .legal-checkbox {
+            margin-bottom: 20px;
+        }
+
+        .legal-checkbox input {
+            margin-left: 10px;
+        }
+
+        .legal-button {
+            background: #cccccc;
+            color: #000000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: not-allowed;
+            font-size: 16px;
+        }
+
+        .legal-button.enabled {
+            background: #4a6fa5;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Loading indicator */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #5a7fb5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Methodology Section */
+        .methodology-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .methodology-intro {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .methodology-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .methodology-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .formula {
+            background: #e8f0f5;
+            border: 1px solid #d0e0e8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .formula-details {
+            margin-top: 15px;
+        }
+
+        .formula-details p {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .formula-details ul, .formula-details ol {
+            margin: 10px 0;
+            padding-right: 20px;
+        }
+
+        .formula-details li {
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .methodology-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .methodology-note h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .methodology-note ul {
+            margin: 0;
+            padding-right: 20px;
+        }
+
+        .methodology-note li {
+            margin-bottom: 8px;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .methodology-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .methodology-card {
+                padding: 15px;
+            }
+            
+            .formula {
+                font-size: 0.85rem;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+    </div>
+    <div id="legalModal" class="legal-modal">
+        <div class="legal-modal-content">
+            <div class="legal-modal-title">تنبيه وإخلاء مسؤولية قانونية </div>
+            <div class="legal-modal-text">
+                هذه الحاسبة هي أداة برمجية للأغراض التعليمية والتدريبية فقط. لا تقدم هذه الأداة أي نصيحة استثمارية، أو توصية مالية، أو دعوة لشراء أو بيع أي ورقة مالية بموجب أنظمة هيئة السوق المالية في المملكة العربية السعودية. جميع النتائج المستخرجة هي عمليات حسابية افتراضية تعتمد على البيانات التي يدخلها المستخدم ولا تضمن تحقيق أي أرباح أو حماية من الخسائر. يقر المستخدم بعلمه أن الاستثمار في الأسهم ينطوي على مخاطر عالية، وأنه المسؤول الوحيد عن قراراته المالية. المطور غير مرخص لتقديم الاستشارات المالية، ولا يتحمل أي مسؤولية قانونية أو مالية تجاه أي طرف نتيجة استخدام هذه الأداة.
+            </div>
+            <div class="legal-checkbox">
+                <input type="checkbox" id="legalAccept">
+                <label for="legalAccept">أقر بأنني قرأت إخلاء المسؤولية وأوافق على شروط الاستخدام</label>
+            </div>
+            <button id="enterButton" class="legal-button">الدخول للحاسبة</button>
+        </div>
+    </div>
+    <div class="container">
+        <link rel="stylesheet" href="navigation.css">
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="index.html" class="navbar-brand">
+                    📈 مفكرة مستثمر
+                </a>
+                <div class="navbar-menu" id="navbarMenu">
+                    <a href="index.html" class="navbar-item">
+                        🏠 الرئيسية
+                    </a>
+                    <a href="advice.html" class="navbar-item calculator">
+                        💰 حاسبة الثروة
+                    </a>
+                    <a href="salary_calculator.html" class="navbar-item salary">
+                        💼 حاسبة الراتب
+                    </a>
+                    <a href="zakat_purification.html" class="navbar-item zakat">
+                        🕌 التطهير والزكاة
+                    </a>
+                    <a href="financial_freedom.html" class="navbar-item fire">
+                        🔥 الحرية المالية
+                    </a>
+                    <a href="investor_tips.html" class="navbar-item tips">
+                        ⚠️ نصائح الاستثمار
+                    </a>
+                    <a href="snowball_calculator.html" class="navbar-item calculator">
+                        ❄️ حاسبة كرة الثلج
+                    </a>
+                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
+                        🛡️ صندوق الطوارئ
+                    </a>
+                    <a href="stock_valuation.html" class="navbar-item valuation">
+                        📊 تقييم الأسهم
+                    </a>
+                </div>
+                <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            </div>
+        </nav>
+
+        <script>
+        function toggleNavbar() {
+            const menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.navbar-item');
+            
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('href');
+                if (itemPage === currentPage || 
+                    (currentPage === '' && itemPage === 'index.html')) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        </script>
+
+        <div class="header">
+            <h1>📊 حاسبة القيمة العادلة للأسهم</h1>
+            <p>احسب القيمة العادلة للأسهم باستخدام نماذج التقييم المالية المختلفة</p>
+        </div>
+
+        <!-- Red Warning Box -->
+        <div class="warning-box">
+            <div class="warning-icon">⚠️</div>
+            <div class="warning-text">
+                <strong>تنبيه وإخلاء مسؤولية قانونية تقني</strong><br>
+                هذه الحاسبة هي أداة برمجية للأغراض التعليمية والتدريبية فقط. لا تقدم هذه الأداة أي نصيحة استثمارية، أو توصية مالية، أو دعوة لشراء أو بيع أي ورقة مالية بموجب أنظمة هيئة السوق المالية في المملكة العربية السعودية. جميع النتائج المستخرجة هي عمليات حسابية افتراضية تعتمد على البيانات التي يدخلها المستخدم ولا تضمن تحقيق أي أرباح أو حماية من الخسائر. يقر المستخدم بعلمه أن الاستثمار في الأسهم ينطوي على مخاطر عالية، وأنه المسؤول الوحيد عن قراراته المالية. المطور غير مرخص لتقديم الاستشارات المالية، ولا يتحمل أي مسؤولية قانونية أو مالية تجاه أي طرف نتيجة استخدام هذه الأداة.
+            </div>
+        </div>
+
+        <div class="calculator-grid">
+            <div class="card">
+                <h2 class="section-title">📊 البيانات الأساسية</h2>
+                
+                <div class="input-group">
+                    <label for="eps">الربح للسهم الواحد (EPS)</label>
+                    <input type="number" id="eps" value="5.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="fcf">التدفق النقدي الحر للسهم الواحد</label>
+                    <input type="number" id="fcf" value="3.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="growth5yr">نسبة النمو للسنوات الخمس القادمة (%)</label>
+                    <input type="number" id="growth5yr" value="10.0" step="0.1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="growthPerp">نسبة النمو الدائم (%)</label>
+                    <input type="number" id="growthPerp" value="2.5" step="0.1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="discountRate">معدل الخصم (WACC) (%)</label>
+                    <input type="number" id="discountRate" value="8.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="currentPe">مكرر الربحية الحالي</label>
+                    <input type="number" id="currentPe" value="15.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="sectorPe">مكرر الربحية للقطاع</label>
+                    <input type="number" id="sectorPe" value="18.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="dividends">توزيعات الأرباح السنوية للسهم</label>
+                    <input type="number" id="dividends" value="1.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="bookValue">القيمة الدفترية للسهم</label>
+                    <input type="number" id="bookValue" value="20.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="bondYield">عائد السندات الحكومية لعشر سنوات (%)</label>
+                    <input type="number" id="bondYield" value="4.0" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="currentPrice">السعر الحالي للسهم</label>
+                    <input type="number" id="currentPrice" value="50.0" step="0.1">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">⚙️ الإعدادات المتقدمة</h2>
+                
+                <div class="checkbox-group">
+                    <label for="useWacc">حساب WACC تلقائياً</label>
+                    <input type="checkbox" id="useWacc">
+                </div>
+
+                <div id="waccInputs" style="display: none;">
+                    <div class="input-group">
+                        <label for="riskFree">معدل العائد الخالي من المخاطر (%)</label>
+                        <input type="number" id="riskFree" value="4.0" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="beta">بيتا (Beta)</label>
+                        <input type="number" id="beta" value="1.2" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="marketReturn">عائد السوق (%)</label>
+                        <input type="number" id="marketReturn" value="8.0" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="debtCost">تكلفة الدين (%)</label>
+                        <input type="number" id="debtCost" value="5.0" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="taxRate">معدل الضريبة (%)</label>
+                        <input type="number" id="taxRate" value="25.0" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="debtEquity">نسبة الدين إلى حقوق الملكية</label>
+                        <input type="number" id="debtEquity" value="0.5" step="0.1">
+                    </div>
+                </div>
+
+                <div class="select-group">
+                    <label for="scenario">السيناريو</label>
+                    <select id="scenario">
+                        <option value="realistic">واقعي</option>
+                        <option value="optimistic">متفائل</option>
+                        <option value="conservative">محتاط</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="fairPb">مكرر القيمة الدفترية العادل</label>
+                    <input type="number" id="fairPb" value="1.5" step="0.1">
+                </div>
+
+                <h3 class="section-title">نطاقات الحساسية</h3>
+                <div class="input-group">
+                    <label for="growthMin">الحد الأدنى للنمو (%)</label>
+                    <input type="number" id="growthMin" value="5.0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="growthMax">الحد الأعلى للنمو (%)</label>
+                    <input type="number" id="growthMax" value="15.0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="discountMin">الحد الأدنى للخصم (%)</label>
+                    <input type="number" id="discountMin" value="6.0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="discountMax">الحد الأعلى للخصم (%)</label>
+                    <input type="number" id="discountMax" value="12.0" step="0.1">
+                </div>
+
+                <h3 class="section-title">النسب المالية</h3>
+                <div class="input-group">
+                    <label for="debtRatio">نسبة الدين (%)</label>
+                    <input type="number" id="debtRatio" value="30.0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="liquidityRatio">نسبة السيولة</label>
+                    <input type="number" id="liquidityRatio" value="1.5" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="earningsQuality">جودة الأرباح (ROE %)</label>
+                    <input type="number" id="earningsQuality" value="15.0" step="0.1">
+                </div>
+
+                <button class="calculate-btn" onclick="calculateFairValue()">
+                    احسب القيمة العادلة
+                </button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="result-card">
+                <h2>💰 القيمة العادلة</h2>
+                <div class="result-amount" id="fairValueRange">-</div>
+                <div class="result-period" id="fairValueDetails">-</div>
+                <p class="disclaimer-text">
+                    ⚠️ هذه الحاسبة هي أداة برمجية للأغراض التعليمية والتدريبية فقط. لا تقدم هذه الأداة أي نصيحة استثمارية، أو توصية مالية، أو دعوة لشراء أو بيع أي ورقة مالية بموجب أنظمة هيئة السوق المالية في المملكة العربية السعودية. جميع النتائج المستخرجة هي عمليات حسابية افتراضية تعتمد على البيانات التي يدخلها المستخدم ولا تضمن تحقيق أي أرباح أو حماية من الخسائر. يقر المستخدم بعلمه أن الاستثمار في الأسهم ينطوي على مخاطر عالية، وأنه المسؤول الوحيد عن قراراته المالية. المطور غير مرخص لتقديم الاستشارات المالية، ولا يتحمل أي مسؤولية قانونية أو مالية تجاه أي طرف نتيجة استخدام هذه الأداة.
+                </p>
+            </div>
+
+            <div class="breakdown-table">
+                <h2 class="section-title">📋 نتائج النماذج</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>النموذج</th>
+                            <th>القيمة العادلة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modelsTable">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <h2 class="section-title">📊 مساهمة كل نموذج</h2>
+                <div class="chart-wrapper">
+                    <canvas id="modelsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="breakdown-table">
+                <h2 class="section-title">🔍 تحليل الحساسية (DCF)</h2>
+                <table id="sensitivityTable">
+                </table>
+            </div>
+
+            <div class="dashboard">
+                <div class="dashboard-card">
+                    <h4>نسبة الدين</h4>
+                    <div class="dashboard-value" id="dashboardDebt">-</div>
+                </div>
+                <div class="dashboard-card">
+                    <h4>نسبة السيولة</h4>
+                    <div class="dashboard-value" id="dashboardLiquidity">-</div>
+                </div>
+                <div class="dashboard-card">
+                    <h4>جودة الأرباح (ROE)</h4>
+                    <div class="dashboard-value" id="dashboardEarnings">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Methodology Section -->
+        <div class="methodology-section">
+            <h2 class="section-title">📚 كيف الحاسبة تعمل؟</h2>
+            <p class="methodology-intro">
+                لتعزيز الشفافية وتوفير فهم كامل لعمليات التقييم، نوضح بالتفصيل جميع المعادلات والنماذج المالية المستخدمة في هذه الحاسبة:
+            </p>
+            
+            <div class="methodology-grid">
+                <div class="methodology-card">
+                    <h3>📊 نموذج التدفق النقدي المخصوم (DCF)</h3>
+                    <div class="formula">
+                        <strong>المعادلة الأساسية:</strong><br>
+                        القيمة العادلة = Σ (CF<sub>t</sub> / (1 + r)<sup>t</sup>) + (TV / (1 + r)<sup>n</sup>)
+                    </div>
+                    <div class="formula-details">
+                        <p><strong>حيث:</strong></p>
+                        <ul>
+                            <li>CF<sub>t</sub> = التدفق النقدي الحر للسهم في السنة t</li>
+                            <li>r = معدل الخصم (WACC)</li>
+                            <li>n = عدد السنوات (10 سنوات)</li>
+                            <li>TV = القيمة النهائية = CF<sub>n+1</sub> / (r - g)</li>
+                            <li>g = معدل النمو الدائم</li>
+                        </ul>
+                        <p><strong>الخطوات:</strong></p>
+                        <ol>
+                            <li>حساب التدفقات النقدية للسنوات 1-5 باستخدام معدل النمو الأولي</li>
+                            <li>حساب التدفقات النقدية للسنوات 6-10 باستخدام معدل النمو الدائم</li>
+                            <li>خصم جميع التدفقات إلى القيمة الحالية</li>
+                            <li>حساب القيمة النهائية وخصمها</li>
+                            <li>جمع القيم الحالية للحصول على القيمة العادلة</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <h3>📈 معادلة جراهام المعدلة</h3>
+                    <div class="formula">
+                        <strong>المعادلة:</strong><br>
+                        القيمة العادلة = (EPS × (8.5 + 2g) × 4.4) / Y
+                    </div>
+                    <div class="formula-details">
+                        <p><strong>حيث:</strong></p>
+                        <ul>
+                            <li>EPS = الربح للسهم الواحد</li>
+                            <li>g = معدل النمو المتوقع (%)</li>
+                            <li>Y = عائد السندات الحكومية لعشر سنوات (%)</li>
+                            <li>8.5 = مضاعف الأساس لشركة بدون نمو</li>
+                            <li>2g = علاوة النمو</li>
+                            <li>4.4 = معامل التعديل للسوق السعودي</li>
+                        </ul>
+                        <p><strong>ملاحظات:</strong></p>
+                        <ul>
+                            <li>مناسبة للشركات المستقرة ذات الأرباح المنتظمة</li>
+                            <li>تعكس العلاقة بين النمو والتقييم العادل</li>
+                            <li>تأخذ في الاعتبار بيئة أسعار الفائدة</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <h3>💰 نموذج مكرر الربحية (P/E)</h3>
+                    <div class="formula">
+                        <strong>المعادلة:</strong><br>
+                        القيمة العادلة = EPS × P/E<sub>القطاع</sub>
+                    </div>
+                    <div class="formula-details">
+                        <p><strong>حيث:</strong></p>
+                        <ul>
+                            <li>EPS = الربح للسهم الواحد</li>
+                            <li>P/E<sub>القطاع</sub> = متوسط مكرر الربحية في القطاع</li>
+                        </ul>
+                        <p><strong>المنطق:</strong></p>
+                        <ul>
+                            <li>يفترض أن الشركة يجب أن تتداول بمكرر مشابه للقطاع</li>
+                            <li>يعكس التقييم النسبي مقارنة بالمنافسين</li>
+                            <li>بسيط وسهل الفهم والتطبيق</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <h3>🌱 نموذج جوردون للنمو (Gordon Growth)</h3>
+                    <div class="formula">
+                        <strong>المعادلة:</strong><br>
+                        القيمة العادلة = D<sub>1</sub> / (r - g)
+                    </div>
+                    <div class="formula-details">
+                        <p><strong>حيث:</strong></p>
+                        <ul>
+                            <li>D<sub>1</sub> = توزيعات الأرباح المتوقعة للسنة القادمة</li>
+                            <li>r = معدل الخصم المطلوب</li>
+                            <li>g = معدل النمو الدائم للتوزيعات</li>
+                        </ul>
+                        <p><strong>الشروط:</strong></p>
+                        <ul>
+                            <li>يجب أن يكون r > g</li>
+                            <li>مناسب للشركات الناضجة ذات التوزيعات المستقرة</li>
+                            <li>يفترض نمو توزيعات الأرباح بشكل دائم</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <h3>📖 نموذج القيمة الدفترية المعدلة</h3>
+                    <div class="formula">
+                        <strong>المعادلة:</strong><br>
+                        القيمة العادلة = القيمة الدفترية للسهم × مكرر القيمة الدفترية العادل
+                    </div>
+                    <div class="formula-details">
+                        <p><strong>حيث:</strong></p>
+                        <ul>
+                            <li>القيمة الدفترية للسهم = حقوق الملكية / عدد الأسهم</li>
+                            <li>مكرر القيمة الدفترية العادل = 1.5 (قابل للتعديل)</li>
+                        </ul>
+                        <p><strong>الاعتبارات:</strong></p>
+                        <ul>
+                            <li>يعكس القيمة المحاسبية للشركة</li>
+                            <li>المكرر يعكس جودة الأصول والربحية</li>
+                            <li>مناسب للشركات ذات الأصول الملموسة</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <h3>⚙️ حساب تكلفة رأس المال (WACC)</h3>
+                    <div class="formula">
+                        <strong>المعادلة:</strong><br>
+                        WACC = (E/V × Re) + (D/V × Rd × (1 - T))
+                    </div>
+                    <div class="formula-details">
+                        <p><strong>حيث:</strong></p>
+                        <ul>
+                            <li>E = قيمة حقوق الملكية</li>
+                            <li>D = قيمة الدين</li>
+                            <li>V = E + D (القيمة الإجمالية)</li>
+                            <li>Re = تكلفة حقوق الملكية = R<sub>f</sub> + β × (R<sub>m</sub> - R<sub>f</sub>)</li>
+                            <li>Rd = تكلفة الدين</li>
+                            <li>T = معدل الضريبة</li>
+                        </ul>
+                        <p><strong>مكونات تكلفة حقوق الملكية:</strong></p>
+                        <ul>
+                            <li>R<sub>f</sub> = معدل العائد الخالي من المخاطر</li>
+                            <li>β = بيتا (مقياس المخاطر المنهجية)</li>
+                            <li>R<sub>m</sub> = عائد السوق المتوقع</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="methodology-note">
+                <h4>⚠️ ملاحظات هامة:</h4>
+                <ul>
+                    <li>جميع النماذج تعتمد على افتراضات وتوقعات للمستقبل</li>
+                    <li>القيمة النهائية هي متوسط النماذج الصالحة فقط</li>
+                    <li>هامش الأمان محسوب كـ 80% من المتوسط لتقليل المخاطر</li>
+                    <li>يجب استخدام هذه الحسابات كأداة مساعدة وليست توصية استثمارية</li>
+                    <li>يُنصح دائماً بإجراء تحليل شامل قبل اتخاذ قرارات استثمارية</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let modelsChart = null;
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ar-SA', {
+                style: 'currency',
+                currency: 'SAR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function calculate_dcf(fcf, growth_5yr, growth_perp, discount_rate) {
+            // DCF Model: Discounted Cash Flow for 10 years + terminal value
+            if (discount_rate <= growth_perp) return null;
+            
+            let pv_sum = 0;
+            let cf_prev = fcf;
+            let negative_count = 0;
+            
+            for (let n = 1; n <= 10; n++) {
+                let cf;
+                if (n <= 5) {
+                    cf = fcf * Math.pow(1 + growth_5yr, n);
+                } else {
+                    cf = cf_prev * (1 + growth_perp);
+                }
+                
+                let pv_cf = cf / Math.pow(1 + discount_rate, n);
+                pv_sum += pv_cf;
+                
+                if (n <= 3 && cf < 0) negative_count++;
+                cf_prev = cf;
+            }
+            
+            let tv = cf_prev * (1 + growth_perp) / (discount_rate - growth_perp);
+            let pv_tv = tv / Math.pow(1 + discount_rate, 10);
+            let fair_value = pv_sum + pv_tv;
+            
+            if (negative_count >= 3) return null;
+            return fair_value;
+        }
+
+        function calculate_graham(eps, growth, bond_yield) {
+            // Graham's Modified Formula
+            if (bond_yield <= 0) return null;
+            return (eps * (8.5 + 2 * growth) * 4.4) / bond_yield;
+        }
+
+        function calculate_pe(eps, sector_pe) {
+            // P/E Multiplier
+            return eps * sector_pe;
+        }
+
+        function calculate_gordon(dividends, growth_perp, discount_rate) {
+            // Gordon Growth Model
+            if (discount_rate <= growth_perp) return null;
+            return dividends * (1 + growth_perp) / (discount_rate - growth_perp);
+        }
+
+        function calculate_book_value(book_value, fair_pb) {
+            // Adjusted Book Value
+            return book_value * fair_pb;
+        }
+
+        document.getElementById('useWacc').addEventListener('change', function() {
+            document.getElementById('waccInputs').style.display = this.checked ? 'block' : 'none';
+        });
+
+        function calculateFairValue() {
+            // Show loading
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            // Get inputs
+            let eps = parseFloat(document.getElementById('eps').value) || 0;
+            let fcf = parseFloat(document.getElementById('fcf').value) || 0;
+            let growth_5yr = (parseFloat(document.getElementById('growth5yr').value) || 0) / 100;
+            let growth_perp = (parseFloat(document.getElementById('growthPerp').value) || 0) / 100;
+            let discount_rate = (parseFloat(document.getElementById('discountRate').value) || 0) / 100;
+            let current_pe = parseFloat(document.getElementById('currentPe').value) || 0;
+            let sector_pe = parseFloat(document.getElementById('sectorPe').value) || 0;
+            let dividends = parseFloat(document.getElementById('dividends').value) || 0;
+            let book_value = parseFloat(document.getElementById('bookValue').value) || 0;
+            let bond_yield = (parseFloat(document.getElementById('bondYield').value) || 0) / 100;
+            let current_price = parseFloat(document.getElementById('currentPrice').value) || 0;
+            let fair_pb = parseFloat(document.getElementById('fairPb').value) || 1.5;
+
+            // Scenario adjustment
+            let scenario = document.getElementById('scenario').value;
+            let growth_adj = 0;
+            if (scenario === 'optimistic') growth_adj = 0.02;
+            else if (scenario === 'conservative') growth_adj = -0.02;
+
+            let growth_5yr_adj = growth_5yr + growth_adj;
+            let growth_perp_adj = growth_perp + growth_adj;
+
+            if (growth_5yr_adj < 0 || growth_perp_adj < 0) {
+                alert('النمو المعدل لا يمكن أن يكون سالباً. راجع السيناريو أو المدخلات.');
+                return;
+            }
+
+            // WACC calculation
+            if (document.getElementById('useWacc').checked) {
+                let risk_free = (parseFloat(document.getElementById('riskFree').value) || 0) / 100;
+                let beta = parseFloat(document.getElementById('beta').value) || 1;
+                let market_return = (parseFloat(document.getElementById('marketReturn').value) || 0) / 100;
+                let debt_cost = (parseFloat(document.getElementById('debtCost').value) || 0) / 100;
+                let tax_rate = (parseFloat(document.getElementById('taxRate').value) || 0) / 100;
+                let debt_equity = parseFloat(document.getElementById('debtEquity').value) || 0;
+
+                let cost_equity = risk_free + beta * (market_return - risk_free);
+                let wacc = (cost_equity * (1 / (1 + debt_equity))) + (debt_cost * (1 - tax_rate) * (debt_equity / (1 + debt_equity)));
+                discount_rate = wacc;
+            }
+
+            // Calculate values
+            let dcf_val = calculate_dcf(fcf, growth_5yr_adj, growth_perp_adj, discount_rate);
+            let graham_val = calculate_graham(eps, growth_5yr_adj, bond_yield);
+            let pe_val = calculate_pe(eps, sector_pe);
+            let gordon_val = calculate_gordon(dividends, growth_perp_adj, discount_rate);
+            let book_val = calculate_book_value(book_value, fair_pb);
+
+            let values = {
+                'DCF': dcf_val,
+                'جراهام': graham_val,
+                'مكرر الربحية': pe_val,
+                'جوردن': gordon_val,
+                'القيمة الدفترية': book_val
+            };
+
+            let valid_values = {};
+            for (let key in values) {
+                if (values[key] !== null && values[key] > 0) {
+                    valid_values[key] = values[key];
+                }
+            }
+
+            if (Object.keys(valid_values).length === 0) {
+                alert('لا توجد نتائج صالحة. راجع المدخلات.');
+                return;
+            }
+
+            let prices = Object.values(valid_values);
+            let min_price = Math.min(...prices);
+            let max_price = Math.max(...prices);
+            let avg_price = prices.reduce((sum, val) => sum + val, 0) / prices.length;
+            let margin_safety = avg_price * 0.8;
+
+            // Display results
+            document.getElementById('fairValueRange').textContent = `${formatCurrency(min_price)} - ${formatCurrency(max_price)}`;
+            document.getElementById('fairValueDetails').textContent = `المتوسط: ${formatCurrency(avg_price)} | هامش الأمان: ${formatCurrency(margin_safety)}`;
+
+            // Models table
+            let tableHtml = '';
+            for (let key in valid_values) {
+                tableHtml += `<tr><td><strong>${key}</strong></td><td>${formatCurrency(valid_values[key])}</td></tr>`;
+            }
+            document.getElementById('modelsTable').innerHTML = tableHtml;
+
+            // Chart
+            createModelsChart(valid_values);
+
+            // No recommendation as per legal disclaimer
+
+            // Sensitivity table
+            createSensitivityTable(fcf, growth_5yr_adj, growth_perp_adj, discount_rate);
+
+            // Dashboard
+            let debt_ratio = parseFloat(document.getElementById('debtRatio').value) || 0;
+            let liquidity_ratio = parseFloat(document.getElementById('liquidityRatio').value) || 0;
+            let earnings_quality = parseFloat(document.getElementById('earningsQuality').value) || 0;
+
+            document.getElementById('dashboardDebt').textContent = `${debt_ratio}%`;
+            document.getElementById('dashboardLiquidity').textContent = liquidity_ratio.toFixed(1);
+            document.getElementById('dashboardEarnings').textContent = `${earnings_quality}%`;
+
+            // Show results
+            document.getElementById('resultsSection').style.display = 'block';
+            // Hide loading
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function createModelsChart(valid_values) {
+            const ctx = document.getElementById('modelsChart').getContext('2d');
+            
+            const labels = Object.keys(valid_values);
+            const data = Object.values(valid_values);
+
+            if (modelsChart) modelsChart.destroy();
+
+            modelsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#5a7fb5', '#d67a6a', '#e89d5a', '#5a9d7a', '#8a7ba8'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return formatCurrency(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createSensitivityTable(fcf, growth_5yr, growth_perp, discount_rate) {
+            let growth_min = (parseFloat(document.getElementById('growthMin').value) || 0) / 100;
+            let growth_max = (parseFloat(document.getElementById('growthMax').value) || 0) / 100;
+            let discount_min = (parseFloat(document.getElementById('discountMin').value) || 0) / 100;
+            let discount_max = (parseFloat(document.getElementById('discountMax').value) || 0) / 100;
+
+            let growth_steps = [];
+            let discount_steps = [];
+            for (let i = 0; i < 5; i++) {
+                growth_steps.push(growth_min + (growth_max - growth_min) * i / 4);
+                discount_steps.push(discount_min + (discount_max - discount_min) * i / 4);
+            }
+
+            let tableHtml = '<thead><tr><th>النمو \\ الخصم</th>';
+            discount_steps.forEach(d => tableHtml += `<th>${(d * 100).toFixed(1)}%</th>`);
+            tableHtml += '</tr></thead><tbody>';
+
+            growth_steps.forEach(g => {
+                tableHtml += `<tr><td><strong>${(g * 100).toFixed(1)}%</strong></td>`;
+                discount_steps.forEach(d => {
+                    let val = calculate_dcf(fcf, g, g, d); // Use same growth for perp
+                    tableHtml += `<td>${val ? formatCurrency(val) : '-'}</td>`;
+                });
+                tableHtml += '</tr>';
+            });
+            tableHtml += '</tbody>';
+
+            document.getElementById('sensitivityTable').innerHTML = tableHtml;
+        }
+
+        // Initial calculation on load
+        window.addEventListener('load', function() {
+            // Always show the legal modal
+            // Modal is already displayed by default
+        });
+
+        // Modal controls
+        document.getElementById('legalAccept').addEventListener('change', function() {
+            const button = document.getElementById('enterButton');
+            if (this.checked) {
+                button.classList.add('enabled');
+                button.disabled = false;
+            } else {
+                button.classList.remove('enabled');
+                button.disabled = true;
+            }
+        });
+
+        document.getElementById('enterButton').addEventListener('click', function() {
+            try {
+                if (document.getElementById('legalAccept').checked) {
+                    document.getElementById('legalModal').classList.add('hidden');
+                    calculateFairValue();
+                }
+            } catch (error) {
+                console.error('Error in modal handler:', error);
+                // Fallback: hide modal
+                document.getElementById('legalModal').classList.add('hidden');
+            }
+        });
+    </script>
+    <script data-goatcounter="https://investornote.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

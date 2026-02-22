@@ -237,7 +237,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- شريط التنقل الموحد -->
         <link rel="stylesheet" href="navigation.css">
         <nav class="navbar">
             <div class="navbar-container">
@@ -248,8 +247,11 @@
                     <a href="index.html" class="navbar-item">
                         🏠 الرئيسية
                     </a>
+                    <a href="advice.html" class="navbar-item calculator">
+                        💰 حاسبة الثروة
+                    </a>
                     <a href="salary_calculator.html" class="navbar-item salary">
-                        💼 حاسبة تقسيم الراتب
+                        💼 حاسبة الراتب
                     </a>
                     <a href="zakat_purification.html" class="navbar-item zakat">
                         🕌 التطهير والزكاة
@@ -257,17 +259,41 @@
                     <a href="financial_freedom.html" class="navbar-item fire">
                         🔥 الحرية المالية
                     </a>
-                    <a href="snowball_calculator.html" class="navbar-item calculator">
-                        ❄️ حاسبة كرة الثلج
-                    </a>
-                    <a href="advice.html" class="navbar-item calculator">
-                        💰 حاسبة الثروة
-                    </a>
                     <a href="investor_tips.html" class="navbar-item tips">
                         ⚠️ نصائح الاستثمار
                     </a>
+                    <a href="snowball_calculator.html" class="navbar-item calculator">
+                        ❄️ حاسبة كرة الثلج
+                    </a>
+                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
+                        🛡️ صندوق الطوارئ
+                    </a>
+                    <a href="stock_valuation.html" class="navbar-item valuation">
+                        📊 تقييم الأسهم
+                    </a>
+                </div>
+                <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
             </div>
         </nav>
+        <script>
+        function toggleNavbar() {
+            const menu = document.getElementById('navbarMenu');
+            menu.classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.navbar-item');
+            
+            navItems.forEach(item => {
+                const itemPage = item.getAttribute('href');
+                if (itemPage === currentPage || 
+                    (currentPage === '' && itemPage === 'index.html')) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        </script>
 
         <h1>مفكرة مستثمر</h1>
         
@@ -473,6 +499,18 @@
                 <h3>سعيد عبدالجبار (X)</h3>
                 <span class="url">x.com/Saeed_AJ</span>
             </a>
+            <a href="https://x.com/awebadvantage" target="_blank" class="box">
+                <h3>محفظتي الإستثمارية (X)</h3>
+                <span class="url">x.com/awebadvantage</span>
+            </a>
+            <a href="https://x.com/EngSam0701" target="_blank" class="box">
+                <h3>مستثمر ملائكي (X)</h3>
+                <span class="url">x.com/EngSam0701</span>
+            </a>
+            <a href="https://x.com/indexfundksa" target="_blank" class="box">
+                <h3>صناديق المؤشرات الشرعية (X)</h3>
+                <span class="url">x.com/indexfundksa</span>
+            </a>
         </div>
 
         <div class="category">أدوات ذكاء اصطناعي</div>
@@ -488,6 +526,14 @@
             <a href="https://docs.google.com/document/d/1GLYSuyAjFv6k4Tbru_AkvsUEJMAPpyNR-oAAOXLABlo/edit?usp=drive_link" target="_blank" class="box">
                 <h3>برومت تحليل السهم</h3>
                 <span class="url">docs.google.com</span>
+            </a>
+        </div>
+
+        <div class="category">قنوات يوتيوب</div>
+        <div class="grid">
+            <a href="https://www.youtube.com/playlist?list=PLeNNUmE-BlnEc8c8ZFqPbF4wJBjWnbaAE" target="_blank" class="box">
+                <h3>بودكاست أرباح (يوتيوب)</h3>
+                <span class="url">youtube.com/playlist</span>
             </a>
         </div>
 

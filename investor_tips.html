@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.8;
@@ -29,19 +29,19 @@
         }
 
         h1 {
-            color: #2c3e50;
+            color: #333;
             font-size: 2.5rem;
             margin-bottom: 20px;
             text-align: center;
-            border-bottom: 3px solid #5a7fb5;
+            border-bottom: 3px solid #667eea;
             padding-bottom: 15px;
         }
 
         h2 {
-            color: #2c3e50;
+            color: #444;
             font-size: 1.8rem;
             margin: 30px 0 15px 0;
-            border-right: 4px solid #5a7fb5;
+            border-right: 4px solid #667eea;
             padding-right: 15px;
         }
 
@@ -52,7 +52,7 @@
         }
 
         .intro {
-            background: linear-gradient(135deg, #5a7fb5 0%, #6a8fc5 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
             padding: 25px;
             border-radius: 15px;
@@ -93,12 +93,12 @@
             border-radius: 10px;
             padding: 20px;
             margin: 15px 0;
-            border-right: 4px solid #5a7fb5;
+            border-right: 4px solid #667eea;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .rule-item h4 {
-            color: #5a7fb5;
+            color: #667eea;
             font-size: 1.2rem;
             margin-bottom: 10px;
         }
@@ -145,8 +145,8 @@
         }
 
         .disclaimer {
-            background: rgba(74, 111, 165, 0.2);
-            color: #2c3e50;
+            background: #2c3e50;
+            color: #ecf0f1;
             padding: 30px;
             border-radius: 15px;
             margin-top: 40px;
@@ -154,7 +154,7 @@
         }
 
         .disclaimer h3 {
-            color: #2c3e50;
+            color: #fff;
             margin-bottom: 15px;
             font-size: 1.3rem;
         }
@@ -206,7 +206,7 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left: 5px solid #5a7fb5;
+            border-left: 5px solid #667eea;
             position: relative;
             transition: transform 0.3s ease;
         }
@@ -216,16 +216,16 @@
         }
 
         .quote-card.buffett {
-            border-left-color: #5a9d7a;
+            border-left-color: #27ae60;
         }
 
         .quote-card.graham {
-            border-left-color: #d67a6a;
+            border-left-color: #e74c3c;
         }
 
         .quote-author {
             font-weight: bold;
-            color: #5a7fb5;
+            color: #667eea;
             margin-bottom: 15px;
             font-size: 1.1rem;
         }
@@ -241,7 +241,7 @@
         .quote-text:before {
             content: '"';
             font-size: 3rem;
-            color: #5a7fb5;
+            color: #667eea;
             position: absolute;
             top: -10px;
             right: -5px;
@@ -293,12 +293,12 @@
         }
 
         .portfolio-type.concentrated {
-            border-color: #5a9d7a;
+            border-color: #27ae60;
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         }
 
         .portfolio-type.diversified {
-            border-color: #d67a6a;
+            border-color: #e74c3c;
             background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
         }
 
@@ -335,12 +335,12 @@
         }
 
         .comparison-item.stocks {
-            background: linear-gradient(135deg, #5a7fb5 0%, #6a8fc5 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
         .comparison-item.assets {
-            background: linear-gradient(135deg, #7a8fb5 0%, #8a9fc5 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
         }
 
@@ -369,7 +369,6 @@
     </style>
 <body>
     <div class="container">
-        <!-- شريط التنقل الموحد -->
         <link rel="stylesheet" href="navigation.css">
         <nav class="navbar">
             <div class="navbar-container">
@@ -380,26 +379,29 @@
                     <a href="index.html" class="navbar-item">
                         🏠 الرئيسية
                     </a>
-                    <a href="snowball_calculator.html" class="navbar-item calculator">
-                        ❄️ حاسبة كرة الثلج
-                    </a>
                     <a href="advice.html" class="navbar-item calculator">
                         💰 حاسبة الثروة
                     </a>
-                    <a href="investor_tips.html" class="navbar-item tips">
-                        ⚠️ نصائح الاستثمار
-                    </a>
-                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
-                        🛡️ صندوق الطوارئ
-                    </a>
                     <a href="salary_calculator.html" class="navbar-item salary">
-                        💼 حاسبة تقسيم الراتب
+                        💼 حاسبة الراتب
                     </a>
                     <a href="zakat_purification.html" class="navbar-item zakat">
                         🕌 التطهير والزكاة
                     </a>
                     <a href="financial_freedom.html" class="navbar-item fire">
                         🔥 الحرية المالية
+                    </a>
+                    <a href="investor_tips.html" class="navbar-item tips">
+                        ⚠️ نصائح الاستثمار
+                    </a>
+                    <a href="snowball_calculator.html" class="navbar-item calculator">
+                        ❄️ حاسبة كرة الثلج
+                    </a>
+                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
+                        🛡️ صندوق الطوارئ
+                    </a>
+                    <a href="stock_valuation.html" class="navbar-item valuation">
+                        📊 تقييم الأسهم
                     </a>
                 </div>
                 <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
@@ -412,7 +414,6 @@
             menu.classList.toggle('collapsed');
         }
 
-        // تحديد الصفحة النشطة
         document.addEventListener('DOMContentLoaded', function() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             const navItems = document.querySelectorAll('.navbar-item');
