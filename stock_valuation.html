@@ -372,9 +372,9 @@
         .legal-modal {
             display: flex;
             position: fixed;
-            z-index: 1000;
-            left: 0;
+            z-index: 99999;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
@@ -391,12 +391,10 @@
             border: 2px solid #FFA500;
             border-radius: 10px;
             padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            color: #000000;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
+            max-width: 700px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
             text-align: right;
             direction: rtl;
         }
@@ -571,6 +569,121 @@
             }
         }
 
+        /* Outlier Warning */
+        .outlier-warning {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+            font-weight: bold;
+            text-align: right;
+            direction: rtl;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* Help Icons */
+        .help-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: none;
+            color: #2c3e50;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .help-icon:hover {
+            color: #34495e;
+            transform: scale(1.2);
+            background: rgba(44, 62, 80, 0.1);
+        }
+
+        /* Help Modal */
+        .help-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .help-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: right;
+            direction: rtl;
+            position: relative;
+        }
+
+        .help-modal-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .help-modal-close:hover {
+            background: #c82333;
+        }
+
+        .help-modal h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .help-modal p {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .help-modal ul {
+            margin: 15px 0;
+            padding-right: 20px;
+        }
+
+        .help-modal li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .help-modal strong {
+            color: #2c3e50;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -582,17 +695,28 @@
     <div id="loadingOverlay" class="loading-overlay hidden">
         <div class="loading-spinner"></div>
     </div>
+    <!-- Help Modal -->
+    <div id="helpModal" class="help-modal hidden" style="display: none;">
+        <div class="help-modal-content">
+            <button class="help-modal-close" onclick="closeHelp()">×</button>
+            <div id="helpContent"></div>
+        </div>
+    </div>
+
     <div id="legalModal" class="legal-modal">
         <div class="legal-modal-content">
-            <div class="legal-modal-title">تنبيه وإخلاء مسؤولية قانونية </div>
+            <div class="legal-modal-title">إقرار قانوني ومسؤولية فنية</div>
             <div class="legal-modal-text">
-                هذه الحاسبة هي أداة برمجية للأغراض التعليمية والتدريبية فقط. لا تقدم هذه الأداة أي نصيحة استثمارية، أو توصية مالية، أو دعوة لشراء أو بيع أي ورقة مالية بموجب أنظمة هيئة السوق المالية في المملكة العربية السعودية. جميع النتائج المستخرجة هي عمليات حسابية افتراضية تعتمد على البيانات التي يدخلها المستخدم ولا تضمن تحقيق أي أرباح أو حماية من الخسائر. يقر المستخدم بعلمه أن الاستثمار في الأسهم ينطوي على مخاطر عالية، وأنه المسؤول الوحيد عن قراراته المالية. المطور غير مرخص لتقديم الاستشارات المالية، ولا يتحمل أي مسؤولية قانونية أو مالية تجاه أي طرف نتيجة استخدام هذه الأداة.
+                <strong>إقرار ومسؤولية فنية:</strong><br><br>
+                هذه الحاسبة أداة تعليمية لمحاكاة النماذج المالية الرياضية فقط. النتائج مخرجات لعمليات حسابية بناءً على مدخلاتك، ولا تعكس السعر السوقي أو توصية استثمارية. المصمم غير مرخص من هيئة السوق المالية (CMA)، والاستخدام يقع تحت مسؤوليتك الكاملة. لا تتخذ قراراً بالبيع أو الشراء بناءً على هذه الأرقام دون استشارة مستشار مالي مرخص.
             </div>
             <div class="legal-checkbox">
                 <input type="checkbox" id="legalAccept">
-                <label for="legalAccept">أقر بأنني قرأت إخلاء المسؤولية وأوافق على شروط الاستخدام</label>
+                <label for="legalAccept">أقر بأنني فهمت وأوافق على جميع الشروط والمسؤوليات المذكورة أعلاه</label>
             </div>
-            <button id="enterButton" class="legal-button">الدخول للحاسبة</button>
+            <div class="legal-modal-actions">
+                <button type="button" id="enterButton" disabled>موافق</button>
+            </div>
         </div>
     </div>
     <div class="container">
@@ -664,8 +788,8 @@
         <div class="warning-box">
             <div class="warning-icon">⚠️</div>
             <div class="warning-text">
-                <strong>تنبيه وإخلاء مسؤولية قانونية تقني</strong><br>
-                هذه الحاسبة هي أداة برمجية للأغراض التعليمية والتدريبية فقط. لا تقدم هذه الأداة أي نصيحة استثمارية، أو توصية مالية، أو دعوة لشراء أو بيع أي ورقة مالية بموجب أنظمة هيئة السوق المالية في المملكة العربية السعودية. جميع النتائج المستخرجة هي عمليات حسابية افتراضية تعتمد على البيانات التي يدخلها المستخدم ولا تضمن تحقيق أي أرباح أو حماية من الخسائر. يقر المستخدم بعلمه أن الاستثمار في الأسهم ينطوي على مخاطر عالية، وأنه المسؤول الوحيد عن قراراته المالية. المطور غير مرخص لتقديم الاستشارات المالية، ولا يتحمل أي مسؤولية قانونية أو مالية تجاه أي طرف نتيجة استخدام هذه الأداة.
+                <strong>إقرار قانوني ومسؤولية فنية</strong><br>
+                هذه الحاسبة هي أداة تعليمية لمحاكاة النماذج المالية الرياضية فقط. النتائج الظاهرة هي مخرجات لمعادلات بناءً على مدخلاتك الشخصية، ولا تعكس السعر السوقي المتوقع أو التوصية الاستثمارية. المصمم غير مرخص من هيئة السوق المالية (CMA)، والاستخدام يقع تحت مسؤوليتك الكاملة. لا تشتري أو تبيع بناءً على هذه الأرقام دون استشارة مستشار مالي مرخص.
             </div>
         </div>
 
@@ -674,57 +798,104 @@
                 <h2 class="section-title">📊 البيانات الأساسية</h2>
                 
                 <div class="input-group">
-                    <label for="eps">الربح للسهم الواحد (EPS)</label>
-                    <input type="number" id="eps" value="5.0" step="0.1">
+                    <label>نوع الشركة <span class="help-icon" onclick="showHelp('companyType')">ℹ️</span></label>
+                    <select id="companyType" onchange="toggleCompanyType()">
+                        <option value="normal">شركة عادية</option>
+                        <option value="reit">صندوق ريت عقاري</option>
+                    </select>
+                </div>
+                
+                <!-- Normal Company Inputs -->
+                <div id="normalCompanyInputs">
+                    <div class="input-group">
+                        <label>عائد السندات الحكومية لعشر سنوات (%) <span class="help-icon" onclick="showHelp('bondYield')">ℹ️</span></label>
+                        <input type="number" id="bondYield" placeholder="مثال: 6.5" step="0.1" min="0" max="20" value="6.5">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>الربح للسهم (EPS) <span class="help-icon" onclick="showHelp('eps')">ℹ️</span></label>
+                        <input type="number" id="eps" placeholder="مثال: 5.2" step="0.01" min="0">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fcf">التدفق النقدي الحر للسهم الواحد <span class="help-icon" onclick="showHelp('fcf')">ℹ️</span></label>
+                        <input type="number" id="fcf" value="3.0" step="0.1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="cash">النقد والنقدية المعادلة للسهم <span class="help-icon" onclick="showHelp('cash')">ℹ️</span></label>
+                        <input type="number" id="cash" value="1.0" step="0.1" min="0">
+                    </div>
+                </div>
+                
+                <!-- REIT Specific Inputs -->
+                <div id="reitInputs" style="display: none;">
+                    <div class="input-group">
+                        <label>صافي القيمة السوقية للأصول (NAV) <span class="help-icon" onclick="showHelp('nav')">ℹ️</span></label>
+                        <input type="number" id="nav" placeholder="مثال: 100.0" step="0.1" min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>التدفقات النقدية التشغيلية للسهم (FFO) <span class="help-icon" onclick="showHelp('ffo')">ℹ️</span></label>
+                        <input type="number" id="ffo" placeholder="مثال: 8.0" step="0.1" min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>معدل العائد العقاري (Cap Rate) % <span class="help-icon" onclick="showHelp('capRate')">ℹ️</span></label>
+                        <input type="number" id="capRate" placeholder="مثال: 8.0" step="0.1" min="0" max="20" value="8.0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>إجمالي الديون <span class="help-icon" onclick="showHelp('totalDebt')">ℹ️</span></label>
+                        <input type="number" id="totalDebt" placeholder="مثال: 50.0" step="0.1" min="0">
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="fcf">التدفق النقدي الحر للسهم الواحد</label>
-                    <input type="number" id="fcf" value="3.0" step="0.1">
-                </div>
-
-                <div class="input-group">
-                    <label for="growth5yr">نسبة النمو للسنوات الخمس القادمة (%)</label>
+                    <label for="growth5yr">نسبة النمو للسنوات الخمس القادمة (%) <span class="help-icon" onclick="showHelp('growth5yr')">❓</span></label>
                     <input type="number" id="growth5yr" value="10.0" step="0.1" min="0">
                 </div>
 
                 <div class="input-group">
-                    <label for="growthPerp">نسبة النمو الدائم (%)</label>
-                    <input type="number" id="growthPerp" value="2.5" step="0.1" min="0">
+                    <label for="growthPerp">نسبة النمو الدائم (%) <span class="help-icon" onclick="showHelp('growthPerp')">ℹ️</span></label>
+                    <input type="number" id="growthPerp" value="2.5" step="0.1" min="0" max="3" oninput="validateGrowthPerp()">
+                    <div id="growthPerpWarning" style="color: #e74c3c; font-size: 0.85rem; margin-top: 5px; display: none;">
+                        ⚠️ تنبيه: نمو الشركة الدائم لا يمكن أن يتجاوز نمو اقتصاد الدولة على المدى الطويل
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="discountRate">معدل الخصم (WACC) (%)</label>
+                    <label for="discountRate">معدل الخصم (WACC) (%) <span class="help-icon" onclick="showHelp('discountRate')">❓</span></label>
                     <input type="number" id="discountRate" value="8.0" step="0.1">
                 </div>
 
                 <div class="input-group">
-                    <label for="currentPe">مكرر الربحية الحالي</label>
+                    <label for="currentPe">مكرر الربحية الحالي <span class="help-icon" onclick="showHelp('currentPe')">❓</span></label>
                     <input type="number" id="currentPe" value="15.0" step="0.1">
                 </div>
 
                 <div class="input-group">
-                    <label for="sectorPe">مكرر الربحية للقطاع</label>
+                    <label for="sectorPe">مكرر الربحية للقطاع <span class="help-icon" onclick="showHelp('sectorPe')">❓</span></label>
                     <input type="number" id="sectorPe" value="18.0" step="0.1">
                 </div>
 
                 <div class="input-group">
-                    <label for="dividends">توزيعات الأرباح السنوية للسهم</label>
+                    <label for="dividends">توزيعات الأرباح السنوية للسهم <span class="help-icon" onclick="showHelp('dividends')">❓</span></label>
                     <input type="number" id="dividends" value="1.0" step="0.1">
                 </div>
 
                 <div class="input-group">
-                    <label for="bookValue">القيمة الدفترية للسهم</label>
+                    <label for="bookValue">القيمة الدفترية للسهم <span class="help-icon" onclick="showHelp('bookValue')">❓</span></label>
                     <input type="number" id="bookValue" value="20.0" step="0.1">
                 </div>
 
                 <div class="input-group">
-                    <label for="bondYield">عائد السندات الحكومية لعشر سنوات (%)</label>
+                    <label for="bondYield">عائد السندات الحكومية لعشر سنوات (%) <span class="help-icon" onclick="showHelp('bondYield')">❓</span></label>
                     <input type="number" id="bondYield" value="4.0" step="0.1">
                 </div>
 
                 <div class="input-group">
-                    <label for="currentPrice">السعر الحالي للسهم</label>
+                    <label for="currentPrice">السعر الحالي للسهم <span class="help-icon" onclick="showHelp('currentPrice')">❓</span></label>
                     <input type="number" id="currentPrice" value="50.0" step="0.1">
                 </div>
             </div>
@@ -733,39 +904,39 @@
                 <h2 class="section-title">⚙️ الإعدادات المتقدمة</h2>
                 
                 <div class="checkbox-group">
-                    <label for="useWacc">حساب WACC تلقائياً</label>
+                    <label for="useWacc">حساب WACC تلقائياً <span class="help-icon" onclick="showHelp('useWacc')">❓</span></label>
                     <input type="checkbox" id="useWacc">
                 </div>
 
                 <div id="waccInputs" style="display: none;">
                     <div class="input-group">
-                        <label for="riskFree">معدل العائد الخالي من المخاطر (%)</label>
+                        <label for="riskFree">معدل العائد الخالي من المخاطر (%) <span class="help-icon" onclick="showHelp('riskFree')">❓</span></label>
                         <input type="number" id="riskFree" value="4.0" step="0.1">
                     </div>
                     <div class="input-group">
-                        <label for="beta">بيتا (Beta)</label>
+                        <label for="beta">بيتا (Beta) <span class="help-icon" onclick="showHelp('beta')">❓</span></label>
                         <input type="number" id="beta" value="1.2" step="0.1">
                     </div>
                     <div class="input-group">
-                        <label for="marketReturn">عائد السوق (%)</label>
+                        <label for="marketReturn">عائد السوق (%) <span class="help-icon" onclick="showHelp('marketReturn')">❓</span></label>
                         <input type="number" id="marketReturn" value="8.0" step="0.1">
                     </div>
                     <div class="input-group">
-                        <label for="debtCost">تكلفة الدين (%)</label>
+                        <label for="debtCost">تكلفة الدين (%) <span class="help-icon" onclick="showHelp('debtCost')">❓</span></label>
                         <input type="number" id="debtCost" value="5.0" step="0.1">
                     </div>
                     <div class="input-group">
-                        <label for="taxRate">معدل الضريبة (%)</label>
+                        <label for="taxRate">معدل الضريبة (%) <span class="help-icon" onclick="showHelp('taxRate')">❓</span></label>
                         <input type="number" id="taxRate" value="25.0" step="0.1">
                     </div>
                     <div class="input-group">
-                        <label for="debtEquity">نسبة الدين إلى حقوق الملكية</label>
+                        <label for="debtEquity">نسبة الدين إلى حقوق الملكية <span class="help-icon" onclick="showHelp('debtEquity')">❓</span></label>
                         <input type="number" id="debtEquity" value="0.5" step="0.1">
                     </div>
                 </div>
 
                 <div class="select-group">
-                    <label for="scenario">السيناريو</label>
+                    <label for="scenario">السيناريو <span class="help-icon" onclick="showHelp('scenario')">❓</span></label>
                     <select id="scenario">
                         <option value="realistic">واقعي</option>
                         <option value="optimistic">متفائل</option>
@@ -774,39 +945,39 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="fairPb">مكرر القيمة الدفترية العادل</label>
+                    <label for="fairPb">مكرر القيمة الدفترية العادل <span class="help-icon" onclick="showHelp('fairPb')">❓</span></label>
                     <input type="number" id="fairPb" value="1.5" step="0.1">
                 </div>
 
                 <h3 class="section-title">نطاقات الحساسية</h3>
                 <div class="input-group">
-                    <label for="growthMin">الحد الأدنى للنمو (%)</label>
+                    <label for="growthMin">الحد الأدنى للنمو (%) <span class="help-icon" onclick="showHelp('growthMin')">❓</span></label>
                     <input type="number" id="growthMin" value="5.0" step="0.1">
                 </div>
                 <div class="input-group">
-                    <label for="growthMax">الحد الأعلى للنمو (%)</label>
+                    <label for="growthMax">الحد الأعلى للنمو (%) <span class="help-icon" onclick="showHelp('growthMax')">❓</span></label>
                     <input type="number" id="growthMax" value="15.0" step="0.1">
                 </div>
                 <div class="input-group">
-                    <label for="discountMin">الحد الأدنى للخصم (%)</label>
+                    <label for="discountMin">الحد الأدنى للخصم (%) <span class="help-icon" onclick="showHelp('discountMin')">❓</span></label>
                     <input type="number" id="discountMin" value="6.0" step="0.1">
                 </div>
                 <div class="input-group">
-                    <label for="discountMax">الحد الأعلى للخصم (%)</label>
+                    <label for="discountMax">الحد الأعلى للخصم (%) <span class="help-icon" onclick="showHelp('discountMax')">❓</span></label>
                     <input type="number" id="discountMax" value="12.0" step="0.1">
                 </div>
 
                 <h3 class="section-title">النسب المالية</h3>
                 <div class="input-group">
-                    <label for="debtRatio">نسبة الدين (%)</label>
+                    <label for="debtRatio">نسبة الدين (%) <span class="help-icon" onclick="showHelp('debtRatio')">❓</span></label>
                     <input type="number" id="debtRatio" value="30.0" step="0.1">
                 </div>
                 <div class="input-group">
-                    <label for="liquidityRatio">نسبة السيولة</label>
+                    <label for="liquidityRatio">نسبة السيولة <span class="help-icon" onclick="showHelp('liquidityRatio')">❓</span></label>
                     <input type="number" id="liquidityRatio" value="1.5" step="0.1">
                 </div>
                 <div class="input-group">
-                    <label for="earningsQuality">جودة الأرباح (ROE %)</label>
+                    <label for="earningsQuality">جودة الأرباح (ROE %) <span class="help-icon" onclick="showHelp('earningsQuality')">❓</span></label>
                     <input type="number" id="earningsQuality" value="15.0" step="0.1">
                 </div>
 
@@ -817,14 +988,26 @@
         </div>
 
         <div class="results-section" id="resultsSection">
+            <!-- Enterprise Value Display -->
             <div class="result-card">
-                <h2>💰 القيمة العادلة</h2>
+                <h2>🏢 إجمالي قيمة المنشأة العادلة</h2>
+                <div class="result-amount" id="enterpriseValueRange">-</div>
+                <div class="result-period" id="enterpriseValueDetails">-</div>
+                <p class="disclaimer-text">
+                    ⚠️ هذه القيمة تمثل إجمالي قيمة الشركة قبل خصم الديون وإضافة النقد
+                </p>
+            </div>
+            
+            <div class="result-card">
+                <h2>💰 القيمة العادلة للسهم الواحد</h2>
                 <div class="result-amount" id="fairValueRange">-</div>
                 <div class="result-period" id="fairValueDetails">-</div>
                 <p class="disclaimer-text">
-                    ⚠️ هذه الحاسبة هي أداة برمجية للأغراض التعليمية والتدريبية فقط. لا تقدم هذه الأداة أي نصيحة استثمارية، أو توصية مالية، أو دعوة لشراء أو بيع أي ورقة مالية بموجب أنظمة هيئة السوق المالية في المملكة العربية السعودية. جميع النتائج المستخرجة هي عمليات حسابية افتراضية تعتمد على البيانات التي يدخلها المستخدم ولا تضمن تحقيق أي أرباح أو حماية من الخسائر. يقر المستخدم بعلمه أن الاستثمار في الأسهم ينطوي على مخاطر عالية، وأنه المسؤول الوحيد عن قراراته المالية. المطور غير مرخص لتقديم الاستشارات المالية، ولا يتحمل أي مسؤولية قانونية أو مالية تجاه أي طرف نتيجة استخدام هذه الأداة.
+                    ⚠️ إقرار قانوني ومسؤولية فنية: هذه الحاسبة هي أداة تعليمية لمحاكاة النماذج المالية الرياضية فقط. النتائج هي مخرجات معادلات بناءً على مدخلاتك الشخصية. الاستخدام يقع تحت مسؤوليتك الكاملة.
                 </p>
             </div>
+            
+            <div id="outlierWarning" class="outlier-warning" style="display: none;"></div>
 
             <div class="breakdown-table">
                 <h2 class="section-title">📋 نتائج النماذج</h2>
@@ -919,11 +1102,20 @@
                             <li>2g = علاوة النمو</li>
                             <li>4.4 = معامل التعديل للسوق السعودي</li>
                         </ul>
-                        <p><strong>ملاحظات:</strong></p>
+                        <p><strong>ملاحظات هامة:</strong></p>
                         <ul>
+                            <li>تم استخدام المعادلة المعدلة التي تأخذ في الاعتبار عائد السندات الحكومية</li>
+                            <li>يتم تثبيت المضاعف عند 25 كحد أقصى لمنع المبالغة في تقييم شركات النمو السريع</li>
+                            <li>معدل النمو g يُستخدم كنسبة مئوية كاملة (مثال: 5 لـ 5%)</li>
                             <li>مناسبة للشركات المستقرة ذات الأرباح المنتظمة</li>
                             <li>تعكس العلاقة بين النمو والتقييم العادل</li>
                             <li>تأخذ في الاعتبار بيئة أسعار الفائدة</li>
+                        </ul>
+                        <p><strong>افتراضات:</strong></p>
+                        <ul>
+                            <li>هذه القيمة تعتمد على فرضية استمرار نمو الأرباح</li>
+                            <li>تفترض ثبات أسعار الفائدة نسبياً</li>
+                            <li>قد لا تكون مناسبة للشركات الناشئة أو ذات النمو المتغير</li>
                         </ul>
                     </div>
                 </div>
@@ -1019,20 +1211,1016 @@
             </div>
 
             <div class="methodology-note">
-                <h4>⚠️ ملاحظات هامة:</h4>
+                <h4>📊 ملاحظة التقييم والمسؤولية:</h4>
+                <p style="color: #2c3e50; font-weight: bold;">تم اختيار نموذج التقييم بناءً على الحالة المالية للشركة لضمان دقة النتائج.</p>
+                <p style="color: #e74c3c; font-weight: bold;">إقرار قانوني ومسؤولية فنية:</p>
                 <ul>
-                    <li>جميع النماذج تعتمد على افتراضات وتوقعات للمستقبل</li>
-                    <li>القيمة النهائية هي متوسط النماذج الصالحة فقط</li>
-                    <li>هامش الأمان محسوب كـ 80% من المتوسط لتقليل المخاطر</li>
-                    <li>يجب استخدام هذه الحسابات كأداة مساعدة وليست توصية استثمارية</li>
-                    <li>يُنصح دائماً بإجراء تحليل شامل قبل اتخاذ قرارات استثمارية</li>
+                    <li>هذه الحاسبة هي أداة تعليمية لمحاكاة النماذج المالية الرياضية فقط</li>
+                    <li>النتائج هي مخرجات معادلات بناءً على مدخلات المستخدم الشخصية</li>
+                    <li>لا تعكس السعر السوقي المتوقع أو توصية استثمارية</li>
+                    <li>المصمم غير مرخص من هيئة السوق المالية (CMA)</li>
+                    <li>الاستخدام يقع تحت مسؤولية المستخدم الكاملة</li>
+                    <li>لا تشتري أو تبيع بناءً على هذه الأرقام دون استشارة مرخص</li>
                 </ul>
+                <p><strong>للشركات العادية:</strong> تطبيق نماذج التقييم التقليدية الخمسة</p>
+                <p><strong>للريتات:</strong> استخدام معايير التقييم العقاري الخاصة (NAV و FFO)</p>
+                <p><strong>للشركات الخاسرة:</strong> استبعاد نماذج غير المناسبة والتركيز على التوقعات المستقبلية</p>
             </div>
         </div>
     </div>
 
     <script>
         let modelsChart = null;
+
+        // Help System
+        const helpContent = {
+            bondYield: {
+                title: 'عائد السندات الحكومية لعشر سنوات',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو العائد السنوي على السندات الحكومية السعودية لفترة 10 سنوات، ويستخدم كمعيار لمعدل الخصم الخالي من المخاطر في نماذج التقييم.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم في معادلة جراهام المعدلة لتحديد القيمة العادلة</li>
+                        <li>يعكس بيئة أسعار الفائدة في الاقتصاد</li>
+                        <li>يؤثر على تكلفة رأس المال ومعدل الخصم</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>موقع تداول</li>
+                        <li>تقارير البنك المركزي السعودي</li>
+                        <li>مصادر مالية مثل Bloomberg أو Reuters</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان العائد 4.1%، أدخل الرقم 4.1</p>
+                `
+            },
+            eps: {
+                title: 'الربح للسهم (EPS)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو صافي ربح الشركة مقسوماً على عدد الأسهم المصدرة. يمثل الربح الذي حققته كل سهم واحد.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مؤشر أساسي لربحية الشركة</li>
+                        <li>يستخدم في نماذج جراهام ومكرر الربحية</li>
+                        <li>يساعد في مقارنة الشركات المختلفة</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>صافي الربح السنوي ÷ عدد الأسهم المصدرة</p>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>بيانات الشركة المالية</li>
+                        <li>موقع تداول - قسم البيانات المالية</li>
+                        <li>تقارير الأرباح ربع السنوية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان الربح للسهم 1.51 ريال، أدخل الرقم 1.51</p>
+                `
+            },
+            fcf: {
+                title: 'التدفق النقدي الحر للسهم الواحد',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو النقد المتاح للمساهمين بعد خصم جميع النفقات التشغيلية والاستثمارية. يمثل النقد الذي يمكن للشركة توزيعه على المساهمين أو إعادة استثماره.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>أساس نموذج التدفق النقدي المخصوم (DCF)</li>
+                        <li>يعكس القدرة الحقيقية للشركة على توليد النقد</li>
+                        <li>أكثر موثوقية من الربح المحاسبي</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>التدفق النقدي التشغيلي - نفقات رأس المال</p>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>بيان التدفق النقدي في القوائم المالية</li>
+                        <li>موقع تداول - قسم البيانات المالية</li>
+                        <li>تقارير المحللين الماليين</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان التدفق النقدي الحر للسهم 2.03 ريال، أدخل الرقم 2.03</p>
+                `
+            },
+            growth5yr: {
+                title: 'نسبة النمو للسنوات الخمس القادمة',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو النمو المتوسط السنوي المتوقع للشركة خلال السنوات الخمس القادمة. يمكن أن يكون نمواً في الإيرادات أو الأرباح.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم في جميع نماذج التقييم تقريباً</li>
+                        <li>يؤثر بشكل كبير على القيمة العادلة</li>
+                        <li>يعكس توقعات السوق للشركة</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد النسبة؟</strong></p>
+                    <ul>
+                        <li>توقعات المحللين الماليين</li>
+                        <li>النمو التاريخي للشركة</li>
+                        <li>نمو القطاع والاقتصاد</li>
+                        <li>خطط الشركة التوسعية</li>
+                    </ul>
+                    
+                    <p><strong>نصائح:</strong></p>
+                    <ul>
+                        <li>كن واقعياً في التوقعات</li>
+                        <li>الشركات الناضجة تنمو أبطأ من الشركات الناشئة</li>
+                        <li>خذ في الاعتبار الظروف الاقتصادية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا تتوقع نمواً سنوياً 10%، أدخل الرقم 10</p>
+                `
+            },
+            growthPerp: {
+                title: 'نسبة النمو الدائم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو النمو المتوقع على المدى الطويل (بعد 5 سنوات). عادة ما يكون أقل من نمو السنوات الخمس الأولى لأن الشركات تنضج وتنمو أبطأ.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم في حساب القيمة النهائية في DCF</li>
+                        <li>يستخدم في نموذج جوردون للنمو</li>
+                        <li>يؤثر على التقييم طويل الأجل</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد النسبة؟</strong></p>
+                    <ul>
+                        <li>عادة ما يساوي معدل التضخم المتوقع</li>
+                        <li>نمو الناتج المحلي الإجمالي</li>
+                        <li>3-5% للشركات الناضجة</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 2.5% هو معدل شائع للشركات المستقرة</p>
+                `
+            },
+            discountRate: {
+                title: 'معدل الخصم (WACC)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو معدل العائد المطلوب من المستثمرين للاستثمار في الشركة. يأخذ في الاعتبار تكلفة حقوق الملكية وتكلفة الدين.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم لخصم التدفقات النقدية المستقبلية</li>
+                        <li>يعكس مخاطر الاستثمار في الشركة</li>
+                        <li>يؤثر بشكل مباشر على القيمة الحالية</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <ul>
+                        <li>يمكن استخدام الخيار "حساب WACC تلقائياً"</li>
+                        <li>أو إدخال قيمة يدوياً (8-12% شائع)</li>
+                        <li>يعتمد على مخاطر الشركة والسوق</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 8% لشركة مستقرة، 12% لشركة عالية المخاطر</p>
+                `
+            },
+            currentPe: {
+                title: 'مكرر الربحية الحالي',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو سعر السهم الحالي مقسوماً على الربح للسهم (EPS). يوضح كم المستثمرون مستعدون للدفع مقابل كل ريال من الأرباح.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مؤشر لتقييم السهم الحالي</li>
+                        <li>يساعد في مقارنة التقييم بالقطاع</li>
+                        <li>يعكس توقعات السوق</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>سعر السهم الحالي ÷ الربح للسهم (EPS)</p>
+                    
+                    <p><strong>مثال:</strong> إذا كان السعر 50 ريال والربح للسهم 5 ريال، فإن P/E = 10</p>
+                `
+            },
+            sectorPe: {
+                title: 'مكرر الربحية للقطاع',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو متوسط مكرر الربحية للشركات في نفس القطاع. يستخدم كمعيار للمقارنة وتحديد ما إذا كان السهم مبالغ في تقييمه أو رخيص.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم في نموذج مكرر الربحية</li>
+                        <li>يساعد في تحديد التقييم النسبي</li>
+                        <li>يعكس تقييم السوق للقطاع</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>تقارير المحللين</li>
+                        <li>مواقع مالية مثل Bloomberg</li>
+                        <li>حساب متوسط شركات القطاع</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 18 هو متوسط شائع للقطاعات المستقرة</p>
+                `
+            },
+            dividends: {
+                title: 'توزيعات الأرباح السنوية للسهم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو إجمالي توزيعات الأرباح النقدية التي دفعتها الشركة للسهم الواحد خلال السنة.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم في نموذج جوردون للنمو</li>
+                        <li>يعكس قدرة الشركة على توليد النقد</li>
+                        <li>مؤشر على سياسة توزيعات الأرباح</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>بيانات توزيعات الأرباح</li>
+                        <li>موقع تداول</li>
+                        <li>تقارير الشركة السنوية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كانت الشركة توزع 1 ريال سنوياً، أدخل الرقم 1</p>
+                `
+            },
+            bookValue: {
+                title: 'القيمة الدفترية للسهم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو حقوق الملكية الإجمالية للشركة مقسوماً على عدد الأسهم المصدرة. يمثل القيمة المحاسبية للسهم.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم في نموذج القيمة الدفترية</li>
+                        <li>مؤشر على القيمة الصافية للشركة</li>
+                        <li>يساعد في تحديد ما إذا كان السهم مبالغ في تقييمه</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>حقوق الملكية ÷ عدد الأسهم المصدرة</p>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>الميزانية العمومية</li>
+                        <li>موقع تداول</li>
+                        <li>تقارير الشركة المالية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كانت القيمة الدفترية 20 ريال، أدخل الرقم 20</p>
+                `
+            },
+            currentPrice: {
+                title: 'السعر الحالي للسهم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو سعر السهم الحالي في السوق (سعر الإغلاق أو آخر سعر متاح).</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يستخدم للمقارنة مع القيمة العادلة</li>
+                        <li>يساعد في تحديد هامش الأمان</li>
+                        <li>مؤشر على تقييم السوق الحالي</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>موقع تداول</li>
+                        <li>منصات التداول</li>
+                        <li>مواقع الأخبار المالية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان سعر السهم 50 ريال، أدخل الرقم 50</p>
+                `
+            },
+            useWacc: {
+                title: 'حساب WACC تلقائياً',
+                content: `
+                    <p><strong>ما هو هذا الخيار؟</strong></p>
+                    <p>عند تفعيل هذا الخيار، سيتم حساب تكلفة رأس المال المرجح (WACC) تلقائياً باستخدام نموذج CAPM وتكلفة الدين.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يوفر طريقة علمية لحساب معدل الخصم</li>
+                        <li>يأخذ في الاعتبار مخاطر السوق والشركة</li>
+                        <li>أكثر دقة من التقدير اليدوي</li>
+                    </ul>
+                    
+                    <p><strong>كيف يعمل؟</strong></p>
+                    <ul>
+                        <li>يستخدم معادلة CAPM لتكلفة حقوق الملكية</li>
+                        <li>يأخذ في الاعتبار تكلفة الدين بعد الضريبة</li>
+                        <li>يحسب التكلفة المرجحة بناءً على هيكل رأس المال</li>
+                    </ul>
+                    
+                    <p><strong>متى تستخدمه؟</strong></p>
+                    <ul>
+                        <li>عندما تريد حساب دقيق لمعدل الخصم</li>
+                        <li>للشركات التي لديها بيانات مالية كاملة</li>
+                        <li>عندما تتوفر بيانات بيتا وعائد السوق</li>
+                    </ul>
+                `
+            },
+            riskFree: {
+                title: 'معدل العائد الخالي من المخاطر',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو العائد على الاستثمار الخالي من المخاطر، عادة ما يستخدم عائد السندات الحكومية طويلة الأجل.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مكون أساسي في نموذج CAPM</li>
+                        <li>يمثل الحد الأدنى للعائد المتوقع</li>
+                        <li>يعكس بيئة أسعار الفائدة</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>عائد السندات الحكومية لعشر سنوات</li>
+                        <li>تقارير البنك المركزي</li>
+                        <li>مصادر مالية عالمية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 4% هو معدل شائع في الظروف العادية</p>
+                `
+            },
+            beta: {
+                title: 'بيتا (Beta)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو مقياس حساسية السهم للتغيرات في السوق. بيتا 1 يعني أن السهم يتحرك مع السوق، بيتا > 1 يعني أكثر تقلباً.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يقيس مخاطر السوق المنهجية</li>
+                        <li>يستخدم في نموذج CAPM</li>
+                        <li>يؤثر على تكلفة حقوق الملكية</li>
+                    </ul>
+                    
+                    <p><strong>كيف تفسر القيمة؟</strong></p>
+                    <ul>
+                        <li>بيتا < 1: أقل تقلباً من السوق</li>
+                        <li>بيتا = 1: يتحرك مع السوق</li>
+                        <li>بيتا > 1: أكثر تقلباً من السوق</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>مواقع مالية مثل Bloomberg</li>
+                        <li>تقارير المحللين</li>
+                        <li>حسابها إحصائياً من البيانات التاريخية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 1.2 للشركات الصناعية، 0.8 للشركات المستقرة</p>
+                `
+            },
+            marketReturn: {
+                title: 'عائد السوق',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو العائد المتوسط السنوي للسوق بشكل عام، عادة ما يقاس بمؤشر السوق الرئيسي (مثل تاسي).</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يمثل عائد السوق المتوقع</li>
+                        <li>يستخدم في نموذج CAPM</li>
+                        <li>يعكس أداء السوق التاريخي</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>متوسط عائد السوق التاريخي (10-20 سنة)</li>
+                        <li>توقعات المحللين للسوق</li>
+                        <li>8-10% هو متوسط شائع للأسواق الناشئة</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>بيانات تاريخية لمؤشر تاسي</li>
+                        <li>تقارير البنوك الاستثمارية</li>
+                        <li>مواقع مالية عالمية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 8% للسوق السعودي على المدى الطويل</p>
+                `
+            },
+            debtCost: {
+                title: 'تكلفة الدين',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو معدل الفائدة الذي تدفعه الشركة على قروضها، يشمل القروض المصرفية والسندات وغيرها من مصادر التمويل بالدين.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مكون أساسي في حساب WACC</li>
+                        <li>يعكس تكلفة التمويل بالدين</li>
+                        <li>يؤثر على هيكل رأس المال</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>متوسط معدلات الفائدة على قروض الشركة</li>
+                        <li>عائد السندات التي أصدرتها الشركة</li>
+                        <li>معدلات الفائدة السائدة للشركات المماثلة</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>بيانات الشركة المالية</li>
+                        <li>تقارير الائتمان</li>
+                        <li>معلومات عن السندات الصادرة</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 5-7% للشركات ذات التصنيف الائتماني الجيد</p>
+                `
+            },
+            taxRate: {
+                title: 'معدل الضريبة',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو معدل الضريبة الفعلي الذي تدفعه الشركة على أرباحها، يستخدم لحساب تكلفة الدين بعد الضريبة.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يخفض تكلفة الدين الفعلية</li>
+                        <li>الفوائد على الدين معفاة من الضريبة</li>
+                        <li>يؤثر على حساب WACC</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>معدل الضريبة على الشركات في السعودية</li>
+                        <li>معدل الضريبة الفعلي للشركة</li>
+                        <li>20% هو المعدل القياسي في السعودية</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>قوانين الضرائب</li>
+                        <li>بيانات الشركة المالية</li>
+                        <li>تقارير الضرائب السنوية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 20% للشركات السعودية، 25% للشركات الأجنبية</p>
+                `
+            },
+            debtEquity: {
+                title: 'نسبة الدين إلى حقوق الملكية',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو نسبة إجمالي الدين إلى حقوق الملكية، يقيس هيكل رأس المال ومدى اعتماد الشركة على التمويل بالدين.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يحدد وزن كل مكون في WACC</li>
+                        <li>يقيس المخاطر المالية</li>
+                        <li>يعكس سياسة التمويل للشركة</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>إجمالي الدين ÷ حقوق الملكية</p>
+                    
+                    <p><strong>كيف تفسر القيمة؟</strong></p>
+                    <ul>
+                        <li>أقل من 0.5: تمويل محافظ</li>
+                        <li>0.5 - 1: تمويل متوازن</li>
+                        <li>أكثر من 1: تمويل عدواني</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>الميزانية العمومية</li>
+                        <li>بيانات الشركة المالية</li>
+                        <li>تقارير المحللين</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 0.5 يعني أن الدين نصف حقوق الملكية</p>
+                `
+            },
+            scenario: {
+                title: 'السيناريو',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو سيناريو التقييم الذي يضبط توقعات النمو لأعلى أو لأسفل بناءً على وجهة نظر مستثمر مختلفة.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يوفر نطاق من التقييمات الممكنة</li>
+                        <li>يساعد في تحليل الحساسية</li>
+                        <li>يعكس عدم اليقين في التوقعات</li>
+                    </ul>
+                    
+                    <p><strong>السيناريوهات المتاحة:</strong></p>
+                    <ul>
+                        <li><strong>واقعي:</strong> توقعات النمو العادية</li>
+                        <li><strong>متفائل:</strong> زيادة النمو بنسبة 2%</li>
+                        <li><strong>محتاط:</strong> تقليل النمو بنسبة 2%</li>
+                    </ul>
+                    
+                    <p><strong>متى تستخدم كل سيناريو؟</strong></p>
+                    <ul>
+                        <li>واقعي: للتقييم الأساسي</li>
+                        <li>متفائل: للشركات الواعدة</li>
+                        <li>محتاط: للشركات في بيئة صعبة</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> استخدم السيناريو المتفائل للشركات التكنولوجية الناشئة</p>
+                `
+            },
+            fairPb: {
+                title: 'مكرر القيمة الدفترية العادل',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو المضاعف المستخدم في نموذج القيمة الدفترية، يأخذ في الاعتبار جودة الأصول والربحية.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يعدل القيمة الدفترية لتعكس التقييم العادل</li>
+                        <li>يعكس جودة الأصول والربحية</li>
+                        <li>يستخدم في نموذج القيمة الدفترية المعدلة</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>1.0 للشركات ذات الأصول المنخفضة الجودة</li>
+                        <li>1.5 للشركات ذات الأصول الجيدة</li>
+                        <li>2.0+ للشركات ذات الأصول عالية الجودة</li>
+                    </ul>
+                    
+                    <p><strong>عوامل تؤثر على القيمة:</strong></p>
+                    <ul>
+                        <li>جودة الأصول</li>
+                        <li>معدل العائد على الأصول</li>
+                        <li>استقرار الأرباح</li>
+                        <li>نموذج العمل التجاري</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 1.5 هو قيمة شائعة للشركات الصناعية المستقرة</p>
+                `
+            },
+            growthMin: {
+                title: 'الحد الأدنى للنمو',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو أدنى نسبة نمو متوقعة في تحليل الحساسية، يستخدم لاختبار مدى تأثير النمو المنخفض على التقييم.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يختبر تقييم السهم في سيناريو سيء</li>
+                        <li>يساعد في فهم مخاطر النمو</li>
+                        <li>جزء من تحليل الحساسية</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>عادة 50-70% من النمو المتوقع</li>
+                        <li>يعتمد على طبيعة الصناعة</li>
+                        <li>يأخذ في الاعتبار المخاطر الاقتصادية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان النمو المتوقع 10%، فالحد الأدنى قد يكون 5%</p>
+                `
+            },
+            growthMax: {
+                title: 'الحد الأعلى للنمو',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو أعلى نسبة نمو متوقعة في تحليل الحساسية، يستخدم لاختبار مدى تأثير النمو المرتفع على التقييم.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يختبر تقييم السهم في سيناريو جيد</li>
+                        <li>يساعد في فهم إمكانات النمو</li>
+                        <li>جزء من تحليل الحساسية</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>عادة 130-150% من النمو المتوقع</li>
+                        <li>يعتمد على طبيعة الصناعة</li>
+                        <li>يأخذ في الاعتبار الإمكانات المستقبلية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان النمو المتوقع 10%، فالحد الأعلى قد يكون 15%</p>
+                `
+            },
+            discountMin: {
+                title: 'الحد الأدنى للخصم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو أدنى معدل خصم في تحليل الحساسية، يستخدم لاختبار تأثير المخاطر المنخفضة على التقييم.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يختبر تقييم السهم مع مخاطر منخفضة</li>
+                        <li>يساعد في فهم تأثير معدل الخصم</li>
+                        <li>جزء من تحليل الحساسية</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>عادة 70-80% من معدل الخصم الأساسي</li>
+                        <li>يمثل سيناريو مخاطر منخفضة</li>
+                        <li>يعكس بيئة استثمار مواتية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان معدل الخصم 8%، فالحد الأدنى قد يكون 6%</p>
+                `
+            },
+            discountMax: {
+                title: 'الحد الأعلى للخصم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو أعلى معدل خصم في تحليل الحساسية، يستخدم لاختبار تأثير المخاطر المرتفعة على التقييم.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يختبر تقييم السهم مع مخاطر مرتفعة</li>
+                        <li>يساعد في فهم تأثير معدل الخصم</li>
+                        <li>جزء من تحليل الحساسية</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحدد القيمة؟</strong></p>
+                    <ul>
+                        <li>عادة 120-150% من معدل الخصم الأساسي</li>
+                        <li>يمثل سيناريو مخاطر مرتفعة</li>
+                        <li>يعكس بيئة استثمار صعبة</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان معدل الخصم 8%، فالحد الأعلى قد يكون 12%</p>
+                `
+            },
+            debtRatio: {
+                title: 'نسبة الدين',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هي نسبة إجمالي الدين إلى إجمالي الأصول، تقيس مدى اعتماد الشركة على التمويل بالدين.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مؤشر على المخاطر المالية</li>
+                        <li>يؤثر على القدرة على تحمل الخسائر</li>
+                        <li>يعكس هيكل رأس المال</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>إجمالي الدين ÷ إجمالي الأصول</p>
+                    
+                    <p><strong>كيف تفسر القيمة؟</strong></p>
+                    <ul>
+                        <li>أقل من 30%: نسبة دين منخفضة</li>
+                        <li>30-60%: نسبة دين معتدلة</li>
+                        <li>أكثر من 60%: نسبة دين مرتفعة</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>الميزانية العمومية</li>
+                        <li>بيانات الشركة المالية</li>
+                        <li>تقارير المحللين</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 30% هو معدل شائع للشركات المستقرة</p>
+                `
+            },
+            liquidityRatio: {
+                title: 'نسبة السيولة',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هي نسبة الأصول المتداولة إلى الخصوم المتداولة، تقيس قدرة الشركة على سداد التزاماتها قصيرة الأجل.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يقيس القدرة على سداد الديون قصيرة الأجل</li>
+                        <li>مؤشر على الصحة المالية</li>
+                        <li>يعكس إدارة رأس المال العامل</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>الأصول المتداولة ÷ الخصوم المتداولة</p>
+                    
+                    <p><strong>كيف تفسر القيمة؟</strong></p>
+                    <ul>
+                        <li>أقل من 1: مشكلة سيولة</li>
+                        <li>1-1.5: سيولة مقبولة</li>
+                        <li>أكثر من 1.5: سيولة جيدة</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>الميزانية العمومية</li>
+                        <li>بيانات الشركة المالية</li>
+                        <li>تقارير المحللين</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 1.5 يعني أن الأصول المتداولة 1.5倍 الخصوم المتداولة</p>
+                `
+            },
+            earningsQuality: {
+                title: 'جودة الأرباح (ROE)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو معدل العائد على حقوق الملكية، يقيس كفاءة الشركة في تحقيق الأرباح من حقوق الملكية.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مؤشر على كفاءة الإدارة</li>
+                        <li>يقيس الربحية بالنسبة للاستثمار</li>
+                        <li>يعكس جودة الأرباح</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>صافي الربح ÷ حقوق الملكية</p>
+                    
+                    <p><strong>كيف تفسر القيمة؟</strong></p>
+                    <ul>
+                        <li>أقل من 10%: أداء ضعيف</li>
+                        <li>10-15%: أداء جيد</li>
+                        <li>أكثر من 15%: أداء ممتاز</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>بيانات الشركة المالية</li>
+                        <li>موقع تداول</li>
+                        <li>تقارير المحللين</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 15% هو معدل جيد للشركات الصناعية</p>
+                `
+            },
+            companyType: {
+                title: 'نوع الشركة',
+                content: `
+                    <p><strong>ما هو هذا الخيار؟</strong></p>
+                    <p>يحدد نوع الشركة لتطبيق نموذج التقييم المناسب. الشركات العادية والريتات لها طرق تقييم مختلفة تماماً.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>الريتات تُقيّم بناءً على التدفق النقدي وليس الأرباح</li>
+                        <li>الشركات العادية تُقيّم بناءً على الأرباح والنمو</li>
+                        <li>كل نوع له معايير تقييم خاصة</li>
+                    </ul>
+                    
+                    <p><strong>الشركات العادية:</strong></p>
+                    <ul>
+                        <li>تستخدم نماذج DCF، جراهام، P/E، جوردن، القيمة الدفترية</li>
+                        <li>تركز على الأرباح والنمو المستقبلي</li>
+                        <li>مناسبة لمعظم القطاعات الصناعية والخدمية</li>
+                    </ul>
+                    
+                    <p><strong>صناديق الريت العقاري:</strong></p>
+                    <ul>
+                        <li>تُقيّم بناءً على NAV و FFO Yield</li>
+                        <li>تركز على التدفق النقدي والعقارات</li>
+                        <li>معايير خاصة بالقطاع العقاري</li>
+                    </ul>
+                    
+                    <p><strong>متى تستخدم كل نوع؟</strong></p>
+                    <ul>
+                        <li>عادي: للشركات الصناعية، التكنولوجية، الخدمات</li>
+                        <li>ريت: للصناديق العقارية المتداولة في البورصة</li>
+                    </ul>
+                `
+            },
+            nav: {
+                title: 'صافي القيمة السوقية للأصول (NAV)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هي القيمة السوقية الإجمالية للأصول التي يملكها الصندوق العقاري مطروحاً إجمالي الديون.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>المعيار الذهبي لتقييم الريتات</li>
+                        <li>يعكس القيمة الحقيقية للعقارات</li>
+                        <li>يستخدم لحساب NAV للوحدة</li>
+                    </ul>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>إجمالي القيمة السوقية للأصول - إجمالي الديون</p>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>تقارير تقييم الأصول من مقيمين معتمدين</li>
+                        <li>بيانات الصندوق المالية</li>
+                        <li>تقارير المحللين العقاريين</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كانت الأصول 500 مليون والديون 100 مليون، فالNAV = 400 مليون</p>
+                `
+            },
+            ffo: {
+                title: 'التدفقات النقدية التشغيلية للسهم (FFO)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو مقياس التدفق النقدي الحقيقي الذي تولده الريتات، بعد تعديل الربح الصافي لإزالة تأثير الإهلاك.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>أفضل مؤشر للأداء التشغيلي للريتات</li>
+                        <li>يعكس القدرة على توليد النقد</li>
+                        <li>يستخدم في حساب مضاعف FFO</li>
+                    </ul>
+                    
+                    <p><strong>المعادلة:</strong></p>
+                    <p>FFO = صافي الربح + الاستهلاك + الإطفاء - الأرباح من بيع العقارات</p>
+                    
+                    <p><strong>لماذا نستخدم FFO بدلاً من EPS؟</strong></p>
+                    <ul>
+                        <li>الإهلاك مصروف غير نقدي</li>
+                        <li>EPS لا يعكس الأداء الحقيقي للريتات</li>
+                        <li>FFo يعكس التدفق النقدي الفعلي</li>
+                    </ul>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>تقارير الريت المالية</li>
+                        <li>يمكن حسابها من بيانات الدخل والمصروفات</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> FFO للسهم = إجمالي FFO ÷ عدد الوحدات</p>
+                `
+            },
+            capRate: {
+                title: 'معدل العائد العقاري (Cap Rate)',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو العائد السنوي المتوقع من العقار، مقسوماً كنسبة من قيمة العقار.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>مقياس أساسي لسوق العقارات</li>
+                        <li>يستخدم لمقارنة أداء الريت</li>
+                        <li>يؤثر على تقييم المضاعفات</li>
+                    </ul>
+                    
+                    <p><strong>كيف يختلف عن عائد FFO؟</strong></p>
+                    <ul>
+                        <li>Cap Rate = عائد العقار ÷ سعر العقار</li>
+                        <li>FFO Yield = FFO ÷ سعر السهم</li>
+                        <li>كلاهما يقيس العائد ولكن على أصول مختلفة</li>
+                    </ul>
+                    
+                    <p><strong>النطاقات النموذجية:</strong></p>
+                    <ul>
+                        <li>7-8%: عقارات راقية</li>
+                        <li>8-9%: متوسط السوق</li>
+                        <li>9%+: عقارات أقل جودة</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> عقار بقيمة 10 مليون يدرس 800 ألف سنوياً = 8%</p>
+                `
+            },
+            totalDebt: {
+                title: 'إجمالي الديون',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو إجمالي القروض والالتزامات المالية التي على الصندوق العقاري.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يطرح من NAV لحساب NAV للوحدة</li>
+                        <li>يقيس مستوى الرافعة المالية</li>
+                        <li>يؤثر على القدرة على دفع التوزيعات</li>
+                    </ul>
+                    
+                    <p><strong>أنواعف الديون:</strong></p>
+                    <ul>
+                        <li>قروض عقارية (رهن العقارات)</li>
+                        <li>سندات وقروض بنكية</li>
+                        <li>التزامات أخرى</li>
+                    </ul>
+                    
+                    <p><strong>كيف يؤثر على التقييم؟</strong></p>
+                    <ul>
+                        <li>ديون أعلى = NAV أقل للوحدة</li>
+                        <li>ديون منخفض = NAV أعلى للوحدة</li>
+                        <li>يؤثر على القدرة على التوزيعات</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> 50 مليون ريال ديون على صندوق بقيمة أصول 400 مليون</p>
+                `
+            },
+            cash: {
+                title: 'النقد والنقدية المعادلة للسهم',
+                content: `
+                    <p><strong>ما هو هذا المدخل؟</strong></p>
+                    <p>هو إجمالي النقد والنقدية المعادلة التي تملكها الشركة مقسوماً على عدد الأسهم المصدرة.</p>
+                    
+                    <p><strong>لماذا هو مهم؟</strong></p>
+                    <ul>
+                        <li>يضاف إلى قيمة الملكية في DCF</li>
+                        <li>يعكس السيولة المالية للشركة</li>
+                        <li>يستخدم في حساب القيمة الإجمالية للشركة</li>
+                    </ul>
+                    
+                    <p><strong>المعادلة في DCF:</strong></p>
+                    <p>قيمة الملكية = قيمة المؤسسة - الديون + النقد</p>
+                    
+                    <p><strong>كيف تحسب؟</strong></p>
+                    <p>إجمالي النقد والنقدية ÷ عدد الأسهم</p>
+                    
+                    <p><strong>أين تجد القيمة؟</strong></p>
+                    <ul>
+                        <li>الميزانية العمومية</li>
+                        <li>بيانات التدفق النقدي</li>
+                        <li>تقارير الشركة المالية</li>
+                    </ul>
+                    
+                    <p><strong>مثال:</strong> إذا كان إجمالي النقد 100 مليون وعدد الأسهم 10 مليون، فالنقد للسهم = 10 ريال</p>
+                `
+            }
+        };
+
+        function showHelp(field) {
+            const help = helpContent[field];
+            if (help) {
+                document.getElementById('helpContent').innerHTML = `
+                    <h3>${help.title}</h3>
+                    ${help.content}
+                `;
+                const modal = document.getElementById('helpModal');
+                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeHelp() {
+            const modal = document.getElementById('helpModal');
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+        }
+
+        // Function to toggle company type inputs
+        function toggleCompanyType() {
+            const companyType = document.getElementById('companyType').value;
+            const normalInputs = document.getElementById('normalCompanyInputs');
+            const reitInputs = document.getElementById('reitInputs');
+            
+            if (companyType === 'reit') {
+                normalInputs.style.display = 'none';
+                reitInputs.style.display = 'block';
+            } else {
+                normalInputs.style.display = 'block';
+                reitInputs.style.display = 'none';
+            }
+        }
+
+        // Function to validate terminal growth
+        function validateGrowthPerp() {
+            const growthPerp = parseFloat(document.getElementById('growthPerp').value);
+            const warning = document.getElementById('growthPerpWarning');
+            
+            if (growthPerp > 3) {
+                warning.style.display = 'block';
+                document.getElementById('growthPerp').value = 3; // Force max value
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+
+        // Function to validate g >= WACC condition
+        function validateGrowthVsDiscount(growth_perp, discount_rate) {
+            if (growth_perp >= discount_rate) {
+                alert('❌ خطأ في منطق النمو: يجب أن يكون معدل الخصم أعلى من النمو الدائم.\n\nعند g >= WACC، المعادلة ستعطي قيمة سالبة أو لا نهائية رياضياً.\n\nيرجى تعديل المدخلات لضمان g < r.');
+                return false;
+            }
+            return true;
+        }
+
+        // REIT-specific calculation functions
+        function calculateNAV(nav, totalDebt, totalUnits) {
+            if (!totalUnits || totalUnits <= 0) return 0;
+            return (nav - totalDebt) / totalUnits;
+        }
+
+        function calculateFFOYield(ffo, currentPrice) {
+            if (!currentPrice || currentPrice <= 0) return 0;
+            return (ffo / currentPrice) * 100;
+        }
+
+        function calculateFFOMultiplier(ffo, capRate) {
+            if (!capRate || capRate <= 0) return 0;
+            return ffo / (capRate / 100);
+        }
+
+        // Function to replace all help icons with info emoji
+        function replaceHelpIcons() {
+            const helpIcons = document.querySelectorAll('.help-icon');
+            helpIcons.forEach(icon => {
+                icon.innerHTML = 'ℹ️';
+            });
+        }
+
+        // Call the function when page loads
+        document.addEventListener('DOMContentLoaded', replaceHelpIcons);
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('ar-SA', {
@@ -1043,7 +2231,7 @@
             }).format(amount);
         }
 
-        function calculate_dcf(fcf, growth_5yr, growth_perp, discount_rate) {
+        function calculate_dcf(fcf, growth_5yr, growth_perp, discount_rate, total_debt, cash) {
             // DCF Model: Discounted Cash Flow for 10 years + terminal value
             if (discount_rate <= growth_perp) return null;
             
@@ -1068,20 +2256,41 @@
             
             let tv = cf_prev * (1 + growth_perp) / (discount_rate - growth_perp);
             let pv_tv = tv / Math.pow(1 + discount_rate, 10);
-            let fair_value = pv_sum + pv_tv;
+            let enterprise_value = pv_sum + pv_tv;
+            
+            // Calculate equity value: Enterprise Value - Debt + Cash
+            let equity_value = enterprise_value - (total_debt || 0) + (cash || 0);
             
             if (negative_count >= 3) return null;
-            return fair_value;
+            return equity_value;
         }
 
-        function calculate_graham(eps, growth, bond_yield) {
-            // Graham's Modified Formula
-            if (bond_yield <= 0) return null;
-            return (eps * (8.5 + 2 * growth) * 4.4) / bond_yield;
+        // Graham Formula (Revised)
+        function calculateGraham(eps, growth_rate, bond_yield) {
+            if (eps <= 0) return 0; // Disable for loss-making companies
+            
+            // Use growth_rate as percentage (e.g., 5 for 5%, not 0.05)
+            // Use bond_yield as percentage directly (e.g., 6.5 for 6.5%)
+            let growth_multiplier = 8.5 + (2 * growth_rate);
+            
+            // Cap the multiplier at 25 to prevent overvaluation of high-growth companies
+            if (growth_multiplier > 25) {
+                growth_multiplier = 25;
+            }
+            
+            // Revised Graham Formula: V = (EPS × (8.5 + 2g) × 4.4) / Y
+            // bond_yield is used as percentage directly (6.5 for 6.5%)
+            const graham_value = (eps * growth_multiplier * 4.4) / bond_yield;
+            
+            return graham_value;
         }
 
         function calculate_pe(eps, sector_pe) {
-            // P/E Multiplier
+            // P/E Multiplier with safety cap at 40
+            if (sector_pe > 40) {
+                console.log('P/E capped at 40 for safety. Original value:', sector_pe);
+                sector_pe = 40;
+            }
             return eps * sector_pe;
         }
 
@@ -1101,102 +2310,324 @@
         });
 
         function calculateFairValue() {
-            // Show loading
-            document.getElementById('loadingOverlay').classList.remove('hidden');
+            try {
+                console.log('Starting calculation...');
+                // Show loading
+                document.getElementById('loadingOverlay').classList.remove('hidden');
 
-            // Get inputs
-            let eps = parseFloat(document.getElementById('eps').value) || 0;
-            let fcf = parseFloat(document.getElementById('fcf').value) || 0;
-            let growth_5yr = (parseFloat(document.getElementById('growth5yr').value) || 0) / 100;
-            let growth_perp = (parseFloat(document.getElementById('growthPerp').value) || 0) / 100;
-            let discount_rate = (parseFloat(document.getElementById('discountRate').value) || 0) / 100;
-            let current_pe = parseFloat(document.getElementById('currentPe').value) || 0;
-            let sector_pe = parseFloat(document.getElementById('sectorPe').value) || 0;
-            let dividends = parseFloat(document.getElementById('dividends').value) || 0;
-            let book_value = parseFloat(document.getElementById('bookValue').value) || 0;
-            let bond_yield = (parseFloat(document.getElementById('bondYield').value) || 0) / 100;
-            let current_price = parseFloat(document.getElementById('currentPrice').value) || 0;
-            let fair_pb = parseFloat(document.getElementById('fairPb').value) || 1.5;
+                // Get inputs
+                console.log('Getting inputs...');
+                const companyType = document.getElementById('companyType').value;
+                console.log('Company type:', companyType);
+                
+                // Validate required inputs
+                if (companyType === 'normal') {
+                    let eps = parseFloat(document.getElementById('eps').value) || 0;
+                    let fcf = parseFloat(document.getElementById('fcf').value) || 0;
+                    let bond_yield = parseFloat(document.getElementById('bondYield').value) || 0;
+                    
+                    if (eps <= 0 && fcf <= 0) {
+                        document.getElementById('loadingOverlay').classList.add('hidden');
+                        alert('❌ خطأ: يجب إدخال قيمة موجبة للربح للسهم (EPS) أو التدفق النقدي الحر للسهم (FCF).');
+                        return;
+                    }
+                    
+                    if (bond_yield <= 0) {
+                        document.getElementById('loadingOverlay').classList.add('hidden');
+                        alert('❌ خطأ: يجب إدخال قيمة موجبة لعائد السندات الحكومية.');
+                        return;
+                    }
+                } else if (companyType === 'reit') {
+                    let nav = parseFloat(document.getElementById('nav').value) || 0;
+                    let ffo = parseFloat(document.getElementById('ffo').value) || 0;
+                    
+                    if (nav <= 0 && ffo <= 0) {
+                        document.getElementById('loadingOverlay').classList.add('hidden');
+                        alert('❌ خطأ: يجب إدخال قيمة موجبة لـ NAV أو FFO للريت.');
+                        return;
+                    }
+                }
+                
+                // Validate growth vs discount rate
+                let growth_perp = (parseFloat(document.getElementById('growthPerp').value) || 0) / 100;
+                let discount_rate = (parseFloat(document.getElementById('discountRate').value) || 0) / 100;
+                console.log('Growth perpetual:', growth_perp, 'Discount rate:', discount_rate);
+                
+                if (!validateGrowthVsDiscount(growth_perp, discount_rate)) {
+                    document.getElementById('loadingOverlay').classList.add('hidden');
+                    return;
+                }
+                
+                let values = {};
+                let enterprise_value = 0;
+                let growth_5yr_adj = 0;
+                let growth_perp_adj = 0;
+                
+                if (companyType === 'reit') {
+                    // REIT calculations - ONLY show NAV and FFO results
+                    let nav = parseFloat(document.getElementById('nav').value) || 0;
+                    let ffo = parseFloat(document.getElementById('ffo').value) || 0;
+                    let totalDebt = parseFloat(document.getElementById('totalDebt').value) || 0;
+                    let totalUnits = parseFloat(document.getElementById('totalUnits').value) || 1000000;
+                    let capRate = parseFloat(document.getElementById('capRate').value) || 8;
+                    let current_price = parseFloat(document.getElementById('currentPrice').value) || 0;
+                    
+                    console.log('REIT inputs:', { nav, ffo, totalDebt, totalUnits, capRate });
+                    
+                    // Calculate REIT valuations
+                    let nav_per_unit = calculateNAV(nav, totalDebt, totalUnits);
+                    let ffo_multiplier = calculateFFOMultiplier(ffo, capRate);
+                    let ffo_yield = calculateFFOYield(ffo, current_price);
+                    
+                    console.log('REIT calculations:', { nav_per_unit, ffo_multiplier, ffo_yield });
+                    
+                    // For REITs, use average of NAV and FFO multiplier as fair value
+                    let reit_fair_value = (nav_per_unit + ffo_multiplier) / 2;
+                    
+                    values = {
+                        'NAV للوحدة': nav_per_unit,
+                        'مضاعف FFO': ffo_multiplier,
+                        'عائد FFO': ffo_yield
+                    };
+                    
+                    // Store enterprise value for REITs (total NAV)
+                    enterprise_value = nav;
+                    
+                } else {
+                    // Normal company calculations
+                    let eps = parseFloat(document.getElementById('eps').value) || 0;
+                    let fcf = parseFloat(document.getElementById('fcf').value) || 0;
+                    let cash = parseFloat(document.getElementById('cash').value) || 0;
+                    let growth_5yr = (parseFloat(document.getElementById('growth5yr').value) || 0) / 100;
+                    let current_pe = parseFloat(document.getElementById('currentPe').value) || 0;
+                    let sector_pe = parseFloat(document.getElementById('sectorPe').value) || 0;
+                    let dividends = parseFloat(document.getElementById('dividends').value) || 0;
+                    let book_value = parseFloat(document.getElementById('bookValue').value) || 0;
+                    let bond_yield = parseFloat(document.getElementById('bondYield').value) || 6.5;
+                    let current_price = parseFloat(document.getElementById('currentPrice').value) || 0;
+                    let fair_pb = parseFloat(document.getElementById('fairPb').value) || 1.5;
+                    let total_debt = parseFloat(document.getElementById('totalDebtNormal')?.value) || 0;
+                    
+                    console.log('Normal company inputs:', { eps, fcf, cash, growth_5yr, sector_pe, dividends, book_value, bond_yield });
+                    
+                    // Scenario adjustment
+                    let scenario = document.getElementById('scenario').value;
+                    let growth_adj = 0;
+                    if (scenario === 'optimistic') growth_adj = 0.02;
+                    else if (scenario === 'conservative') growth_adj = -0.02;
 
-            // Scenario adjustment
-            let scenario = document.getElementById('scenario').value;
-            let growth_adj = 0;
-            if (scenario === 'optimistic') growth_adj = 0.02;
-            else if (scenario === 'conservative') growth_adj = -0.02;
+                    growth_5yr_adj = growth_5yr + growth_adj;
+                    growth_perp_adj = growth_perp + growth_adj;
+                    
+                    console.log('Adjusted growth rates:', { growth_5yr_adj, growth_perp_adj });
 
-            let growth_5yr_adj = growth_5yr + growth_adj;
-            let growth_perp_adj = growth_perp + growth_adj;
+                    // WACC calculation
+                    if (document.getElementById('useWacc').checked) {
+                        let risk_free = (parseFloat(document.getElementById('riskFree').value) || 0) / 100;
+                        let beta = parseFloat(document.getElementById('beta').value) || 1;
+                        let market_return = (parseFloat(document.getElementById('marketReturn').value) || 0) / 100;
+                        let debt_cost = (parseFloat(document.getElementById('debtCost').value) || 0) / 100;
+                        let tax_rate = (parseFloat(document.getElementById('taxRate').value) || 0) / 100;
+                        let debt_equity = parseFloat(document.getElementById('debtEquity').value) || 0;
 
-            if (growth_5yr_adj < 0 || growth_perp_adj < 0) {
-                alert('النمو المعدل لا يمكن أن يكون سالباً. راجع السيناريو أو المدخلات.');
-                return;
-            }
+                        let cost_equity = risk_free + beta * (market_return - risk_free);
+                        let wacc = (cost_equity * (1 / (1 + debt_equity))) + (debt_cost * (1 - tax_rate) * (debt_equity / (1 + debt_equity)));
+                        discount_rate = wacc;
+                        console.log('WACC calculated:', wacc);
+                    }
+                    
+                    // Calculate DCF enterprise value (before debt/cash adjustment)
+                    let pv_sum = 0;
+                    let cf_prev = fcf;
+                    let negative_count = 0;
+                    
+                    console.log('Starting DCF calculation with fcf:', fcf);
+                    
+                    for (let n = 1; n <= 10; n++) {
+                        let cf;
+                        if (n <= 5) {
+                            cf = fcf * Math.pow(1 + growth_5yr_adj, n);
+                        } else {
+                            cf = cf_prev * (1 + growth_perp_adj);
+                        }
+                        
+                        let pv_cf = cf / Math.pow(1 + discount_rate, n);
+                        pv_sum += pv_cf;
+                        
+                        if (n <= 3 && cf < 0) negative_count++;
+                        cf_prev = cf;
+                        
+                        console.log(`Year ${n}: CF=${cf.toFixed(2)}, PV=${pv_cf.toFixed(2)}`);
+                    }
+                    
+                    let tv = cf_prev * (1 + growth_perp_adj) / (discount_rate - growth_perp_adj);
+                    let pv_tv = tv / Math.pow(1 + discount_rate, 10);
+                    enterprise_value = pv_sum + pv_tv; // This is enterprise value
+                    
+                    console.log('DCF results:', { pv_sum, tv, pv_tv, enterprise_value });
+                    
+                    // Calculate equity value: Enterprise Value - Debt + Cash
+                    let dcf_val = enterprise_value - total_debt + cash;
+                    
+                    console.log('Equity value calculation:', { enterprise_value, total_debt, cash, dcf_val });
+                    
+                    // Calculate other values
+                    let graham_val = eps >= 0 ? calculateGraham(eps, growth_5yr_adj * 100, bond_yield) : 0;
+                    let pe_val = calculate_pe(eps, sector_pe);
+                    let gordon_val = calculate_gordon(dividends, growth_perp_adj, discount_rate);
+                    let book_val = calculate_book_value(book_value, fair_pb);
+                    
+                    console.log('Other models:', { graham_val, pe_val, gordon_val, book_val });
+                    
+                    // Conditional logic: Hide Graham if EPS is negative
+                    if (eps < 0) {
+                        console.log('Negative EPS detected, hiding Graham model');
+                        graham_val = 0; // This will show as "غير متاح"
+                    }
+                    
+                    values = {
+                        'DCF': dcf_val,
+                        'جراهام': graham_val,
+                        'مكرر الربحية': pe_val,
+                        'جوردن': gordon_val,
+                        'القيمة الدفترية': book_val
+                    };
+                    
+                    // Outlier detection for DCF vs Graham (50% threshold) - already handled above
+                    
+                    // Check for P/E cap warning - already handled in calculation section
+                }
 
-            // WACC calculation
-            if (document.getElementById('useWacc').checked) {
-                let risk_free = (parseFloat(document.getElementById('riskFree').value) || 0) / 100;
-                let beta = parseFloat(document.getElementById('beta').value) || 1;
-                let market_return = (parseFloat(document.getElementById('marketReturn').value) || 0) / 100;
-                let debt_cost = (parseFloat(document.getElementById('debtCost').value) || 0) / 100;
-                let tax_rate = (parseFloat(document.getElementById('taxRate').value) || 0) / 100;
-                let debt_equity = parseFloat(document.getElementById('debtEquity').value) || 0;
-
-                let cost_equity = risk_free + beta * (market_return - risk_free);
-                let wacc = (cost_equity * (1 / (1 + debt_equity))) + (debt_cost * (1 - tax_rate) * (debt_equity / (1 + debt_equity)));
-                discount_rate = wacc;
-            }
-
-            // Calculate values
-            let dcf_val = calculate_dcf(fcf, growth_5yr_adj, growth_perp_adj, discount_rate);
-            let graham_val = calculate_graham(eps, growth_5yr_adj, bond_yield);
-            let pe_val = calculate_pe(eps, sector_pe);
-            let gordon_val = calculate_gordon(dividends, growth_perp_adj, discount_rate);
-            let book_val = calculate_book_value(book_value, fair_pb);
-
-            let values = {
-                'DCF': dcf_val,
-                'جراهام': graham_val,
-                'مكرر الربحية': pe_val,
-                'جوردن': gordon_val,
-                'القيمة الدفترية': book_val
-            };
-
+            // Include all values except null, but show 0 values as "غير متاح"
             let valid_values = {};
             for (let key in values) {
-                if (values[key] !== null && values[key] > 0) {
+                if (values[key] !== null && values[key] !== undefined) {
                     valid_values[key] = values[key];
                 }
             }
 
-            if (Object.keys(valid_values).length === 0) {
+            // Calculate averages using only positive values
+            let positive_values = {};
+            for (let key in valid_values) {
+                if (valid_values[key] > 0) {
+                    positive_values[key] = valid_values[key];
+                }
+            }
+            
+            if (Object.keys(positive_values).length === 0) {
                 alert('لا توجد نتائج صالحة. راجع المدخلات.');
+                document.getElementById('loadingOverlay').classList.add('hidden');
                 return;
             }
 
-            let prices = Object.values(valid_values);
+            let prices = Object.values(positive_values);
             let min_price = Math.min(...prices);
             let max_price = Math.max(...prices);
             let avg_price = prices.reduce((sum, val) => sum + val, 0) / prices.length;
             let margin_safety = avg_price * 0.8;
 
+            // Get values for outlier detection (from the calculation above)
+            let dcf_val = values['DCF'] || 0;
+            let graham_val = values['جراهام'] || 0;
+            let pe_val = values['مكرر الربحية'] || 0;
+            let gordon_val = values['جوردن'] || 0;
+            let book_val = values['القيمة الدفترية'] || 0;
+
+            // Detect outliers
+            let outlierResult = detectOutliers({
+                dcf: dcf_val,
+                graham: graham_val,
+                peMultiplier: pe_val,
+                gordon: gordon_val,
+                bookValue: book_val
+            });
+
+            // DCF vs Graham specific outlier detection (50% threshold)
+            if (dcf_val > 0 && graham_val > 0) {
+                let difference = Math.abs(dcf_val - graham_val) / Math.min(dcf_val, graham_val);
+                if (difference > 0.5) { // 50% difference
+                    let outlierMessage = `⚠️ تنبيه: هناك فرق كبير (${(difference * 100).toFixed(1)}%) بين نموذج DCF (${formatCurrency(dcf_val)}) ونموذج جراهام (${formatCurrency(graham_val)}). قد يكون أحد النموذجين غير مناسب لهذا النوع من الشركات.`;
+                    document.getElementById('outlierWarning').innerHTML = outlierMessage;
+                    document.getElementById('outlierWarning').style.display = 'block';
+                } else {
+                    document.getElementById('outlierWarning').style.display = 'none';
+                }
+            }
+
+            // Check for P/E cap warning
+            let original_sector_pe = parseFloat(document.getElementById('sectorPe').value) || 0;
+            if (original_sector_pe > 40) {
+                let peWarning = `⚠️ تم تقييد مكرر الربحية عند 40 للحفاظ على هامش الأمان. القيمة الأصلية كانت ${original_sector_pe.toFixed(1)}.`;
+                if (!document.getElementById('peWarning')) {
+                    let warningDiv = document.createElement('div');
+                    warningDiv.id = 'peWarning';
+                    warningDiv.className = 'outlier-warning';
+                    warningDiv.style.marginTop = '10px';
+                    warningDiv.innerHTML = peWarning;
+                    document.getElementById('outlierWarning').parentNode.insertBefore(warningDiv, document.getElementById('outlierWarning').nextSibling);
+                } else {
+                    document.getElementById('peWarning').innerHTML = peWarning;
+                    document.getElementById('peWarning').style.display = 'block';
+                }
+            } else if (document.getElementById('peWarning')) {
+                document.getElementById('peWarning').style.display = 'none';
+            }
+
+            if (outlierResult) {
+                // Remove outlier from valid_values but still show it in table
+                let outlierNames = outlierResult.outliers.map(o => o.name);
+                let filtered_values = {};
+                for (let key in valid_values) {
+                    if (!outlierNames.includes(key)) {
+                        filtered_values[key] = valid_values[key];
+                    }
+                }
+                
+                // Recalculate averages without outliers
+                if (Object.keys(filtered_values).length > 0) {
+                    let filtered_prices = Object.values(filtered_values);
+                    min_price = Math.min(...filtered_prices);
+                    max_price = Math.max(...filtered_prices);
+                    avg_price = filtered_prices.reduce((sum, val) => sum + val, 0) / filtered_prices.length;
+                    margin_safety = avg_price * 0.8;
+                }
+                
+                document.getElementById('outlierWarning').innerHTML = outlierResult.message;
+                document.getElementById('outlierWarning').style.display = 'block';
+            } else {
+                document.getElementById('outlierWarning').style.display = 'none';
+            }
+
             // Display results
+            // Enterprise Value Display
+            if (enterprise_value > 0) {
+                document.getElementById('enterpriseValueRange').textContent = formatCurrency(enterprise_value);
+                document.getElementById('enterpriseValueDetails').textContent = `قيمة المنشأة قبل خصم الديون`;
+            } else {
+                document.getElementById('enterpriseValueRange').textContent = '-';
+                document.getElementById('enterpriseValueDetails').textContent = 'غير متاح';
+            }
+            
+            // Per-Share Value Display
             document.getElementById('fairValueRange').textContent = `${formatCurrency(min_price)} - ${formatCurrency(max_price)}`;
             document.getElementById('fairValueDetails').textContent = `المتوسط: ${formatCurrency(avg_price)} | هامش الأمان: ${formatCurrency(margin_safety)}`;
 
             // Models table
             let tableHtml = '';
             for (let key in valid_values) {
-                tableHtml += `<tr><td><strong>${key}</strong></td><td>${formatCurrency(valid_values[key])}</td></tr>`;
+                let displayValue = valid_values[key] > 0 ? formatCurrency(valid_values[key]) : 'غير متاح';
+                tableHtml += `<tr><td><strong>${key}</strong></td><td>${displayValue}</td></tr>`;
             }
             document.getElementById('modelsTable').innerHTML = tableHtml;
 
-            // Chart
-            createModelsChart(valid_values);
-
-            // No recommendation as per legal disclaimer
-
-            // Sensitivity table
-            createSensitivityTable(fcf, growth_5yr_adj, growth_perp_adj, discount_rate);
+            // Chart - only include positive values
+            let chart_values = {};
+            for (let key in valid_values) {
+                if (valid_values[key] > 0) {
+                    chart_values[key] = valid_values[key];
+                }
+            }
+            createModelsChart(chart_values);
 
             // Dashboard
             let debt_ratio = parseFloat(document.getElementById('debtRatio').value) || 0;
@@ -1207,11 +2638,55 @@
             document.getElementById('dashboardLiquidity').textContent = liquidity_ratio.toFixed(1);
             document.getElementById('dashboardEarnings').textContent = `${earnings_quality}%`;
 
+            // Sensitivity analysis
+            if (companyType === 'normal') {
+                createSensitivityTable(fcf, growth_5yr_adj, growth_perp_adj, discount_rate);
+            }
+
             // Show results
             document.getElementById('resultsSection').style.display = 'block';
             // Hide loading
             document.getElementById('loadingOverlay').classList.add('hidden');
             document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error during calculation:', error);
+                console.error('Error details:', error.message, error.stack);
+                // Hide loading overlay even if error occurs
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('حدث خطأ أثناء الحساب. يرجى التحقق من المدخلات والمحاولة مرة أخرى.\n\nتفاصيل الخطأ: ' + error.message);
+            }
+        }
+
+        // Function to detect outliers in valuation results
+        function detectOutliers(results) {
+            const values = [
+                { name: 'DCF', value: results.dcf },
+                { name: 'جراهام', value: results.graham },
+                { name: 'مكرر الربحية', value: results.peMultiplier },
+                { name: 'جوردن', value: results.gordon },
+                { name: 'القيمة الدفترية', value: results.bookValue }
+            ].filter(v => v.value > 0); // Filter out invalid values
+
+            if (values.length < 3) return null; // Need at least 3 values to detect outliers
+
+            // Calculate mean and standard deviation
+            const mean = values.reduce((sum, v) => sum + v.value, 0) / values.length;
+            const variance = values.reduce((sum, v) => sum + Math.pow(v.value - mean, 2), 0) / values.length;
+            const stdDev = Math.sqrt(variance);
+
+            // Check for outliers (more than 2 standard deviations from mean)
+            const outliers = values.filter(v => Math.abs(v.value - mean) > 2 * stdDev);
+
+            if (outliers.length > 0) {
+                return {
+                    outliers: outliers,
+                    mean: mean,
+                    stdDev: stdDev,
+                    message: `⚠️ تنبيه: تم اكتشاف قيم شاذة في النتائج. القيم التالية تختلف بشكل كبير عن المتوسط (${mean.toFixed(2)} ر.س.): ${outliers.map(o => `${o.name} (${o.value.toFixed(2)} ر.س.)`).join(', ')}. قد يكون نموذج التقييم هذا غير مناسب لنوع هذا النشاط التجاري.`
+                };
+            }
+
+            return null;
         }
 
         function createModelsChart(valid_values) {
@@ -1237,16 +2712,6 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return formatCurrency(context.parsed.y);
-                                }
-                            }
-                        }
-                    },
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -1281,7 +2746,8 @@
             growth_steps.forEach(g => {
                 tableHtml += `<tr><td><strong>${(g * 100).toFixed(1)}%</strong></td>`;
                 discount_steps.forEach(d => {
-                    let val = calculate_dcf(fcf, g, g, d); // Use same growth for perp
+                    // Use the correct DCF function with all required parameters
+                    let val = calculate_dcf(fcf, g, growth_perp, d, 0, 0); // No debt or cash for sensitivity
                     tableHtml += `<td>${val ? formatCurrency(val) : '-'}</td>`;
                 });
                 tableHtml += '</tr>';
@@ -1291,21 +2757,20 @@
             document.getElementById('sensitivityTable').innerHTML = tableHtml;
         }
 
-        // Initial calculation on load
-        window.addEventListener('load', function() {
-            // Always show the legal modal
-            // Modal is already displayed by default
-        });
-
         // Modal controls
         document.getElementById('legalAccept').addEventListener('change', function() {
             const button = document.getElementById('enterButton');
             if (this.checked) {
                 button.classList.add('enabled');
                 button.disabled = false;
+                button.style.backgroundColor = '#4a6fa5'; // لون التفعيل
+                button.style.color = '#ffffff';
+                button.style.cursor = 'pointer';
             } else {
                 button.classList.remove('enabled');
                 button.disabled = true;
+                button.style.backgroundColor = '#cccccc'; // لون التعطيل
+                button.style.cursor = 'not-allowed';
             }
         });
 
@@ -1313,7 +2778,7 @@
             try {
                 if (document.getElementById('legalAccept').checked) {
                     document.getElementById('legalModal').classList.add('hidden');
-                    calculateFairValue();
+                    // Don't auto-calculate on modal accept
                 }
             } catch (error) {
                 console.error('Error in modal handler:', error);
