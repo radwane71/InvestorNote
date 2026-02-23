@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة متوسط سعر الشراء | مفكرة مستثمر</title>
+    <link rel="stylesheet" href="navigation.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px;
+            color: #2c3e50;
+        }
+
+        /* ===== Navbar ===== */
+        .navbar-wrapper {
+            max-width: 800px;
+            margin: 0 auto 15px;
+        }
+
+        /* ===== Container ===== */
+        .container {
+            max-width: 800px; margin: 0 auto;
+            background: white; border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* ===== Legal Banner — داخل container ===== */
+        .legal-banner {
+            background: #fff3cd; border: 2px solid #ffc107;
+            border-radius: 8px; padding: 12px 16px;
+            margin-bottom: 25px; text-align: center;
+        }
+        .banner-content {
+            display: flex; align-items: center;
+            justify-content: center; gap: 12px; flex-wrap: wrap;
+        }
+        .warning-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .banner-text {
+            color: #856404; font-weight: bold;
+            font-size: 0.88rem; line-height: 1.5; text-align: right;
+        }
+
+        /* ===== Headings ===== */
+        h1 {
+            text-align: center; color: #2c3e50;
+            margin-bottom: 30px; font-size: 2.2rem;
+        }
+
+        /* ===== Rule Item ===== */
+        .rule-item {
+            background: #f8f9fa; border-radius: 15px;
+            padding: 25px; margin: 20px 0;
+            border-right: 4px solid #667eea;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+        }
+        .rule-item h3 { color: #1e3c72; margin-bottom: 18px; font-size: 1.1rem; }
+
+        /* ===== Input Grid ===== */
+        .input-group {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 20px; margin-bottom: 10px;
+        }
+        .input-field { display: flex; flex-direction: column; }
+        .input-field label {
+            color: #34495e; font-weight: bold;
+            margin-bottom: 7px; font-size: 0.9rem;
+        }
+        .input-field input {
+            padding: 12px; border: 2px solid #e0e0e0;
+            border-radius: 8px; font-size: 1rem;
+            transition: border-color 0.3s;
+            background: white;
+        }
+        .input-field input:focus { outline: none; border-color: #667eea; background: #f0f4ff; }
+
+        /* ===== Operation Row ===== */
+        .operations-section { margin-bottom: 10px; }
+
+        .operation-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px; margin-bottom: 15px;
+            align-items: end; /* labels لا تُكسر المحاذاة */
+        }
+
+        /* ===== Buttons ===== */
+        .remove-btn {
+            background: #e74c3c; color: white;
+            border: none; padding: 11px 16px;
+            border-radius: 8px; cursor: pointer;
+            font-size: 0.95rem; transition: background 0.3s, transform 0.2s;
+            /* ✅ ارتفاع ثابت حتى يتوسط مع الـ input */
+            height: 44px; align-self: flex-end;
+        }
+        .remove-btn:hover { background: #c0392b; transform: translateY(-1px); }
+
+        .add-btn {
+            background: #667eea; color: white;
+            border: none; padding: 12px 24px;
+            border-radius: 8px; cursor: pointer;
+            font-size: 1rem; margin-top: 10px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .add-btn:hover { background: #5a6fd8; transform: translateY(-1px); }
+
+        /* ===== Results ===== */
+        .results-section {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white; border-radius: 15px;
+            padding: 30px; margin: 25px 0; text-align: center;
+        }
+        .results-section h3 { margin-bottom: 20px; font-size: 1.3rem; }
+        .result-item { margin: 14px 0; font-size: 1.1rem; }
+        .result-value {
+            font-weight: bold; font-size: 1.4rem;
+            display: inline-block; margin-top: 4px;
+        }
+
+        /* ✅ تلوين النتيجة عند الصفر */
+        .result-value.zero { opacity: 0.55; font-size: 1.1rem; }
+
+        /* ===== Clear Btn ===== */
+        .clear-btn {
+            background: #95a5a6; color: white; border: none;
+            padding: 12px 28px; border-radius: 8px;
+            cursor: pointer; font-size: 1rem;
+            margin: 10px auto; display: block;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .clear-btn:hover { background: #7f8c8d; transform: translateY(-1px); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+            .input-group { grid-template-columns: 1fr; }
+            .operation-row { grid-template-columns: 1fr; gap: 10px; }
+            .remove-btn { width: 100%; height: auto; margin-top: 5px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { border-radius: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ Navbar خارج container لكن محاذى بـ max-width -->
+<div class="navbar-wrapper">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
+                <a href="stock_valuation.html"           class="navbar-item valuation">📊 تقييم الأسهم</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ صندوق الطوارئ</a>
+                <a href="average_calculator.html"        class="navbar-item calculator active">📊 متوسط الشراء</a>
+                <a href="company_valuation.html"         class="navbar-item calculator">🏢 تقييم الشركة</a>
+                <a href="retirement_calculator.html"     class="navbar-item calculator">🏖️ حاسبة التقاعد</a>
+                <a href="portfolio_rating.html"          class="navbar-item calculator">🛡️ أمان المحفظة</a>
+                <a href="zakat_purification.html"        class="navbar-item zakat">🕌 التطهير والزكاة</a>
+                <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح الاستثمار</a>
+            </div>
+            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+
+    <!-- ✅ legal-banner داخل container -->
+    <div class="legal-banner">
+        <div class="banner-content">
+            <span class="warning-icon">⚠️</span>
+            <span class="banner-text">
+                إقرار قانوني: جميع المحتويات لأغراض تعليمية وإرشادية فقط، ولا تُعدّ توصية بالبيع أو الشراء.
+                الاستثمار في أسواق المال ينطوي على مخاطر عالية. قرار الاستخدام يقع على عاتق المستخدم وحده.
+            </span>
+        </div>
+    </div>
+
+    <h1>📊 حاسبة متوسط سعر الشراء</h1>
+
+    <!-- ===== البيانات الحالية ===== -->
+    <div class="input-section">
+        <div class="rule-item">
+            <h3>📋 البيانات الحالية</h3>
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="currentAvgCost">متوسط التكلفة الحالية</label>
+                    <input type="number" id="currentAvgCost"
+                           placeholder="0.00" step="0.01" min="0">
+                </div>
+                <div class="input-field">
+                    <label for="currentShares">إجمالي عدد الأسهم المملوكة</label>
+                    <input type="number" id="currentShares"
+                           placeholder="0" step="1" min="0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== العمليات الجديدة ===== -->
+    <div class="operations-section">
+        <div class="rule-item">
+            <h3>➕ العمليات الجديدة</h3>
+            <div id="operationsContainer">
+                <!-- ✅ الصف الأول مع oninput مثل بقية الصفوف -->
+                <div class="operation-row">
+                    <div class="input-field">
+                        <label>سعر الشراء الجديد</label>
+                        <input type="number" class="new-price"
+                               placeholder="0.00" step="0.01" min="0"
+                               oninput="calculateAverage()">
+                    </div>
+                    <div class="input-field">
+                        <label>كمية الأسهم الجديدة</label>
+                        <input type="number" class="new-shares"
+                               placeholder="0" step="1" min="0"
+                               oninput="calculateAverage()">
+                    </div>
+                    <button class="remove-btn" onclick="removeOperation(this)">🗑 حذف</button>
+                </div>
+            </div>
+            <button class="add-btn" onclick="addOperation()">➕ إضافة عملية شراء</button>
+        </div>
+    </div>
+
+    <!-- ===== النتائج ===== -->
+    <div class="results-section">
+        <h3>📈 النتائج</h3>
+        <div class="result-item">
+            <div>المتوسط السعري الجديد</div>
+            <span class="result-value zero" id="newAverage">0.00</span>
+        </div>
+        <div class="result-item">
+            <div>إجمالي القيمة المستثمرة</div>
+            <span class="result-value zero" id="totalValue">0.00</span>
+        </div>
+        <div class="result-item">
+            <div>إجمالي عدد الأسهم</div>
+            <span class="result-value zero" id="totalShares">0</span>
+        </div>
+    </div>
+
+    <button class="clear-btn" onclick="confirmClear()">🔄 مسح كل البيانات</button>
+
+</div><!-- end .container -->
+
+<script>
+    /* ===== Navbar toggle ===== */
+    function toggleNavbar() {
+        document.getElementById('navbarMenu').classList.toggle('collapsed');
+    }
+
+    /* ===== إضافة صف عملية ===== */
+    function addOperation() {
+        const container = document.getElementById('operationsContainer');
+        const row = document.createElement('div');
+        row.className = 'operation-row';
+        row.innerHTML = `
+            <div class="input-field">
+                <label>سعر الشراء الجديد</label>
+                <input type="number" class="new-price"
+                       placeholder="0.00" step="0.01" min="0"
+                       oninput="calculateAverage()">
+            </div>
+            <div class="input-field">
+                <label>كمية الأسهم الجديدة</label>
+                <input type="number" class="new-shares"
+                       placeholder="0" step="1" min="0"
+                       oninput="calculateAverage()">
+            </div>
+            <button class="remove-btn" onclick="removeOperation(this)">🗑 حذف</button>
+        `;
+        container.appendChild(row);
+        /* ✅ فوكس تلقائي على حقل السعر الجديد */
+        row.querySelector('.new-price').focus();
+    }
+
+    /* ===== حذف صف ===== */
+    function removeOperation(btn) {
+        const container = document.getElementById('operationsContainer');
+        /* ✅ لا تحذف إذا كان الصف الوحيد */
+        if (container.querySelectorAll('.operation-row').length <= 1) {
+            /* امسح القيم فقط بدل الحذف */
+            btn.closest('.operation-row').querySelectorAll('input')
+               .forEach(i => i.value = '');
+            calculateAverage();
+            return;
+        }
+        btn.closest('.operation-row').remove();
+        calculateAverage();
+    }
+
+    /* ===== الحساب الرئيسي ===== */
+    function calculateAverage() {
+        const currentAvgCost = Math.max(0, parseFloat(document.getElementById('currentAvgCost').value) || 0);
+        const currentShares  = Math.max(0, parseInt(document.getElementById('currentShares').value)  || 0);
+
+        const prices = document.querySelectorAll('.new-price');
+        const shares = document.querySelectorAll('.new-shares');
+
+        let totalValue  = currentAvgCost * currentShares;
+        let totalShares = currentShares;
+
+        for (let i = 0; i < prices.length; i++) {
+            /* ✅ Math.max لرفض الأعداد السالبة */
+            const p = Math.max(0, parseFloat(prices[i].value) || 0);
+            const s = Math.max(0, parseInt(shares[i].value)   || 0);
+            totalValue  += p * s;
+            totalShares += s;
+        }
+
+        const newAverage = totalShares > 0 ? totalValue / totalShares : 0;
+
+        setResult('newAverage',  newAverage.toFixed(2),      newAverage  === 0);
+        setResult('totalValue',  totalValue.toFixed(2),      totalValue  === 0);
+        setResult('totalShares', totalShares.toString(),     totalShares === 0);
+    }
+
+    /* ✅ helper: يضبط النص ويُلوّن صفر/غير-صفر */
+    function setResult(id, value, isZero) {
+        const el = document.getElementById(id);
+        el.textContent = value;
+        el.classList.toggle('zero', isZero);
+    }
+
+    /* ===== مسح مع تأكيد ===== */
+    function confirmClear() {
+        if (!confirm('هل تريد مسح كافة البيانات؟ لا يمكن التراجع.')) return;
+        clearAll();
+    }
+
+    function clearAll() {
+        document.getElementById('currentAvgCost').value = '';
+        document.getElementById('currentShares').value  = '';
+
+        /* ✅ يحذف كل الصفوف الإضافية ويُبقي صفاً واحداً فارغاً */
+        const container = document.getElementById('operationsContainer');
+        container.innerHTML = `
+            <div class="operation-row">
+                <div class="input-field">
+                    <label>سعر الشراء الجديد</label>
+                    <input type="number" class="new-price"
+                           placeholder="0.00" step="0.01" min="0"
+                           oninput="calculateAverage()">
+                </div>
+                <div class="input-field">
+                    <label>كمية الأسهم الجديدة</label>
+                    <input type="number" class="new-shares"
+                           placeholder="0" step="1" min="0"
+                           oninput="calculateAverage()">
+                </div>
+                <button class="remove-btn" onclick="removeOperation(this)">🗑 حذف</button>
+            </div>
+        `;
+        calculateAverage();
+    }
+
+    /* ===== Listeners للحقول الثابتة ===== */
+    document.getElementById('currentAvgCost').addEventListener('input', calculateAverage);
+    document.getElementById('currentShares').addEventListener('input', calculateAverage);
+
+    /* ===== Init ===== */
+    document.addEventListener('DOMContentLoaded', calculateAverage);
+</script>
+</body>
+</html>

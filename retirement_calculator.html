@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة التقاعد الشاملة | مفكرة مستثمر</title>
+    <link rel="stylesheet" href="navigation.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh; padding: 20px; color: #2c3e50;
+        }
+
+        /* ===== Modal ===== */
+        .legal-modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.92);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: white; padding: 40px; border-radius: 20px;
+            max-width: 580px; width: 90%; text-align: center;
+        }
+        .modal-content h2 { color: #1e3c72; margin-bottom: 20px; }
+        .modal-content p  { line-height: 1.8; color: #444; margin-bottom: 20px; }
+        .modal-content label { display: flex; align-items: center; justify-content: center;
+                               gap: 10px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+        .modal-btn {
+            padding: 12px 40px; background: #667eea; color: white;
+            border: none; border-radius: 10px; font-size: 1rem;
+            font-weight: bold; cursor: pointer; transition: all 0.3s;
+        }
+        .modal-btn:disabled { background: #aaa; cursor: not-allowed; }
+        .modal-btn:not(:disabled):hover { background: #5568d4; transform: translateY(-2px); }
+
+        /* ===== Container ===== */
+        .container {
+            max-width: 920px; margin: 0 auto;
+            background: rgba(255,255,255,0.98);
+            border-radius: 25px; padding: 35px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        /* ===== Legal Banner — داخل container ===== */
+        .legal-banner {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #f39c12; border-radius: 10px;
+            padding: 12px 15px; margin-bottom: 25px;
+            font-size: 0.85rem; color: #856404; font-weight: bold;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center; margin-bottom: 25px;
+            font-size: 2.2rem; color: #1e3c72;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        /* ===== Grid ===== */
+        .section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .rule-item {
+            background: #fff; border-radius: 15px; padding: 20px;
+            margin-bottom: 20px; border: 1px solid #e0e0e0;
+            border-right: 6px solid #667eea; transition: 0.3s;
+        }
+        .rule-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.07); }
+        .rule-item h3 { color: #1e3c72; margin-bottom: 15px; font-size: 1.05rem; }
+        .assets-sec   { border-right-color: #27ae60; }
+        .debts-sec    { border-right-color: #e74c3c; }
+        .income-sec   { border-right-color: #f1c40f; }
+        .lifestyle-sec{ border-right-color: #9b59b6; }
+
+        /* ===== Inputs ===== */
+        .input-group { margin-bottom: 12px; }
+        .input-group label {
+            display: block; font-weight: 600;
+            margin-bottom: 5px; font-size: 0.85rem; color: #444;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%; padding: 10px; border: 2px solid #edeff2;
+            border-radius: 8px; font-size: 0.95rem; transition: 0.3s;
+            background: white;
+        }
+        .input-group input:focus { border-color: #667eea; outline: none; background: #f0f4ff; }
+
+        /* ===== Calculate Button ===== */
+        .calculate-btn {
+            width: 100%; padding: 16px; background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white; border: none; border-radius: 12px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            margin: 20px 0; transition: all 0.3s;
+        }
+        .calculate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,60,114,0.3); }
+
+        /* ===== Results ===== */
+        .results-section {
+            display: none; margin-top: 30px; padding: 30px;
+            border-radius: 20px; background: #f8f9fa;
+            border: 2px solid #667eea;
+        }
+        .results-section h2 { text-align: center; color: #1e3c72; margin-bottom: 20px; }
+
+        /* شريط التقدم */
+        .progress-container { margin: 20px 0; }
+        .progress-bar-wrapper {
+            background: #e0e0e0; border-radius: 25px;
+            height: 42px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 0%;
+            transition: width 1.2s cubic-bezier(0.1,0.7,1.0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 1.1rem;
+            background: #e74c3c; /* يتغير في JS */
+        }
+
+        /* بطاقات التقرير */
+        .report-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 15px; margin-top: 20px;
+        }
+        .report-card {
+            background: white; padding: 18px; border-radius: 10px;
+            border: 1px solid #eee; text-align: center;
+        }
+        .report-card span   { display: block; font-size: 0.82rem; color: #7f8c8d; margin-bottom: 6px; }
+        .report-card strong { font-size: 1.05rem; color: #2c3e50; }
+
+        /* ===== الجدول الزمني — ✅ مصحح ===== */
+        .timeline-container {
+            margin-top: 40px; padding: 20px 15px;
+            background: white; border-radius: 15px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .timeline-container h4 { text-align: center; margin-bottom: 60px; color: #1e3c72; }
+
+        /* الخط الأفقي */
+        .timeline-track {
+            position: relative;
+            height: 12px; background: #dfe6e9; border-radius: 6px;
+            margin: 70px 30px 80px; /* مساحة للماركرز فوق وتحت */
+        }
+        .timeline-fill {
+            position: absolute;
+            /* ✅ RTL: الخط يمتد من اليمين (right:100%) نحو اليسار */
+            right: 0; height: 100%; border-radius: 6px;
+            background: #667eea; transition: width 1s;
+        }
+
+        /*
+         * ✅ إصلاح جوهري للـ RTL:
+         *    الماركر يتموضع بـ `right` من حافة اليمين
+         *    right:0   = بداية الخط (يمين الصفحة = أقدم سنة)
+         *    right:100 = نهاية الخط  (يسار الصفحة = أحدث سنة)
+         *    لكن getPos تُعطي 0% للبداية — نقلب بـ (100 - pos)
+         */
+        .timeline-marker {
+            position: absolute;
+            top: -15px; /* فوق الخط */
+            transform: translateX(50%); /* توسيط على النقطة */
+            width: 90px;
+        }
+        .marker-point {
+            width: 20px; height: 20px; background: white;
+            border: 4px solid #667eea; border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        }
+        .marker-label {
+            font-size: 0.75rem; font-weight: bold;
+            margin-top: 10px; color: #2d3436;
+            line-height: 1.4; text-align: center;
+            white-space: nowrap;
+        }
+
+        /* ماركر "أنت الآن" — يظهر فوق الخط */
+        .current-marker {
+            top: -65px;
+        }
+        .current-icon { font-size: 2rem; display: block; animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-6px); }
+        }
+
+        /* ===== Clear Btn ===== */
+        .clear-btn {
+            background: #95a5a6; color: white; border: none;
+            padding: 12px 25px; border-radius: 10px; cursor: pointer;
+            margin-top: 20px; transition: all 0.3s; font-size: 0.95rem;
+        }
+        .clear-btn:hover { background: #7f8c8d; transform: translateY(-2px); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .section-grid, .report-grid { grid-template-columns: 1fr; }
+            .container { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { border-radius: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== Modal ===== -->
+<div class="legal-modal" id="legalModal">
+    <div class="modal-content">
+        <h2>🛡️ إقرار ومسؤولية قانونية</h2>
+        <p>
+            هذه الحاسبة أداة <strong>تعليمية</strong> توفر تقديرات افتراضية بناءً على بياناتك.
+            النتائج لا تضمن دقة التقلبات السوقية أو التضخم، ولا تُشكّل استشارة مالية ملزمة.
+            استخدامك للنتائج يقع تحت مسؤوليتك الشخصية الكاملة.
+        </p>
+        <label>
+            <input type="checkbox" id="acceptCheckbox">
+            أوافق على الشروط وأقر بالقراءة
+        </label>
+        <button class="modal-btn" id="enterBtn" disabled>دخول النظام</button>
+    </div>
+</div>
+
+<!-- ===== Navbar ===== -->
+<div class="navbar" style="max-width:920px; margin:0 auto 20px;">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="index.html"                     class="navbar-item home">🏠 الرئيسية</a>
+            <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
+            <a href="emergency_fund_calculator.html" class="navbar-item tips">🛡️ صندوق الطوارئ</a>
+            <a href="average_calculator.html"        class="navbar-item calculator">📊 متوسط الشراء</a>
+            <a href="company_valuation.html"         class="navbar-item calculator">🏢 تقييم الشركة</a>
+            <a href="retirement_calculator.html"     class="navbar-item calculator active">🏖️ حاسبة التقاعد</a>
+            <a href="zakat_purification.html"        class="navbar-item tips">🕌 التطهير والزكاة</a>
+        </div>
+        <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+    </div>
+</div>
+
+<!-- ===== Main Container ===== -->
+<div class="container">
+
+    <!-- ✅ Legal Banner داخل container -->
+    <div class="legal-banner">
+        ⚠️ هذه الأداة تعليمية تقديرية. النتائج لا تمثل استشارة مالية ملزمة.
+        التقلبات السوقية والتضخم الحقيقي قد تختلف عن الافتراضات.
+    </div>
+
+    <h1>📊 حاسبة الاستقلال المالي والتقاعد</h1>
+
+    <!-- ===== المدخلات ===== -->
+    <div class="section-grid">
+
+        <!-- البيانات الشخصية -->
+        <div class="rule-item">
+            <h3>👤 البيانات الشخصية</h3>
+            <div class="input-group">
+                <label>العمر الحالي</label>
+                <input type="number" id="currentAge" placeholder="مثلاً: 30" min="15" max="80">
+            </div>
+            <div class="input-group">
+                <label>عمر التقاعد المستهدف</label>
+                <input type="number" id="targetRetirementAge" placeholder="مثلاً: 55" min="30" max="80">
+            </div>
+            <div class="input-group">
+                <label>عام بدء العمل</label>
+                <input type="number" id="workStartYear" placeholder="مثلاً: 2015" min="1980" max="2030">
+            </div>
+            <!-- ✅ حقل واحد فقط للسنة المستهدفة — يُحسب تلقائياً -->
+            <div class="input-group">
+                <label>سنة التقاعد المبكر المستهدفة</label>
+                <input type="number" id="earlyRetirementYear" placeholder="2040">
+            </div>
+        </div>
+
+        <!-- الأصول -->
+        <div class="rule-item assets-sec">
+            <h3>💰 الأصول والممتلكات</h3>
+            <div class="input-group">
+                <label>الكاش والمدخرات والذهب</label>
+                <input type="number" id="cashAssets" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>المحفظة الاستثمارية (أسهم/صكوك)</label>
+                <input type="number" id="investmentPortfolio" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>نمو المحفظة السنوي المتوقع (%)</label>
+                <input type="number" id="portfolioGrowth" value="8" min="0" max="30">
+            </div>
+            <div class="input-group">
+                <label>قيمة العقارات المدرة للدخل</label>
+                <input type="number" id="realEstateValue" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>صافي الدخل الشهري من العقار</label>
+                <input type="number" id="monthlyRental" placeholder="0" min="0">
+            </div>
+        </div>
+
+        <!-- الالتزامات -->
+        <div class="rule-item debts-sec">
+            <h3>🚗 الالتزامات والديون</h3>
+            <div class="input-group">
+                <label>إجمالي القروض المتبقية</label>
+                <input type="number" id="totalLoans" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>حالة السيارة الرئيسية</label>
+                <select id="carStatus">
+                    <option value="owned">ملك بالكامل</option>
+                    <option value="installments">أقساط / تأجير</option>
+                </select>
+            </div>
+            <div id="carInstallmentGroup" class="input-group" style="display:none;">
+                <label>قسط السيارة الشهري</label>
+                <input type="number" id="carInstallment" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>مصاريف تشغيل السيارة شهرياً</label>
+                <input type="number" id="carOperating" placeholder="مثلاً: 1000" min="0">
+            </div>
+            <div class="input-group">
+                <label>التزامات شهرية أخرى</label>
+                <input type="number" id="otherObligations" placeholder="0" min="0">
+            </div>
+        </div>
+
+        <!-- نمط الحياة -->
+        <div class="rule-item lifestyle-sec">
+            <h3>🏠 السكن ونمط الحياة</h3>
+            <div class="input-group">
+                <label>نوع السكن الحالي</label>
+                <select id="housingType">
+                    <option value="owned">ملك</option>
+                    <option value="rent">إيجار</option>
+                </select>
+            </div>
+            <div id="rentGroup" class="input-group" style="display:none;">
+                <label>مبلغ الإيجار الشهري</label>
+                <input type="number" id="housingAmount" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>مصاريف المعيشة الشهرية (أكل/فواتير/تعليم)</label>
+                <input type="number" id="basicExpenses" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>الرفاهية والسفر (سنوياً)</label>
+                <input type="number" id="annualLuxury" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>ميزانية الصحة بعد التقاعد (سنوياً)</label>
+                <input type="number" id="annualHealth" placeholder="مثلاً: 10000" min="0">
+            </div>
+            <div class="input-group">
+                <label>معدل التضخم السنوي (%)</label>
+                <input type="number" id="inflationRate" value="3" min="0" max="20">
+            </div>
+        </div>
+    </div>
+
+    <!-- الدخل التقاعدي -->
+    <div class="rule-item income-sec">
+        <h3>📈 الدخل التقاعدي الحكومي</h3>
+        <div class="section-grid">
+            <div class="input-group">
+                <label>الراتب التقاعدي المتوقع (التأمينات الشهري)</label>
+                <input type="number" id="expectedPension" placeholder="0" min="0">
+            </div>
+            <div class="input-group">
+                <label>مكافأة نهاية الخدمة المتوقعة</label>
+                <input type="number" id="retirementBonus" placeholder="0" min="0">
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ زر صريح للحساب -->
+    <button class="calculate-btn" onclick="calculate()">📊 احسب خطة التقاعد</button>
+
+    <!-- ===== النتائج ===== -->
+    <div class="results-section" id="resultsSection">
+        <h2>التقرير النهائي</h2>
+
+        <div class="progress-container">
+            <div class="progress-bar-wrapper">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <p id="retirementMessage" style="text-align:center; margin-top:15px; font-weight:bold; font-size:1.05rem;"></p>
+        </div>
+
+        <div class="report-grid">
+            <div class="report-card">
+                <span>المصاريف الشهرية عند التقاعد (بعد التضخم)</span>
+                <strong id="repFutureExp">—</strong>
+            </div>
+            <div class="report-card">
+                <span>رأس المال المطلوب لسد الفجوة (قاعدة 25×)</span>
+                <strong id="repCapitalNeeded">—</strong>
+            </div>
+            <div class="report-card">
+                <span>الثروة الصافية المتوقعة عند التقاعد</span>
+                <strong id="repExpectedWealth">—</strong>
+            </div>
+            <!-- ✅ مقارنة بالمصاريف المستقبلية لا الحالية -->
+            <div class="report-card">
+                <span>تغطية الدخل السلبي للمصاريف المستقبلية</span>
+                <strong id="repPassiveRatio">—</strong>
+            </div>
+        </div>
+
+        <!-- ===== الجدول الزمني المصحح ===== -->
+        <div class="timeline-container">
+            <h4>🗓️ خارطة الطريق الزمنية</h4>
+
+            <div class="timeline-track" id="timelineTrack">
+                <!-- يمتد من اليمين (البداية) إلى اليسار (النهاية) -->
+                <div class="timeline-fill" id="timelineFill"></div>
+
+                <!-- الماركرز تُضاف بـ JS -->
+                <div class="timeline-marker" id="mStart">
+                    <div class="marker-point" style="border-color:#2c3e50"></div>
+                    <div class="marker-label" id="lStart"></div>
+                </div>
+                <div class="timeline-marker" id="mEarly">
+                    <div class="marker-point" style="border-color:#f39c12"></div>
+                    <div class="marker-label" id="lEarly"></div>
+                </div>
+                <div class="timeline-marker" id="mFull">
+                    <div class="marker-point" style="border-color:#e74c3c"></div>
+                    <div class="marker-label" id="lFull"></div>
+                </div>
+                <div class="timeline-marker" id="mSafe">
+                    <div class="marker-point" style="border-color:#27ae60; background:#27ae60"></div>
+                    <div class="marker-label" id="lSafe"></div>
+                </div>
+                <!-- "أنت الآن" -->
+                <div class="timeline-marker current-marker" id="mNow">
+                    <span class="current-icon">👤</span>
+                    <div class="marker-label" style="color:#1e3c72; font-weight:bold;">2026<br>أنت الآن</div>
+                </div>
+            </div>
+
+            <!-- أعوام البداية والنهاية -->
+            <div style="display:flex; justify-content:space-between; padding:0 30px;
+                        font-size:0.8rem; color:#888; margin-top:5px;">
+                <span id="timelineEndLabel">—</span>
+                <span id="timelineStartLabel">—</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ Clear مع تأكيد -->
+    <button class="clear-btn" onclick="confirmReset()">🔄 إعادة تعيين كافة البيانات</button>
+
+</div><!-- end .container -->
+
+<script>
+/* =====================================================
+   Modal
+   ===================================================== */
+document.getElementById('acceptCheckbox').addEventListener('change', function () {
+    document.getElementById('enterBtn').disabled = !this.checked;
+});
+document.getElementById('enterBtn').addEventListener('click', function () {
+    document.getElementById('legalModal').style.display = 'none';
+});
+
+/* =====================================================
+   Navbar
+   ===================================================== */
+function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('collapsed'); }
+
+/* =====================================================
+   حقول مشروطة
+   ===================================================== */
+document.getElementById('carStatus').addEventListener('change', function () {
+    document.getElementById('carInstallmentGroup').style.display =
+        this.value === 'installments' ? 'block' : 'none';
+});
+document.getElementById('housingType').addEventListener('change', function () {
+    document.getElementById('rentGroup').style.display =
+        this.value === 'rent' ? 'block' : 'none';
+});
+
+/* =====================================================
+   formatCurrency
+   ===================================================== */
+function fmt(n) {
+    return Math.round(n).toLocaleString('ar-SA') + ' ريال';
+}
+
+/* =====================================================
+   الحساب الرئيسي
+   ===================================================== */
+function calculate() {
+    const currentYear = 2026;
+
+    const inp = {
+        cAge:       parseInt(document.getElementById('currentAge').value)            || 0,
+        tAge:       parseInt(document.getElementById('targetRetirementAge').value)   || 0,
+        startWork:  parseInt(document.getElementById('workStartYear').value)         || currentYear,
+        earlyRet:   parseInt(document.getElementById('earlyRetirementYear').value)   || 0,
+        cash:       parseFloat(document.getElementById('cashAssets').value)          || 0,
+        portfolio:  parseFloat(document.getElementById('investmentPortfolio').value) || 0,
+        growth:     parseFloat(document.getElementById('portfolioGrowth').value)     || 8,
+        realEstate: parseFloat(document.getElementById('realEstateValue').value)     || 0,
+        rentalInc:  parseFloat(document.getElementById('monthlyRental').value)       || 0,
+        loans:      parseFloat(document.getElementById('totalLoans').value)          || 0,
+        carPay:     parseFloat(document.getElementById('carInstallment').value)      || 0,
+        carOp:      parseFloat(document.getElementById('carOperating').value)        || 0,
+        otherObl:   parseFloat(document.getElementById('otherObligations').value)    || 0,
+        rentPay:    parseFloat(document.getElementById('housingAmount').value)       || 0,
+        basicExp:   parseFloat(document.getElementById('basicExpenses').value)       || 0,
+        luxuryAnn:  parseFloat(document.getElementById('annualLuxury').value)        || 0,
+        healthAnn:  parseFloat(document.getElementById('annualHealth').value)        || 0,
+        inflation:  parseFloat(document.getElementById('inflationRate').value)       || 3,
+        pension:    parseFloat(document.getElementById('expectedPension').value)     || 0,
+        bonus:      parseFloat(document.getElementById('retirementBonus').value)     || 0,
+    };
+
+    // تحقق أساسي
+    if (inp.basicExp <= 0 || inp.cAge <= 0 || inp.tAge <= inp.cAge) {
+        alert('يرجى إدخال: العمر الحالي، عمر التقاعد (أكبر من الحالي)، والمصاريف الشهرية.');
+        return;
+    }
+
+    const yearsToRetire  = inp.tAge - inp.cAge;
+    const targetRetYear  = currentYear + yearsToRetire;
+    // ✅ سنة التقاعد الكامل = targetRetYear إن لم تُدخل earlyRet
+    const fullRetYear    = targetRetYear;
+
+    /* 1. المصاريف الشهرية الحالية */
+    const currentMonthlyExp =
+        inp.basicExp + inp.rentPay + inp.carPay + inp.carOp + inp.otherObl + (inp.luxuryAnn / 12);
+
+    /* 2. المصاريف المستقبلية بعد تضخم + صحة */
+    const futureMonthlyExp =
+        (currentMonthlyExp * Math.pow(1 + inp.inflation / 100, yearsToRetire))
+        + (inp.healthAnn / 12);
+
+    /* 3. الدخل السلبي المستقبلي
+       ✅ نمو إيجار بمعدل تضخم 50% (افتراض محافظ) */
+    const futureRentalInc =
+        inp.rentalInc * Math.pow(1 + (inp.inflation * 0.5) / 100, yearsToRetire);
+    const futurePassiveInc = inp.pension + futureRentalInc;
+
+    /* 4. رأس المال المطلوب (قاعدة 25×) */
+    const monthlyGap    = Math.max(0, futureMonthlyExp - futurePassiveInc);
+    const capitalNeeded = monthlyGap * 12 * 25;
+
+    /* 5. نمو الثروة الصافية */
+    const netAssets      = (inp.cash + inp.portfolio + inp.realEstate) - inp.loans;
+    const expectedWealth = (netAssets * Math.pow(1 + inp.growth / 100, yearsToRetire)) + inp.bonus;
+
+    /* 6. نسبة الجاهزية */
+    let readiness;
+    if (capitalNeeded <= 0) {
+        readiness = 100;
+    } else {
+        readiness = Math.min(100, (expectedWealth / capitalNeeded) * 100);
+    }
+
+    /* 7. ✅ نسبة تغطية الدخل السلبي — بالمصاريف المستقبلية */
+    const passiveRatio = futureMonthlyExp > 0
+        ? Math.round((futurePassiveInc / futureMonthlyExp) * 100)
+        : 0;
+
+    /* تحديث الواجهة */
+    updateDisplay(readiness, futureMonthlyExp, capitalNeeded, expectedWealth,
+                  futurePassiveInc, futureMonthlyExp, passiveRatio);
+
+    /* محاكاة سنة الأمان */
+    const safeYear = simulateSafeYear(inp, netAssets, currentMonthlyExp);
+
+    /* رسم الجدول الزمني */
+    drawTimeline(inp.startWork, inp.earlyRet, fullRetYear, safeYear, currentYear);
+
+    document.getElementById('resultsSection').style.display = 'block';
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* =====================================================
+   updateDisplay
+   ===================================================== */
+function updateDisplay(readiness, futureExp, capital, wealth, passiveInc, futureExp2, passiveRatio) {
+    const fill = document.getElementById('progressFill');
+    fill.style.width      = readiness + '%';
+    fill.textContent      = Math.round(readiness) + '%';
+    fill.style.background = readiness > 75 ? '#27ae60' : (readiness > 45 ? '#f39c12' : '#e74c3c');
+
+    const msg = document.getElementById('retirementMessage');
+    if (passiveRatio >= 100) {
+        msg.innerHTML   = '🏁 تهانينا! دخلك السلبي المستقبلي يغطي مصاريفك بالكامل عند التقاعد.';
+        msg.style.color = '#27ae60';
+    } else {
+        msg.innerHTML   = `⏳ أنت في مرحلة البناء. الدخل السلبي المستقبلي يغطي ${passiveRatio}% من مصاريفك عند التقاعد.`;
+        msg.style.color = '#2c3e50';
+    }
+
+    document.getElementById('repFutureExp').innerText     = fmt(futureExp);
+    document.getElementById('repCapitalNeeded').innerText = fmt(capital);
+    document.getElementById('repExpectedWealth').innerText= fmt(wealth);
+    document.getElementById('repPassiveRatio').innerText  = passiveRatio + '%';
+}
+
+/* =====================================================
+   simulateSafeYear
+   ✅ دخل الإيجار ينمو بالتضخم
+   ===================================================== */
+function simulateSafeYear(inp, assets, monthlyExp) {
+    const retireYear = 2026 + (inp.tAge - inp.cAge);
+
+    for (let y = 2026; y <= 2085; y++) {
+        const diff        = y - 2026;
+        const curAssets   = assets * Math.pow(1 + inp.growth / 100, diff);
+        const curExpAnn   = (monthlyExp * 12 * Math.pow(1 + inp.inflation / 100, diff))
+                            + inp.healthAnn;
+
+        /* دخل الإيجار ينمو بنصف معدل التضخم */
+        const curRental   = inp.rentalInc
+                            * Math.pow(1 + (inp.inflation * 0.5) / 100, diff) * 12;
+
+        const pension     = y >= retireYear ? inp.pension * 12 : 0;
+        const totalIncome = curRental + pension;
+
+        /* اختبار الأمان: الدخل يغطي المصاريف أو قاعدة 4% تُغطي الفجوة */
+        if (totalIncome >= curExpAnn
+            || (totalIncome + curAssets * 0.04) >= curExpAnn) {
+            return y;
+        }
+    }
+    return 2085;
+}
+
+/* =====================================================
+   drawTimeline
+   ✅ إصلاح كامل للـ RTL:
+      right: 0   = أقدم سنة (يمين الصفحة)
+      right: 100% = أحدث سنة (يسار الصفحة)
+      getPos(y) يُعطي 0-100 من اليسار — نقلب بـ (100 - pos)
+   ===================================================== */
+function drawTimeline(start, early, full, safe, now) {
+    const span = Math.max(full - start, 1);
+
+    /* getPos: 0 = start (يمين) ، 100 = full (يسار) */
+    const getPosRTL = (year) => {
+        const pct = Math.min(100, Math.max(0, ((year - start) / span) * 100));
+        return pct; // نستخدمه مباشرة مع right:
+    };
+
+    /* وضع الماركر: right = getPosRTL% لأننا RTL */
+    const place = (id, year, label) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.right  = getPosRTL(year) + '%';
+        el.style.position = 'absolute';
+        document.getElementById(id.replace('m', 'l')).innerHTML = label;
+    };
+
+    place('mStart', start, `${start}<br>البداية`);
+    place('mFull',  full,  `${full}<br>التقاعد`);
+    if (early > 0) place('mEarly', early, `${early}<br>مبكر 🎯`);
+    place('mSafe', safe, `${safe}<br>آمن ✅`);
+
+    /* ماركر "الآن" */
+    const nowEl = document.getElementById('mNow');
+    nowEl.style.right    = getPosRTL(now) + '%';
+    nowEl.style.position = 'absolute';
+
+    /* شريط التقدم: يمتد من يمين (start) لموقع "الآن" */
+    document.getElementById('timelineFill').style.width = getPosRTL(now) + '%';
+
+    /* تسميات أسفل الخط */
+    document.getElementById('timelineStartLabel').textContent = `${start} — البداية`;
+    document.getElementById('timelineEndLabel').textContent   = `${full} — التقاعد`;
+}
+
+/* =====================================================
+   Reset مع تأكيد
+   ===================================================== */
+function confirmReset() {
+    if (confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) {
+        window.location.reload();
+    }
+}
+</script>
+</body>
+</html>

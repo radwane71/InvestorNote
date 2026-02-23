@@ -1,57 +1,42 @@
-<!-- شريط التنقل الموحد -->
-<link rel="stylesheet" href="navigation.css">
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="index.html" class="navbar-brand">
-            📈 مفكرة مستثمر
-        </a>
-        <div class="navbar-menu" id="navbarMenu">
-            <a href="index.html" class="navbar-item">
-                🏠 الرئيسية
-            </a>
-            <a href="advice.html" class="navbar-item calculator">
-                💰 حاسبة الثروة
-            </a>
-            <a href="salary_calculator.html" class="navbar-item salary">
-                💼 حاسبة الراتب
-            </a>
-            <a href="zakat_purification.html" class="navbar-item zakat">
-                🕌 التطهير والزكاة
-            </a>
-            <a href="financial_freedom.html" class="navbar-item fire">
-                🔥 الحرية المالية
-            </a>
-            <a href="investor_tips.html" class="navbar-item tips">
-                ⚠️ نصائح الاستثمار
-            </a>
-            <a href="snowball_calculator.html" class="navbar-item calculator">
-                ❄️ حاسبة كرة الثلج
-            </a>
-            <a href="emergency_fund_calculator.html" class="navbar-item emergency">
-                🛡️ صندوق الطوارئ
-            </a>
-        </div>
+
+        <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
         <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
+            <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
+            <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
+            <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
+            <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
+            <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح</a>
+            <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ العائد المركب</a>
+            <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+            <a href="average_calculator.html"        class="navbar-item average">📊 متوسط الشراء</a>
+            <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
+            <a href="retirement_calculator.html"     class="navbar-item retirement">🏖️ التقاعد</a>
+            <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+            <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
+            <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+            <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
+            <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
+        </div>
+
     </div>
 </nav>
 
 <script>
-function toggleNavbar() {
-    const menu = document.getElementById('navbarMenu');
-    menu.classList.toggle('collapsed');
-}
-
-// تحديد الصفحة النشطة
-document.addEventListener('DOMContentLoaded', function() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const navItems = document.querySelectorAll('.navbar-item');
-    
-    navItems.forEach(item => {
-        const itemPage = item.getAttribute('href');
-        if (itemPage === currentPage || 
-            (currentPage === '' && itemPage === 'index.html')) {
-            item.classList.add('active');
-        }
+    function toggleNavbar() {
+        document.getElementById('navbarMenu').classList.toggle('open');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const raw  = window.location.pathname.split('/').pop() || 'index.html';
+        const page = raw.split('?')[0].split('#')[0] || 'index.html';
+        document.querySelectorAll('.navbar-item').forEach(function (item) {
+            item.classList.remove('active');
+            const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
+            if (href === page) item.classList.add('active');
+        });
     });
-});
 </script>

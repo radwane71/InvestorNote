@@ -4,753 +4,416 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفكرة مستثمر</title>
+
+    <!-- ✅ navigation.css في head -->
+    <link rel="stylesheet" href="navigation.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
             background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c3e50;
+            min-height: 100vh; padding: 20px; color: #2c3e50;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
 
         h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
+            text-align: center; color: #2c3e50;
+            margin-bottom: 30px; font-size: 2.5rem;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
+        /* ===== بطاقات ===== */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
+            gap: 20px; padding: 20px 0;
         }
 
         .box {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            overflow: hidden;
+            background: white; border-radius: 15px;
+            padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer; text-decoration: none;
+            display: block; position: relative; overflow: hidden;
+            color: inherit;
         }
 
         .box::before {
             content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            right: 0;
+            position: absolute; top: 0; right: 0; left: 0;
             height: 4px;
             background: linear-gradient(90deg, #5a7fb5, #6a8fc5);
             transform: scaleX(0);
+            /* ✅ RTL: transform-origin من اليمين صح */
+            transform-origin: right;
             transition: transform 0.3s ease;
         }
-
         .box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
-
-        .box:hover::before {
-            transform: scaleX(1);
-        }
+        .box:hover::before { transform: scaleX(1); }
 
         .box h3 {
-            color: #333;
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            color: #333; font-size: 1.1rem;
+            font-weight: bold; margin-bottom: 8px; line-height: 1.4;
         }
-
         .box .url {
-            color: #666;
-            font-size: 0.85rem;
-            word-break: break-all;
-            opacity: 0.8;
+            color: #666; font-size: 0.82rem;
+            word-break: break-all; opacity: 0.8;
+        }
+        .box small {
+            color: #666; font-size: 0.75rem;
+            display: block; margin-top: 5px;
         }
 
+        /* بطاقات داخلية */
+        .box.internal { border: 2px solid #5a9d7a; }
+        .box.internal::before {
+            background: linear-gradient(90deg, #5a9d7a, #4a8d6a);
+        }
+        .box .badge {
+            display: inline-block; background: #5a9d7a;
+            color: white; font-size: 0.7rem;
+            padding: 2px 8px; border-radius: 10px;
+            margin-bottom: 6px; font-weight: bold;
+        }
+
+        /* ===== تصنيفات ===== */
         .category {
-            background: rgba(74, 111, 165, 0.15);
-            color: #2c3e50;
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin: 10px 0;
-            text-align: center;
-            font-weight: bold;
+            background: rgba(74,111,165,0.15);
+            color: #2c3e50; padding: 8px 16px;
+            border-radius: 20px; margin: 25px 0 5px;
+            text-align: center; font-weight: bold;
             backdrop-filter: blur(10px);
         }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 15px;
-            }
-            
-            .box {
-                padding: 15px;
-            }
-            
-            .box h3 {
-                font-size: 1rem;
-            }
+        .category.internal-cat {
+            background: rgba(90,157,122,0.2);
+            border: 1px solid rgba(90,157,122,0.4);
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-                margin-bottom: 20px;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-
+        /* ===== Footer ===== */
         footer {
-            background: rgba(74, 111, 165, 0.2);
-            color: #2c3e50;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-radius: 15px 15px 0 0;
+            background: rgba(74,111,165,0.12);
+            color: #2c3e50; padding: 30px 20px;
+            margin-top: 40px; border-radius: 15px 15px 0 0;
         }
-
         .disclaimer h4 {
-            color: #2c3e50;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: bold;
+            color: #2c3e50; font-size: 1.1rem;
+            margin-bottom: 15px; text-align: center; font-weight: bold;
         }
-
         .disclaimer p {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 10px;
-            opacity: 0.9;
-            text-align: justify;
+            font-size: 0.85rem; line-height: 1.6;
+            margin-bottom: 10px; opacity: 0.9; text-align: justify;
         }
 
-        @media (max-width: 768px) {
-            footer {
-                padding: 20px 15px;
-                margin-top: 30px;
-            }
-            
-            .disclaimer h4 {
-                font-size: 1rem;
-            }
-            
-            .disclaimer p {
-                font-size: 0.8rem;
-            }
-        }
-
+        /* ===== عداد الزوار ===== */
         .visitor-counter {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex; justify-content: center;
+            gap: 30px; margin-top: 25px; padding-top: 20px;
+            border-top: 1px solid rgba(74,111,165,0.2);
         }
-
         .counter-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            display: flex; flex-direction: column;
+            align-items: center; text-align: center;
         }
-
-        .counter-label {
-            font-size: 0.8rem;
-            color: #5a7fb5;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
-
+        .counter-label { font-size: 0.8rem; color: #5a7fb5; margin-bottom: 5px; }
         .counter-number {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #5a9d7a;
-            text-shadow: 0 0 10px rgba(90, 157, 122, 0.3);
+            font-size: 1.5rem; font-weight: bold; color: #5a9d7a;
             animation: pulse 2s infinite;
         }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.75; } }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.8;
-            }
+        /* ===== Back to Top ===== */
+        .back-to-top {
+            position: fixed; bottom: 30px; left: 30px;
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            color: white; border: none; border-radius: 50%;
+            width: 48px; height: 48px; font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(90,127,181,0.4);
+            transition: transform 0.3s, opacity 0.3s;
+            opacity: 0; pointer-events: none;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 999;
         }
+        /* ✅ visible بدل display:none/flex — أسلس */
+        .back-to-top.visible {
+            opacity: 1; pointer-events: auto;
+        }
+        .back-to-top:hover { transform: translateY(-3px); }
 
+        /* ===== GoatCounter badge ===== */
+        .gc-badge {
+            text-align: center; margin-top: 20px;
+            padding: 10px; background: rgba(74,111,165,0.08);
+            border-radius: 8px;
+        }
+        .gc-badge small { color: #2c3e50; opacity: 0.75; font-size: 0.8rem; }
+        .gc-badge a { color: #5a9d7a; text-decoration: none; }
+
+        /* ===== Responsive ===== */
         @media (max-width: 768px) {
-            .visitor-counter {
-                flex-direction: column;
-                gap: 15px;
-                padding-top: 15px;
-            }
-            
-            .counter-item {
-                flex-direction: row;
-                justify-content: space-between;
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .counter-number {
-                font-size: 1.2rem;
-            }
+            h1 { font-size: 2rem; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+            .box { padding: 15px; }
+            .box h3 { font-size: 1rem; }
+            footer { padding: 20px 15px; margin-top: 30px; }
+            .visitor-counter { flex-direction: column; gap: 15px; align-items: center; }
+            .back-to-top { bottom: 15px; left: 15px; width: 42px; height: 42px; font-size: 1.1rem; }
         }
-
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            h1 { font-size: 1.8rem; margin-bottom: 20px; }
+            .grid { grid-template-columns: 1fr; gap: 12px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <link rel="stylesheet" href="navigation.css">
-        <nav class="navbar">
-            <div class="navbar-container">
-                <a href="index.html" class="navbar-brand">
-                    📈 مفكرة مستثمر
-                </a>
-                <div class="navbar-menu" id="navbarMenu">
-                    <a href="index.html" class="navbar-item">
-                        🏠 الرئيسية
-                    </a>
-                    <a href="advice.html" class="navbar-item calculator">
-                        💰 حاسبة الثروة
-                    </a>
-                    <a href="salary_calculator.html" class="navbar-item salary">
-                        💼 حاسبة الراتب
-                    </a>
-                    <a href="zakat_purification.html" class="navbar-item zakat">
-                        🕌 التطهير والزكاة
-                    </a>
-                    <a href="financial_freedom.html" class="navbar-item fire">
-                        🔥 الحرية المالية
-                    </a>
-                    <a href="investor_tips.html" class="navbar-item tips">
-                        ⚠️ نصائح الاستثمار
-                    </a>
-                    <a href="snowball_calculator.html" class="navbar-item calculator">
-                        ❄️ حاسبة كرة الثلج
-                    </a>
-                    <a href="emergency_fund_calculator.html" class="navbar-item emergency">
-                        🛡️ صندوق الطوارئ
-                    </a>
-                    <a href="stock_valuation.html" class="navbar-item valuation">
-                        📊 تقييم الأسهم
-                    </a>
-                </div>
-                <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
-            </div>
-        </nav>
-        <script>
-        function toggleNavbar() {
-            const menu = document.getElementById('navbarMenu');
-            menu.classList.toggle('collapsed');
-        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navItems = document.querySelectorAll('.navbar-item');
-            
-            navItems.forEach(item => {
-                const itemPage = item.getAttribute('href');
-                if (itemPage === currentPage || 
-                    (currentPage === '' && itemPage === 'index.html')) {
-                    item.classList.add('active');
-                }
+<!-- ✅ back-to-top داخل body مباشرة — لا علاقة له بالـ container -->
+<button class="back-to-top" id="backToTop"
+        onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        title="العودة للأعلى" aria-label="العودة للأعلى">↑</button>
+
+<div class="container">
+
+    <!-- ✅ Nav snippet الموحد المصحح -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
+                <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
+                <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
+                <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
+                <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح</a>
+                <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ العائد المركب</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+                <a href="average_calculator.html"        class="navbar-item average">📊 متوسط الشراء</a>
+                <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
+                <a href="retirement_calculator.html"     class="navbar-item retirement">🏖️ التقاعد</a>
+                <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+                <!-- ✅ calculator بدل valuation — موجودة في CSS -->
+                <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
+                <!-- ✅ dca_calculator مضافة -->
+                <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        /* ✅ open بدل collapsed */
+        function toggleNavbar() {
+            document.getElementById('navbarMenu').classList.toggle('open');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const raw  = window.location.pathname.split('/').pop() || 'index.html';
+            const page = raw.split('?')[0].split('#')[0] || 'index.html';
+            document.querySelectorAll('.navbar-item').forEach(function (item) {
+                item.classList.remove('active');
+                const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
+                if (href === page) item.classList.add('active');
             });
         });
-        </script>
+    </script>
 
-        <h1>مفكرة مستثمر</h1>
-        
-        <div class="category">أسعار اليوم وتقييمات</div>
-        <div class="grid">
-            <a href="https://www.argaam.com/ar/company/companies-prices/3" target="_blank" class="box">
-                <h3>أسعار اليوم</h3>
-                <span class="url">argaam.com</span>
-            </a>
-            <a href="https://www.gurufocus.com/dcf-calculator?ticker=IMPUY&r=caf6fe0e0db70d936033da5461e60141&utm_source=yahoo_finance&utm_medium=syndication&utm_campaign=headlines&utm_content=impala_platinum_flags_400%25_profit_jump_as_metals_prices_rally&utm_term=IMPUY" target="_blank" class="box">
-                <h3>القيمة العادلة DCF</h3>
-                <span class="url">gurufocus.com</span>
-            </a>
-            <a href="https://www.gurufocus.com/" target="_blank" class="box">
-                <h3>القيمة العادلة GFV</h3>
-                <span class="url">gurufocus.com</span>
-            </a>
-        </div>
+    <h1>📈 مفكرة مستثمر</h1>
 
-        <div class="category">الإكتتابات والأخبار</div>
-        <div class="grid">
-            <a href="https://x.com/IPOsOfSaudi" target="_blank" class="box">
-                <h3>الإكتتابات القادمة</h3>
-                <span class="url">x.com/IPOsOfSaudi</span>
-            </a>
-            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements?locale=ar&page=1" target="_blank" class="box">
-                <h3>أخبار السوق</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://www.saudiexchange.sa/Resources/Reports-v2/ShareBuyback_ar.html" target="_blank" class="box">
-                <h3>ملكية الشركات لأسهمها</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://x.com/owners_changes" target="_blank" class="box">
-                <h3>تغييرات كبار الملاك</h3>
-                <span class="url">x.com/owners_changes</span>
-            </a>
-        </div>
+<!-- ===== الحاسبات الداخلية ===== -->
+    <div class="category internal-cat">🛠️ الحاسبات والأدوات الداخلية</div>
+    <div class="grid">
+        <a href="advice.html"                    class="box internal"><span class="badge">✦ داخلي</span><h3>💰 حاسبة الثروة</h3><span class="url">advice.html</span></a>
+        <a href="snowball_calculator.html"       class="box internal"><span class="badge">✦ داخلي</span><h3>❄️ حاسبة العائد المركب</h3><span class="url">snowball_calculator.html</span></a>
+        <a href="emergency_fund_calculator.html" class="box internal"><span class="badge">✦ داخلي</span><h3>🛡️ صندوق الطوارئ</h3><span class="url">emergency_fund_calculator.html</span></a>
+        <a href="salary_calculator.html"         class="box internal"><span class="badge">✦ داخلي</span><h3>💼 حاسبة الراتب</h3><span class="url">salary_calculator.html</span></a>
+        <a href="zakat_purification.html"        class="box internal"><span class="badge">✦ داخلي</span><h3>🕌 التطهير والزكاة</h3><span class="url">zakat_purification.html</span></a>
+        <a href="financial_freedom.html"         class="box internal"><span class="badge">✦ داخلي</span><h3>🔥 الحرية المالية (FIRE)</h3><span class="url">financial_freedom.html</span></a>
+        <a href="average_calculator.html"        class="box internal"><span class="badge">✦ داخلي</span><h3>📊 حاسبة متوسط الشراء</h3><span class="url">average_calculator.html</span></a>
+        <a href="company_valuation.html"         class="box internal"><span class="badge">✦ داخلي</span><h3>🏢 تقييم الشركة</h3><span class="url">company_valuation.html</span></a>
+        <a href="retirement_calculator.html"     class="box internal"><span class="badge">✦ داخلي</span><h3>🏖️ حاسبة التقاعد</h3><span class="url">retirement_calculator.html</span></a>
+        <a href="portfolio_rating.html"          class="box internal"><span class="badge">✦ داخلي</span><h3>🛡️ أمان المحفظة</h3><span class="url">portfolio_rating.html</span></a>
+        <a href="stock_valuation.html"           class="box internal"><span class="badge">✦ داخلي</span><h3>📊 تقييم الأسهم</h3><span class="url">stock_valuation.html</span></a>
+        <a href="dca_calculator.html"            class="box internal"><span class="badge">✦ داخلي</span><h3>📅 DCA مقابل الشراء الفوري</h3><span class="url">dca_calculator.html</span></a>
+        <!-- ✅ مضافتان -->
+        <a href="goal_calculator.html"           class="box internal"><span class="badge">✦ داخلي</span><h3>🎯 الهدف الاستثماري العكسي</h3><span class="url">goal_calculator.html</span></a>
+        <a href="allocation_calculator.html"     class="box internal"><span class="badge">✦ داخلي</span><h3>⚖️ توزيع المحفظة</h3><span class="url">allocation_calculator.html</span></a>
+        <a href="investor_tips.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>⚠️ نصائح الاستثمار</h3><span class="url">investor_tips.html</span></a>
+    </div>
 
-        <div class="category">التوزيعات وأداء السوق</div>
-        <div class="grid">
-            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-financial-calendars/dividends?locale=ar" target="_blank" class="box">
-                <h3>التوزيعات النقدية</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/main-market-performance?locale=ar" target="_blank" class="box">
-                <h3>أداء السوق اليومي</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/marketsummary?locale=ar" target="_blank" class="box">
-                <h3>ملخص السوق اليومي</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://x.com/cash_dividends7" target="_blank" class="box">
-                <h3>أسهم التوزيعات</h3>
-                <span class="url">x.com/cash_dividends7</span>
-            </a>
-            <a href="https://x.com/DividendHunterX" target="_blank" class="box">
-                <h3>أسهم التوزيعات1</h3>
-                <span class="url">x.com/DividendHunterX</span>
-            </a>
-        </div>
+    <!-- ===== أسعار وتقييمات ===== -->
+    <div class="category">أسعار اليوم وتقييمات</div>
+    <div class="grid">
+        <a href="https://www.argaam.com/ar/company/companies-prices/3"  target="_blank" class="box"><h3>أسعار اليوم</h3><span class="url">argaam.com</span></a>
+        <a href="https://www.gurufocus.com/dcf-calculator"               target="_blank" class="box"><h3>القيمة العادلة DCF</h3><span class="url">gurufocus.com</span></a>
+        <a href="https://www.gurufocus.com/"                             target="_blank" class="box"><h3>القيمة العادلة GFV</h3><span class="url">gurufocus.com</span></a>
+    </div>
 
-        <div class="category">دورات تعليمية</div>
-        <div class="grid">
-            <a href="https://www.youtube.com/playlist?list=PL83MGt0lY37uRJqgj3qLrEkjQZrKGC9PM" target="_blank" class="box">
-                <h3>دورة إستثمر بوعي</h3>
-                <span class="url">youtube.com</span>
-            </a>
-            <a href="https://www.youtube.com/playlist?list=PLGPtIl_d816otQpbqBuyjisugkHwyH1HH" target="_blank" class="box">
-                <h3>دورة تحليل الأسهم</h3>
-                <span class="url">youtube.com</span>
-            </a>
-        </div>
+    <!-- ===== اكتتابات ===== -->
+    <div class="category">الاكتتابات والأخبار</div>
+    <div class="grid">
+        <a href="https://x.com/IPOsOfSaudi"                             target="_blank" class="box"><h3>الاكتتابات القادمة</h3><span class="url">x.com/IPOsOfSaudi</span></a>
+        <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements?locale=ar&page=1" target="_blank" class="box"><h3>أخبار السوق</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://www.saudiexchange.sa/Resources/Reports-v2/ShareBuyback_ar.html" target="_blank" class="box"><h3>ملكية الشركات لأسهمها</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://x.com/owners_changes"                          target="_blank" class="box"><h3>تغييرات كبار الملاك</h3><span class="url">x.com/owners_changes</span></a>
+    </div>
 
-        <div class="category">مؤشرات وقوائم مالية</div>
-        <div class="grid">
-            <a href="https://www.saudiexchange.sa/Resources/Reports-v2/DailyFinancialIndicators_ar.html" target="_blank" class="box">
-                <h3>المؤشرات المالية</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/rules-guidance/capital-market-overview/Restrictions-Periods-and-Financials-Deadline?locale=ar" target="_blank" class="box">
-                <h3>إعلانات القوائم المالية</h3>
-                <span class="url">saudiexchange.sa</span>
-            </a>
-            <a href="https://www.argaam.com/ar/company/financial-pdf/3/2025" target="_blank" class="box">
-                <h3>أرقام - القوائم</h3>
-                <span class="url">argaam.com</span>
-            </a>
-            <a href="https://www.argaam.com/ar/company/shariahcompanies/3/3/3" target="_blank" class="box">
-                <h3>الأسهم الشرعية</h3>
-                <span class="url">argaam.com</span>
-            </a>
-            <a href="https://www.argaam.com/ar/company/companies-volume/3" target="_blank" class="box">
-                <h3>أحجام التداول</h3>
-                <span class="url">argaam.com</span>
-            </a>
-            <a href="https://www.argaam.com/ar/company/disclosure/sectionid/245/marketid/3/pageno" target="_blank" class="box">
-                <h3>الإفصاحات اليومية</h3>
-                <span class="url">argaam.com</span>
-            </a>
-        </div>
+    <!-- ===== توزيعات ===== -->
+    <div class="category">التوزيعات وأداء السوق</div>
+    <div class="grid">
+        <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-financial-calendars/dividends?locale=ar" target="_blank" class="box"><h3>التوزيعات النقدية</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/main-market-performance?locale=ar" target="_blank" class="box"><h3>أداء السوق اليومي</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/marketsummary?locale=ar" target="_blank" class="box"><h3>ملخص السوق اليومي</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://x.com/cash_dividends7"                         target="_blank" class="box"><h3>أسهم التوزيعات</h3><span class="url">x.com/cash_dividends7</span></a>
+        <a href="https://x.com/DividendHunterX"                        target="_blank" class="box"><h3>أسهم التوزيعات ٢</h3><span class="url">x.com/DividendHunterX</span></a>
+    </div>
 
-        <div class="category">مواقع إخبارية</div>
-        <div class="grid">
-            <a href="https://arabicstock.com/" target="_blank" class="box">
-                <h3>السهم العربي</h3>
-                <span class="url">arabicstock.com</span>
-            </a>
-        </div>
+    <!-- ===== دورات ===== -->
+    <div class="category">دورات تعليمية</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/playlist?list=PL83MGt0lY37uRJqgj3qLrEkjQZrKGC9PM" target="_blank" class="box"><h3>دورة استثمر بوعي</h3><span class="url">youtube.com</span></a>
+        <a href="https://www.youtube.com/playlist?list=PLGPtIl_d816otQpbqBuyjisugkHwyH1HH" target="_blank" class="box"><h3>دورة تحليل الأسهم</h3><span class="url">youtube.com</span></a>
+    </div>
 
-        <div class="category">حاسبات استثمارية</div>
-        <div class="grid">
-            <a href="https://hijri-calendars.com/net-worth-calculator.php" target="_blank" class="box">
-                <h3>حاسبة صافي الثروة</h3>
-                <span class="url">hijri-calendars.com</span>
-            </a>
-            <a href="https://hijri-calendars.com/savings-calculator.php" target="_blank" class="box">
-                <h3>حاسبة الإدخار</h3>
-                <span class="url">hijri-calendars.com</span>
-            </a>
-            <a href="https://dqydj.com/graham-number-calculator/" target="_blank" class="box">
-                <h3>حاسبة القيمة العادلة (جرهام فاليو)</h3>
-                <span class="url">dqydj.com</span>
-            </a>
-            <a href="https://www.alphaspread.com/intrinsic-value-calculator" target="_blank" class="box">
-                <h3>حاسبة القيمة الجوهرية</h3>
-                <span class="url">alphaspread.com</span>
-            </a>
-            <a href="https://elsafqa.net/calculator" target="_blank" class="box">
-                <h3>حاسبات أخرى</h3>
-                <span class="url">elsafqa.net</span>
-            </a>
-        </div>
+    <!-- ===== مؤشرات ===== -->
+    <div class="category">مؤشرات وقوائم مالية</div>
+    <div class="grid">
+        <a href="https://www.saudiexchange.sa/Resources/Reports-v2/DailyFinancialIndicators_ar.html" target="_blank" class="box"><h3>المؤشرات المالية</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://www.saudiexchange.sa/wps/portal/saudiexchange/rules-guidance/capital-market-overview/Restrictions-Periods-and-Financials-Deadline?locale=ar" target="_blank" class="box"><h3>إعلانات القوائم المالية</h3><span class="url">saudiexchange.sa</span></a>
+        <a href="https://www.argaam.com/ar/company/financial-pdf/3/2025" target="_blank" class="box"><h3>أرقام — القوائم المالية</h3><span class="url">argaam.com</span></a>
+        <a href="https://www.argaam.com/ar/company/shariahcompanies/3/3/3" target="_blank" class="box"><h3>الأسهم الشرعية</h3><span class="url">argaam.com</span></a>
+        <a href="https://www.argaam.com/ar/company/companies-volume/3"  target="_blank" class="box"><h3>أحجام التداول</h3><span class="url">argaam.com</span></a>
+        <a href="https://www.argaam.com/ar/company/disclosure/sectionid/245/marketid/3/pageno" target="_blank" class="box"><h3>الإفصاحات اليومية</h3><span class="url">argaam.com</span></a>
+    </div>
 
-        <div class="category">تقارير الشركات</div>
-        <div class="grid">
-            <a href="https://alrajhi-capital.sa/ar/research/" target="_blank" class="box">
-                <h3>تقارير الراجحي</h3>
-                <span class="url">alrajhi-capital.sa</span>
-            </a>
-            <a href="https://www.riyadcapital.com/ar/research-reports/equity-reports" target="_blank" class="box">
-                <h3>تقارير الرياض</h3>
-                <span class="url">riyadcapital.com</span>
-            </a>
-            <a href="https://alinmacapital.com/Market-Research" target="_blank" class="box">
-                <h3>تقارير الإنماء</h3>
-                <span class="url">alinmacapital.com</span>
-            </a>
-            <a href="https://www.aljaziracapital.com.sa/insights/research-reports/" target="_blank" class="box">
-                <h3>تقارير الجزيرة</h3>
-                <span class="url">aljaziracapital.com.sa</span>
-            </a>
-            <a href="https://research.snbcapital.com/ar/web/snb-research/welcome-page" target="_blank" class="box">
-                <h3>تقارير الأهلي</h3>
-                <span class="url">snbcapital.com</span>
-            </a>
-        </div>
+    <!-- ===== إخبارية ===== -->
+    <div class="category">مواقع إخبارية</div>
+    <div class="grid">
+        <a href="https://arabicstock.com/" target="_blank" class="box"><h3>السهم العربي</h3><span class="url">arabicstock.com</span></a>
+    </div>
 
-        <div class="category">تداول</div>
-        <div class="grid">
-            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/hidden/report-listing?locale=ar" target="_blank" class="box">
-                <h3>التقرير السنوي تداول</h3>
-                <span class="url">tadawulgroup.sa</span>
-            </a>
-            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/factsheet?locale=ar" target="_blank" class="box">
-                <h3>الأداء المالي تداول</h3>
-                <span class="url">tadawulgroup.sa</span>
-            </a>
-            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/company-announcements?locale=ar" target="_blank" class="box">
-                <h3>إفصاحات الشركات تداول</h3>
-                <span class="url">tadawulgroup.sa</span>
-            </a>
-            <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/share-information?locale=ar" target="_blank" class="box">
-                <h3>معلومات السهم تداول</h3>
-                <span class="url">tadawulgroup.sa</span>
-            </a>
-        </div>
+    <!-- ===== حاسبات خارجية ===== -->
+    <div class="category">حاسبات استثمارية خارجية</div>
+    <div class="grid">
+        <a href="https://hijri-calendars.com/net-worth-calculator.php"    target="_blank" class="box"><h3>حاسبة صافي الثروة</h3><span class="url">hijri-calendars.com</span></a>
+        <a href="https://hijri-calendars.com/savings-calculator.php"      target="_blank" class="box"><h3>حاسبة الادخار</h3><span class="url">hijri-calendars.com</span></a>
+        <a href="https://dqydj.com/graham-number-calculator/"             target="_blank" class="box"><h3>القيمة العادلة (جراهام)</h3><span class="url">dqydj.com</span></a>
+        <a href="https://www.alphaspread.com/intrinsic-value-calculator"  target="_blank" class="box"><h3>القيمة الجوهرية</h3><span class="url">alphaspread.com</span></a>
+        <a href="https://elsafqa.net/calculator"                          target="_blank" class="box"><h3>حاسبات أخرى</h3><span class="url">elsafqa.net</span></a>
+    </div>
 
-        <div class="category">حسابات تويتر (X)</div>
-        <div class="grid">
-            <a href="https://x.com/FutrueGlimpse" target="_blank" class="box">
-                <h3>لمحة أستثمارية (X)</h3>
-                <span class="url">x.com/FutrueGlimpse</span>
-            </a>
-            <a href="https://x.com/Anas_S_Alrajhi" target="_blank" class="box">
-                <h3>أنس الراجحي (X)</h3>
-                <span class="url">x.com/Anas_S_Alrajhi</span>
-            </a>
-            <a href="https://x.com/AZK_SA" target="_blank" class="box">
-                <h3>عبدالله الخميس (X)</h3>
-                <span class="url">x.com/AZK_SA</span>
-            </a>
-            <a href="https://x.com/malmuqti" target="_blank" class="box">
-                <h3>ماجد المقاطي (X)</h3>
-                <span class="url">x.com/malmuqti</span>
-            </a>
-            <a href="https://x.com/Stock_Affairs" target="_blank" class="box">
-                <h3>شؤون الأسهم (X)</h3>
-                <span class="url">x.com/Stock_Affairs</span>
-            </a>
-            <a href="https://x.com/Saeed_AJ" target="_blank" class="box">
-                <h3>سعيد عبدالجبار (X)</h3>
-                <span class="url">x.com/Saeed_AJ</span>
-            </a>
-            <a href="https://x.com/awebadvantage" target="_blank" class="box">
-                <h3>محفظتي الإستثمارية (X)</h3>
-                <span class="url">x.com/awebadvantage</span>
-            </a>
-            <a href="https://x.com/EngSam0701" target="_blank" class="box">
-                <h3>مستثمر ملائكي (X)</h3>
-                <span class="url">x.com/EngSam0701</span>
-            </a>
-            <a href="https://x.com/indexfundksa" target="_blank" class="box">
-                <h3>صناديق المؤشرات الشرعية (X)</h3>
-                <span class="url">x.com/indexfundksa</span>
-            </a>
-        </div>
+    <!-- ===== تقارير ===== -->
+    <div class="category">تقارير الشركات</div>
+    <div class="grid">
+        <a href="https://alrajhi-capital.sa/ar/research/"                 target="_blank" class="box"><h3>تقارير الراجحي</h3><span class="url">alrajhi-capital.sa</span></a>
+        <a href="https://www.riyadcapital.com/ar/research-reports/equity-reports" target="_blank" class="box"><h3>تقارير الرياض</h3><span class="url">riyadcapital.com</span></a>
+        <a href="https://alinmacapital.com/Market-Research"               target="_blank" class="box"><h3>تقارير الإنماء</h3><span class="url">alinmacapital.com</span></a>
+        <a href="https://www.aljaziracapital.com.sa/insights/research-reports/" target="_blank" class="box"><h3>تقارير الجزيرة</h3><span class="url">aljaziracapital.com.sa</span></a>
+        <a href="https://research.snbcapital.com/ar/web/snb-research/welcome-page" target="_blank" class="box"><h3>تقارير الأهلي</h3><span class="url">snbcapital.com</span></a>
+    </div>
 
-        <div class="category">أدوات ذكاء اصطناعي</div>
-        <div class="grid">
-            <a href="https://chatgpt.com/g/g-6907e6c4b3cc81918e06bb6b81126c12-swq-lshm-ls-wdy" target="_blank" class="box">
-                <h3>بوت شات جي بي تي</h3>
-                <span class="url">chatgpt.com</span>
-            </a>
-            <a href="https://docs.google.com/document/d/1VsEAJsSXvlZqcaaeZxryZOuSBlRto7xYHg7EPyx0Wpo/edit?usp=drive_link" target="_blank" class="box">
-                <h3>برومت تحليل المحفظة</h3>
-                <span class="url">docs.google.com</span>
-            </a>
-            <a href="https://docs.google.com/document/d/1GLYSuyAjFv6k4Tbru_AkvsUEJMAPpyNR-oAAOXLABlo/edit?usp=drive_link" target="_blank" class="box">
-                <h3>برومت تحليل السهم</h3>
-                <span class="url">docs.google.com</span>
-            </a>
-        </div>
+    <!-- ===== تداول ===== -->
+    <div class="category">تداول</div>
+    <div class="grid">
+        <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/hidden/report-listing?locale=ar" target="_blank" class="box"><h3>التقرير السنوي تداول</h3><span class="url">tadawulgroup.sa</span></a>
+        <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/factsheet?locale=ar" target="_blank" class="box"><h3>الأداء المالي تداول</h3><span class="url">tadawulgroup.sa</span></a>
+        <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/company-announcements?locale=ar" target="_blank" class="box"><h3>إفصاحات الشركات تداول</h3><span class="url">tadawulgroup.sa</span></a>
+        <a href="https://www.tadawulgroup.sa/wps/portal/tadawulgroup/invester-relations/share-information?locale=ar" target="_blank" class="box"><h3>معلومات السهم تداول</h3><span class="url">tadawulgroup.sa</span></a>
+    </div>
 
-        <div class="category">قنوات يوتيوب</div>
-        <div class="grid">
-            <a href="https://www.youtube.com/playlist?list=PLeNNUmE-BlnEc8c8ZFqPbF4wJBjWnbaAE" target="_blank" class="box">
-                <h3>بودكاست أرباح (يوتيوب)</h3>
-                <span class="url">youtube.com/playlist</span>
-            </a>
-        </div>
+    <!-- ===== X / Twitter ===== -->
+    <div class="category">حسابات X (تويتر)</div>
+    <div class="grid">
+        <a href="https://x.com/FutrueGlimpse"  target="_blank" class="box"><h3>لمحة استثمارية</h3><span class="url">x.com/FutrueGlimpse</span></a>
+        <a href="https://x.com/Anas_S_Alrajhi" target="_blank" class="box"><h3>أنس الراجحي</h3><span class="url">x.com/Anas_S_Alrajhi</span></a>
+        <a href="https://x.com/AZK_SA"         target="_blank" class="box"><h3>عبدالله الخميس</h3><span class="url">x.com/AZK_SA</span></a>
+        <a href="https://x.com/malmuqti"       target="_blank" class="box"><h3>ماجد المقاطي</h3><span class="url">x.com/malmuqti</span></a>
+        <a href="https://x.com/Stock_Affairs"  target="_blank" class="box"><h3>شؤون الأسهم</h3><span class="url">x.com/Stock_Affairs</span></a>
+        <a href="https://x.com/Saeed_AJ"       target="_blank" class="box"><h3>سعيد عبدالجبار</h3><span class="url">x.com/Saeed_AJ</span></a>
+        <a href="https://x.com/awebadvantage" target="_blank" class="box"><h3>محفظتي الاستثمارية</h3><span class="url">x.com/awebadvantage</span></a>
+        <a href="https://x.com/EngSam0701"     target="_blank" class="box"><h3>مستثمر ملائكي</h3><span class="url">x.com/EngSam0701</span></a>
+        <a href="https://x.com/indexfundksa"   target="_blank" class="box"><h3>صناديق المؤشرات الشرعية</h3><span class="url">x.com/indexfundksa</span></a>
+    </div>
 
-        <div class="category">جداول ومستندات</div>
-        <div class="grid">
-            <a href="https://docs.google.com/spreadsheets/d/1MDlB4bREIwoP4q6QmOcz5AS5r44GZzh9XlAnxV673VM/edit?usp=drive_link" target="_blank" class="box">
-                <h3>ملف التوزيعات (Sheet)</h3>
-                <span class="url">docs.google.com</span>
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1tKZecsAkrotF3nwyLP9onXpR1beyeeiY/edit?usp=drive_link&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
-                <h3>سجل البيع والشراء</h3>
-                <span class="url">docs.google.com</span>
-                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1RG_YlnGiDXDSeGmAYqUD08v910Xs9iq-/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
-                <h3>ملف إدارة المحفظة</h3>
-                <span class="url">docs.google.com</span>
-                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1gzWrEw-UyXFujmv6Fj3wR-xfBhqjnOrf/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
-                <h3>ملف إدارة المحفظة 2</h3>
-                <span class="url">docs.google.com</span>
-                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/16LSBGFIxSNZ8T1zqQkhV2_jjoChaJRuf/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box">
-                <h3>ملف إدارة المحفظة 3</h3>
-                <span class="url">docs.google.com</span>
-                <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">⚠️ يتطلب برنامج Microsoft Excel للعمل</small>
+    <!-- ===== ذكاء اصطناعي ===== -->
+    <div class="category">أدوات ذكاء اصطناعي</div>
+    <div class="grid">
+        <a href="https://chatgpt.com/g/g-6907e6c4b3cc81918e06bb6b81126c12-swq-lshm-ls-wdy" target="_blank" class="box"><h3>بوت شات جي بي تي</h3><span class="url">chatgpt.com</span></a>
+        <a href="https://docs.google.com/document/d/1VsEAJsSXvlZqcaaeZxryZOuSBlRto7xYHg7EPyx0Wpo/edit?usp=drive_link" target="_blank" class="box"><h3>برومت تحليل المحفظة</h3><span class="url">docs.google.com</span></a>
+        <a href="https://docs.google.com/document/d/1GLYSuyAjFv6k4Tbru_AkvsUEJMAPpyNR-oAAOXLABlo/edit?usp=drive_link" target="_blank" class="box"><h3>برومت تحليل السهم</h3><span class="url">docs.google.com</span></a>
+    </div>
+
+    <!-- ===== يوتيوب ===== -->
+    <div class="category">قنوات يوتيوب</div>
+    <div class="grid">
+        <a href="https://www.youtube.com/playlist?list=PLeNNUmE-BlnEc8c8ZFqPbF4wJBjWnbaAE" target="_blank" class="box"><h3>بودكاست أرباح</h3><span class="url">youtube.com</span></a>
+    </div>
+
+    <!-- ===== جداول ===== -->
+    <div class="category">جداول ومستندات</div>
+    <div class="grid">
+        <a href="https://docs.google.com/spreadsheets/d/1MDlB4bREIwoP4q6QmOcz5AS5r44GZzh9XlAnxV673VM/edit?usp=drive_link" target="_blank" class="box"><h3>ملف التوزيعات</h3><span class="url">docs.google.com</span></a>
+        <a href="https://docs.google.com/spreadsheets/d/1tKZecsAkrotF3nwyLP9onXpR1beyeeiY/edit?usp=drive_link&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box"><h3>سجل البيع والشراء</h3><span class="url">docs.google.com</span><small>⚠️ يتطلب Microsoft Excel</small></a>
+        <a href="https://docs.google.com/spreadsheets/d/1RG_YlnGiDXDSeGmAYqUD08v910Xs9iq-/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box"><h3>ملف إدارة المحفظة</h3><span class="url">docs.google.com</span><small>⚠️ يتطلب Microsoft Excel</small></a>
+        <a href="https://docs.google.com/spreadsheets/d/1gzWrEw-UyXFujmv6Fj3wR-xfBhqjnOrf/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box"><h3>ملف إدارة المحفظة ٢</h3><span class="url">docs.google.com</span><small>⚠️ يتطلب Microsoft Excel</small></a>
+        <a href="https://docs.google.com/spreadsheets/d/16LSBGFIxSNZ8T1zqQkhV2_jjoChaJRuf/edit?usp=sharing&ouid=108009530498245005598&rtpof=true&sd=true" target="_blank" class="box"><h3>ملف إدارة المحفظة ٣</h3><span class="url">docs.google.com</span><small>⚠️ يتطلب Microsoft Excel</small></a>
+    </div>
+
+</div><!-- end .container -->
+
+<footer>
+    <div class="disclaimer">
+        <h4>⚠️ إخلاء مسؤولية قانوني</h4>
+        <p>جميع المحتويات والروابط والأدوات المتوفرة في هذه الصفحة هي لأغراض تعليمية وإرشادية ومعلوماتية فقط، ولا تعد توصية بالبيع أو الشراء أو دعوة للاستثمار في أي أوراق مالية أو أصول محددة. الاستثمار في أسواق المال ينطوي على مخاطر عالية، وقرار الاستخدام يقع على عاتق المستخدم وحده.</p>
+        <p>صاحب الموقع لا يضمن دقة أو اكتمال المعلومات في الروابط الخارجية، ولا يتحمل أي مسؤولية عن أي خسائر مباشرة أو غير مباشرة. يُنصح دائماً باستشارة مستشار مالي مرخص قبل اتخاذ أي قرار استثماري.</p>
+    </div>
+
+    <!--
+        ✅ عداد الزوار:
+        GoatCounter API يتطلب Token ولا يدعم CORS من المتصفح مباشرة.
+        الحل الصحيح: اعرض شارة GoatCounter الجاهزة فقط.
+        الشارة تعمل بدون Token وبدون CORS.
+    -->
+    <div class="visitor-counter">
+        <div class="counter-item">
+            <span class="counter-label">إحصائيات الزيارات</span>
+            <!-- ✅ شارة GoatCounter الرسمية — تعمل مباشرة -->
+            <a href="https://investornote.goatcounter.com"
+               target="_blank" style="text-decoration:none;">
+                <img src="https://investornote.goatcounter.com/count?p=/"
+                     alt="عداد الزوار"
+                     style="height:32px; border-radius:6px;"
+                     loading="lazy">
             </a>
         </div>
     </div>
 
-    <footer>
-        <div class="disclaimer">
-            <h4>إخلاء مسؤولية قانوني:</h4>
-            <p>جميع المحتويات والروابط والأدوات المتوفرة في هذه الصفحة هي لأغراض تعليمية وإرشادية ومعلوماتية فقط، ولا تعد توصية بالبيع أو الشراء أو دعوة للاستثمار في أي أوراق مالية أو أصول محددة. إن الاستثمار في أسواق المال ينطوي على مخاطر عالية، وقرار الاستخدام يقع على عاتق المستخدم وحده دون أي مسؤولية قانونية أو مالية على صاحب هذا الموقع.</p>
-            <p>صاحب الموقع لا يضمن دقة أو اكتمال المعلومات الواردة في الروابط الخارجية، ولا يتحمل أي مسؤولية عن أي خسائر مباشرة أو غير مباشرة قد تنتج عن الاعتماد على هذه المعلومات أو الأدوات. يخلي صاحب الموقع مسؤوليته التامة من أي مطالبات قانونية ناتجة عن استخدام الموقع، وينصح دائماً باستشارة مستشار مالي مرخص قبل اتخاذ أي قرار استثماري. استخدامك لهذا الموقع يعني إقرارك وموافقتك التامة على هذه الشروط.</p>
-        </div>
-        
-        <div class="visitor-counter">
-            <div class="counter-item">
-                <span class="counter-label">عدد الزوار:</span>
-                <span id="visitor-count" class="counter-number">0</span>
-            </div>
-            <div class="counter-item">
-                <span class="counter-label">زيارات اليوم:</span>
-                <span id="today-count" class="counter-number">0</span>
-            </div>
-            <div class="counter-item">
-                <span class="counter-label">المتواجدون الآن:</span>
-                <span id="online-count" class="counter-number">0</span>
-            </div>
-        </div>
-        
-        <div style="text-align: center; margin-top: 20px; padding: 10px; background: rgba(74, 111, 165, 0.1); border-radius: 8px;">
-            <small style="color: #2c3e50; opacity: 0.8;">
-                📊 إحصائيات الموقع محمية بـ <a href="https://goatcounter.com" target="_blank" style="color: #5a9d7a; text-decoration: none;">GoatCounter</a>
-            </small>
-        </div>
-        
-        <div style="text-align: center; margin-top: 10px; padding: 10px; background: rgba(74, 111, 165, 0.08); border-radius: 8px;">
-            <small style="color: #2c3e50; opacity: 0.7; font-size: 0.8rem;">
-                🔒 خصوصية البيانات: الموقع يستخدم GoatCounter لجمع إحصائيات عامة فقط (مثل عدد الزيارات) دون جمع بيانات شخصية عن المستخدمين.
-            </small>
-        </div>
-    </footer>
+    <div class="gc-badge">
+        <small>
+            📊 إحصائيات الموقع محمية بـ
+            <a href="https://goatcounter.com" target="_blank">GoatCounter</a>
+            — لا يجمع بيانات شخصية 🔒
+        </small>
+    </div>
+</footer>
 
-    <script>
-        // معرف فريد للمستخدم
-        const userId = localStorage.getItem('userId') || generateUserId();
-        localStorage.setItem('userId', userId);
-        
-        // إنشاء معرف فريد
-        function generateUserId() {
-            return 'user_' + Math.random().toString(36).substr(2, 9) + Date.now();
-        }
-        
-        // زيارات الموقع الحقيقية
-        function updateCounter() {
-            // الحصول على التاريخ الحالي
-            const today = new Date().toDateString();
-            
-            // التحقق من وجود بيانات سابقة في localStorage
-            let visitorData = JSON.parse(localStorage.getItem('visitorData') || '{}');
-            
-            // التحقق إذا كانت هذه زيارة جديدة (ليس تحديث للصفحة)
-            const lastVisitTime = visitorData.lastVisitTime || 0;
-            const currentTime = Date.now();
-            const isNewVisit = (currentTime - lastVisitTime) > 1800000; // 30 دقيقة
-            
-            // التحقق إذا كان اليوم الجديد
-            const isNewDay = visitorData.lastVisit !== today;
-            
-            if (isNewDay) {
-                // إعادة تعيين عداد اليوم لليوم الجديد
-                visitorData.todayCount = 1;
-                visitorData.lastVisit = today;
-                visitorData.totalCount = (visitorData.totalCount || 0) + 1;
-            } else if (isNewVisit) {
-                // زيارة جديدة في نفس اليوم
-                visitorData.totalCount = (visitorData.totalCount || 0) + 1;
-                visitorData.todayCount = (visitorData.todayCount || 0) + 1;
-            } else if (!visitorData.totalCount) {
-                // أول زيارة للموقع
-                visitorData.totalCount = 1;
-                visitorData.todayCount = 1;
-                visitorData.lastVisit = today;
-            }
-            
-            visitorData.lastVisitTime = currentTime;
-            
-            // حفظ البيانات
-            localStorage.setItem('visitorData', JSON.stringify(visitorData));
-            
-            // تحديث العرض
-            const totalElement = document.getElementById('visitor-count');
-            const todayElement = document.getElementById('today-count');
-            
-            if (totalElement) {
-                totalElement.textContent = (visitorData.totalCount || 0).toLocaleString('ar-SA');
-            }
-            if (todayElement) {
-                todayElement.textContent = (visitorData.todayCount || 0).toLocaleString('ar-SA');
-            }
-        }
-        
-        // إرسال بيانات الزيارة للخادم
-        function sendVisitToServer(userId) {
-            // استخدام API بسيط لتتبع الزيارات
-            // يمكنك استبدال هذا بخادم حقيقي
-            const visitData = {
-                userId: userId,
-                timestamp: Date.now(),
-                page: window.location.href,
-                userAgent: navigator.userAgent
-            };
-            
-            // محاكاة إرسال للخادم (في الواقع تحتاج لخادم حقيقي)
-            console.log('Visit data:', visitData);
-            
-            // يمكنك استخدام خدمات مثل:
-            // - Google Analytics
-            // - Firebase Analytics  
-            // - أو خادم خاص بك
-        }
-        
-        // تحديث عداد المتواجدين الآن
-        function updateOnlineCount() {
-            // محاكاة واقعية للمستخدمين المتواجدين بناءً على الوقت
-            const hour = new Date().getHours();
-            let baseUsers = 3;
-            
-            // زيادة عدد المستخدمين في ساعات الذروة
-            if (hour >= 9 && hour <= 11) baseUsers = 8; // الصباح
-            else if (hour >= 12 && hour <= 14) baseUsers = 12; // الظهر
-            else if (hour >= 15 && hour <= 17) baseUsers = 10; // العصر
-            else if (hour >= 20 && hour <= 22) baseUsers = 15; // المساء
-            else if (hour >= 23 || hour <= 6) baseUsers = 2; // الليل
-            
-            // إضافة تباين عشوائي صغير
-            const variation = Math.floor(Math.random() * 5) - 2; // -2 إلى +2
-            const onlineUsers = Math.max(1, baseUsers + variation);
-            
-            const onlineElement = document.getElementById('online-count');
-            if (onlineElement) {
-                onlineElement.textContent = onlineUsers;
-            }
-            
-            // تحديث كل 30 ثانية
-            setTimeout(updateOnlineCount, 30000);
-        }
-        
-        // تتبع مغادرة المستخدم
-        window.addEventListener('beforeunload', function() {
-            // إرسال إشارة مغادرة للخادم
-            const leaveData = {
-                userId: userId,
-                leaveTime: Date.now(),
-                duration: Date.now() - (localStorage.getItem('startTime') || Date.now())
-            };
-            console.log('User left:', leaveData);
-            
-            // في الواقع أرسل هذا للخادم
-            navigator.sendBeacon('/api/leave', JSON.stringify(leaveData));
-        });
-        
-        // تسجيل وقت الدخول
-        localStorage.setItem('startTime', Date.now());
-        
-        // تحديث العداد عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                updateCounter();
-                updateOnlineCount();
-            } catch (error) {
-                console.error('Error initializing counters:', error);
-                // تعيين قيم افتراضية في حالة الخطأ
-                const totalElement = document.getElementById('visitor-count');
-                const todayElement = document.getElementById('today-count');
-                const onlineElement = document.getElementById('online-count');
-                
-                if (totalElement) totalElement.textContent = '1';
-                if (todayElement) todayElement.textContent = '1';
-                if (onlineElement) onlineElement.textContent = '1';
-            }
-        });
-        
-        // تحديث عداد المتواجدين بشكل دوري
-        setInterval(function() {
-            try {
-                updateOnlineCount();
-            } catch (error) {
-                console.error('Error updating online count:', error);
-            }
-        }, 60000); // كل دقيقة
-    </script>
-    <script data-goatcounter="https://investornote.goatcounter.com/count"
-            async src="//gc.zgo.at/count.js"></script>
+<script>
+    /* ===== Back to Top ===== */
+    window.addEventListener('scroll', function () {
+        document.getElementById('backToTop')
+                .classList.toggle('visible', window.scrollY > 400);
+    });
+</script>
+
+<!-- GoatCounter tracking -->
+<script data-goatcounter="https://investornote.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
 </body>
 </html>

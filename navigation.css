@@ -1,26 +1,38 @@
-/* شريط التنقل الموحد */
+/* ============================================
+   navigation.css — مفكرة مستثمر
+   نسخة مصححة
+   ============================================ */
+
+/* ===== Reset ===== */
+.navbar * { box-sizing: border-box; }
+
+/* ===== Navbar ===== */
 .navbar {
     background: linear-gradient(135deg, #4a6fa5 0%, #5a7fb5 100%);
-    padding: 15px 0;
-    margin-bottom: 30px;
+    padding: 8px 15px;
+    margin-bottom: 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    /* ✅ sticky مع تحذير: يعمل فقط إذا الـ parent بلا overflow hidden */
     position: sticky;
-    top: 20px;
-    z-index: 1000;
+    top: 10px;
+    z-index: 100;
+    /* ✅ backdrop-filter مع fallback */
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
+/* ===== Container — يتطابق مع عرض الصفحات ===== */
 .navbar-container {
-    max-width: 1200px;
+    max-width: 950px; /* ✅ متوافق مع باقي الصفحات */
     margin: 0 auto;
-    padding: 0 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 10px;
 }
 
+/* ===== Brand ===== */
 .navbar-brand {
     color: white;
     font-size: 1.3rem;
@@ -28,197 +40,160 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: color 0.3s;
-    margin-right: 50px;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    transition: opacity 0.2s;
 }
+.navbar-brand:hover { opacity: 0.85; color: white; }
 
-.navbar-brand:hover {
-    color: #a8c5e8;
-}
-
+/* ===== Menu ===== */
 .navbar-menu {
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
+    gap: 7px;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
+/* ===== Nav Items — base ===== */
 .navbar-item {
-    background: rgba(255, 255, 255, 0.1);
     color: white;
-    padding: 10px 20px;
+    padding: 6px 13px;
     border-radius: 25px;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 0.83rem;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
     border: 2px solid transparent;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    /* ✅ لون base موحد — الكلاسات الملونة تُضاف فوقه */
+    background: rgba(255, 255, 255, 0.12);
 }
-
 .navbar-item:hover {
-    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0.9;
     border-color: rgba(255, 255, 255, 0.3);
 }
-
 .navbar-item.active {
-    background: linear-gradient(135deg, #6b9bd1, #5a8bc0);
-    border-color: #6b9bd1;
+    background: rgba(255, 255, 255, 0.28) !important;
+    border-color: #f1c40f;
+    box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.3);
 }
 
-.navbar-item.calculator {
+/*
+ * ✅ تبسيط جذري:
+ *    3 ألوان فقط بدل 15 — كل صفحة من نفس النوع تأخذ نفس اللون
+ *    أسهل صيانة، أنظف كود
+ */
+
+/* أخضر — حاسبات الاستثمار */
+.navbar-item.calculator,
+.navbar-item.company,
+.navbar-item.average,
+.navbar-item.roi,
+.navbar-item.allocation {          /* ✅ مضاف */
     background: linear-gradient(135deg, #5a9d7a, #4a8d6a);
 }
 
-.navbar-item.calculator:hover {
-    background: linear-gradient(135deg, #4a8d6a, #3a7d5a);
-}
-
-.navbar-item.tips {
-    background: linear-gradient(135deg, #8a7ba8, #7a6b98);
-}
-
-.navbar-item.tips:hover {
-    background: linear-gradient(135deg, #7a6b98, #6a5b88);
-}
-
-.navbar-item.emergency {
-    background: linear-gradient(135deg, #e89d5a, #d88d4a);
-}
-
-.navbar-item.emergency:hover {
-    background: linear-gradient(135deg, #d88d4a, #c87d3a);
-}
-
-.navbar-item.salary {
-    background: linear-gradient(135deg, #8a7ba8, #7a6b98);
-}
-
-.navbar-item.salary:hover {
-    background: linear-gradient(135deg, #7a6b98, #6a5b88);
-}
-
-.navbar-item.rebalance {
-    background: linear-gradient(135deg, #34495e, #2c3e50);
-}
-
-.navbar-item.rebalance:hover {
-    background: linear-gradient(135deg, #2c3e50, #1a252f);
-}
-
-.navbar-item.zakat {
-    background: linear-gradient(135deg, #7a6b98, #8a7ba8);
-}
-
-.navbar-item.zakat:hover {
-    background: linear-gradient(135deg, #8a7ba8, #6a5b88);
-}
-
+/* بنفسجي — أدوات التخطيط والنصائح */
+.navbar-item.tips,
+.navbar-item.salary,
+.navbar-item.zakat,
+.navbar-item.retirement,
 .navbar-item.fire {
-    background: linear-gradient(135deg, #e89d5a, #d88d4a);
-}
-
-.navbar-item.fire:hover {
-    background: linear-gradient(135deg, #d88d4a, #c87d3a);
-}
-
-.navbar-item.sector {
-    background: linear-gradient(135deg, #e89d5a, #d88d4a);
-}
-
-.navbar-item.sector:hover {
-    background: linear-gradient(135deg, #d88d4a, #c87d3a);
-}
-
-.navbar-item.roi {
     background: linear-gradient(135deg, #8a7ba8, #7a6b98);
 }
 
-.navbar-item.roi:hover {
-    background: linear-gradient(135deg, #7a6b98, #6a5b88);
+/* رمادي داكن — أدوات الحماية والمحفظة */
+.navbar-item.emergency,
+.navbar-item.portfolio,
+.navbar-item.rebalance,
+.navbar-item.sector {
+    background: linear-gradient(135deg, #5d7a8a, #4a6070);
 }
 
-.navbar-item.average {
-    background: linear-gradient(135deg, #e89d5a, #d88d4a);
-}
-
-.navbar-item.average:hover {
-    background: linear-gradient(135deg, #d88d4a, #c87d3a);
-}
-
+/* أزرق — لوحة التحكم والرئيسية */
 .navbar-item.dashboard {
     background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
 }
 
-.navbar-item.dashboard:hover {
-    background: linear-gradient(135deg, #4a6fa5, #3a5f95);
-}
-
+/* ===== Toggle Button ===== */
 .navbar-toggle {
+    /* ✅ مخفي افتراضياً في Desktop — يظهر فقط في الجوال */
     display: none;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     color: white;
-    border: none;
-    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 9px 14px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.2rem;
+    transition: background 0.2s;
+    align-self: flex-end;
 }
+.navbar-toggle:hover { background: rgba(255, 255, 255, 0.25); }
 
+/* ===== Responsive: Tablet ===== */
 @media (max-width: 768px) {
     .navbar {
-        position: static;
-        margin-bottom: 20px;
+        position: static; /* ✅ sticky مشكلة في الجوال — نوقفه */
+        padding: 10px 12px;
+        border-radius: 12px;
     }
-    
+
     .navbar-container {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
     }
-    
+
     .navbar-brand {
-        padding-left: 60px;
+        width: auto;
+        font-size: 1.1rem;
+        justify-content: flex-start;
     }
-    
+
+    /* ✅ زر الجوال يظهر هنا */
+    .navbar-toggle { display: block; }
+
+    /* ✅ القائمة مخفية — تفتح بـ .open */
     .navbar-menu {
-        justify-content: center;
-        width: 100%;
-    }
-    
-    .navbar-item {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-    }
-    
-    .navbar-toggle {
-        display: block;
-        position: absolute;
-        top: 15px;
-        left: 15px;
-    }
-    
-    .navbar-menu.collapsed {
         display: none;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        padding: 10px 0 5px;
+        gap: 5px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        margin-top: 5px;
     }
+
+    /* ✅ الكلاس الصحيحة للفتح */
+    .navbar-menu.open {
+        display: flex;
+    }
+
+    .navbar-item {
+        font-size: 0.88rem; /* ✅ ثابت — لا يتغير بين breakpoints */
+        padding: 10px 14px;
+        border-radius: 10px;
+        justify-content: flex-start;
+        white-space: normal;
+    }
+    .navbar-item:hover { transform: none; }
 }
 
+/* ===== Responsive: Mobile ===== */
 @media (max-width: 480px) {
-    .navbar-brand {
-        font-size: 1.1rem;
-    }
-    
-    .navbar-item {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-        gap: 5px;
-    }
-    
-    .navbar-menu {
-        gap: 10px;
-    }
+    .navbar { border-radius: 10px; margin-bottom: 12px; }
+    .navbar-brand { font-size: 1rem; }
+    /* ✅ لا تغيير في font-size هنا — بقي 0.88rem من فوق */
 }
