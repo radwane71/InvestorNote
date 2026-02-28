@@ -1,0 +1,286 @@
+/* ============================================
+   dark-theme.css — Dark Mode موحد
+   مفكرة مستثمر
+   ============================================ */
+
+/* ===== المتغيرات الأساسية ===== */
+:root {
+    --bg-main:        #0d1117;
+    --bg-card:        #161b22;
+    --bg-card-hover:  #1c2128;
+    --bg-input:       #0d1117;
+    --bg-section:     #1c2128;
+    --border:         #30363d;
+    --border-focus:   #58a6ff;
+    --text-primary:   #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted:     #6e7681;
+    --accent-blue:    #58a6ff;
+    --accent-green:   #3fb950;
+    --accent-red:     #f85149;
+    --accent-orange:  #d29922;
+    --accent-yellow:  #e3b341;
+    --accent-purple:  #a371f7;
+    --shadow:         0 8px 24px rgba(0,0,0,0.4);
+    --shadow-card:    0 4px 16px rgba(0,0,0,0.5);
+}
+
+/* ===== Body والخلفية ===== */
+body {
+    background: var(--bg-main) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ===== Container ===== */
+.container { color: var(--text-primary); }
+
+/* ===== العناوين ===== */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary) !important;
+}
+
+p { color: var(--text-secondary); }
+
+/* ===== Card / Box ===== */
+.card,
+.box {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: var(--shadow-card) !important;
+    color: var(--text-primary) !important;
+}
+.card h3, .box h3 { color: var(--text-primary) !important; }
+.box .url { color: var(--text-secondary) !important; }
+.box small { color: var(--text-muted) !important; }
+
+.box:hover {
+    background: var(--bg-card-hover) !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.6) !important;
+}
+
+/* ===== البطاقات الداخلية (internal) ===== */
+.box.internal {
+    border: 1px solid #238636 !important;
+}
+.box.internal::before {
+    background: linear-gradient(90deg, #238636, #2ea043) !important;
+}
+.box .badge {
+    background: #238636 !important;
+}
+
+/* ===== Category labels ===== */
+.category {
+    background: rgba(88,166,255,0.1) !important;
+    color: var(--accent-blue) !important;
+    border: 1px solid rgba(88,166,255,0.2) !important;
+}
+.category.internal-cat {
+    background: rgba(63,185,80,0.1) !important;
+    color: var(--accent-green) !important;
+    border: 1px solid rgba(63,185,80,0.2) !important;
+}
+
+/* ===== Inputs ===== */
+input[type="number"],
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    background: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 8px;
+}
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--border-focus) !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(88,166,255,0.15) !important;
+}
+input::placeholder { color: var(--text-muted) !important; }
+
+label { color: var(--text-secondary) !important; }
+
+/* ===== Sections (assets / debts / philosophy) ===== */
+.assets-section {
+    background: rgba(63,185,80,0.08) !important;
+    border: 1.5px solid rgba(63,185,80,0.3) !important;
+}
+.assets-section h3 { color: var(--accent-green) !important; }
+
+.debts-section {
+    background: rgba(248,81,73,0.08) !important;
+    border: 1.5px solid rgba(248,81,73,0.3) !important;
+}
+.debts-section h3 { color: var(--accent-red) !important; }
+
+.philosophy-section,
+.tip-card,
+.info-box,
+.warning-box,
+.result-section {
+    background: var(--bg-section) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-secondary) !important;
+}
+.philosophy-section h3 {
+    color: var(--accent-blue) !important;
+    border-color: var(--accent-blue) !important;
+}
+.philosophy-section p { color: var(--text-secondary) !important; }
+
+/* ===== Result Area ===== */
+.result-area {
+    background: var(--bg-card) !important;
+    border: 1.5px solid var(--border) !important;
+    box-shadow: var(--shadow) !important;
+}
+
+/* ===== Gauge container ===== */
+.gauge-container {
+    background: var(--bg-section) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: var(--shadow-card) !important;
+}
+
+/* ===== Buttons ===== */
+.btn-calc, button[onclick*="calculate"], button[onclick*="calc"] {
+    background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+    color: white !important;
+    border: none !important;
+}
+.btn-calc:hover {
+    background: linear-gradient(135deg, #388bfd, #58a6ff) !important;
+}
+
+.btn-reset, button[onclick*="reset"] {
+    background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-print, button[onclick*="print"] {
+    background: linear-gradient(135deg, #238636, #2ea043) !important;
+    color: white !important;
+    border: none !important;
+}
+
+button {
+    transition: all 0.25s ease !important;
+}
+button:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+/* ===== Sources box ===== */
+.sources-box {
+    background: var(--bg-section) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-secondary) !important;
+}
+.sources-box a { color: var(--accent-blue) !important; }
+.sources-box a:hover { color: #79c0ff !important; }
+
+/* ===== Tables ===== */
+table {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border) !important;
+}
+th {
+    background: var(--bg-section) !important;
+    color: var(--accent-blue) !important;
+    border-color: var(--border) !important;
+}
+td {
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+}
+tr:hover td { background: var(--bg-card-hover) !important; }
+
+/* ===== Links ===== */
+a { color: var(--accent-blue); }
+a:hover { color: #79c0ff; }
+
+/* ===== Range inputs ===== */
+input[type="range"] {
+    accent-color: var(--accent-blue);
+}
+
+/* ===== Slider tracks ===== */
+input[type="range"]::-webkit-slider-runnable-track {
+    background: var(--border);
+}
+input[type="range"]::-webkit-slider-thumb {
+    background: var(--accent-blue);
+}
+
+/* ===== SVG text in gauges ===== */
+.gauge-svg text { fill: var(--text-muted) !important; }
+
+/* ===== الشريط الجانبي / توضيحات ===== */
+.sidebar, .explanation, .note-box {
+    background: var(--bg-section) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-secondary) !important;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+/* ===== Footer ===== */
+footer {
+    background: var(--bg-card) !important;
+    border-top: 1px solid var(--border) !important;
+    color: var(--text-secondary) !important;
+}
+.disclaimer h4 { color: var(--accent-yellow) !important; }
+.disclaimer p { color: var(--text-secondary) !important; }
+.gc-badge { background: var(--bg-section) !important; }
+.gc-badge small { color: var(--text-muted) !important; }
+.gc-badge a { color: var(--accent-green) !important; }
+.counter-label { color: var(--accent-blue) !important; }
+
+/* ===== Back to Top ===== */
+.back-to-top {
+    background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+    box-shadow: 0 4px 15px rgba(31,111,235,0.4) !important;
+}
+
+/* ===== Pyramid levels ===== */
+.pyramid-level { opacity: 0.65; }
+.pyramid-level.active { opacity: 1 !important; }
+
+/* ===== Progress bars ===== */
+.progress-bar, .bar-fill {
+    background: var(--accent-blue) !important;
+}
+.progress-track, .bar-track {
+    background: var(--border) !important;
+}
+
+/* ===== Select dropdown ===== */
+option {
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+/* ===== طباعة — نرجع للأبيض ===== */
+@media print {
+    body { background: white !important; color: black !important; }
+    .card, .box, .result-area {
+        background: white !important;
+        color: black !important;
+        border-color: #ccc !important;
+    }
+}
