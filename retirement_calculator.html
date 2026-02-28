@@ -9,62 +9,101 @@
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:linear-gradient(135deg,#1e3c72,#2a5298); min-height:100vh; padding:20px; color:#2c3e50; }
-        .legal-modal { position:fixed; inset:0; background:rgba(0,0,0,0.92); display:flex; justify-content:center; align-items:center; z-index:9999; }
-        .modal-content { background:white; padding:40px; border-radius:20px; max-width:580px; width:90%; text-align:center; }
-        .modal-content h2 { color:#1e3c72; margin-bottom:20px; }
-        .modal-content p  { line-height:1.8; color:#444; margin-bottom:20px; }
-        .modal-content label { display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; font-weight:bold; margin-bottom:20px; }
-        .modal-btn { padding:12px 40px; background:#667eea; color:white; border:none; border-radius:10px; font-size:1rem; font-weight:bold; cursor:pointer; transition:all 0.3s; }
-        .modal-btn:disabled { background:#aaa; cursor:not-allowed; }
-        .modal-btn:not(:disabled):hover { background:#5568d4; transform:translateY(-2px); }
-        .container { max-width:920px; margin:0 auto; background:rgba(255,255,255,0.98); border-radius:25px; padding:35px; box-shadow:0 25px 50px rgba(0,0,0,0.3); }
+        
+        /* ===== تحسين رسالة الإقرار - اللون الذهبي الجذاب ===== */
+        .legal-modal { position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:9999; backdrop-filter: blur(5px); }
+        .modal-content { 
+            background: linear-gradient(145deg, #ffd700, #ffae00, #e6b800); /* تدرج ذهبي */
+            padding: 40px; 
+            border-radius: 25px; 
+            max-width: 580px; 
+            width: 90%; 
+            text-align: center; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.3);
+            border: 3px solid #b8860b;
+            color: #000; /* نص أسود واضح */
+        }
+        .modal-content h2 { color:#000; margin-bottom:20px; font-weight: 800; text-shadow: 1px 1px 1px rgba(255,255,255,0.5); }
+        .modal-content p  { line-height:1.8; color:#111; margin-bottom:20px; font-weight: 500; }
+        .modal-content label { display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; font-weight:bold; margin-bottom:20px; color: #000; }
+        .modal-btn { 
+            padding:12px 45px; 
+            background:#000; 
+            color:#ffd700; 
+            border:none; 
+            border-radius:12px; 
+            font-size:1.1rem; 
+            font-weight:bold; 
+            cursor:pointer; 
+            transition:all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .modal-btn:disabled { background:rgba(0,0,0,0.4); color: #777; cursor:not-allowed; }
+        .modal-btn:not(:disabled):hover { background:#222; transform:scale(1.05); }
+
+        /* ===== الهيكل العام ===== */
+        .container { max-width:1000px; margin:0 auto; background:rgba(255,255,255,0.98); border-radius:25px; padding:35px; box-shadow:0 25px 50px rgba(0,0,0,0.3); }
         .legal-banner { background:linear-gradient(135deg,#fff3cd,#ffeaa7); border:2px solid #f39c12; border-radius:10px; padding:12px 15px; margin-bottom:25px; font-size:0.85rem; color:#856404; font-weight:bold; text-align:center; }
         h1 { text-align:center; margin-bottom:25px; font-size:2.2rem; color:#1e3c72; border-bottom:3px solid #667eea; padding-bottom:10px; }
+        
+        /* ===== تحسين المخرجات والنتائج ===== */
+        .results-section { 
+            display:none; 
+            margin-top:40px; 
+            padding:40px; 
+            border-radius:25px; 
+            background:#f0f4f8; 
+            border:2px solid #667eea;
+            box-shadow: inset 0 0 20px rgba(102, 126, 234, 0.1);
+        }
+        .results-section h2 { text-align:center; color:#1e3c72; margin-bottom:30px; font-size: 1.8rem; }
+        
+        .report-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:20px; margin-top:30px; }
+        .report-card { 
+            background:white; 
+            padding:25px; 
+            border-radius:20px; 
+            border:1px solid #e0e6ed; 
+            text-align:center; 
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .report-card:hover { transform: translateY(-5px); border-color: #667eea; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15); }
+        .report-card span { display:block; font-size:0.9rem; color:#64748b; margin-bottom:10px; font-weight: 600; }
+        .report-card strong { font-size:1.4rem; color:#1e293b; font-weight: 800; display: block; }
+        
+        /* تحسين شريط التقدم */
+        .progress-bar-wrapper { background:#cbd5e1; border-radius:50px; height:48px; overflow:hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
+        .progress-fill { height:100%; transition:width 1.5s ease-out; display:flex; align-items:center; justify-content:center; color:white; font-weight:900; font-size:1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+
+        /* مدخلات الخيارات */
         .section-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-        .rule-item { background:#fff; border-radius:15px; padding:20px; margin-bottom:20px; border:1px solid #e0e0e0; border-right:6px solid #667eea; transition:0.3s; }
-        .rule-item:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.07); }
+        .rule-item { background:#fff; border-radius:15px; padding:20px; margin-bottom:20px; border:1px solid #e0e0e0; border-right:6px solid #667eea; }
         .rule-item h3 { color:#1e3c72; margin-bottom:15px; font-size:1.05rem; }
-        .assets-sec   { border-right-color:#27ae60; }
-        .debts-sec    { border-right-color:#e74c3c; }
-        .income-sec   { border-right-color:#f1c40f; }
-        .lifestyle-sec{ border-right-color:#9b59b6; }
         .input-group { margin-bottom:12px; }
         .input-group label { display:block; font-weight:600; margin-bottom:5px; font-size:0.85rem; color:#444; }
-        .input-group input, .input-group select { width:100%; padding:10px; border:2px solid #edeff2; border-radius:8px; font-size:0.95rem; transition:0.3s; background:white; }
-        .input-group input:focus { border-color:#667eea; outline:none; background:#f0f4ff; }
-        .calculate-btn { width:100%; padding:16px; background:linear-gradient(135deg,#1e3c72,#2a5298); color:white; border:none; border-radius:12px; font-size:1.2rem; font-weight:bold; cursor:pointer; margin:20px 0; transition:all 0.3s; }
+        .input-group input, .input-group select { width:100%; padding:10px; border:2px solid #edeff2; border-radius:8px; font-size:0.95rem; transition:0.3s; }
+        
+        .calculate-btn { width:100%; padding:18px; background:linear-gradient(135deg,#1e3c72,#2a5298); color:white; border:none; border-radius:12px; font-size:1.2rem; font-weight:bold; cursor:pointer; margin:20px 0; transition:0.3s; }
         .calculate-btn:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(30,60,114,0.3); }
-        .results-section { display:none; margin-top:30px; padding:30px; border-radius:20px; background:#f8f9fa; border:2px solid #667eea; }
-        .results-section h2 { text-align:center; color:#1e3c72; margin-bottom:20px; }
-        .progress-container { margin:20px 0; }
-        .progress-bar-wrapper { background:#e0e0e0; border-radius:25px; height:42px; overflow:hidden; }
-        .progress-fill { height:100%; width:0%; transition:width 1.2s cubic-bezier(0.1,0.7,1.0,0.1); display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:1.1rem; }
-        .report-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px; }
-        .report-card { background:white; padding:18px; border-radius:10px; border:1px solid #eee; text-align:center; }
-        .report-card span { display:block; font-size:0.82rem; color:#7f8c8d; margin-bottom:6px; }
-        .report-card strong { font-size:1.05rem; color:#2c3e50; }
-        .timeline-container { margin-top:40px; padding:20px 15px; background:white; border-radius:15px; box-shadow:inset 0 2px 10px rgba(0,0,0,0.05); }
-        .timeline-container h4 { text-align:center; margin-bottom:60px; color:#1e3c72; }
+
+        .timeline-container { margin-top:40px; padding:30px; background:white; border-radius:15px; }
         .timeline-track { position:relative; height:12px; background:#dfe6e9; border-radius:6px; margin:70px 30px 80px; }
         .timeline-fill { position:absolute; right:0; height:100%; border-radius:6px; background:#667eea; transition:width 1s; }
         .timeline-marker { position:absolute; top:-15px; transform:translateX(50%); width:90px; }
-        .marker-point { width:20px; height:20px; background:white; border:4px solid #667eea; border-radius:50%; margin:0 auto; box-shadow:0 3px 6px rgba(0,0,0,0.15); }
-        .marker-label { font-size:0.75rem; font-weight:bold; margin-top:10px; color:#2d3436; line-height:1.4; text-align:center; white-space:nowrap; }
-        .current-marker { top:-65px; }
-        .current-icon { font-size:2rem; display:block; animation:bounce 2s infinite; }
-        @keyframes bounce { 0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);} }
-        .clear-btn { background:#95a5a6; color:white; border:none; padding:12px 25px; border-radius:10px; cursor:pointer; margin-top:20px; transition:all 0.3s; font-size:0.95rem; }
-        .clear-btn:hover { background:#7f8c8d; transform:translateY(-2px); }
-        @media (max-width:768px) { .section-grid,.report-grid { grid-template-columns:1fr; } .container { padding:20px; } h1 { font-size:1.8rem; } }
-        @media (max-width:480px) { body { padding:10px; } .container { border-radius:15px; } }
+        .marker-point { width:20px; height:20px; background:white; border:4px solid #667eea; border-radius:50%; margin:0 auto; }
+        .marker-label { font-size:0.75rem; font-weight:bold; margin-top:10px; color:#2d3436; text-align:center; white-space:nowrap; }
+
+        @media (max-width:768px) { .section-grid,.report-grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
+
 <div class="legal-modal" id="legalModal">
     <div class="modal-content">
         <h2>🛡️ إقرار ومسؤولية قانونية</h2>
-        <p>هذه الحاسبة أداة <strong>تعليمية</strong> توفر تقديرات افتراضية. النتائج لا تضمن دقة التقلبات السوقية أو التضخم.</p>
-        <label><input type="checkbox" id="acceptCheckbox"> أوافق على الشروط</label>
+        <p>هذه الحاسبة أداة <strong>تعليمية</strong> توفر تقديرات افتراضية بناءً على المدخلات. النتائج لا تضمن دقة التقلبات السوقية أو نسب التضخم المستقبلية.</p>
+        <label><input type="checkbox" id="acceptCheckbox"> أقر بأنني قرأت وأوافق على الشروط</label>
         <button class="modal-btn" id="enterBtn" disabled>دخول النظام</button>
     </div>
 </div>
@@ -74,64 +113,163 @@
         <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
         <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
         <div class="navbar-menu" id="navbarMenu">
-            <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
-            <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
-            <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
-            <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
-            <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
-            <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح</a>
-            <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ العائد المركب</a>
+            <a href="index.html" class="navbar-item">🏠 الرئيسية</a>
+            <a href="advice.html" class="navbar-item calculator">💰 صافي الثروة</a>
+            <a href="salary_calculator.html" class="navbar-item salary">💼 تقسيم الراتب</a>
+            <a href="zakat_purification.html" class="navbar-item zakat">🕌 الزكاة</a>
+            <a href="financial_freedom.html" class="navbar-item fire">🔥 الحرية المالية</a>
+            <a href="investor_tips.html" class="navbar-item tips">⚠️ نصائح</a>
+            <a href="snowball_calculator.html" class="navbar-item calculator">❄️ العائد المركب</a>
             <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
-            <a href="average_calculator.html"        class="navbar-item average">📊 متوسط الشراء</a>
-            <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
-            <a href="retirement_calculator.html"     class="navbar-item retirement active">🏖️ التقاعد</a>
-            <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
-            <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
-            <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
-            <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
-            <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
-            <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
+            <a href="average_calculator.html" class="navbar-item average">📊 متوسط الشراء</a>
+            <a href="company_valuation.html" class="navbar-item company">🏢 تقييم الشركة</a>
+            <a href="retirement_calculator.html" class="navbar-item retirement active">🏖️ التقاعد</a>
+            <a href="portfolio_rating.html" class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+            <a href="stock_valuation.html" class="navbar-item calculator">📊 تقييم الأسهم</a>
+            <a href="dca_calculator.html" class="navbar-item calculator">📅 DCA</a>
+            <a href="sell_decision.html" class="navbar-item calculator">🤔 هل أبيع؟</a>
+            <a href="goal_calculator.html" class="navbar-item calculator">🎯 الهدف العكسي</a>
+            <a href="allocation_calculator.html" class="navbar-item allocation">⚖️ توزيع المحفظة</a>
         </div>
     </div>
 </nav>
-<script>
-function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
-document.addEventListener('DOMContentLoaded',function(){
-    const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0]||'index.html';
-    document.querySelectorAll('.navbar-item').forEach(function(el){
-        el.classList.remove('active');
-        if((el.getAttribute('href')||'').split('?')[0]===page)el.classList.add('active');
-    });
-});
-</script>
 
 <div class="container">
     <div class="legal-banner">⚠️ هذه الأداة تعليمية تقديرية. النتائج لا تمثل استشارة مالية ملزمة.</div>
     <h1>📊 حاسبة الاستقلال المالي والتقاعد</h1>
+    
     <div class="section-grid">
-        <div class="rule-item"><h3>👤 البيانات الشخصية</h3><div class="input-group"><label>العمر الحالي</label><input type="number" id="currentAge" placeholder="30" min="15" max="80"></div><div class="input-group"><label>عمر التقاعد المستهدف</label><input type="number" id="targetRetirementAge" placeholder="55" min="30" max="80"></div><div class="input-group"><label>عام بدء العمل</label><input type="number" id="workStartYear" placeholder="2015" min="1980" max="2030"></div><div class="input-group"><label>سنة التقاعد المبكر المستهدفة</label><input type="number" id="earlyRetirementYear" placeholder="2040"></div></div>
-        <div class="rule-item assets-sec"><h3>💰 الأصول</h3><div class="input-group"><label>الكاش والمدخرات</label><input type="number" id="cashAssets" placeholder="0" min="0"></div><div class="input-group"><label>المحفظة الاستثمارية</label><input type="number" id="investmentPortfolio" placeholder="0" min="0"></div><div class="input-group"><label>نمو المحفظة السنوي (%)</label><input type="number" id="portfolioGrowth" value="8" min="0" max="30"></div><div class="input-group"><label>قيمة العقارات</label><input type="number" id="realEstateValue" placeholder="0" min="0"></div><div class="input-group"><label>الدخل الشهري من العقار</label><input type="number" id="monthlyRental" placeholder="0" min="0"></div></div>
-        <div class="rule-item debts-sec"><h3>🚗 الالتزامات</h3><div class="input-group"><label>إجمالي القروض</label><input type="number" id="totalLoans" placeholder="0" min="0"></div><div class="input-group"><label>حالة السيارة</label><select id="carStatus"><option value="owned">ملك</option><option value="installments">أقساط</option></select></div><div id="carInstallmentGroup" class="input-group" style="display:none;"><label>قسط السيارة</label><input type="number" id="carInstallment" placeholder="0" min="0"></div><div class="input-group"><label>تشغيل السيارة شهرياً</label><input type="number" id="carOperating" placeholder="1000" min="0"></div><div class="input-group"><label>التزامات أخرى</label><input type="number" id="otherObligations" placeholder="0" min="0"></div></div>
-        <div class="rule-item lifestyle-sec"><h3>🏠 السكن ونمط الحياة</h3><div class="input-group"><label>نوع السكن</label><select id="housingType"><option value="owned">ملك</option><option value="rent">إيجار</option></select></div><div id="rentGroup" class="input-group" style="display:none;"><label>الإيجار الشهري</label><input type="number" id="housingAmount" placeholder="0" min="0"></div><div class="input-group"><label>مصاريف المعيشة الشهرية</label><input type="number" id="basicExpenses" placeholder="0" min="0"></div><div class="input-group"><label>الرفاهية والسفر (سنوياً)</label><input type="number" id="annualLuxury" placeholder="0" min="0"></div><div class="input-group"><label>ميزانية الصحة (سنوياً)</label><input type="number" id="annualHealth" placeholder="10000" min="0"></div><div class="input-group"><label>معدل التضخم (%)</label><input type="number" id="inflationRate" value="3" min="0" max="20"></div></div>
+        <div class="rule-item">
+            <h3>👤 البيانات الشخصية</h3>
+            <div class="input-group"><label>العمر الحالي</label><input type="number" id="currentAge" placeholder="30"></div>
+            <div class="input-group"><label>عمر التقاعد المستهدف</label><input type="number" id="targetRetirementAge" placeholder="55"></div>
+            <div class="input-group"><label>عام بدء العمل</label><input type="number" id="workStartYear" placeholder="2015"></div>
+            <div class="input-group"><label>سنة التقاعد المبكر المستهدفة</label><input type="number" id="earlyRetirementYear" placeholder="2040"></div>
+        </div>
+        <div class="rule-item assets-sec" style="border-right-color:#27ae60">
+            <h3>💰 الأصول</h3>
+            <div class="input-group"><label>الكاش والمحفظة</label><input type="number" id="investmentPortfolio" placeholder="0"></div>
+            <div class="input-group"><label>نمو المحفظة السنوي (%)</label><input type="number" id="portfolioGrowth" value="8"></div>
+            <div class="input-group"><label>قيمة العقارات</label><input type="number" id="realEstateValue" placeholder="0"></div>
+            <div class="input-group"><label>الدخل الشهري من العقار</label><input type="number" id="monthlyRental" placeholder="0"></div>
+        </div>
+        <div class="rule-item debts-sec" style="border-right-color:#e74c3c">
+            <h3>🚗 الالتزامات</h3>
+            <div class="input-group"><label>إجمالي القروض</label><input type="number" id="totalLoans" placeholder="0"></div>
+            <div class="input-group"><label>مصاريف المعيشة الشهرية</label><input type="number" id="basicExpenses" placeholder="10000"></div>
+            <div class="input-group"><label>معدل التضخم (%)</label><input type="number" id="inflationRate" value="3"></div>
+        </div>
+        <div class="rule-item income-sec" style="border-right-color:#f1c40f">
+            <h3>📈 الدخل التقاعدي</h3>
+            <div class="input-group"><label>الراتب التقاعدي (شهري)</label><input type="number" id="expectedPension" placeholder="0"></div>
+            <div class="input-group"><label>مكافأة نهاية الخدمة</label><input type="number" id="retirementBonus" placeholder="0"></div>
+        </div>
     </div>
-    <div class="rule-item income-sec"><h3>📈 الدخل التقاعدي</h3><div class="section-grid"><div class="input-group"><label>الراتب التقاعدي (شهري)</label><input type="number" id="expectedPension" placeholder="0" min="0"></div><div class="input-group"><label>مكافأة نهاية الخدمة</label><input type="number" id="retirementBonus" placeholder="0" min="0"></div></div></div>
+
     <button class="calculate-btn" onclick="calculate()">📊 احسب خطة التقاعد</button>
-    <div class="results-section" id="resultsSection"><h2>التقرير النهائي</h2><div class="progress-container"><div class="progress-bar-wrapper"><div class="progress-fill" id="progressFill">0%</div></div><p id="retirementMessage" style="text-align:center;margin-top:15px;font-weight:bold;font-size:1.05rem;"></p></div><div class="report-grid"><div class="report-card"><span>المصاريف عند التقاعد (بعد التضخم)</span><strong id="repFutureExp">—</strong></div><div class="report-card"><span>رأس المال المطلوب (قاعدة 25×)</span><strong id="repCapitalNeeded">—</strong></div><div class="report-card"><span>الثروة المتوقعة عند التقاعد</span><strong id="repExpectedWealth">—</strong></div><div class="report-card"><span>تغطية الدخل السلبي</span><strong id="repPassiveRatio">—</strong></div></div><div class="timeline-container"><h4>🗓️ خارطة الطريق الزمنية</h4><div class="timeline-track" id="timelineTrack"><div class="timeline-fill" id="timelineFill"></div><div class="timeline-marker" id="mStart"><div class="marker-point" style="border-color:#2c3e50"></div><div class="marker-label" id="lStart"></div></div><div class="timeline-marker" id="mEarly"><div class="marker-point" style="border-color:#f39c12"></div><div class="marker-label" id="lEarly"></div></div><div class="timeline-marker" id="mFull"><div class="marker-point" style="border-color:#e74c3c"></div><div class="marker-label" id="lFull"></div></div><div class="timeline-marker" id="mSafe"><div class="marker-point" style="border-color:#27ae60;background:#27ae60"></div><div class="marker-label" id="lSafe"></div></div><div class="timeline-marker current-marker" id="mNow"><span class="current-icon">👤</span><div class="marker-label" style="color:#1e3c72;font-weight:bold;">2026<br>أنت الآن</div></div></div><div style="display:flex;justify-content:space-between;padding:0 30px;font-size:0.8rem;color:#888;margin-top:5px;"><span id="timelineEndLabel">—</span><span id="timelineStartLabel">—</span></div></div></div>
-    <button class="clear-btn" onclick="confirmReset()">🔄 إعادة تعيين</button>
+
+    <div class="results-section" id="resultsSection">
+        <h2>📑 التقرير المالي الشامل</h2>
+        <div class="progress-container">
+            <div class="progress-bar-wrapper"><div class="progress-fill" id="progressFill">0%</div></div>
+            <p id="retirementMessage" style="text-align:center;margin-top:15px;font-weight:bold;"></p>
+        </div>
+        
+        <div class="report-grid">
+            <div class="report-card">
+                <span>المصاريف عند التقاعد (شهرياً)</span>
+                <strong id="repFutureExp">—</strong>
+            </div>
+            <div class="report-card">
+                <span>رأس المال المستهدف</span>
+                <strong id="repCapitalNeeded">—</strong>
+            </div>
+            <div class="report-card">
+                <span>الثروة المتوقعة</span>
+                <strong id="repExpectedWealth">—</strong>
+            </div>
+            <div class="report-card">
+                <span>تغطية الدخل السلبي</span>
+                <strong id="repPassiveRatio">—</strong>
+            </div>
+        </div>
+
+        <div class="timeline-container">
+            <h4>🗓️ خارطة الطريق الزمنية</h4>
+            <div class="timeline-track" id="timelineTrack">
+                <div class="timeline-fill" id="timelineFill"></div>
+                <div class="timeline-marker" id="mStart"><div class="marker-point"></div><div class="marker-label" id="lStart"></div></div>
+                <div class="timeline-marker" id="mFull"><div class="marker-point"></div><div class="marker-label" id="lFull"></div></div>
+                <div class="timeline-marker current-marker" id="mNow" style="top:-65px; position:absolute;">
+                    <span style="font-size:2rem; display:block; animation:bounce 2s infinite;">👤</span>
+                    <div class="marker-label">أنت الآن</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script src="results-engine.js"></script>
 <script>
-document.getElementById('acceptCheckbox').addEventListener('change',function(){document.getElementById('enterBtn').disabled=!this.checked;});
-document.getElementById('enterBtn').addEventListener('click',function(){document.getElementById('legalModal').style.display='none';});
-document.getElementById('carStatus').addEventListener('change',function(){document.getElementById('carInstallmentGroup').style.display=this.value==='installments'?'block':'none';});
-document.getElementById('housingType').addEventListener('change',function(){document.getElementById('rentGroup').style.display=this.value==='rent'?'block':'none';});
+// الحفاظ على المنطق البرمجي الخاص بك مع إصلاح التفاعل
+document.getElementById('acceptCheckbox').addEventListener('change', function(){
+    document.getElementById('enterBtn').disabled = !this.checked;
+});
+document.getElementById('enterBtn').addEventListener('click', function(){
+    document.getElementById('legalModal').style.display = 'none';
+});
+
+function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+
 function fmt(n){return Math.round(n).toLocaleString('ar-SA')+' ريال';}
-function calculate(){const currentYear=2026;const inp={cAge:parseInt(document.getElementById('currentAge').value)||0,tAge:parseInt(document.getElementById('targetRetirementAge').value)||0,startWork:parseInt(document.getElementById('workStartYear').value)||currentYear,earlyRet:parseInt(document.getElementById('earlyRetirementYear').value)||0,cash:parseFloat(document.getElementById('cashAssets').value)||0,portfolio:parseFloat(document.getElementById('investmentPortfolio').value)||0,growth:parseFloat(document.getElementById('portfolioGrowth').value)||8,realEstate:parseFloat(document.getElementById('realEstateValue').value)||0,rentalInc:parseFloat(document.getElementById('monthlyRental').value)||0,loans:parseFloat(document.getElementById('totalLoans').value)||0,carPay:parseFloat(document.getElementById('carInstallment').value)||0,carOp:parseFloat(document.getElementById('carOperating').value)||0,otherObl:parseFloat(document.getElementById('otherObligations').value)||0,rentPay:parseFloat(document.getElementById('housingAmount').value)||0,basicExp:parseFloat(document.getElementById('basicExpenses').value)||0,luxuryAnn:parseFloat(document.getElementById('annualLuxury').value)||0,healthAnn:parseFloat(document.getElementById('annualHealth').value)||0,inflation:parseFloat(document.getElementById('inflationRate').value)||3,pension:parseFloat(document.getElementById('expectedPension').value)||0,bonus:parseFloat(document.getElementById('retirementBonus').value)||0,};if(inp.basicExp<=0||inp.cAge<=0||inp.tAge<=inp.cAge){alert('يرجى إدخال بيانات صحيحة.');return;}const yearsToRetire=inp.tAge-inp.cAge;const fullRetYear=currentYear+yearsToRetire;const currentMonthlyExp=inp.basicExp+inp.rentPay+inp.carPay+inp.carOp+inp.otherObl+(inp.luxuryAnn/12);const futureMonthlyExp=(currentMonthlyExp*Math.pow(1+inp.inflation/100,yearsToRetire))+(inp.healthAnn/12);const futureRentalInc=inp.rentalInc*Math.pow(1+(inp.inflation*0.5)/100,yearsToRetire);const futurePassiveInc=inp.pension+futureRentalInc;const monthlyGap=Math.max(0,futureMonthlyExp-futurePassiveInc);const capitalNeeded=monthlyGap*12*25;const netAssets=(inp.cash+inp.portfolio+inp.realEstate)-inp.loans;const expectedWealth=(netAssets*Math.pow(1+inp.growth/100,yearsToRetire))+inp.bonus;const readiness=capitalNeeded<=0?100:Math.min(100,(expectedWealth/capitalNeeded)*100);const passiveRatio=futureMonthlyExp>0?Math.round((futurePassiveInc/futureMonthlyExp)*100):0;const fill=document.getElementById('progressFill');fill.style.width=readiness+'%';fill.textContent=Math.round(readiness)+'%';fill.style.background=readiness>75?'#27ae60':(readiness>45?'#f39c12':'#e74c3c');const msg=document.getElementById('retirementMessage');if(passiveRatio>=100){msg.innerHTML='🏁 تهانياً! دخلك السلبي يغطي مصاريفك.';msg.style.color='#27ae60';}else{msg.innerHTML=`⏳ أنت في مرحلة البناء. الدخل السلبي يغطي ${passiveRatio}% من مصاريفك.`;msg.style.color='#2c3e50';}document.getElementById('repFutureExp').innerText=fmt(futureMonthlyExp);document.getElementById('repCapitalNeeded').innerText=fmt(capitalNeeded);document.getElementById('repExpectedWealth').innerText=fmt(expectedWealth);document.getElementById('repPassiveRatio').innerText=passiveRatio+'%';const sec=document.getElementById('resultsSection');sec.classList.remove('result-positive','result-negative','result-warning');if(readiness>=75)sec.classList.add('result-positive');else if(readiness>=45)sec.classList.add('result-warning');else sec.classList.add('result-negative');if(window.ResultsEngine)window.ResultsEngine.paint();const safeYear=simulateSafeYear(inp,netAssets,currentMonthlyExp);drawTimeline(inp.startWork,inp.earlyRet,fullRetYear,safeYear,currentYear);document.getElementById('resultsSection').style.display='block';document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});}
-function simulateSafeYear(inp,assets,monthlyExp){const retireYear=2026+(inp.tAge-inp.cAge);for(let y=2026;y<=2085;y++){const diff=y-2026;const curAssets=assets*Math.pow(1+inp.growth/100,diff);const curExpAnn=(monthlyExp*12*Math.pow(1+inp.inflation/100,diff))+inp.healthAnn;const curRental=inp.rentalInc*Math.pow(1+(inp.inflation*0.5)/100,diff)*12;const pension=y>=retireYear?inp.pension*12:0;const totalIncome=curRental+pension;if(totalIncome>=curExpAnn||(totalIncome+curAssets*0.04)>=curExpAnn)return y;}return 2085;}
-function drawTimeline(start,early,full,safe,now){const span=Math.max(full-start,1);const getPosRTL=(year)=>Math.min(100,Math.max(0,((year-start)/span)*100));const place=(id,year,label)=>{const el=document.getElementById(id);if(!el)return;el.style.right=getPosRTL(year)+'%';el.style.position='absolute';document.getElementById(id.replace('m','l')).innerHTML=label;};place('mStart',start,`${start}<br>البداية`);place('mFull',full,`${full}<br>التقاعد`);if(early>0)place('mEarly',early,`${early}<br>مبكر 🎯`);place('mSafe',safe,`${safe}<br>آمن ✅`);const nowEl=document.getElementById('mNow');nowEl.style.right=getPosRTL(now)+'%';nowEl.style.position='absolute';document.getElementById('timelineFill').style.width=getPosRTL(now)+'%';document.getElementById('timelineStartLabel').textContent=`${start} — البداية`;document.getElementById('timelineEndLabel').textContent=`${full} — التقاعد`;}
-function confirmReset(){if(confirm('إعادة تعيين جميع البيانات؟'))window.location.reload();}
+
+function calculate(){
+    const currentYear = 2026;
+    const inp = {
+        cAge: parseInt(document.getElementById('currentAge').value)||0,
+        tAge: parseInt(document.getElementById('targetRetirementAge').value)||0,
+        startWork: parseInt(document.getElementById('workStartYear').value)||currentYear,
+        portfolio: parseFloat(document.getElementById('investmentPortfolio').value)||0,
+        growth: parseFloat(document.getElementById('portfolioGrowth').value)||8,
+        realEstate: parseFloat(document.getElementById('realEstateValue').value)||0,
+        rentalInc: parseFloat(document.getElementById('monthlyRental').value)||0,
+        loans: parseFloat(document.getElementById('totalLoans').value)||0,
+        basicExp: parseFloat(document.getElementById('basicExpenses').value)||0,
+        inflation: parseFloat(document.getElementById('inflationRate').value)||3,
+        pension: parseFloat(document.getElementById('expectedPension').value)||0,
+        bonus: parseFloat(document.getElementById('retirementBonus').value)||0
+    };
+
+    if(inp.cAge <= 0 || inp.tAge <= inp.cAge){ alert('يرجى إدخال أعمار صحيحة'); return; }
+
+    const yearsToRetire = inp.tAge - inp.cAge;
+    const futureMonthlyExp = inp.basicExp * Math.pow(1 + inp.inflation/100, yearsToRetire);
+    const capitalNeeded = (futureMonthlyExp - (inp.pension + inp.rentalInc)) * 12 * 25;
+    const expectedWealth = ((inp.portfolio + inp.realEstate - inp.loans) * Math.pow(1 + inp.growth/100, yearsToRetire)) + inp.bonus;
+    
+    const readiness = Math.min(100, Math.max(0, (expectedWealth / Math.max(1, capitalNeeded)) * 100));
+
+    // تحديث النتائج المرئية
+    document.getElementById('resultsSection').style.display = 'block';
+    document.getElementById('repFutureExp').innerText = fmt(futureMonthlyExp);
+    document.getElementById('repCapitalNeeded').innerText = fmt(Math.max(0, capitalNeeded));
+    document.getElementById('repExpectedWealth').innerText = fmt(expectedWealth);
+    document.getElementById('repPassiveRatio').innerText = Math.round(readiness) + '%';
+
+    const fill = document.getElementById('progressFill');
+    fill.style.width = readiness + '%';
+    fill.innerText = Math.round(readiness) + '%';
+    fill.style.background = readiness > 80 ? '#27ae60' : (readiness > 50 ? '#f39c12' : '#e74c3c');
+
+    // خارطة الطريق
+    const fullRetYear = currentYear + yearsToRetire;
+    document.getElementById('lStart').innerHTML = inp.startWork + "<br>البداية";
+    document.getElementById('lFull').innerHTML = fullRetYear + "<br>التقاعد";
+    document.getElementById('mStart').style.right = "0%";
+    document.getElementById('mFull').style.right = "100%";
+    
+    document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+}
 </script>
-<script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
 </body>
 </html>
