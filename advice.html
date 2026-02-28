@@ -97,12 +97,8 @@
             box-shadow: 0 6px 18px rgba(0,0,0,0.35);
             transform: scale(1.04);
         }
-        .pyramid-level::after {
-            content: '';
-        }
-        .pyramid-level.active::after {
-            content: ' 👤';
-        }
+        .pyramid-level::after { content: ''; }
+        .pyramid-level.active::after { content: ' 👤'; }
 
         /* ===== Result Area ===== */
         .result-area {
@@ -161,6 +157,7 @@
         }
     </style>
     <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
 </head>
 <body>
 <div class="container">
@@ -168,37 +165,40 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+            <button class="navbar-toggle no-print" onclick="toggleNavbar()">☰</button>
             <div class="navbar-menu" id="navbarMenu">
                 <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
-                <a href="advice.html"                    class="navbar-item calculator">💰 حاسبة الثروة</a>
-                <a href="salary_calculator.html"         class="navbar-item salary">💼 حاسبة الراتب</a>
-                <a href="zakat_purification.html"        class="navbar-item zakat">🕌 التطهير والزكاة</a>
+                <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
+                <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
                 <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
-                <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح الاستثمار</a>
-                <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ حاسبة كرة الثلج</a>
-                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ صندوق الطوارئ</a>
-                <a href="average_calculator.html"        class="navbar-item calculator">📊 متوسط الشراء</a>
-                <a href="company_valuation.html"         class="navbar-item calculator">🏢 تقييم الشركة</a>
-                <a href="retirement_calculator.html"     class="navbar-item calculator">🏖️ حاسبة التقاعد</a>
-                <a href="portfolio_rating.html"          class="navbar-item calculator">🛡️ أمان المحفظة</a>
-                <a href="stock_valuation.html"           class="navbar-item valuation">📊 تقييم الأسهم</a>
+                <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح</a>
+                <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ العائد المركب</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+                <a href="average_calculator.html"        class="navbar-item average">📊 متوسط الشراء</a>
+                <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
+                <a href="retirement_calculator.html"     class="navbar-item retirement">🏖️ التقاعد</a>
+                <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+                <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
+                <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+                <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
+                <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
+                <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
             </div>
-            <button class="navbar-toggle no-print" onclick="toggleNavbar()">☰</button>
         </div>
     </nav>
     <script>
-        function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('collapsed'); }
-        document.addEventListener('DOMContentLoaded', function () {
-            const cur = window.location.pathname.split('/').pop() || 'index.html';
-            document.querySelectorAll('.navbar-item').forEach(el => {
-                if (el.getAttribute('href') === cur || (cur === '' && el.getAttribute('href') === 'index.html'))
-                    el.classList.add('active');
+        function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+        document.addEventListener('DOMContentLoaded',function(){
+            const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0].split('#')[0]||'index.html';
+            document.querySelectorAll('.navbar-item').forEach(function(el){
+                el.classList.remove('active');
+                if((el.getAttribute('href')||'').split('?')[0].split('#')[0]===page)el.classList.add('active');
             });
         });
     </script>
 
     <!-- ===== الحاسبة ===== -->
-    <!-- ✅ إصلاح: كل المحتوى داخل card واحدة مغلقة بشكل صحيح -->
     <div class="card no-print">
         <h1>⚖️ حاسبة صافي الثروة الحقيقية</h1>
         <p style="text-align:center; margin-bottom:20px; color:#555;">
@@ -215,13 +215,11 @@
             </ul>
         </div>
 
-        <!-- العمر وسعر الذهب -->
         <div class="grid" style="margin-bottom: 20px;">
             <div class="input-group">
                 <label>📅 العمر (سنوات)</label>
                 <input type="number" id="age" placeholder="مثلاً: 35" min="1" max="120">
             </div>
-            <!-- ✅ سعر الذهب قابل للتعديل بدل ثابت مضمّن -->
             <div class="input-group">
                 <label>🥇 سعر جرام الذهب (ريال) — اضبط حسب سعر اليوم</label>
                 <input type="number" id="gold_price_per_gram" value="420" min="1" placeholder="مثلاً: 420">
@@ -229,7 +227,6 @@
         </div>
 
         <div class="grid">
-            <!-- ===== الأصول ===== -->
             <div class="assets-section">
                 <h3>💰 الأصول (ما تملكه)</h3>
                 <div class="input-group"><label>نقد وودائع بنكية وحسابات جارية</label><input type="number" class="asset" placeholder="0" min="0"></div>
@@ -244,7 +241,6 @@
                 <div class="input-group"><label>حسابات التقاعد ومكافأة نهاية الخدمة (GOSI)</label><input type="number" class="asset" placeholder="0" min="0"></div>
             </div>
 
-            <!-- ===== الخصوم ===== -->
             <div class="debts-section">
                 <h3>💳 الالتزامات (ما عليك)</h3>
                 <div class="input-group"><label>قروض عقارية</label><input type="number" class="debt" placeholder="0" min="0"></div>
@@ -266,43 +262,18 @@
         <div id="report-date" style="font-size:0.9em; color:#666; margin-bottom:10px;"></div>
 
         <div class="visuals-row">
-            <!-- === Gauge === -->
             <div class="gauge-container">
-                <!--
-                    نصف دائرة: يبدأ من اليسار (180°) ينتهي اليمين (0°)
-                    الإبرة تدور حول النقطة (70,70)
-                    rotate(angle 70 70) حيث angle:
-                      -90 = اليسار (أحمر) | 0 = الأعلى (أصفر) | +90 = اليمين (أخضر)
-                -->
                 <svg class="gauge-svg" viewBox="0 0 140 100">
-                    <!-- شريط خلفي -->
-                    <path d="M10 70 A60 60 0 0 1 130 70"
-                          fill="none" stroke="#e0e0e0" stroke-width="18" stroke-linecap="round"/>
-                    <!-- ✅ ألوان مرسومة بدقة لتطابق مناطق التصنيف -->
-                    <!-- أحمر: اليسار 0–25 -->
-                    <path d="M10 70 A60 60 0 0 1 35 25"
-                          fill="none" stroke="#d67a6a" stroke-width="12" stroke-linecap="round"/>
-                    <!-- برتقالي: 25–50 -->
-                    <path d="M35 25 A60 60 0 0 1 70 16"
-                          fill="none" stroke="#e89d5a" stroke-width="12" stroke-linecap="round"/>
-                    <!-- أصفر: 50–75 -->
-                    <path d="M70 16 A60 60 0 0 1 105 25"
-                          fill="none" stroke="#f1c40f" stroke-width="12" stroke-linecap="round"/>
-                    <!-- أخضر: 75–100 -->
-                    <path d="M105 25 A60 60 0 0 1 130 70"
-                          fill="none" stroke="#5a9d7a" stroke-width="12" stroke-linecap="round"/>
-
-                    <!-- الإبرة — تبدأ رأسياً للأعلى (0°) ثم تُدار -->
-                    <line id="needle"
-                          x1="70" y1="70" x2="70" y2="18"
+                    <path d="M10 70 A60 60 0 0 1 130 70" fill="none" stroke="#e0e0e0" stroke-width="18" stroke-linecap="round"/>
+                    <path d="M10 70 A60 60 0 0 1 35 25"  fill="none" stroke="#d67a6a" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M35 25 A60 60 0 0 1 70 16"  fill="none" stroke="#e89d5a" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M70 16 A60 60 0 0 1 105 25" fill="none" stroke="#f1c40f" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M105 25 A60 60 0 0 1 130 70" fill="none" stroke="#5a9d7a" stroke-width="12" stroke-linecap="round"/>
+                    <line id="needle" x1="70" y1="70" x2="70" y2="18"
                           stroke="#2c3e50" stroke-width="2.5" stroke-linecap="round"
                           transform="rotate(-90 70 70)"
                           style="transition: transform 1.5s cubic-bezier(0.4,0,0.2,1);"/>
-
-                    <!-- دائرة مركزية -->
                     <circle cx="70" cy="70" r="6" fill="white" stroke="#2c3e50" stroke-width="2"/>
-
-                    <!-- تسميات -->
                     <text x="9"   y="85" font-size="7" fill="#888" text-anchor="middle">مستورة</text>
                     <text x="34"  y="20" font-size="7" fill="#888" text-anchor="middle">متوسطة</text>
                     <text x="70"  y="11" font-size="7" fill="#888" text-anchor="middle">م.عليا</text>
@@ -312,30 +283,14 @@
                 <div id="gauge-label" style="text-align:center; font-weight:bold; font-size:0.95rem; margin-top:8px; color:var(--dark);">—</div>
             </div>
 
-            <!-- === هرم الثروة === -->
             <div class="pyramid-container">
                 <h3 style="margin-bottom:15px; color:var(--dark);">🏛️ هرم الثروة</h3>
                 <div class="pyramid-levels">
-                    <div id="level-5" class="pyramid-level"
-                         style="width:100px; background:linear-gradient(135deg,#5a9d7a,#4a8d6a);">
-                        فاحشة الثراء
-                    </div>
-                    <div id="level-4" class="pyramid-level"
-                         style="width:160px; background:linear-gradient(135deg,#5a9d7a,#6ab0a0);">
-                        الأثرياء
-                    </div>
-                    <div id="level-3" class="pyramid-level"
-                         style="width:220px; background:linear-gradient(135deg,#f1c40f,#e89d5a);">
-                        المتوسطة العليا
-                    </div>
-                    <div id="level-2" class="pyramid-level"
-                         style="width:280px; background:linear-gradient(135deg,#e89d5a,#d88d4a);">
-                        المتوسطة
-                    </div>
-                    <div id="level-1" class="pyramid-level"
-                         style="width:340px; background:linear-gradient(135deg,#d67a6a,#c66a5a);">
-                        المستورة / المديونة
-                    </div>
+                    <div id="level-5" class="pyramid-level" style="width:100px; background:linear-gradient(135deg,#5a9d7a,#4a8d6a);">فاحشة الثراء</div>
+                    <div id="level-4" class="pyramid-level" style="width:160px; background:linear-gradient(135deg,#5a9d7a,#6ab0a0);">الأثرياء</div>
+                    <div id="level-3" class="pyramid-level" style="width:220px; background:linear-gradient(135deg,#f1c40f,#e89d5a);">المتوسطة العليا</div>
+                    <div id="level-2" class="pyramid-level" style="width:280px; background:linear-gradient(135deg,#e89d5a,#d88d4a);">المتوسطة</div>
+                    <div id="level-1" class="pyramid-level" style="width:340px; background:linear-gradient(135deg,#d67a6a,#c66a5a);">المستورة / المديونة</div>
                 </div>
             </div>
         </div>
@@ -343,13 +298,11 @@
         <div class="status-text" id="status-label">—</div>
         <div class="amount-text"  id="networth-display">0 ريال</div>
 
-        <div style="margin-top:20px; text-align:right; font-size:0.95em;
-                    border-top:1px solid #eee; padding-top:15px;">
+        <div style="margin-top:20px; text-align:right; font-size:0.95em; border-top:1px solid #eee; padding-top:15px;">
             <strong>تفاصيل الحساب:</strong>
             <p id="details-text" style="margin-top:8px; line-height:2;"></p>
         </div>
 
-        <!-- تصنيف الطبقات -->
         <div class="sources-box">
             <strong>تصنيف الطبقات المالية (السعودية):</strong>
             <ul style="margin:10px 0; padding-right:20px; line-height:2;">
@@ -359,30 +312,20 @@
                 <li style="color:var(--green);">🟢 1.875 مليون – 37.5 مليون: طبقة الأثرياء</li>
                 <li style="color:var(--dark-green);">🟢 أكثر من 37.5 مليون: طبقة فاحشة الثراء</li>
             </ul>
-
             <strong>المصادر:</strong>
             <ul style="margin-top:8px; padding-right:15px;">
-                <li>📊 تحليل ادخار الأسر السعودية —
-                    <a href="https://assets.kpmg.com/content/dam/kpmg/sa/pdf/2021/house-holding-ar.pdf"
-                       target="_blank">KPMG</a></li>
-                <li>📊 ثروة السعودية تصل لمستوى قياسي —
-                    <a href="https://mediaavataarme.com/media-avataar-insights/29304/saudi-arabias-net-wealth-hits-record-high-reaching-3-70trln-in-2024/"
-                       target="_blank">Media Avataar</a></li>
-                <li>📊 الهرم العالمي للثروة —
-                    <a href="https://wealth-monitor.co.uk/the-global-wealth-pyramid/"
-                       target="_blank">Wealth Monitor</a></li>
+                <li>📊 تحليل ادخار الأسر السعودية — <a href="https://assets.kpmg.com/content/dam/kpmg/sa/pdf/2021/house-holding-ar.pdf" target="_blank">KPMG</a></li>
+                <li>📊 ثروة السعودية تصل لمستوى قياسي — <a href="https://mediaavataarme.com/media-avataar-insights/29304/saudi-arabias-net-wealth-hits-record-high-reaching-3-70trln-in-2024/" target="_blank">Media Avataar</a></li>
+                <li>📊 الهرم العالمي للثروة — <a href="https://wealth-monitor.co.uk/the-global-wealth-pyramid/" target="_blank">Wealth Monitor</a></li>
             </ul>
         </div>
 
         <button class="btn-print no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
     </div>
 
-</div><!-- end .container -->
+</div>
 
 <script>
-/* =====================================================
-   إعادة تعيين
-   ===================================================== */
 function resetAll() {
     document.querySelectorAll('input[type="number"]').forEach(el => {
         if (el.id === 'gold_price_per_gram') el.value = 420;
@@ -392,86 +335,47 @@ function resetAll() {
     document.querySelectorAll('.pyramid-level').forEach(l => l.classList.remove('active'));
 }
 
-/* =====================================================
-   الحساب الرئيسي
-   ===================================================== */
 function calculateAll() {
-    // الأصول النقدية
     let assets = Array.from(document.querySelectorAll('input.asset'))
         .reduce((s, el) => s + (parseFloat(el.value) || 0), 0);
-
-    // الذهب — ✅ سعر قابل للتعديل
     const goldGrams = parseFloat(document.getElementById('gold_grams').value) || 0;
     const goldPrice = parseFloat(document.getElementById('gold_price_per_gram').value) || 420;
     assets += goldGrams * goldPrice;
-
-    // الخصوم
     const debts = Array.from(document.querySelectorAll('input.debt'))
         .reduce((s, el) => s + (parseFloat(el.value) || 0), 0);
-
     const netWorth = assets - debts;
-
-    /* --------- تصنيف الطبقة --------- */
     let level, status, color, needleAngle;
-
-    if (netWorth < 75_000) {
-        level = 1; status = 'الطبقة المستورة / المديونة'; color = '#d67a6a';
-        needleAngle = -90; // اليسار
-    } else if (netWorth < 330_000) {
-        level = 2; status = 'الطبقة المتوسطة'; color = '#e89d5a';
-        needleAngle = -45;
-    } else if (netWorth < 1_875_000) {
-        level = 3; status = 'الطبقة المتوسطة العليا'; color = '#c9a700';
-        needleAngle = 0; // الأعلى
-    } else if (netWorth < 37_500_000) {
-        level = 4; status = 'طبقة الأثرياء'; color = '#5a9d7a';
-        needleAngle = 45;
-    } else {
-        level = 5; status = 'طبقة فاحشة الثراء'; color = '#4a8d6a';
-        needleAngle = 90; // اليمين
-    }
-
-    /* --------- تحديث الإبرة --------- */
-    // الإبرة تدور حول (70,70) بزاوية needleAngle
-    // -90 = اليسار (أحمر) | 0 = الأعلى | +90 = اليمين (أخضر)
-    document.getElementById('needle').setAttribute(
-        'transform', `rotate(${needleAngle} 70 70)`
-    );
+    if (netWorth < 75000)        { level=1; status='الطبقة المستورة / المديونة'; color='#d67a6a'; needleAngle=-90; }
+    else if (netWorth < 330000)  { level=2; status='الطبقة المتوسطة';            color='#e89d5a'; needleAngle=-45; }
+    else if (netWorth < 1875000) { level=3; status='الطبقة المتوسطة العليا';     color='#c9a700'; needleAngle=0;   }
+    else if (netWorth < 37500000){ level=4; status='طبقة الأثرياء';              color='#5a9d7a'; needleAngle=45;  }
+    else                         { level=5; status='طبقة فاحشة الثراء';          color='#4a8d6a'; needleAngle=90;  }
+    document.getElementById('needle').setAttribute('transform',`rotate(${needleAngle} 70 70)`);
     document.getElementById('gauge-label').textContent = status;
     document.getElementById('gauge-label').style.color = color;
-
-    /* --------- هرم الثروة --------- */
     document.querySelectorAll('.pyramid-level').forEach(el => el.classList.remove('active'));
     const activeEl = document.getElementById(`level-${level}`);
     if (activeEl) activeEl.classList.add('active');
-
-    /* --------- النصوص --------- */
     document.getElementById('status-label').textContent  = status;
     document.getElementById('status-label').style.color  = color;
     document.getElementById('networth-display').textContent =
         netWorth.toLocaleString('ar-SA', { maximumFractionDigits: 0 }) + ' ريال سعودي';
-    document.getElementById('networth-display').style.color =
-        netWorth >= 0 ? 'var(--dark-green)' : 'var(--red)';
-
+    document.getElementById('networth-display').style.color = netWorth >= 0 ? 'var(--dark-green)' : 'var(--red)';
     const debtRatio = assets > 0 ? ((debts / assets) * 100).toFixed(1) : '—';
     document.getElementById('details-text').innerHTML = `
-        إجمالي الأصول: <strong>${assets.toLocaleString('ar-SA', {maximumFractionDigits:0})} ريال</strong><br>
-        إجمالي الالتزامات: <strong>${debts.toLocaleString('ar-SA', {maximumFractionDigits:0})} ريال</strong><br>
+        إجمالي الأصول: <strong>${assets.toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong><br>
+        إجمالي الالتزامات: <strong>${debts.toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong><br>
         نسبة الديون للأصول: <strong>${debtRatio}%</strong>${debtRatio > 40 ? ' ⚠️ مرتفعة' : ''}<br>
-        قيمة الذهب: <strong>${(goldGrams * goldPrice).toLocaleString('ar-SA', {maximumFractionDigits:0})} ريال</strong>
+        قيمة الذهب: <strong>${(goldGrams * goldPrice).toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong>
         (${goldGrams} جرام × ${goldPrice} ريال)
     `;
-    document.getElementById('report-date').textContent =
-        'تاريخ التقرير: ' + new Date().toLocaleDateString('ar-SA');
-
-    /* --------- إظهار النتائج --------- */
+    document.getElementById('report-date').textContent = 'تاريخ التقرير: ' + new Date().toLocaleDateString('ar-SA');
     const resultEl = document.getElementById('printable-result');
     resultEl.style.display = 'block';
     resultEl.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 
-<script data-goatcounter="https://investornote.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
