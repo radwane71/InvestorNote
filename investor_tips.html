@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نصائح مستثمر — قواعد سوق المال | مفكرة مستثمر</title>
     <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,7 +16,6 @@
             line-height: 1.8; color: #2c3e50;
         }
 
-        /* ===== Navbar Wrapper — يكسر قيد max-width: 860px ===== */
         .navbar-wrapper {
             max-width: 950px;
             margin: 0 auto 15px;
@@ -28,7 +28,6 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
-        /* ===== Typography ===== */
         h1 {
             color: #333; font-size: 2.2rem;
             margin-bottom: 20px; text-align: center;
@@ -47,7 +46,6 @@
 
         p { color: #444; line-height: 1.8; margin-bottom: 10px; }
 
-        /* ===== Intro ===== */
         .intro {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white; padding: 25px; border-radius: 15px;
@@ -59,7 +57,6 @@
         }
         .intro p { color: rgba(255,255,255,0.95); margin-bottom: 8px; }
 
-        /* ===== Warning Box ===== */
         .warning-box {
             background: #fff3cd; border: 2px solid #ffc107;
             border-radius: 10px; padding: 18px;
@@ -68,7 +65,6 @@
         .warning-box h4 { color: #856404; font-size: 1.1rem; margin-bottom: 8px; }
         .warning-box p  { color: #856404; font-weight: bold; margin: 0; }
 
-        /* ===== Important Note ===== */
         .important-note {
             background: #e8f5e8; border: 2px solid #4caf50;
             border-radius: 10px; padding: 15px; margin: 15px 0;
@@ -76,7 +72,6 @@
         .important-note p { color: #2e7d32; margin-bottom: 6px; }
         .important-note p:last-child { margin-bottom: 0; }
 
-        /* ===== Colored Sections ===== */
         .behavioral-biases,
         .valuation-ratios,
         .passive-investing,
@@ -93,7 +88,6 @@
         .order-types        { background: linear-gradient(135deg, #8e44ad, #3498db); }
         .time-horizons      { background: linear-gradient(135deg, #16a085, #27ae60); }
 
-        /* h2 override داخل الأقسام الملونة */
         .behavioral-biases h2,
         .valuation-ratios h2,
         .passive-investing h2,
@@ -105,7 +99,6 @@
             margin-bottom: 20px; font-size: 1.8rem;
         }
 
-        /* p داخل الأقسام الملونة */
         .behavioral-biases p,
         .valuation-ratios p,
         .passive-investing p,
@@ -113,7 +106,6 @@
         .order-types p,
         .time-horizons p { color: rgba(255,255,255,0.93); }
 
-        /* ===== Behavior Tips ===== */
         .behavior-tip {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
@@ -126,7 +118,6 @@
         }
         .behavior-tip p { color: rgba(255,255,255,0.92); margin: 0; }
 
-        /* ===== Professional Tips ===== */
         .professional-tips {
             background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white; padding: 30px;
@@ -138,7 +129,6 @@
             padding: 0; font-size: 1.8rem;
         }
 
-        /* ===== Rules Section ===== */
         .rules-section {
             background: #f8f9fa; border-radius: 15px;
             padding: 25px; margin: 20px 0;
@@ -161,7 +151,6 @@
         .rule-item p   { color: #555; line-height: 1.7; margin-bottom: 8px; }
         .rule-item p:last-child { margin-bottom: 0; }
 
-        /* rule-item داخل الأقسام الملونة */
         .behavioral-biases .rule-item,
         .valuation-ratios  .rule-item,
         .passive-investing .rule-item,
@@ -191,7 +180,6 @@
 
         .zakat-section .rule-item ul { color: rgba(255,255,255,0.92); }
 
-        /* ===== Golden Rule ===== */
         .golden-rule {
             background: linear-gradient(135deg, #ffd700, #ffed4e);
             color: #333; font-weight: bold;
@@ -201,7 +189,6 @@
             line-height: 1.7;
         }
 
-        /* ===== Tables ===== */
         .ratios-table,
         .time-horizon-table,
         .comparison-etf-table {
@@ -225,12 +212,10 @@
         }
         .time-horizon-table td,
         .comparison-etf-table td { text-align: center; }
-        /* آخر صف — بلا border-bottom */
         .ratios-table      tr:last-child td,
         .time-horizon-table tr:last-child td,
         .comparison-etf-table tr:last-child td { border-bottom: none; }
 
-        /* ===== Quotes ===== */
         .quotes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -267,7 +252,6 @@
             top: -4px; right: 0; opacity: 0.35;
         }
 
-        /* ===== Golden Number ===== */
         .golden-number {
             background: linear-gradient(135deg, #ffd700, #ffed4e);
             border-radius: 15px; padding: 25px;
@@ -281,7 +265,6 @@
         }
         .golden-number p { color: #444; margin-bottom: 6px; }
 
-        /* ===== Diversification Section ===== */
         .diversification-section {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             border-radius: 15px; padding: 30px; margin: 30px 0;
@@ -292,7 +275,6 @@
         }
         .diversification-section > p { color: #555; margin-bottom: 20px; }
 
-        /* Chart container */
         .chart-container {
             position: relative; height: 280px;
             margin: 20px 0; background: white;
@@ -300,7 +282,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        /* ===== Decision Matrix ===== */
         .decision-matrix {
             background: #2c3e50; color: white;
             border-radius: 12px; padding: 25px; margin: 20px 0;
@@ -322,7 +303,6 @@
         .matrix-item span   { display: block; font-size: 1.5rem; margin-bottom: 6px; }
         .matrix-item strong { font-size: 0.88rem; }
 
-        /* ===== Image Container ===== */
         .image-container { text-align: center; margin: 20px 0; }
         .image-container img {
             max-width: 100%; height: auto;
@@ -330,7 +310,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        /* ===== Disclaimer ===== */
         .disclaimer {
             background: #efd008; color: #ef0a0a;
             padding: 30px; border-radius: 15px;
@@ -340,7 +319,6 @@
         .disclaimer p  { line-height: 1.7; margin-bottom: 8px; opacity: 0.88; }
         .disclaimer p:last-child { margin-bottom: 0; }
 
-        /* ===== Responsive ===== */
         @media (max-width: 768px) {
             .container { padding: 20px; margin: 0 5px; }
             h1 { font-size: 1.8rem; }
@@ -359,7 +337,6 @@
 </head>
 <body>
 
-<!-- ✅ navbar خارج container — لا يتقيد بـ max-width: 860px -->
 <div class="navbar-wrapper">
     <nav class="navbar">
         <div class="navbar-container">
@@ -380,6 +357,7 @@
                 <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
                 <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
                 <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+                <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
                 <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
                 <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
             </div>
@@ -411,15 +389,12 @@
     </div>
 
     <div class="image-container">
-        <img src="investment_rules.jpg" alt="قواعد الاستثمار"
-             width="800" height="450" loading="lazy">
+        <img src="investment_rules.jpg" alt="قواعد الاستثمار" width="800" height="450" loading="lazy">
     </div>
 
-    <!-- ===== قواعد سوق المال ===== -->
     <h2>📊 قواعد سوق المال</h2>
 
     <div class="rules-section">
-
         <div class="rule-item">
             <h4>١. بناء المحفظة والتنويع</h4>
             <ul>
@@ -429,7 +404,6 @@
                 <li>احتفظ بـ <strong>5–10% كاش</strong> داخل المحفظة دائماً — هي ذخيرتك عند الأزمات</li>
             </ul>
         </div>
-
         <div class="rule-item">
             <h4>٢. قبل أي استثمار — القاعدة الصفرية</h4>
             <div class="golden-rule">
@@ -437,7 +411,6 @@
                 من يستثمر بلا احتياطي يضطر للبيع في أسوأ لحظة.
             </div>
         </div>
-
         <div class="rule-item">
             <h4>٣. الدخول للسوق</h4>
             <ul>
@@ -448,7 +421,6 @@
                 <strong>قاعدة ذهبية:</strong> وجودك داخل السوق أهم بمليون مرة من محاولة توقيت الدخول
             </div>
         </div>
-
         <div class="rule-item">
             <h4>٤. اختيار الأسهم</h4>
             <ul>
@@ -461,12 +433,9 @@
                 <li><strong>أنت تشتري حصة من شركة حقيقية، وليس رقماً على الشاشة</strong></li>
             </ul>
         </div>
-
         <div class="image-container">
-            <img src="stock_analysis.jpg" alt="تحليل الأسهم"
-                 width="800" height="450" loading="lazy">
+            <img src="stock_analysis.jpg" alt="تحليل الأسهم" width="800" height="450" loading="lazy">
         </div>
-
         <div class="rule-item">
             <h4>٥. فلسفة السيد سوق والتقلبات اليومية</h4>
             <p>تخيّل شريكاً يدعى "السيد سوق" يطرق بابك يومياً بأسعار متغيرة. يعطيك أسعاراً مرتفعة عند التفاؤل وأسعاراً بخسة عند الخوف.</p>
@@ -476,7 +445,6 @@
                 <strong>استخدم تقلبات السيد سوق لصالحك ولا تدعه يُملي قراراتك.</strong>
             </div>
         </div>
-
         <div class="rule-item">
             <h4>٦. التحليل</h4>
             <ul>
@@ -484,7 +452,6 @@
                 <li>التحليل الفني قرينة إضافية فقط — لا يُتخذ عليه قرار استثماري</li>
             </ul>
         </div>
-
         <div class="rule-item">
             <h4>٧. إدارة المراكز والمراجعة</h4>
             <ul>
@@ -496,7 +463,6 @@
                 <li><strong>لا تقترض ولا تأخذ تسهيلات للاستثمار — أبداً</strong></li>
             </ul>
         </div>
-
         <div class="rule-item">
             <h4>٨. التخارج من السهم</h4>
             <p><strong>لا تبع إلا في ثلاث حالات:</strong></p>
@@ -510,12 +476,9 @@
                 استخدم <strong>50% ← 30% ← 20%</strong> لتعظيم المكسب
             </div>
         </div>
-
         <div class="image-container">
-            <img src="exit_strategy.jpg" alt="استراتيجية الخروج"
-                 width="800" height="450" loading="lazy">
+            <img src="exit_strategy.jpg" alt="استراتيجية الخروج" width="800" height="450" loading="lazy">
         </div>
-
         <div class="rule-item">
             <h4>٩. العقلية والاستراتيجية</h4>
             <ul>
@@ -525,12 +488,10 @@
                 <li><strong>Compounding + DRIP</strong> = أقوى أداتين في الاستثمار</li>
             </ul>
         </div>
-
-    </div><!-- end .rules-section -->
+    </div>
 
     <div class="image-container">
-        <img src="investment_mindset.jpg" alt="عقلية المستثمر"
-             width="800" height="450" loading="lazy">
+        <img src="investment_mindset.jpg" alt="عقلية المستثمر" width="800" height="450" loading="lazy">
     </div>
 
     <div class="important-note">
@@ -538,80 +499,37 @@
         <p><strong>تعبّر عن رأي شخصي وليست توصية مالية.</strong></p>
     </div>
 
-    <!-- ===== الانحيازات السلوكية ===== -->
     <div class="behavioral-biases">
         <h2>🧠 الانحيازات السلوكية — العدو الحقيقي للمستثمر</h2>
         <p>أغلب المستثمرين لا يخسرون بسبب الجهل بالتنويع — بل بسبب قراراتهم العاطفية.</p>
-
-        <div class="behavior-tip">
-            <h3>تحيز التأكيد</h3>
-            <p>تبحث عن أخبار تؤكد قرارك وتتجاهل ما ينفيه. يُبقيك متمسكاً بوجهة نظر خاطئة.</p>
-        </div>
-        <div class="behavior-tip">
-            <h3>تأثير القطيع</h3>
-            <p>تشتري لأن "الكل يشتري" — وهذا وحده سبب كافٍ للخسارة. القطيع غالباً ما يكون على خطأ.</p>
-        </div>
-        <div class="behavior-tip">
-            <h3>النفور من الخسارة</h3>
-            <p>ألم الخسارة أقوى نفسياً من متعة الربح المعادل — مما يدفعك للتمسك بأسهم خاسرة أطول من اللازم.</p>
-        </div>
-        <div class="behavior-tip">
-            <h3>تحيز الحداثة</h3>
-            <p>المبالغة في وزن آخر الأحداث وتجاهل الصورة الكبيرة. الأخبار العاجلة تُهمّش التحليل الأساسي.</p>
-        </div>
-        <div class="behavior-tip">
-            <h3>الثقة الزائدة</h3>
-            <p>الاعتقاد بأنك تعرف أكثر من السوق بعد بضعة أرباح متتالية. الغرور يسبق السقوط دائماً.</p>
-        </div>
-        <div class="golden-rule">
-            <strong>افصل بين مشاعرك وقراراتك. القرار الاستثماري يُتخذ بالأرقام لا بالأخبار.</strong>
-        </div>
+        <div class="behavior-tip"><h3>تحيز التأكيد</h3><p>تبحث عن أخبار تؤكد قرارك وتتجاهل ما ينفيه. يُبقيك متمسكاً بوجهة نظر خاطئة.</p></div>
+        <div class="behavior-tip"><h3>تأثير القطيع</h3><p>تشتري لأن "الكل يشتري" — وهذا وحده سبب كافٍ للخسارة. القطيع غالباً ما يكون على خطأ.</p></div>
+        <div class="behavior-tip"><h3>النفور من الخسارة</h3><p>ألم الخسارة أقوى نفسياً من متعة الربح المعادل — مما يدفعك للتمسك بأسهم خاسرة أطول من اللازم.</p></div>
+        <div class="behavior-tip"><h3>تحيز الحداثة</h3><p>المبالغة في وزن آخر الأحداث وتجاهل الصورة الكبيرة. الأخبار العاجلة تُهمّش التحليل الأساسي.</p></div>
+        <div class="behavior-tip"><h3>الثقة الزائدة</h3><p>الاعتقاد بأنك تعرف أكثر من السوق بعد بضعة أرباح متتالية. الغرور يسبق السقوط دائماً.</p></div>
+        <div class="golden-rule"><strong>افصل بين مشاعرك وقراراتك. القرار الاستثماري يُتخذ بالأرقام لا بالأخبار.</strong></div>
     </div>
 
-    <!-- ===== نسب التقييم ===== -->
     <div class="valuation-ratios">
         <h2>📐 نسب التقييم الأساسية</h2>
         <table class="ratios-table">
-            <thead>
-                <tr><th>النسبة</th><th>ما تعنيه</th><th>تحذير</th></tr>
-            </thead>
+            <thead><tr><th>النسبة</th><th>ما تعنيه</th><th>تحذير</th></tr></thead>
             <tbody>
-                <tr>
-                    <td><strong>P/E Ratio</strong></td>
-                    <td>مقارنة سعر السهم بأرباح الشركة — كلما ارتفع توقّع السوق نمواً أعلى</td>
-                    <td>P/E مرتفع جداً قد يعني مبالغة في التسعير</td>
-                </tr>
-                <tr>
-                    <td><strong>P/B Ratio</strong></td>
-                    <td>مقارنة السعر بالقيمة الدفترية — أقل من 1 يعني تحت القيمة النظرية</td>
-                    <td>ليس معياراً وحيداً للشراء</td>
-                </tr>
-                <tr>
-                    <td><strong>Debt/Equity</strong></td>
-                    <td>نسبة الدين لحقوق المساهمين — كلما ارتفعت زادت مخاطر الشركة</td>
-                    <td>تختلف المعايير حسب القطاع</td>
-                </tr>
-                <tr>
-                    <td><strong>ROE</strong></td>
-                    <td>كيف تستثمر الشركة أموال المساهمين — كلما ارتفع كان أفضل</td>
-                    <td>قارنه دائماً بمنافسي القطاع</td>
-                </tr>
+                <tr><td><strong>P/E Ratio</strong></td><td>مقارنة سعر السهم بأرباح الشركة</td><td>P/E مرتفع جداً قد يعني مبالغة في التسعير</td></tr>
+                <tr><td><strong>P/B Ratio</strong></td><td>مقارنة السعر بالقيمة الدفترية</td><td>ليس معياراً وحيداً للشراء</td></tr>
+                <tr><td><strong>Debt/Equity</strong></td><td>نسبة الدين لحقوق المساهمين</td><td>تختلف المعايير حسب القطاع</td></tr>
+                <tr><td><strong>ROE</strong></td><td>كيف تستثمر الشركة أموال المساهمين</td><td>قارنه دائماً بمنافسي القطاع</td></tr>
             </tbody>
         </table>
-        <div class="golden-rule">
-            <strong>لا تأخذ نسبة واحدة منفردة — اقرأها مجتمعةً مع السياق.</strong>
-        </div>
+        <div class="golden-rule"><strong>لا تأخذ نسبة واحدة منفردة — اقرأها مجتمعةً مع السياق.</strong></div>
     </div>
 
-    <!-- ===== الاستثمار السلبي ===== -->
     <div class="passive-investing">
         <h2>🗂️ الاستثمار السلبي — صناديق المؤشرات والـ ETF</h2>
         <p>ليس كل مستثمر مضطر لاختيار الأسهم بنفسه. هناك بديل أبسط وأثبت إحصائياً.</p>
         <p><strong>صندوق المؤشر (Index Fund / ETF):</strong> يتتبع مؤشراً كاملاً كـ S&P 500 — بدلاً من اختيار أسهم فردية.</p>
         <table class="comparison-etf-table">
-            <thead>
-                <tr><th></th><th>الاستثمار النشط (أسهم فردية)</th><th>الاستثمار السلبي (ETF)</th></tr>
-            </thead>
+            <thead><tr><th></th><th>الاستثمار النشط (أسهم فردية)</th><th>الاستثمار السلبي (ETF)</th></tr></thead>
             <tbody>
                 <tr><td><strong>الوقت المطلوب</strong></td><td>عالٍ</td><td>منخفض جداً</td></tr>
                 <tr><td><strong>الخبرة المطلوبة</strong></td><td>عالية</td><td>منخفضة</td></tr>
@@ -619,12 +537,9 @@
                 <tr><td><strong>الأداء التاريخي</strong></td><td>يتفوق على السوق نادراً</td><td>يطابق أداء السوق</td></tr>
             </tbody>
         </table>
-        <div class="golden-rule">
-            <strong>توصية للمبتدئ: ابدأ بـ ETF يتتبع مؤشراً عريضاً ريثما تبني خبرتك.</strong>
-        </div>
+        <div class="golden-rule"><strong>توصية للمبتدئ: ابدأ بـ ETF يتتبع مؤشراً عريضاً ريثما تبني خبرتك.</strong></div>
     </div>
 
-    <!-- ===== الزكاة ===== -->
     <div class="zakat-section">
         <h2>🕌 الزكاة على محفظة الأسهم</h2>
         <div class="rule-item">
@@ -635,84 +550,49 @@
                 <li>الزكاة ليست عبئاً — هي بركة ومؤشر نجاح محفظتك</li>
             </ul>
         </div>
-        <div class="golden-rule">
-            <strong>استشر عالماً شرعياً لحساب الزكاة بدقة حسب طبيعة محفظتك.</strong>
-        </div>
+        <div class="golden-rule"><strong>استشر عالماً شرعياً لحساب الزكاة بدقة حسب طبيعة محفظتك.</strong></div>
     </div>
 
-    <!-- ===== أنواع الأوامر ===== -->
     <div class="order-types">
         <h2>🖱️ أنواع الأوامر — كيف تشتري فعلياً</h2>
-        <div class="rule-item">
-            <h4>Market Order</h4>
-            <p>تنفيذ فوري بأي سعر متاح في السوق — خطر في الأسهم قليلة السيولة.</p>
-        </div>
-        <div class="rule-item">
-            <h4>Limit Order</h4>
-            <p>تحدد سعراً أقصى للشراء — لا ينفذ إلا عند هذا السعر أو أقل.</p>
-        </div>
-        <div class="rule-item">
-            <h4>Stop Loss Order</h4>
-            <p>يبيع تلقائياً عند سعر محدد — أداة تداول قصير الأمد لا استثمار.</p>
-        </div>
-        <div class="golden-rule">
-            <strong>📌 استخدم دائماً Limit Order — يمنحك تحكماً أفضل في سعر الدخول.</strong>
-        </div>
+        <div class="rule-item"><h4>Market Order</h4><p>تنفيذ فوري بأي سعر متاح في السوق — خطر في الأسهم قليلة السيولة.</p></div>
+        <div class="rule-item"><h4>Limit Order</h4><p>تحدد سعراً أقصى للشراء — لا ينفذ إلا عند هذا السعر أو أقل.</p></div>
+        <div class="rule-item"><h4>Stop Loss Order</h4><p>يبيع تلقائياً عند سعر محدد — أداة تداول قصير الأمد لا استثمار.</p></div>
+        <div class="golden-rule"><strong>📌 استخدم دائماً Limit Order — يمنحك تحكماً أفضل في سعر الدخول.</strong></div>
     </div>
 
-    <!-- ===== الأفق الزمني ===== -->
     <div class="time-horizons">
         <h2>🎯 ربط الاستثمار بالأهداف الزمنية</h2>
         <p>قبل أي شيء — حدّد لماذا تستثمر ومتى تحتاج المال.</p>
         <table class="time-horizon-table">
-            <thead>
-                <tr><th>الأفق الزمني</th><th>التوجه المقترح</th><th>مستوى المخاطرة</th></tr>
-            </thead>
+            <thead><tr><th>الأفق الزمني</th><th>التوجه المقترح</th><th>مستوى المخاطرة</th></tr></thead>
             <tbody>
                 <tr><td><strong>أقل من 3 سنوات</strong></td><td>سيولة واستثمار محافظ</td><td>منخفض</td></tr>
                 <tr><td><strong>3–7 سنوات</strong></td><td>مزيج أسهم وأصول ثابتة</td><td>متوسط</td></tr>
                 <tr><td><strong>أكثر من 10 سنوات</strong></td><td>أسهم نمو + DRIP كامل</td><td>مرتفع مقبول</td></tr>
             </tbody>
         </table>
-        <div class="golden-rule">
-            <strong>الأفق الزمني يحدد كل شيء — من اختيار الأسهم إلى قدرتك على تحمل التقلبات.</strong>
-        </div>
+        <div class="golden-rule"><strong>الأفق الزمني يحدد كل شيء — من اختيار الأسهم إلى قدرتك على تحمل التقلبات.</strong></div>
     </div>
 
-    <!-- ===== التنويع وعمالقة المال ===== -->
     <div class="diversification-section">
         <h2>🧩 أسرار التنويع من عمالقة المال</h2>
         <p>التنويع هو فن إدارة المخاطر — هنا رؤى عمالقة الاستثمار.</p>
-
         <div class="quotes-grid">
-            <div class="quote-card buffett">
-                <div class="quote-author">وارن بافيت — Warren Buffett</div>
-                <div class="quote-text">لا تضع كل بيضك في سلة واحدة، لكن إذا وجدت سلة رائعة فلا تتردد في وضع معظم بيضك فيها.</div>
-            </div>
-            <div class="quote-card graham">
-                <div class="quote-author">بنجامين جراهام — Benjamin Graham</div>
-                <div class="quote-text">التنويع هو الحماية الأساسية للمستثمر. لا تضع كل ثقتك في سهم واحد مهما كان جيداً.</div>
-            </div>
-            <div class="quote-card lynch">
-                <div class="quote-author">بيتر لينش — Peter Lynch</div>
-                <div class="quote-text">استثمر فيما تفهمه. ميزتك الحقيقية هي معرفتك بصناعات وشركات لا يراها المحللون في وول ستريت.</div>
-            </div>
+            <div class="quote-card buffett"><div class="quote-author">وارن بافيت — Warren Buffett</div><div class="quote-text">لا تضع كل بيضك في سلة واحدة، لكن إذا وجدت سلة رائعة فلا تتردد في وضع معظم بيضك فيها.</div></div>
+            <div class="quote-card graham"><div class="quote-author">بنجامين جراهام — Benjamin Graham</div><div class="quote-text">التنويع هو الحماية الأساسية للمستثمر. لا تضع كل ثقتك في سهم واحد مهما كان جيداً.</div></div>
+            <div class="quote-card lynch"><div class="quote-author">بيتر لينش — Peter Lynch</div><div class="quote-text">استثمر فيما تفهمه. ميزتك الحقيقية هي معرفتك بصناعات وشركات لا يراها المحللون في وول ستريت.</div></div>
         </div>
-
         <div class="golden-number">
             <h3>🎯 العدد الذهبي للأسهم</h3>
             <div class="number">15 — 22</div>
-            <p>يصل التنويع الأمثل ذروته عند 15–22 سهماً متنوعاً — يُقلل المخاطر دون تأثير سلبي على العوائد.</p>
+            <p>يصل التنويع الأمثل ذروته عند 15–22 سهماً متنوعاً.</p>
             <p><strong>أقل من 15:</strong> مخاطر مرتفعة &nbsp;|&nbsp; <strong>أكثر من 22:</strong> إدارة معقدة وتكاليف إضافية</p>
         </div>
-
         <h3 style="margin-bottom:10px; color:#444;">📉 منحنى تقليل المخاطر بالتنويع</h3>
-        <div class="chart-container">
-            <canvas id="diversificationChart"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="diversificationChart"></canvas></div>
     </div>
 
-    <!-- ===== مصفوفة القرار ===== -->
     <div class="decision-matrix">
         <h3>⚖️ مصفوفة اتخاذ القرار السريع</h3>
         <p>قبل أي عملية شراء، تأكد من توفر هذه الركائز:</p>
@@ -724,7 +604,6 @@
         </div>
     </div>
 
-    <!-- ===== إخلاء المسؤولية ===== -->
     <div class="disclaimer">
         <h3>⚠️ إخلاء مسؤولية قانوني</h3>
         <p>جميع المحتويات هي لأغراض تعليمية وإرشادية فقط، ولا تُعدّ توصية بالبيع أو الشراء.</p>
@@ -732,67 +611,24 @@
         <p>استخدامك لهذه الصفحة يعني إقرارك وموافقتك التامة على هذه الشروط.</p>
     </div>
 
-</div><!-- end .container -->
+</div>
 
-<!-- ✅ Chart.js + الرسم البياني + Navbar Script — كلها خارج .container -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script>
-    /* ===== Navbar ===== */
-    function toggleNavbar() {
-        document.getElementById('navbarMenu').classList.toggle('open');
-    }
-    document.addEventListener('DOMContentLoaded', function () {
-        const raw  = window.location.pathname.split('/').pop() || 'index.html';
-        const page = raw.split('?')[0].split('#')[0] || 'index.html';
-        document.querySelectorAll('.navbar-item').forEach(function (item) {
-            item.classList.remove('active');
-            const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
-            if (href === page) item.classList.add('active');
+    function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+    document.addEventListener('DOMContentLoaded',function(){
+        const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0]||'index.html';
+        document.querySelectorAll('.navbar-item').forEach(function(el){
+            el.classList.remove('active');
+            if((el.getAttribute('href')||'').split('?')[0]===page)el.classList.add('active');
         });
-    });
-
-    /* ===== Diversification Chart ===== */
-    document.addEventListener('DOMContentLoaded', function () {
-        const canvas = document.getElementById('diversificationChart');
-        if (!canvas) return;
-        new Chart(canvas.getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['1','3','5','8','10','15','20','25','30','40','50'],
-                datasets: [{
-                    label: 'المخاطرة غير النظامية (%)',
-                    data: [100, 72, 55, 38, 32, 25, 22, 21, 20.5, 20.2, 20.1],
-                    borderColor: '#e74c3c',
-                    backgroundColor: 'rgba(231,76,60,0.1)',
-                    fill: true, tension: 0.4, pointRadius: 4,
-                    pointBackgroundColor: '#e74c3c'
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: true, position: 'top' },
-                    tooltip: {
-                        callbacks: { label: c => ` ${c.parsed.y}% مخاطرة` }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true, max: 110,
-                        title: { display: true, text: 'درجة المخاطرة (%)' }
-                    },
-                    x: {
-                        title: { display: true, text: 'عدد الأسهم في المحفظة' }
-                    }
-                }
-            }
-        });
+        const canvas=document.getElementById('diversificationChart');
+        if(!canvas)return;
+        new Chart(canvas.getContext('2d'),{type:'line',data:{labels:['1','3','5','8','10','15','20','25','30','40','50'],datasets:[{label:'المخاطرة غير النظامية (%)',data:[100,72,55,38,32,25,22,21,20.5,20.2,20.1],borderColor:'#e74c3c',backgroundColor:'rgba(231,76,60,0.1)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:'#e74c3c'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top'},tooltip:{callbacks:{label:c=>` ${c.parsed.y}% مخاطرة`}}},scales:{y:{beginAtZero:true,max:110,title:{display:true,text:'درجة المخاطرة (%)'}},x:{title:{display:true,text:'عدد الأسهم في المحفظة'}}}}});
     });
 </script>
 
-<!-- ✅ GoatCounter في نهاية body -->
-<script data-goatcounter="https://investornote.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>
