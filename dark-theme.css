@@ -3,7 +3,6 @@
    مفكرة مستثمر
    ============================================ */
 
-/* ===== المتغيرات الأساسية ===== */
 :root {
     --bg-main:        #0d1117;
     --bg-card:        #161b22;
@@ -21,53 +20,78 @@
     --accent-orange:  #d29922;
     --accent-yellow:  #e3b341;
     --accent-purple:  #a371f7;
-    --shadow:         0 8px 24px rgba(0,0,0,0.4);
-    --shadow-card:    0 4px 16px rgba(0,0,0,0.5);
+    --shadow:         0 8px 24px rgba(0,0,0,0.5);
+    --shadow-card:    0 4px 16px rgba(0,0,0,0.6);
 }
 
-/* ===== Body والخلفية ===== */
-body {
+/* ===== Body ===== */
+html, body {
     background: var(--bg-main) !important;
     color: var(--text-primary) !important;
 }
 
-/* ===== Container ===== */
-.container { color: var(--text-primary); }
+/* ===== كل div وsection وarticle ===== */
+div, section, article, aside, main, header, form {
+    color: inherit;
+}
 
 /* ===== العناوين ===== */
 h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary) !important;
 }
+p, li, span:not(.navbar-item):not(.badge):not(.navbar-brand) {
+    color: var(--text-secondary);
+}
+label { color: var(--text-secondary) !important; }
 
-p { color: var(--text-secondary); }
+/* ===== البطاقات والبانلات ===== */
+.card, .box,
+.input-panel, .results-panel,
+.chart-container, .timeline-table,
+.calculator-container > div,
+.result-area, .panel, .widget,
+[class*="-card"], [class*="-panel"],
+[class*="-section"]:not(.assets-section):not(.debts-section):not(.internal-cat),
+[class*="-box"]:not(.warning-box):not(.note):not(.checkbox-group) {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+}
 
-/* ===== Card / Box ===== */
-.card,
+/* شامل جميع البطاقات ===== */
+.input-panel, .results-panel,
+.chart-container, .timeline-table {
+    box-shadow: var(--shadow-card) !important;
+}
+
+/* ===== بطاقات الملخص (summary cards) — نحتفظ بألوانها ===== */
+.summary-card {
+    color: white !important;
+}
+.summary-card h3, .summary-card .amount,
+.summary-card p, .summary-card span {
+    color: white !important;
+}
+
+/* ===== البطاقات الداخلية (index.html) ===== */
 .box {
     background: var(--bg-card) !important;
     border: 1px solid var(--border) !important;
     box-shadow: var(--shadow-card) !important;
     color: var(--text-primary) !important;
 }
-.card h3, .box h3 { color: var(--text-primary) !important; }
+.box h3 { color: var(--text-primary) !important; }
 .box .url { color: var(--text-secondary) !important; }
 .box small { color: var(--text-muted) !important; }
-
 .box:hover {
     background: var(--bg-card-hover) !important;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.6) !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.7) !important;
 }
-
-/* ===== البطاقات الداخلية (internal) ===== */
-.box.internal {
-    border: 1px solid #238636 !important;
-}
+.box.internal { border: 1px solid #238636 !important; }
 .box.internal::before {
     background: linear-gradient(90deg, #238636, #2ea043) !important;
 }
-.box .badge {
-    background: #238636 !important;
-}
+.box .badge { background: #238636 !important; }
 
 /* ===== Category labels ===== */
 .category {
@@ -85,26 +109,29 @@ p { color: var(--text-secondary); }
 input[type="number"],
 input[type="text"],
 input[type="email"],
-select,
-textarea {
+input[type="password"],
+select, textarea {
     background: var(--bg-input) !important;
     color: var(--text-primary) !important;
     border: 1.5px solid var(--border) !important;
     border-radius: 8px;
 }
-input[type="number"]:focus,
-input[type="text"]:focus,
-select:focus,
-textarea:focus {
+input:focus, select:focus, textarea:focus {
     border-color: var(--border-focus) !important;
     outline: none;
     box-shadow: 0 0 0 3px rgba(88,166,255,0.15) !important;
 }
 input::placeholder { color: var(--text-muted) !important; }
+option { background: var(--bg-card); color: var(--text-primary); }
 
-label { color: var(--text-secondary) !important; }
+/* ===== Checkbox & Radio ===== */
+.checkbox-group, .radio-group, .radio-option {
+    background: var(--bg-section) !important;
+    color: var(--text-secondary) !important;
+}
+.radio-option:hover { background: var(--bg-card-hover) !important; }
 
-/* ===== Sections (assets / debts / philosophy) ===== */
+/* ===== الأقسام الخضراء / الحمراء ===== */
 .assets-section {
     background: rgba(63,185,80,0.08) !important;
     border: 1.5px solid rgba(63,185,80,0.3) !important;
@@ -117,82 +144,46 @@ label { color: var(--text-secondary) !important; }
 }
 .debts-section h3 { color: var(--accent-red) !important; }
 
-.philosophy-section,
-.tip-card,
-.info-box,
-.warning-box,
-.result-section {
+/* ===== بوكس التحذير ===== */
+.warning-box {
+    background: rgba(210,153,34,0.15) !important;
+    border: 1px solid rgba(210,153,34,0.4) !important;
+    color: var(--accent-yellow) !important;
+}
+.note {
+    background: rgba(210,153,34,0.1) !important;
+    border: 1px solid rgba(210,153,34,0.3) !important;
+    color: var(--accent-yellow) !important;
+}
+
+/* ===== الفلسفة / شرح ===== */
+.philosophy-section {
     background: var(--bg-section) !important;
     border: 1px solid var(--border) !important;
-    color: var(--text-secondary) !important;
 }
 .philosophy-section h3 {
     color: var(--accent-blue) !important;
     border-color: var(--accent-blue) !important;
 }
-.philosophy-section p { color: var(--text-secondary) !important; }
-
-/* ===== Result Area ===== */
-.result-area {
-    background: var(--bg-card) !important;
-    border: 1.5px solid var(--border) !important;
-    box-shadow: var(--shadow) !important;
+.philosophy-section p, .philosophy-section ul, .philosophy-section li {
+    color: var(--text-secondary) !important;
 }
 
-/* ===== Gauge container ===== */
+/* ===== الجاج / حاوية القياس ===== */
 .gauge-container {
     background: var(--bg-section) !important;
     border: 1px solid var(--border) !important;
     box-shadow: var(--shadow-card) !important;
 }
-
-/* ===== Buttons ===== */
-.btn-calc, button[onclick*="calculate"], button[onclick*="calc"] {
-    background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
-    color: white !important;
-    border: none !important;
-}
-.btn-calc:hover {
-    background: linear-gradient(135deg, #388bfd, #58a6ff) !important;
-}
-
-.btn-reset, button[onclick*="reset"] {
-    background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
-    color: white !important;
-    border: none !important;
-}
-
-.btn-print, button[onclick*="print"] {
-    background: linear-gradient(135deg, #238636, #2ea043) !important;
-    color: white !important;
-    border: none !important;
-}
-
-button {
-    transition: all 0.25s ease !important;
-}
-button:hover {
-    filter: brightness(1.15);
-    transform: translateY(-2px);
-}
-
-/* ===== Sources box ===== */
-.sources-box {
-    background: var(--bg-section) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text-secondary) !important;
-}
-.sources-box a { color: var(--accent-blue) !important; }
-.sources-box a:hover { color: #79c0ff !important; }
+.gauge-svg text { fill: var(--text-muted) !important; }
 
 /* ===== Tables ===== */
 table {
     background: var(--bg-card) !important;
     color: var(--text-primary) !important;
-    border-color: var(--border) !important;
 }
 th {
-    background: var(--bg-section) !important;
+    background: #21262d !important;
     color: var(--accent-blue) !important;
     border-color: var(--border) !important;
 }
@@ -202,40 +193,100 @@ td {
 }
 tr:hover td { background: var(--bg-card-hover) !important; }
 
-/* ===== Links ===== */
-a { color: var(--accent-blue); }
-a:hover { color: #79c0ff; }
+/* ألوان أعمدة الجدول ===== */
+.year-col { background: #1c2128 !important; color: var(--text-primary) !important; font-weight: bold; }
+.deposit-col, .total-deposit-col { background: rgba(31,111,235,0.15) !important; color: #79c0ff !important; }
+.earnings-col, .total-earnings-col { background: rgba(63,185,80,0.12) !important; color: var(--accent-green) !important; }
+.balance-col { background: rgba(248,81,73,0.12) !important; color: #ff7b72 !important; font-weight: bold !important; }
+.real-value-col { background: rgba(163,113,247,0.12) !important; color: #d2a8ff !important; }
 
-/* ===== Range inputs ===== */
-input[type="range"] {
-    accent-color: var(--accent-blue);
+/* ===== Chart.js ===== */
+.chart-wrapper { background: var(--bg-card) !important; }
+
+/* ===== section-title ===== */
+.section-title {
+    color: var(--text-primary) !important;
+    border-color: var(--accent-green) !important;
 }
 
-/* ===== Slider tracks ===== */
-input[type="range"]::-webkit-slider-runnable-track {
-    background: var(--border);
+/* ===== Buttons ===== */
+button {
+    transition: all 0.25s ease !important;
+    cursor: pointer;
 }
-input[type="range"]::-webkit-slider-thumb {
-    background: var(--accent-blue);
+.calculate-btn, .btn-calc {
+    background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+    color: white !important;
+    border: none !important;
+}
+.calculate-btn:hover, .btn-calc:hover {
+    background: linear-gradient(135deg, #388bfd, #58a6ff) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(31,111,235,0.4) !important;
+}
+.btn-reset {
+    background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+    color: white !important;
+    border: none !important;
+}
+.btn-print {
+    background: linear-gradient(135deg, #238636, #2ea043) !important;
+    color: white !important;
+    border: none !important;
+}
+.export-btn {
+    background: #1f6feb !important;
+    color: white !important;
+}
+.export-btn:hover { background: #388bfd !important; }
+.theme-toggle {
+    background: #d29922 !important;
+    color: white !important;
 }
 
-/* ===== SVG text in gauges ===== */
-.gauge-svg text { fill: var(--text-muted) !important; }
+/* ===== Result Area ===== */
+.result-area {
+    background: var(--bg-card) !important;
+    border: 1.5px solid var(--border) !important;
+}
 
-/* ===== الشريط الجانبي / توضيحات ===== */
-.sidebar, .explanation, .note-box {
+/* ===== Sources Box ===== */
+.sources-box {
     background: var(--bg-section) !important;
     border: 1px solid var(--border) !important;
     color: var(--text-secondary) !important;
 }
+.sources-box a { color: var(--accent-blue) !important; }
+.sources-box a:hover { color: #79c0ff !important; }
+
+/* ===== Links عام ===== */
+a:not(.navbar-item):not(.navbar-brand):not(.box) {
+    color: var(--accent-blue);
+}
+a:not(.navbar-item):not(.navbar-brand):not(.box):hover {
+    color: #79c0ff;
+}
+
+/* ===== Range inputs ===== */
+input[type="range"] { accent-color: var(--accent-blue); }
+input[type="range"]::-webkit-slider-runnable-track { background: var(--border); }
+input[type="range"]::-webkit-slider-thumb { background: var(--accent-blue); }
+
+/* ===== Pyramid ===== */
+.pyramid-level { opacity: 0.6; }
+.pyramid-level.active { opacity: 1 !important; }
+
+/* ===== Progress bars ===== */
+.progress-bar, .bar-fill { background: var(--accent-blue) !important; }
+.progress-track, .bar-track { background: var(--border) !important; }
+
+/* ===== Header section ===== */
+.header h1, .header p { color: var(--text-primary) !important; }
 
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
-::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 4px;
-}
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #484f58; }
 
 /* ===== Footer ===== */
@@ -243,6 +294,7 @@ footer {
     background: var(--bg-card) !important;
     border-top: 1px solid var(--border) !important;
     color: var(--text-secondary) !important;
+    border-radius: 15px 15px 0 0;
 }
 .disclaimer h4 { color: var(--accent-yellow) !important; }
 .disclaimer p { color: var(--text-secondary) !important; }
@@ -250,6 +302,7 @@ footer {
 .gc-badge small { color: var(--text-muted) !important; }
 .gc-badge a { color: var(--accent-green) !important; }
 .counter-label { color: var(--accent-blue) !important; }
+.counter-number { color: var(--accent-green) !important; }
 
 /* ===== Back to Top ===== */
 .back-to-top {
@@ -257,30 +310,45 @@ footer {
     box-shadow: 0 4px 15px rgba(31,111,235,0.4) !important;
 }
 
-/* ===== Pyramid levels ===== */
-.pyramid-level { opacity: 0.65; }
-.pyramid-level.active { opacity: 1 !important; }
-
-/* ===== Progress bars ===== */
-.progress-bar, .bar-fill {
-    background: var(--accent-blue) !important;
+/* ===== صفحة النصائح (tips/cards) ===== */
+.tip-card, .tip-section {
+    background: var(--bg-section) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-secondary) !important;
 }
-.progress-track, .bar-track {
-    background: var(--border) !important;
+.tip-card h3, .tip-section h3 { color: var(--text-primary) !important; }
+
+/* ===== مؤشر Portfolio Rating و غيره ===== */
+[style*="background: white"],
+[style*="background:white"],
+[style*="background: #fff"],
+[style*="background:#fff"],
+[style*="background: #f8f9fa"],
+[style*="background: #f0f"],
+[style*="background: rgb(255"] {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
 }
 
-/* ===== Select dropdown ===== */
-option {
-    background: var(--bg-card);
-    color: var(--text-primary);
+/* ===== عناصر inline background بيضاء ===== */
+[style*="background-color: white"],
+[style*="background-color: #fff"],
+[style*="background-color: #f8f9fa"] {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
 }
 
-/* ===== طباعة — نرجع للأبيض ===== */
+/* ===== Chart.js canvas خلفية ===== */
+canvas { filter: brightness(0.92) !important; }
+
+/* ===== طباعة ===== */
 @media print {
     body { background: white !important; color: black !important; }
-    .card, .box, .result-area {
+    .card, .box, .result-area, .input-panel, .results-panel {
         background: white !important;
         color: black !important;
         border-color: #ccc !important;
     }
+    h1, h2, h3, h4 { color: black !important; }
+    label, p, td, th { color: black !important; }
 }
