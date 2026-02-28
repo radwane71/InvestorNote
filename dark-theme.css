@@ -656,11 +656,157 @@ footer {
 }
 .sources-box a { color: var(--blue-light) !important; }
 
-/* ===== Print — ترجع الألوان للأبيض عند الطباعة ===== */
+/* ============================================================
+   salary_calculator.html + emergency_fund_calculator.html
+   ============================================================ */
+
+/* الكارد الرئيسي للحاسبة */
+.calculator-section {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-body) !important;
+}
+
+/* أقسام المعلومات */
+.info-section {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-body) !important;
+}
+.info-section h2 { color: var(--text-h) !important; }
+.info-section p  { color: var(--text-body) !important; }
+
+/* شرح القواعد المالية */
+.rule-explanation {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-right: 3px solid var(--blue) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: var(--transition);
+}
+.rule-explanation:hover {
+  background: var(--bg-hover) !important;
+  border-right-color: var(--blue-light) !important;
+  box-shadow: var(--shadow-glow-b) !important;
+  transform: translateY(-2px);
+}
+.rule-explanation h3 { color: var(--blue-light) !important; }
+.rule-explanation p  { color: var(--text-body) !important; }
+
+/* بطاقات النتائج */
+.result-card {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-right: 4px solid var(--blue) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: var(--transition);
+}
+.result-card:hover {
+  background: var(--bg-hover) !important;
+  box-shadow: var(--shadow-glow-b) !important;
+  transform: translateY(-3px);
+}
+.result-card h3      { color: var(--text-body) !important; }
+.result-card .amount { color: var(--blue-light) !important; font-weight: 800; }
+.result-card .percent{ color: var(--text-muted) !important; }
+
+/* بطاقة الزكاة — خضراء */
+.result-card.zakat-card {
+  border-right-color: var(--green) !important;
+}
+.result-card.zakat-card .amount { color: var(--green-light) !important; }
+.result-card.zakat-card:hover   { box-shadow: var(--shadow-glow-g) !important; }
+
+/* القاعدة المخصصة */
+#customRuleInputs {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+#customRuleInputs h4 { color: var(--blue-light) !important; }
+
+.custom-total.valid   {
+  background: rgba(16,185,129,0.15) !important;
+  color: var(--green-light) !important;
+  border: 1px solid rgba(16,185,129,0.3) !important;
+  border-radius: var(--radius-xs);
+}
+.custom-total.invalid {
+  background: rgba(239,68,68,0.15) !important;
+  color: var(--red-light) !important;
+  border: 1px solid rgba(239,68,68,0.3) !important;
+  border-radius: var(--radius-xs);
+}
+
+/* قائمة النصائح */
+.tips-list li {
+  border-bottom-color: var(--border) !important;
+  color: var(--text-body) !important;
+}
+.tips-list li::before { color: var(--green-light) !important; }
+
+/* الـ dua (الدعاء) في header */
+.header .dua {
+  background: rgba(59,130,246,0.08) !important;
+  border: 1px solid rgba(59,130,246,0.2) !important;
+  border-radius: var(--radius-xs) !important;
+  color: var(--text-body) !important;
+}
+
+/* ===== emergency_fund_calculator — classes إضافية ===== */
+.emergency-result,
+.result-summary,
+.fund-summary,
+.scenario-card,
+.fund-scenario {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-body) !important;
+  transition: var(--transition);
+}
+.scenario-card:hover, .fund-scenario:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--blue) !important;
+}
+.scenario-card h3, .fund-scenario h3 { color: var(--text-h) !important; }
+.scenario-card .amount, .fund-scenario .amount { color: var(--blue-light) !important; font-weight: 800; }
+
+.scenario-card.conservative { border-right: 3px solid var(--green) !important; }
+.scenario-card.moderate     { border-right: 3px solid var(--blue) !important; }
+.scenario-card.aggressive   { border-right: 3px solid var(--red) !important; }
+.scenario-card.conservative .amount { color: var(--green-light) !important; }
+.scenario-card.aggressive .amount   { color: var(--red-light) !important; }
+
+/* expense-item */
+.expense-item, .expense-row {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-xs) !important;
+  color: var(--text-body) !important;
+}
+.expense-item label, .expense-row label { color: var(--text-body) !important; }
+
+/* savings-progress */
+.savings-progress {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+.savings-progress h3 { color: var(--text-h) !important; }
+
+/* ===== Print ===== */
 @media print {
   html, body { background: white !important; color: #000 !important; }
   .card, .box, .input-panel, .results-panel, .rule-item,
-  .chart-container, .timeline-table, .rules-section {
+  .chart-container, .timeline-table, .rules-section,
+  .calculator-section, .info-section, .rule-explanation, .result-card {
     background: white !important;
     border-color: #ddd !important;
     box-shadow: none !important;
