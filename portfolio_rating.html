@@ -3,849 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة تقييم أمان المحفظة</title>
+    <title>تقييم أمان المحفظة | مفكرة مستثمر</title>
     <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
-        }
-
-        .rule-item {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            border-right: 4px solid #667eea;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .rule-item.warning-item {
-            border-right: 4px solid #e74c3c;
-            background: #fff8f8;
-        }
-
-        .rule-item h3 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-
-        .rule-item.warning-item h3 {
-            color: #e74c3c;
-        }
-
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 40px; font-size: 2.5rem; }
+        .rule-item { background: #f8f9fa; border-radius: 15px; padding: 25px; margin: 20px 0; border-right: 4px solid #667eea; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .rule-item.warning-item { border-right: 4px solid #e74c3c; background: #fff8f8; }
+        .rule-item h3 { color: #667eea; margin-bottom: 20px; font-size: 1.3rem; }
+        .rule-item.warning-item h3 { color: #e74c3c; }
         .input-group { margin-bottom: 20px; }
-
-        .input-group label {
-            display: block;
-            color: #2c3e50;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .leverage-warning {
-            display: none;
-            background: #f8d7da;
-            border: 2px solid #f5c6cb;
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin-top: 10px;
-            color: #721c24;
-            font-weight: bold;
-            line-height: 1.6;
-        }
-
-        .results-section {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            text-align: center;
-        }
-
-        .progress-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .progress-bar-wrapper {
-            background: #e9ecef;
-            border-radius: 15px;
-            padding: 5px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 30px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            z-index: 10;
-        }
-
-        .score-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            gap: 20px;
-        }
-
-        .score-display {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #2c3e50;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .percentage-display {
-            font-size: 2rem;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 10px;
-            min-width: 120px;
-        }
-
-        .evaluation-text {
-            font-size: 1.3rem;
-            margin: 20px 0;
-            line-height: 1.6;
-            color: #2c3e50;
-            background: rgba(255,255,255,0.9);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-
-        /* Score Breakdown */
-        .score-breakdown {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 15px;
-            text-align: right;
-            display: none;
-        }
-
-        .score-breakdown h4 {
-            color: #2c3e50;
-            margin-bottom: 12px;
-            font-size: 1rem;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 8px;
-        }
-
-        .breakdown-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 0.9rem;
-            color: #444;
-        }
-
+        .input-group label { display: block; color: #2c3e50; font-weight: bold; margin-bottom: 8px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: #667eea; }
+        .leverage-warning { display: none; background: #f8d7da; border: 2px solid #f5c6cb; border-radius: 8px; padding: 12px 16px; margin-top: 10px; color: #721c24; font-weight: bold; line-height: 1.6; }
+        .results-section { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; border-radius: 15px; padding: 30px; margin: 30px 0; text-align: center; }
+        .progress-container { background: white; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; }
+        .progress-bar { height: 30px; background: #e9ecef; border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #e74c3c, #c0392b); border-radius: 10px; width: 0%; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); position: relative; }
+        .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: white; font-weight: bold; font-size: 1.1rem; z-index: 10; }
+        .score-info { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 20px; }
+        .score-display { font-size: 3rem; font-weight: bold; color: #2c3e50; }
+        .percentage-display { font-size: 2rem; font-weight: bold; padding: 10px 20px; border-radius: 10px; min-width: 120px; }
+        .evaluation-text { font-size: 1.1rem; margin: 15px 0; line-height: 1.6; color: #2c3e50; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 10px; border-right: 4px solid #667eea; text-align: right; }
+        .score-breakdown { background: white; border-radius: 10px; padding: 20px; margin-top: 15px; text-align: right; display: none; }
+        .score-breakdown h4 { color: #2c3e50; margin-bottom: 12px; border-bottom: 2px solid #e0e0e0; padding-bottom: 8px; }
+        .breakdown-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; color: #444; }
         .breakdown-item:last-child { border-bottom: none; }
-
-        .breakdown-value {
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
-
+        .breakdown-value { font-weight: bold; }
         .breakdown-value.positive { color: #27ae60; }
         .breakdown-value.negative { color: #e74c3c; }
-
-        .reset-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin: 20px auto;
-            display: block;
-            transition: background 0.3s ease;
-        }
-
+        .reset-btn { background: #e74c3c; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 1rem; margin: 20px auto; display: block; transition: background 0.3s; }
         .reset-btn:hover { background: #c0392b; }
-
-        /* Legal Modal */
-        .legal-modal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            text-align: center;
-        }
-
-        .modal-content h2 { color: #2c3e50; margin-bottom: 20px; }
-        .modal-content p { color: #555; line-height: 1.6; margin-bottom: 15px; }
-        .modal-checkbox { margin: 20px 0; }
-        .modal-checkbox input { margin-left: 10px; }
-
-        .modal-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.3s ease;
-        }
-
-        .modal-btn:hover:not(:disabled) { background: #5a6fd8; }
-        .modal-btn:disabled { background: #ccc; cursor: not-allowed; }
-
-        /* Legal Banner */
-        .legal-banner {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin: 20px 0;
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .banner-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .warning-icon { font-size: 1.5rem; color: #856404; flex-shrink: 0; }
-        .banner-text { color: #856404; font-weight: bold; font-size: 0.95rem; line-height: 1.5; text-align: right; }
-
-        @media (max-width: 768px) {
-            .container { padding: 20px; }
-            h1 { font-size: 2rem; }
-            .modal-content { padding: 20px; margin: 20px; }
-        }
+        .legal-banner { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; color: #856404; font-weight: bold; font-size: 0.9rem; line-height: 1.6; }
+        .legal-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; z-index:99999; }
+        .modal-content { background:white; border-radius:15px; padding:30px; max-width:500px; width:90%; max-height:80vh; overflow-y:auto; text-align:center; }
+        .modal-content h2 { color:#2c3e50; margin-bottom:20px; }
+        .modal-content p { color:#555; line-height:1.6; margin-bottom:15px; }
+        .modal-checkbox { margin:20px 0; }
+        .modal-btn { background:#667eea; color:white; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:1rem; }
+        .modal-btn:disabled { background:#ccc; cursor:not-allowed; }
+        @media (max-width:768px) { .container { padding:20px; } h1 { font-size:2rem; } }
     </style>
 </head>
 <body>
+<div class="legal-modal" id="legalModal">
+    <div class="modal-content">
+        <h2>إخلاء مسؤولية قانوني</h2>
+        <p>جميع المحتويات لأغراض تعليمية وإرشادية فقط، ولا تعد توصية بالبيع أو الشراء أو دعوة للاستثمار في أي أوراق مالية.</p>
+        <p>الاستثمار ينطوي على مخاطر عالية. قرار الاستخدام يقع على عاتق المستخدم وحده.</p>
+        <div class="modal-checkbox"><label><input type="checkbox" id="acceptCheckbox"> أوافق على الشروط</label></div>
+        <button class="modal-btn" id="enterBtn" disabled>دخول الحاسبة</button>
+    </div>
+</div>
 
-    <!-- Legal Modal -->
-    <div class="legal-modal" id="legalModal">
-        <div class="modal-content">
-            <h2>إخلاء مسؤولية قانوني</h2>
-            <p>جميع المحتويات والنصائح المتوفرة في هذه الصفحة هي لأغراض تعليمية وإرشادية ومعلوماتية فقط، ولا تعد توصية بالبيع أو الشراء أو دعوة للاستثمار في أي أوراق مالية أو أصول محددة.</p>
-            <p>هذه النتائج هي تقديرية بناءً على معايير عامة ولا تعتبر استشارة مالية دقيقة. الاستثمار في أسواق المال ينطوي على مخاطر عالية، وقرار الاستخدام يقع على عاتق المستخدم وحده دون أي مسؤولية قانونية أو مالية على كاتب هذه النصائح.</p>
-            <p>الكاتب لا يضمن دقة أو اكتمال المعلومات الواردة، ولا يتحمل أي مسؤولية عن أي خسائر مباشرة أو غير مباشرة قد تنتج عن الاعتماد على هذه النصائح. يخلي الكاتب مسؤوليته التامة من أي مطالبات قانونية ناتجة عن استخدام هذه الصفحة، وينصح دائماً باستشارة مستشار مالي مرخص قبل اتخاذ أي قرار استثماري.</p>
-            <p>استخدامك لهذه الصفحة يعني إقرارك وموافقتك التامة على هذه الشروط.</p>
-            <div class="modal-checkbox">
-                <label>
-                    <input type="checkbox" id="acceptCheckbox">
-                    أوافق على الشروط وأقر بأنني قرأت إخلاء المسؤولية
-                </label>
-            </div>
-            <button class="modal-btn" id="enterBtn" disabled>دخول الحاسبة</button>
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+        <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
+            <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
+            <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
+            <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
+            <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
+            <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح</a>
+            <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ العائد المركب</a>
+            <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+            <a href="average_calculator.html"        class="navbar-item average">📊 متوسط الشراء</a>
+            <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
+            <a href="retirement_calculator.html"     class="navbar-item retirement">🏖️ التقاعد</a>
+            <a href="portfolio_rating.html"          class="navbar-item portfolio active">🛡️ أمان المحفظة</a>
+            <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
+            <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+            <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
+            <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
+            <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
         </div>
     </div>
+</nav>
+<script>
+function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+document.addEventListener('DOMContentLoaded',function(){
+    const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0]||'index.html';
+    document.querySelectorAll('.navbar-item').forEach(function(el){
+        el.classList.remove('active');
+        if((el.getAttribute('href')||'').split('?')[0]===page)el.classList.add('active');
+    });
+});
+</script>
 
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="index.html" class="navbar-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8z"/></svg>
-                    الرئيسية
-                </a>
-                <a href="advice.html" class="navbar-item calculator">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4-5h-2V7h2v5zm4 3h-2v-9h2v9z"/></svg>
-                    حاسبة الثروة
-                </a>
-                <a href="salary_calculator.html" class="navbar-item salary">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 10 13 8.83 13.08 8H20v6z"/></svg>
-                    حاسبة الراتب
-                </a>
-                <a href="zakat_purification.html" class="navbar-item zakat">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    التطهير والزكاة
-                </a>
-                <a href="financial_freedom.html" class="navbar-item fire">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.84 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
-                    الحرية المالية
-                </a>
-                <a href="investor_tips.html" class="navbar-item tips">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    نصائح الاستثمار
-                </a>
-                <a href="snowball_calculator.html" class="navbar-item calculator">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    حاسبة كرة الثلج
-                </a>
-                <a href="emergency_fund_calculator.html" class="navbar-item emergency">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    صندوق الطوارئ
-                </a>
-                <a href="average_calculator.html" class="navbar-item calculator">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
-                    متوسط الشراء
-                </a>
-                <a href="company_valuation.html" class="navbar-item calculator">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
-                    تقييم الشركة
-                </a>
-                <a href="retirement_calculator.html" class="navbar-item calculator">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    حاسبة التقاعد
-                </a>
-                <a href="portfolio_rating.html" class="navbar-item calculator active">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm3 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
-                    أمان المحفظة
-                </a>
-                <a href="stock_valuation.html" class="navbar-item valuation">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
-                    تقييم الأسهم
-                </a>
-            </div>
-            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
-        </div>
-    </nav>
+<div class="legal-banner">⚠️ إقرار قانوني: هذه الأداة تعليمية فقط. النتائج لا تُمثّل استشارة مالية. قرار الاستثمار يقع على عاتق المستخدم وحده.</div>
 
-    <!-- Legal Disclaimer Banner -->
-    <div class="legal-banner">
-        <div class="banner-content">
-            <span class="warning-icon">⚠️</span>
-            <span class="banner-text">إقرار قانوني ومسؤولية فنية: جميع المحتويات والنصائح المتوفرة في هذه الصفحة هي لأغراض تعليمية وإرشادية ومعلوماتية فقط، ولا تعد توصية بالبيع أو الشراء أو دعوة للاستثمار في أي أوراق مالية أو أصول محددة. الاستثمار في أسواق المال ينطوي على مخاطر عالية، وقرار الاستخدام يقع على عاتق المستخدم وحده دون أي مسؤولية قانونية أو مالية.</span>
-        </div>
+<div class="container">
+    <h1>🛡️ قيّم أمان محفظتك</h1>
+
+    <div class="rule-item">
+        <h3>تركيز المحفظة</h3>
+        <div class="input-group"><label for="largestStockPercentage">نسبة أكبر سهم في المحفظة (%)</label><input type="number" id="largestStockPercentage" placeholder="مثال: 15" min="0" max="100" step="0.1"></div>
     </div>
 
-    <div class="container">
-        <h1>قيم أمان محفظتك</h1>
-
-        <!-- 1. تركيز المحفظة -->
-        <div class="rule-item">
-            <h3>تركيز المحفظة (Portfolio Concentration)</h3>
-            <div class="input-group">
-                <label for="largestStockPercentage">ما هي نسبة أكبر سهم في محفظتك؟ (%)</label>
-                <input type="number" id="largestStockPercentage" placeholder="مثال: 15" min="0" max="100" step="0.1">
-            </div>
-        </div>
-
-        <!-- 2. مكونات المحفظة -->
-        <div class="rule-item">
-            <h3>مكونات المحفظة (كم عدد التالي في محفظتك؟)</h3>
-            <div class="input-group">
-                <label for="individualStocks">عدد الأسهم المنفردة</label>
-                <input type="number" id="individualStocks" placeholder="مثال: 15" min="0" max="50">
-            </div>
-            <div class="input-group">
-                <label for="reitCount">عدد صناديق الريت (REITs)</label>
-                <input type="number" id="reitCount" placeholder="مثال: 3" min="0" max="20">
-            </div>
-            <div class="input-group">
-                <label for="etfCount">عدد صناديق المؤشرات (ETFs)</label>
-                <input type="number" id="etfCount" placeholder="مثال: 5" min="0" max="20">
-            </div>
-            <div class="input-group">
-                <label for="bondCount">عدد الصكوك أو السندات</label>
-                <input type="number" id="bondCount" placeholder="مثال: 2" min="0" max="20">
-            </div>
-        </div>
-
-        <!-- 3. التوزيع الجغرافي -->
-        <div class="rule-item">
-            <h3>التوزيع الجغرافي (اختر النطاق الغالب)</h3>
-            <div class="input-group">
-                <label for="geographicDistribution">التوزيع الجغرافي</label>
-                <select id="geographicDistribution">
-                    <option value="">اختر التوزيع</option>
-                    <option value="local-only">محلية فقط</option>
-                    <option value="regional">إقليمية</option>
-                    <option value="international">دولية</option>
-                    <option value="diversified">متنوعة بين المحلي والدولي</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 4. أصول الحماية -->
-        <div class="rule-item">
-            <h3>أصول الحماية</h3>
-            <div class="input-group">
-                <label for="goldPercentage">ما نسبة الذهب في محفظتك؟</label>
-                <select id="goldPercentage">
-                    <option value="">اختر</option>
-                    <option value="none">لا يوجد ذهب</option>
-                    <option value="low">أقل من 5%</option>
-                    <option value="medium">5% إلى 10%</option>
-                    <option value="high">أكثر من 10%</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="hasCash">هل تحتفظ بنسبة كاش (5-10%) داخل المحفظة للطوارئ؟</label>
-                <select id="hasCash">
-                    <option value="">اختر</option>
-                    <option value="yes">نعم</option>
-                    <option value="no">لا</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 5. القطاعات -->
-        <div class="rule-item">
-            <h3>القطاعات</h3>
-            <div class="input-group">
-                <label for="sectorDiversification">التنوع القطاعي (عدد القطاعات)</label>
-                <select id="sectorDiversification">
-                    <option value="">اختر التنوع</option>
-                    <option value="single-sector">مركزة في قطاع واحد</option>
-                    <option value="2-4-sectors">2-4 قطاعات</option>
-                    <option value="5-7-sectors">5-7 قطاعات</option>
-                    <option value="8-plus-sectors">8 قطاعات فأكثر</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="largestSectorPercentage">ما نسبة أكبر قطاع في محفظتك؟ (%)</label>
-                <input type="number" id="largestSectorPercentage" placeholder="مثال: 30" min="0" max="100" step="0.1">
-            </div>
-        </div>
-
-        <!-- 6. أفق الاستثمار — جديد -->
-        <div class="rule-item">
-            <h3>أفق الاستثمار (Investment Horizon)</h3>
-            <div class="input-group">
-                <label for="investmentHorizon">متى تتوقع الحاجة لسحب استثماراتك؟</label>
-                <select id="investmentHorizon">
-                    <option value="">اختر الأفق الزمني</option>
-                    <option value="short">أقل من 3 سنوات (قصير المدى)</option>
-                    <option value="medium">3 إلى 10 سنوات (متوسط المدى)</option>
-                    <option value="long">أكثر من 10 سنوات (طويل المدى)</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 7. الرافعة المالية — جديد -->
-        <div class="rule-item warning-item">
-            <h3>⚠️ الرافعة المالية (Leverage / Margin)</h3>
-            <div class="input-group">
-                <label for="usesLeverage">هل تستخدم مارجن أو قرضاً للاستثمار؟</label>
-                <select id="usesLeverage">
-                    <option value="">اختر</option>
-                    <option value="no">لا، أستثمر من مالي الخاص فقط</option>
-                    <option value="yes">نعم، أستخدم مارجن أو قرضاً</option>
-                </select>
-            </div>
-            <div class="leverage-warning" id="leverageWarning">
-                ⚠️ تحذير: استخدام الرافعة المالية يُضاعف المخاطر بشكل حاد، وقد تتجاوز الخسائر رأس المال الأصلي. سيتم خصم 2.5 نقطة من تقييم أمان محفظتك.
-            </div>
-        </div>
-
-        <!-- النتائج -->
-        <div class="results-section">
-            <h3>النتيجة النهائية</h3>
-
-            <div class="progress-container">
-                <div class="progress-bar-wrapper">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill">
-                            <span class="progress-text" id="progressText">0%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="score-info">
-                    <div class="score-display" id="safetyScore">0/10</div>
-                    <div class="percentage-display" id="percentageDisplay">0%</div>
-                </div>
-            </div>
-
-            <div class="evaluation-text" id="evaluationText">أدخل البيانات للحصول على التقييم</div>
-
-            <!-- نصائح ذكية -->
-            <div class="evaluation-text" id="smartFeedback" style="display: none; margin-top: 15px; border-right: 4px solid #3498db; text-align: right;"></div>
-
-            <!-- تفاصيل النقاط — جديد -->
-            <div class="score-breakdown" id="scoreBreakdown">
-                <h4>📊 تفاصيل النقاط</h4>
-                <div id="breakdownItems"></div>
-            </div>
-
-            <div class="evaluation-text" style="margin-top: 20px; font-size: 1rem; text-align: right;">
-                <strong>ملاحظات التقييم:</strong><br>
-                • التنوع القطاعي: يقلل المخاطر عبر توزيع الاستثمار على قطاعات مختلفة<br>
-                • التوزيع الجغرافي: يوفر حماية من تقلبات الأسواق المحلية<br>
-                • أصول الحماية: الذهب والكاش يوفران أمان في الأزمات<br>
-                • أفق الاستثمار: المدى الزمني يؤثر مباشرة على مستوى المخاطرة المقبولة<br>
-                • الرافعة المالية: أعلى عوامل الخطر وتؤثر سلبًا بشكل حاد على التقييم
-            </div>
-        </div>
-
-        <button class="reset-btn" onclick="resetCalculator()">إعادة تعيين</button>
+    <div class="rule-item">
+        <h3>مكونات المحفظة</h3>
+        <div class="input-group"><label for="individualStocks">عدد الأسهم المنفردة</label><input type="number" id="individualStocks" placeholder="مثال: 15" min="0" max="50"></div>
+        <div class="input-group"><label for="reitCount">عدد صناديق الريت (REITs)</label><input type="number" id="reitCount" placeholder="مثال: 3" min="0" max="20"></div>
+        <div class="input-group"><label for="etfCount">عدد صناديق المؤشرات (ETFs)</label><input type="number" id="etfCount" placeholder="مثال: 5" min="0" max="20"></div>
+        <div class="input-group"><label for="bondCount">عدد الصكوك أو السندات</label><input type="number" id="bondCount" placeholder="مثال: 2" min="0" max="20"></div>
     </div>
 
-    <script>
-        // ===== Legal Modal =====
-        const modal = document.getElementById('legalModal');
-        const checkbox = document.getElementById('acceptCheckbox');
-        const enterBtn = document.getElementById('enterBtn');
+    <div class="rule-item">
+        <h3>التوزيع الجغرافي</h3>
+        <div class="input-group"><label for="geographicDistribution">النطاق الغالب</label><select id="geographicDistribution"><option value="">اختر التوزيع</option><option value="local-only">محلية فقط</option><option value="regional">إقليمية</option><option value="international">دولية</option><option value="diversified">متنوعة محلي+دولي</option></select></div>
+    </div>
 
-        checkbox.addEventListener('change', function () {
-            enterBtn.disabled = !this.checked;
-        });
+    <div class="rule-item">
+        <h3>أصول الحماية</h3>
+        <div class="input-group"><label for="goldPercentage">نسبة الذهب</label><select id="goldPercentage"><option value="">اختر</option><option value="none">لا يوجد</option><option value="low">أقل من 5%</option><option value="medium">5% - 10%</option><option value="high">أكثر من 10%</option></select></div>
+        <div class="input-group"><label for="hasCash">كاش احتياطي (5-10%)</label><select id="hasCash"><option value="">اختر</option><option value="yes">نعم</option><option value="no">لا</option></select></div>
+    </div>
 
-        enterBtn.addEventListener('click', function () {
-            modal.style.display = 'none';
-        });
+    <div class="rule-item">
+        <h3>القطاعات</h3>
+        <div class="input-group"><label for="sectorDiversification">عدد القطاعات</label><select id="sectorDiversification"><option value="">اختر</option><option value="single-sector">قطاع واحد</option><option value="2-4-sectors">2-4 قطاعات</option><option value="5-7-sectors">5-7 قطاعات</option><option value="8-plus-sectors">8 قطاعات؜</option></select></div>
+        <div class="input-group"><label for="largestSectorPercentage">نسبة أكبر قطاع (%)</label><input type="number" id="largestSectorPercentage" placeholder="مثال: 30" min="0" max="100" step="0.1"></div>
+    </div>
 
-        // ===== Leverage Warning Toggle =====
-        document.getElementById('usesLeverage').addEventListener('change', function () {
-            document.getElementById('leverageWarning').style.display =
-                this.value === 'yes' ? 'block' : 'none';
-        });
+    <div class="rule-item">
+        <h3>أفق الاستثمار</h3>
+        <div class="input-group"><label for="investmentHorizon">متى تتوقع سحب استثماراتك؟</label><select id="investmentHorizon"><option value="">اختر الأفق الزمني</option><option value="short">أقل من 3 سنوات</option><option value="medium">3 - 10 سنوات</option><option value="long">أكثر من 10 سنوات</option></select></div>
+    </div>
 
-        // ===== Scoring Logic =====
-        function calculateSafetyRating() {
-            let score = 0;
-            let breakdown = [];
+    <div class="rule-item warning-item">
+        <h3>⚠️ الرافعة المالية</h3>
+        <div class="input-group"><label for="usesLeverage">هل تستخدم مارجن أو قرضاً؟</label><select id="usesLeverage"><option value="">اختر</option><option value="no">لا، مالي الخاص</option><option value="yes">نعم، مارجن أو قرض</option></select></div>
+        <div class="leverage-warning" id="leverageWarning">⚠️ الرافعة تُضاعف المخاطر. خصم 2.5 نقطة من التقييم.</div>
+    </div>
 
-            const individualStocks    = parseInt(document.getElementById('individualStocks').value) || 0;
-            const reitCount           = parseInt(document.getElementById('reitCount').value) || 0;
-            const etfCount            = parseInt(document.getElementById('etfCount').value) || 0;
-            const bondCount           = parseInt(document.getElementById('bondCount').value) || 0;
-            const largestStockPct     = parseFloat(document.getElementById('largestStockPercentage').value) || 0;
-            const largestSectorPct    = parseFloat(document.getElementById('largestSectorPercentage').value) || 0;
-            const geoDist             = document.getElementById('geographicDistribution').value;
-            const goldPct             = document.getElementById('goldPercentage').value;
-            const hasCash             = document.getElementById('hasCash').value;
-            const sectorDiv           = document.getElementById('sectorDiversification').value;
-            const horizon             = document.getElementById('investmentHorizon').value;
-            const leverage            = document.getElementById('usesLeverage').value;
+    <div class="results-section">
+        <h3>النتيجة النهائية</h3>
+        <div class="progress-container">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"><span class="progress-text" id="progressText">0%</span></div></div>
+            <div class="score-info"><div class="score-display" id="safetyScore">0/10</div><div class="percentage-display" id="percentageDisplay">0%</div></div>
+        </div>
+        <div class="evaluation-text" id="evaluationText">أدخل البيانات للحصول على التقييم</div>
+        <div class="evaluation-text" id="smartFeedback" style="display:none;border-right:4px solid #3498db;"></div>
+        <div class="score-breakdown" id="scoreBreakdown"><h4>📊 تفاصيل النقاط</h4><div id="breakdownItems"></div></div>
+    </div>
+    <button class="reset-btn" onclick="resetCalculator()">إعادة تعيين</button>
+</div>
 
-            // 1. عدد الأسهم (max 2.5)
-            let stockScore = 0;
-            if      (individualStocks >= 15 && individualStocks <= 22) stockScore = 2.5;
-            else if (individualStocks >= 8  && individualStocks <= 14) stockScore = 1.5;
-            else if (individualStocks >= 5  && individualStocks <= 7)  stockScore = 1.0;
-            else if (individualStocks > 0)                              stockScore = 0.5;
-            score += stockScore;
-            breakdown.push({ label: 'عدد الأسهم المنفردة', value: stockScore, max: 2.5 });
-
-            // 2. تنويع فئات الأصول (max 1)
-            const assetScore = (etfCount + bondCount + reitCount) > 0 ? 1 : 0;
-            score += assetScore;
-            breakdown.push({ label: 'تنويع فئات الأصول (ETF/REIT/سندات)', value: assetScore, max: 1 });
-
-            // 3. التوزيع الجغرافي (max 1.5)
-            let geoScore = 0;
-            if      (geoDist === 'diversified')                              geoScore = 1.5;
-            else if (geoDist === 'international' || geoDist === 'regional')  geoScore = 1.0;
-            else if (geoDist === 'local-only')                               geoScore = 0.5;
-            score += geoScore;
-            breakdown.push({ label: 'التوزيع الجغرافي', value: geoScore, max: 1.5 });
-
-            // 4. الكاش (max 0.5)
-            const cashScore = hasCash === 'yes' ? 0.5 : 0;
-            score += cashScore;
-            breakdown.push({ label: 'احتياطي الكاش', value: cashScore, max: 0.5 });
-
-            // 5. الذهب (max 1) — بالنسبة وليس نعم/لا
-            let goldScore = 0;
-            if      (goldPct === 'high')   goldScore = 1.0;
-            else if (goldPct === 'medium') goldScore = 0.75;
-            else if (goldPct === 'low')    goldScore = 0.5;
-            score += goldScore;
-            breakdown.push({ label: 'نسبة الذهب كأصل تحوط', value: goldScore, max: 1 });
-
-            // 6. التنوع القطاعي (max 1.5)
-            let sectorScore = 0;
-            if      (sectorDiv === '8-plus-sectors') sectorScore = 1.5;
-            else if (sectorDiv === '5-7-sectors')    sectorScore = 1.2;
-            else if (sectorDiv === '2-4-sectors')    sectorScore = 0.75;
-            score += sectorScore;
-            breakdown.push({ label: 'التنوع القطاعي (عدد القطاعات)', value: sectorScore, max: 1.5 });
-
-            // 7. أفق الاستثمار (max 1)
-            let horizonScore = 0;
-            if      (horizon === 'long')   horizonScore = 1.0;
-            else if (horizon === 'medium') horizonScore = 0.75;
-            else if (horizon === 'short')  horizonScore = 0.5;
-            score += horizonScore;
-            breakdown.push({ label: 'أفق الاستثمار الزمني', value: horizonScore, max: 1 });
-
-            // 8. تركيز أكبر قطاع (max 1)
-            let sectorConcentrationScore = 0;
-            if (largestSectorPct > 0) {
-                if      (largestSectorPct < 25)  sectorConcentrationScore = 1.0;
-                else if (largestSectorPct <= 40) sectorConcentrationScore = 0.5;
-                else                             sectorConcentrationScore = 0;
-            }
-            score += sectorConcentrationScore;
-            breakdown.push({ label: 'تركيز نسبة أكبر قطاع', value: sectorConcentrationScore, max: 1 });
-
-            // ===== خصومات =====
-
-            // خصم تركيز السهم الواحد
-            let concentrationPenalty = 0;
-            if      (largestStockPct > 20) concentrationPenalty = 2.0;
-            else if (largestStockPct > 15) concentrationPenalty = 1.0;
-            if (concentrationPenalty > 0) {
-                score = Math.max(0, score - concentrationPenalty);
-                breakdown.push({ label: 'خصم: تركيز سهم واحد فوق 15%', value: -concentrationPenalty, isPenalty: true });
-            }
-
-            // خصم الرافعة المالية
-            if (leverage === 'yes') {
-                score = Math.max(0, score - 2.5);
-                breakdown.push({ label: 'خصم: استخدام الرافعة المالية', value: -2.5, isPenalty: true });
-            }
-
-            return { score: Math.min(parseFloat(score.toFixed(1)), 10), breakdown };
-        }
-
-        // ===== نص التقييم والنصائح =====
-        function getEvaluation(score) {
-            const goldPct          = document.getElementById('goldPercentage').value;
-            const hasCash          = document.getElementById('hasCash').value;
-            const sectorDiv        = document.getElementById('sectorDiversification').value;
-            const largestStockPct  = parseFloat(document.getElementById('largestStockPercentage').value) || 0;
-            const largestSectorPct = parseFloat(document.getElementById('largestSectorPercentage').value) || 0;
-            const leverage         = document.getElementById('usesLeverage').value;
-            const horizon          = document.getElementById('investmentHorizon').value;
-
-            let evaluation = '';
-            if      (score >= 8) evaluation = '🟢 محفظة نموذجية ومتزنة جداً';
-            else if (score >= 6) evaluation = '🟡 محفظة جيدة ولكن تحتاج تعزيز بعض جوانب الأمان';
-            else if (score >= 4) evaluation = '🟠 محفظة متوسطة المخاطر وبحاجة لإعادة هيكلة التنوع';
-            else                 evaluation = '🔴 محفظة عالية المخاطر جداً ومركزة بشكل غير آمن';
-
-            let feedback = [];
-
-            if (leverage === 'yes')
-                feedback.push('• ⚠️ <strong>خطر حاد:</strong> الرافعة المالية تُضاعف الخسائر المحتملة — يُنصح بتقليصها أو إلغائها فوراً');
-            if (goldPct === 'none')
-                feedback.push('• ينصح بإضافة ذهب كأصل تحوط يحمي المحفظة في الأزمات');
-            if (goldPct === 'low')
-                feedback.push('• نسبة الذهب منخفضة — يُفضل رفعها إلى 5%-10% للحصول على تحوط فعال');
-            if (hasCash === 'no')
-                feedback.push('• يُفضل الاحتفاظ بـ 5%-10% كاش للطوارئ والفرص الاستثمارية');
-            if (largestStockPct > 20)
-                feedback.push('• تركيز عالٍ في سهم واحد — يُنصح بخفض النسبة دون 15%');
-            if (largestStockPct > 15 && largestStockPct <= 20)
-                feedback.push('• تركيز معتدل في سهم واحد — راقب أداءه وفكر في التخفيف تدريجياً');
-            if (sectorDiv === 'single-sector')
-                feedback.push('• ⚠️ <strong>تحذير:</strong> المحفظة مركزة في قطاع واحد — المخاطر غير النظامية مرتفعة جداً');
-            if (largestSectorPct > 40)
-                feedback.push('• أكثر من 40% في قطاع واحد يُعد تركيزاً خطراً — يُنصح بالتوزيع على قطاعات أخرى');
-            if (horizon === 'short')
-                feedback.push('• أفق قصير المدى يستوجب محفظة أكثر دفاعية مع نسبة أعلى من الكاش والذهب');
-
-            return { evaluation, feedback: feedback.length > 0 ? feedback.join('<br>') : null };
-        }
-
-        // ===== تحديث الواجهة =====
-        function updateResults() {
-            const { score, breakdown } = calculateSafetyRating();
-            const evaluationData = getEvaluation(score);
-            const percentage = (score / 10) * 100;
-
-            document.getElementById('safetyScore').textContent = `${score.toFixed(1)}/10`;
-            document.getElementById('evaluationText').textContent = evaluationData.evaluation;
-
-            updateProgressBar(score, percentage);
-
-            // نصائح ذكية
-            const feedbackEl = document.getElementById('smartFeedback');
-            if (evaluationData.feedback) {
-                feedbackEl.innerHTML = `<strong>نصائح ذكية:</strong><br>${evaluationData.feedback}`;
-                feedbackEl.style.display = 'block';
-            } else {
-                feedbackEl.style.display = 'none';
-            }
-
-            // تفاصيل النقاط
-            const breakdownEl = document.getElementById('scoreBreakdown');
-            const itemsEl     = document.getElementById('breakdownItems');
-            itemsEl.innerHTML = breakdown.map(item => `
-                <div class="breakdown-item">
-                    <span>${item.label}</span>
-                    <span class="breakdown-value ${item.isPenalty ? 'negative' : 'positive'}">
-                        ${item.isPenalty ? '' : '+'}${item.value.toFixed(1)}${item.max ? ` / ${item.max}` : ''}
-                    </span>
-                </div>
-            `).join('');
-            breakdownEl.style.display = 'block';
-        }
-
-        function updateProgressBar(score, percentage) {
-            const progressFill      = document.getElementById('progressFill');
-            const progressText      = document.getElementById('progressText');
-            const percentageDisplay = document.getElementById('percentageDisplay');
-            const progressContainer = document.querySelector('.progress-container');
-
-            progressFill.style.width        = `${percentage}%`;
-            progressText.textContent        = `${Math.round(percentage)}%`;
-            percentageDisplay.textContent   = `${Math.round(percentage)}%`;
-
-            let progressColor, bgColor, textColor;
-            if (score >= 8) {
-                progressColor = 'linear-gradient(90deg, #27ae60, #229954)';
-                bgColor   = '#d4edda';
-                textColor = '#155724';
-            } else if (score >= 6) {
-                progressColor = 'linear-gradient(90deg, #ffc107, #f39c12)';
-                bgColor   = '#fff3cd';
-                textColor = '#856404';
-            } else if (score >= 4) {
-                progressColor = 'linear-gradient(90deg, #f39c12, #e67e22)';
-                bgColor   = '#ffe4cc';
-                textColor = '#e67e22';
-            } else {
-                progressColor = 'linear-gradient(90deg, #e74c3c, #c0392b)';
-                bgColor   = '#f8d7da';
-                textColor = '#721c24';
-            }
-
-            progressFill.style.background        = progressColor;
-            progressContainer.style.background   = bgColor;
-            percentageDisplay.style.background   = textColor;
-            percentageDisplay.style.color        = 'white';
-        }
-
-        // ===== إعادة تعيين =====
-        function resetCalculator() {
-            ['individualStocks','reitCount','etfCount','bondCount',
-             'largestStockPercentage','largestSectorPercentage']
-                .forEach(id => document.getElementById(id).value = '');
-
-            ['geographicDistribution','goldPercentage','hasCash',
-             'sectorDiversification','investmentHorizon','usesLeverage']
-                .forEach(id => document.getElementById(id).value = '');
-
-            localStorage.removeItem('portfolioRatingData');
-
-            document.getElementById('safetyScore').textContent    = '0/10';
-            document.getElementById('evaluationText').textContent = 'أدخل البيانات للحصول على التقييم';
-            document.getElementById('smartFeedback').style.display  = 'none';
-            document.getElementById('scoreBreakdown').style.display = 'none';
-            document.getElementById('leverageWarning').style.display = 'none';
-
-            updateProgressBar(0, 0);
-        }
-
-        // ===== Local Storage =====
-        const FIELD_IDS = [
-            'individualStocks','reitCount','etfCount','bondCount',
-            'largestStockPercentage','largestSectorPercentage',
-            'geographicDistribution','goldPercentage','hasCash',
-            'sectorDiversification','investmentHorizon','usesLeverage'
-        ];
-
-        function saveToLocalStorage() {
-            const data = {};
-            FIELD_IDS.forEach(id => data[id] = document.getElementById(id).value);
-            localStorage.setItem('portfolioRatingData', JSON.stringify(data));
-        }
-
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('portfolioRatingData');
-            if (!saved) return;
-            const data = JSON.parse(saved);
-            FIELD_IDS.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && data[id] !== undefined) el.value = data[id];
-            });
-            if (data.usesLeverage === 'yes')
-                document.getElementById('leverageWarning').style.display = 'block';
-        }
-
-        // ===== Event Listeners =====
-        document.querySelectorAll('input[type="number"], select').forEach(input => {
-            input.addEventListener('input',  () => { updateResults(); saveToLocalStorage(); });
-            input.addEventListener('change', () => { updateResults(); saveToLocalStorage(); });
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            loadFromLocalStorage();
-            updateResults();
-            updateProgressBar(0, 0);
-        });
-
-        function toggleNavbar() {
-            document.getElementById('navbarMenu').classList.toggle('collapsed');
-        }
-    </script>
+<script>
+document.getElementById('acceptCheckbox').addEventListener('change',function(){document.getElementById('enterBtn').disabled=!this.checked;});
+document.getElementById('enterBtn').addEventListener('click',function(){document.getElementById('legalModal').style.display='none';});
+document.getElementById('usesLeverage').addEventListener('change',function(){document.getElementById('leverageWarning').style.display=this.value==='yes'?'block':'none';});
+function calculateSafetyRating(){
+    let score=0,breakdown=[];
+    const is=parseInt(document.getElementById('individualStocks').value)||0;
+    const rc=parseInt(document.getElementById('reitCount').value)||0;
+    const ec=parseInt(document.getElementById('etfCount').value)||0;
+    const bc=parseInt(document.getElementById('bondCount').value)||0;
+    const lsp=parseFloat(document.getElementById('largestStockPercentage').value)||0;
+    const lsecp=parseFloat(document.getElementById('largestSectorPercentage').value)||0;
+    const geo=document.getElementById('geographicDistribution').value;
+    const gold=document.getElementById('goldPercentage').value;
+    const cash=document.getElementById('hasCash').value;
+    const sec=document.getElementById('sectorDiversification').value;
+    const hor=document.getElementById('investmentHorizon').value;
+    const lev=document.getElementById('usesLeverage').value;
+    let ss=is>=15&&is<=22?2.5:is>=8&&is<=14?1.5:is>=5&&is<=7?1.0:is>0?0.5:0;score+=ss;breakdown.push({label:'عدد الأسهم',value:ss,max:2.5});
+    const as=(ec+bc+rc)>0?1:0;score+=as;breakdown.push({label:'تنويع فئات الأصول',value:as,max:1});
+    let gs=geo==='diversified'?1.5:geo==='international'||geo==='regional'?1.0:geo==='local-only'?0.5:0;score+=gs;breakdown.push({label:'التوزيع الجغرافي',value:gs,max:1.5});
+    const cs=cash==='yes'?0.5:0;score+=cs;breakdown.push({label:'احتياطي الكاش',value:cs,max:0.5});
+    let gls=gold==='high'?1.0:gold==='medium'?0.75:gold==='low'?0.5:0;score+=gls;breakdown.push({label:'الذهب',value:gls,max:1});
+    let scs=sec==='8-plus-sectors'?1.5:sec==='5-7-sectors'?1.2:sec==='2-4-sectors'?0.75:0;score+=scs;breakdown.push({label:'التنوع القطاعي',value:scs,max:1.5});
+    let hs=hor==='long'?1.0:hor==='medium'?0.75:hor==='short'?0.5:0;score+=hs;breakdown.push({label:'أفق الاستثمار',value:hs,max:1});
+    let sconc=lsecp>0?(lsecp<25?1.0:lsecp<=40?0.5:0):0;score+=sconc;breakdown.push({label:'تركيز أكبر قطاع',value:sconc,max:1});
+    let pen=lsp>20?2.0:lsp>15?1.0:0;
+    if(pen>0){score=Math.max(0,score-pen);breakdown.push({label:'خصم: تركيز سهم فوق 15%',value:-pen,isPenalty:true});}
+    if(lev==='yes'){score=Math.max(0,score-2.5);breakdown.push({label:'خصم: الرافعة المالية',value:-2.5,isPenalty:true});}
+    return{score:Math.min(parseFloat(score.toFixed(1)),10),breakdown};
+}
+function getEvaluation(score){
+    let ev=score>=8?'🟢 محفظة نموذجية ومتزنة جداً':score>=6?'🟡 جيدة وتحتاج تعزيز بعض جوانب الأمان':score>=4?'🟠 متوسطة وبحاجة إعادة هيكلة':'🔴 عالية المخاطر ومركزة';
+    const gold=document.getElementById('goldPercentage').value,cash=document.getElementById('hasCash').value,sec=document.getElementById('sectorDiversification').value,lsp=parseFloat(document.getElementById('largestStockPercentage').value)||0,lev=document.getElementById('usesLeverage').value,hor=document.getElementById('investmentHorizon').value;
+    let fb=[];
+    if(lev==='yes')fb.push('• ⚠️ <strong>خطر حاد:</strong> الرافعة تُضاعف الخسائر — يُنصح بتقليصها');
+    if(gold==='none')fb.push('• أضف ذهباً كأصل تحوط في الأزمات');
+    if(cash==='no')fb.push('• احتفظ بـ 5-10% كاش للطوارئ والفرص');
+    if(lsp>20)fb.push('• تركيز عال في سهم واحد — خفّض دون 15%');
+    if(sec==='single-sector')fb.push('• ⚠️ محفظة مركزة في قطاع واحد — خطرة');
+    if(hor==='short')fb.push('• أفق قصير: ارفع نسبة الكاش والذهب');
+    return{evaluation:ev,feedback:fb.length?fb.join('<br>'):null};
+}
+function updateResults(){
+    const{score,breakdown}=calculateSafetyRating();
+    const ev=getEvaluation(score);
+    const pct=(score/10)*100;
+    document.getElementById('safetyScore').textContent=score.toFixed(1)+'/10';
+    document.getElementById('evaluationText').textContent=ev.evaluation;
+    const pf=document.getElementById('progressFill'),pt=document.getElementById('progressText'),pd=document.getElementById('percentageDisplay'),pc=document.querySelector('.progress-container');
+    pf.style.width=pct+'%';pt.textContent=Math.round(pct)+'%';pd.textContent=Math.round(pct)+'%';
+    let pc2,bg,tc;
+    if(score>=8){pc2='linear-gradient(90deg,#27ae60,#229954)';bg='#d4edda';tc='#155724';}
+    else if(score>=6){pc2='linear-gradient(90deg,#ffc107,#f39c12)';bg='#fff3cd';tc='#856404';}
+    else if(score>=4){pc2='linear-gradient(90deg,#f39c12,#e67e22)';bg='#ffe4cc';tc='#e67e22';}
+    else{pc2='linear-gradient(90deg,#e74c3c,#c0392b)';bg='#f8d7da';tc='#721c24';}
+    pf.style.background=pc2;pc.style.background=bg;pd.style.background=tc;pd.style.color='white';
+    const fb=document.getElementById('smartFeedback');
+    if(ev.feedback){fb.innerHTML='<strong>نصائح ذكية:</strong><br>'+ev.feedback;fb.style.display='block';}else{fb.style.display='none';}
+    const bi=document.getElementById('breakdownItems');
+    bi.innerHTML=breakdown.map(i=>'<div class="breakdown-item"><span>'+i.label+'</span><span class="breakdown-value '+(i.isPenalty?'negative':'positive')+'">'+(!i.isPenalty?'+':'')+i.value.toFixed(1)+(i.max?' / '+i.max:'')+'</span></div>').join('');
+    document.getElementById('scoreBreakdown').style.display='block';
+}
+function resetCalculator(){
+    ['individualStocks','reitCount','etfCount','bondCount','largestStockPercentage','largestSectorPercentage'].forEach(id=>document.getElementById(id).value='');
+    ['geographicDistribution','goldPercentage','hasCash','sectorDiversification','investmentHorizon','usesLeverage'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('smartFeedback').style.display='none';
+    document.getElementById('scoreBreakdown').style.display='none';
+    document.getElementById('leverageWarning').style.display='none';
+    document.getElementById('safetyScore').textContent='0/10';
+    document.getElementById('evaluationText').textContent='أدخل البيانات للحصول على التقييم';
+    document.getElementById('progressFill').style.width='0%';
+    document.getElementById('progressText').textContent='0%';
+    document.getElementById('percentageDisplay').textContent='0%';
+}
+document.querySelectorAll('input[type="number"],select').forEach(el=>{el.addEventListener('input',updateResults);el.addEventListener('change',updateResults);});
+document.addEventListener('DOMContentLoaded',function(){updateResults();});
+</script>
+<script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
