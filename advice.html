@@ -6,169 +6,64 @@
     <title>حاسبة صافي الثروة - مفكرة مستثمر</title>
     <style>
         :root {
-            --red:         #d67a6a;
-            --orange:      #e89d5a;
-            --yellow:      #f1c40f;
-            --green:       #5a9d7a;
-            --dark:        #2c3e50;
-            --dark-green:  #4a8d6a;
+            --red:#d67a6a; --orange:#e89d5a; --yellow:#f1c40f;
+            --green:#5a9d7a; --dark:#2c3e50; --dark-green:#4a8d6a;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: var(--dark);
-        }
-
-        .container { max-width: 960px; margin: 0 auto; }
-
-        /* ===== Card ===== */
-        .card {
-            background: white; padding: 30px;
-            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        h1, h2 { text-align: center; color: var(--dark); margin-bottom: 20px; }
-
-        /* ===== Inputs ===== */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; color: #495057; }
-        input[type="number"] {
-            width: 100%; padding: 12px; border: 2px solid #e9ecef;
-            border-radius: 8px; font-size: 0.95rem;
-            transition: border-color 0.3s; background: white;
-        }
-        input[type="number"]:focus { outline: none; border-color: #5a7fb5; }
-
-        /* ===== Philosophy ===== */
-        .philosophy-section {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 25px; border-radius: 12px; margin-bottom: 25px;
-        }
-        .philosophy-section h3 {
-            color: #495057; border-right: 4px solid #5a7fb5;
-            padding-right: 15px; margin-bottom: 15px;
-        }
-        .philosophy-section p { line-height: 1.8; margin-bottom: 12px; color: #495057; }
-        .philosophy-section ul { margin-right: 20px; line-height: 2; }
-
-        /* ===== Sections ===== */
-        .assets-section {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            border: 2px solid var(--green); border-radius: 12px; padding: 20px;
-        }
-        .assets-section h3 { color: #155724; margin-bottom: 15px; text-align: center; }
-
-        .debts-section {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-            border: 2px solid var(--red); border-radius: 12px; padding: 20px;
-        }
-        .debts-section h3 { color: #721c24; margin-bottom: 15px; text-align: center; }
-
-        /* ===== Gauge ===== */
-        .gauge-container {
-            position: relative; width: 320px; margin: 30px auto;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 20px; padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .gauge-svg { width: 100%; height: auto; }
-
-        /* ===== Pyramid ===== */
-        .pyramid-container { text-align: center; }
-        .pyramid-levels {
-            display: flex; flex-direction: column;
-            align-items: center; gap: 4px; margin-top: 10px;
-        }
-        .pyramid-level {
-            padding: 10px 15px; text-align: center;
-            font-weight: bold; color: white; border-radius: 8px;
-            transition: all 0.4s ease; font-size: 0.9rem;
-        }
-        .pyramid-level.active {
-            border: 3px solid var(--dark) !important;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-            transform: scale(1.04);
-        }
-        .pyramid-level::after { content: ''; }
-        .pyramid-level.active::after { content: ' 👤'; }
-
-        /* ===== Result Area ===== */
-        .result-area {
-            display: none; text-align: center;
-            border: 3px solid #e9ecef; padding: 30px;
-            border-radius: 15px; margin-top: 20px;
-            background: linear-gradient(135deg, #fff, #f8f9fa);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .status-text  { font-size: 1.8em; font-weight: bold; margin: 15px 0; }
-        .amount-text  { font-size: 2.5em; color: var(--dark-green); font-weight: bold; margin: 10px 0; }
-
-        .visuals-row {
-            display: flex; justify-content: space-around;
-            align-items: flex-start; flex-wrap: wrap; gap: 20px; margin: 30px 0;
-        }
-
-        /* ===== Buttons ===== */
-        button {
-            width: 100%; padding: 15px; border: none; border-radius: 8px;
-            font-size: 1.1em; font-weight: bold; cursor: pointer;
-            margin-top: 10px; transition: all 0.3s;
-        }
-        .btn-calc  { background: var(--dark);  color: white; }
-        .btn-calc:hover  { background: #34495e; transform: translateY(-2px); }
-        .btn-reset { background: var(--red);   color: white; }
-        .btn-reset:hover { background: #c66a5a; transform: translateY(-2px); }
-        .btn-print { background: var(--green); color: white; margin-top: 20px; }
-        .btn-print:hover { background: var(--dark-green); transform: translateY(-2px); }
-
-        /* ===== Sources ===== */
-        .sources-box {
-            background: #f8f9fa; border-radius: 8px;
-            padding: 15px; margin-top: 15px; text-align: right; font-size: 0.85em;
-        }
-        .sources-box li { margin-bottom: 6px; }
-        .sources-box a  { color: #5a7fb5; text-decoration: none; }
-        .sources-box a:hover { text-decoration: underline; }
-
-        /* ===== Print ===== */
-        @media print {
-            .no-print { display: none !important; }
-            .result-area { display: block !important; border: none; }
-            body { background: white; }
-        }
-
-        /* ===== Responsive ===== */
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .gauge-container { width: 260px; }
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .card { padding: 20px; }
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',Tahoma,Arial,sans-serif; background:linear-gradient(135deg,#e8f0f5,#d0e0e8); min-height:100vh; padding:20px; color:var(--dark); }
+        .container { max-width:960px; margin:0 auto; }
+        .card { background:white; padding:30px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); margin-bottom:20px; }
+        h1,h2 { text-align:center; color:var(--dark); margin-bottom:20px; }
+        .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .input-group { margin-bottom:15px; }
+        label { display:block; margin-bottom:5px; font-weight:bold; font-size:0.9em; color:#495057; }
+        input[type="number"] { width:100%; padding:12px; border:2px solid #e9ecef; border-radius:8px; font-size:0.95rem; transition:border-color 0.3s; background:white; }
+        input[type="number"]:focus { outline:none; border-color:#5a7fb5; }
+        .philosophy-section { background:linear-gradient(135deg,#f8f9fa,#e9ecef); padding:25px; border-radius:12px; margin-bottom:25px; }
+        .philosophy-section h3 { color:#495057; border-right:4px solid #5a7fb5; padding-right:15px; margin-bottom:15px; }
+        .philosophy-section p { line-height:1.8; margin-bottom:12px; color:#495057; }
+        .philosophy-section ul { margin-right:20px; line-height:2; }
+        .assets-section { background:linear-gradient(135deg,#d4edda,#c3e6cb); border:2px solid var(--green); border-radius:12px; padding:20px; }
+        .assets-section h3 { color:#155724; margin-bottom:15px; text-align:center; }
+        .debts-section { background:linear-gradient(135deg,#f8d7da,#f5c6cb); border:2px solid var(--red); border-radius:12px; padding:20px; }
+        .debts-section h3 { color:#721c24; margin-bottom:15px; text-align:center; }
+        .gauge-container { position:relative; width:320px; margin:30px auto; background:linear-gradient(135deg,#f8f9fa,#e9ecef); border-radius:20px; padding:25px; box-shadow:0 8px 25px rgba(0,0,0,0.1); }
+        .gauge-svg { width:100%; height:auto; }
+        .pyramid-container { text-align:center; }
+        .pyramid-levels { display:flex; flex-direction:column; align-items:center; gap:4px; margin-top:10px; }
+        .pyramid-level { padding:10px 15px; text-align:center; font-weight:bold; color:white; border-radius:8px; transition:all 0.4s ease; font-size:0.9rem; }
+        .pyramid-level.active { border:3px solid var(--dark) !important; box-shadow:0 6px 18px rgba(0,0,0,0.35); transform:scale(1.04); }
+        .pyramid-level.active::after { content:' 👤'; }
+        .result-area { display:none; text-align:center; padding:30px; border-radius:15px; margin-top:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); }
+        .status-text { font-size:1.8em; font-weight:bold; margin:15px 0; }
+        .amount-text { font-size:2.5em; color:var(--dark-green); font-weight:bold; margin:10px 0; }
+        .visuals-row { display:flex; justify-content:space-around; align-items:flex-start; flex-wrap:wrap; gap:20px; margin:30px 0; }
+        button { width:100%; padding:15px; border:none; border-radius:8px; font-size:1.1em; font-weight:bold; cursor:pointer; margin-top:10px; transition:all 0.3s; }
+        .btn-calc { background:var(--dark); color:white; }
+        .btn-calc:hover { background:#34495e; transform:translateY(-2px); }
+        .btn-reset { background:var(--red); color:white; }
+        .btn-reset:hover { background:#c66a5a; transform:translateY(-2px); }
+        .btn-print { background:var(--green); color:white; margin-top:20px; }
+        .btn-print:hover { background:var(--dark-green); transform:translateY(-2px); }
+        .sources-box { background:#f8f9fa; border-radius:8px; padding:15px; margin-top:15px; text-align:right; font-size:0.85em; }
+        .sources-box li { margin-bottom:6px; }
+        .sources-box a { color:#5a7fb5; text-decoration:none; }
+        @media print { .no-print { display:none !important; } .result-area { display:block !important; border:none; } body { background:white; } }
+        @media (max-width:768px) { .grid { grid-template-columns:1fr; } .gauge-container { width:260px; } }
+        @media (max-width:480px) { body { padding:10px; } .card { padding:20px; } }
     </style>
     <link rel="stylesheet" href="navigation.css">
     <link rel="stylesheet" href="dark-theme.css">
 </head>
 <body>
 <div class="container">
-
     <nav class="navbar">
         <div class="navbar-container">
             <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
             <button class="navbar-toggle no-print" onclick="toggleNavbar()">☰</button>
             <div class="navbar-menu" id="navbarMenu">
                 <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
-                <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="advice.html"                    class="navbar-item calculator active">💰 صافي الثروة</a>
                 <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
                 <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
                 <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
@@ -198,13 +93,9 @@
         });
     </script>
 
-    <!-- ===== الحاسبة ===== -->
     <div class="card no-print">
         <h1>⚖️ حاسبة صافي الثروة الحقيقية</h1>
-        <p style="text-align:center; margin-bottom:20px; color:#555;">
-            أدخل بياناتك المالية بدقة للحصول على تصنيف لثروتك بناءً على المعايير السعودية.
-        </p>
-
+        <p style="text-align:center;margin-bottom:20px;color:#555;">أدخل بياناتك المالية بدقة للحصول على تصنيف لثروتك بناءً على المعايير السعودية.</p>
         <div class="philosophy-section">
             <h3>🤔 الفلسفة وراء الحاسبة</h3>
             <p>الثروة ليست فقط عن المال — بل عن كيف تستخدمه وتنميه.</p>
@@ -214,53 +105,38 @@
                 <li>💡 المعرفة هي القوة</li>
             </ul>
         </div>
-
-        <div class="grid" style="margin-bottom: 20px;">
-            <div class="input-group">
-                <label>📅 العمر (سنوات)</label>
-                <input type="number" id="age" placeholder="مثلاً: 35" min="1" max="120">
-            </div>
-            <div class="input-group">
-                <label>🥇 سعر جرام الذهب (ريال) — اضبط حسب سعر اليوم</label>
-                <input type="number" id="gold_price_per_gram" value="420" min="1" placeholder="مثلاً: 420">
-            </div>
+        <div class="grid" style="margin-bottom:20px;">
+            <div class="input-group"><label>📅 العمر (سنوات)</label><input type="number" id="age" placeholder="مثلاً: 35" min="1" max="120"></div>
+            <div class="input-group"><label>🥇 سعر جرام الذهب (ريال)</label><input type="number" id="gold_price_per_gram" value="420" min="1" placeholder="420"></div>
         </div>
-
         <div class="grid">
             <div class="assets-section">
-                <h3>💰 الأصول (ما تملكه)</h3>
-                <div class="input-group"><label>نقد وودائع بنكية وحسابات جارية</label><input type="number" class="asset" placeholder="0" min="0"></div>
-                <div class="input-group"><label>أسهم وصناديق استثمار</label><input type="number" class="asset" placeholder="0" min="0"></div>
-                <div class="input-group">
-                    <label>ذهب وفضة (بالجرام)</label>
-                    <input type="number" id="gold_grams" placeholder="0" min="0">
-                </div>
-                <div class="input-group"><label>عقارات (سكن واستثمار)</label><input type="number" class="asset" placeholder="0" min="0"></div>
-                <div class="input-group"><label>قيمة الأعمال والشركات</label><input type="number" class="asset" placeholder="0" min="0"></div>
+                <h3>💰 الأصول</h3>
+                <div class="input-group"><label>نقد وودائع بنكية</label><input type="number" class="asset" placeholder="0" min="0"></div>
+                <div class="input-group"><label>أسهم وصناديق</label><input type="number" class="asset" placeholder="0" min="0"></div>
+                <div class="input-group"><label>ذهب وفضة (جرام)</label><input type="number" id="gold_grams" placeholder="0" min="0"></div>
+                <div class="input-group"><label>عقارات</label><input type="number" class="asset" placeholder="0" min="0"></div>
+                <div class="input-group"><label>قيمة الأعمال</label><input type="number" class="asset" placeholder="0" min="0"></div>
                 <div class="input-group"><label>سيارات ومعدات</label><input type="number" class="asset" placeholder="0" min="0"></div>
-                <div class="input-group"><label>حسابات التقاعد ومكافأة نهاية الخدمة (GOSI)</label><input type="number" class="asset" placeholder="0" min="0"></div>
+                <div class="input-group"><label>حسابات التقاعد (GOSI)</label><input type="number" class="asset" placeholder="0" min="0"></div>
             </div>
-
             <div class="debts-section">
-                <h3>💳 الالتزامات (ما عليك)</h3>
+                <h3>💳 الالتزامات</h3>
                 <div class="input-group"><label>قروض عقارية</label><input type="number" class="debt" placeholder="0" min="0"></div>
-                <div class="input-group"><label>قروض السيارات</label><input type="number" class="debt" placeholder="0" min="0"></div>
+                <div class="input-group"><label>قروض سيارات</label><input type="number" class="debt" placeholder="0" min="0"></div>
                 <div class="input-group"><label>قروض شخصية</label><input type="number" class="debt" placeholder="0" min="0"></div>
-                <div class="input-group"><label>ديون بطاقات ائتمانية</label><input type="number" class="debt" placeholder="0" min="0"></div>
+                <div class="input-group"><label>ديون بطاقات</label><input type="number" class="debt" placeholder="0" min="0"></div>
                 <div class="input-group"><label>ديون تجارية</label><input type="number" class="debt" placeholder="0" min="0"></div>
                 <div class="input-group"><label>ديون أخرى</label><input type="number" class="debt" placeholder="0" min="0"></div>
             </div>
         </div>
-
-        <button class="btn-calc"  onclick="calculateAll()">⚖️ احسب صافي الثروة</button>
+        <button class="btn-calc" onclick="calculateAll()">⚖️ احسب صافي الثروة</button>
         <button class="btn-reset" onclick="resetAll()">🔄 إعادة تعيين</button>
     </div>
 
-    <!-- ===== النتائج ===== -->
     <div id="printable-result" class="result-area">
         <h2>📋 تقرير الحالة المالية</h2>
-        <div id="report-date" style="font-size:0.9em; color:#666; margin-bottom:10px;"></div>
-
+        <div id="report-date" style="font-size:0.9em;color:#666;margin-bottom:10px;"></div>
         <div class="visuals-row">
             <div class="gauge-container">
                 <svg class="gauge-svg" viewBox="0 0 140 100">
@@ -269,113 +145,99 @@
                     <path d="M35 25 A60 60 0 0 1 70 16"  fill="none" stroke="#e89d5a" stroke-width="12" stroke-linecap="round"/>
                     <path d="M70 16 A60 60 0 0 1 105 25" fill="none" stroke="#f1c40f" stroke-width="12" stroke-linecap="round"/>
                     <path d="M105 25 A60 60 0 0 1 130 70" fill="none" stroke="#5a9d7a" stroke-width="12" stroke-linecap="round"/>
-                    <line id="needle" x1="70" y1="70" x2="70" y2="18"
-                          stroke="#2c3e50" stroke-width="2.5" stroke-linecap="round"
-                          transform="rotate(-90 70 70)"
-                          style="transition: transform 1.5s cubic-bezier(0.4,0,0.2,1);"/>
+                    <line id="needle" x1="70" y1="70" x2="70" y2="18" stroke="#2c3e50" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 70 70)" style="transition:transform 1.5s cubic-bezier(0.4,0,0.2,1);"/>
                     <circle cx="70" cy="70" r="6" fill="white" stroke="#2c3e50" stroke-width="2"/>
                     <text x="9"   y="85" font-size="7" fill="#888" text-anchor="middle">مستورة</text>
                     <text x="34"  y="20" font-size="7" fill="#888" text-anchor="middle">متوسطة</text>
-                    <text x="70"  y="11" font-size="7" fill="#888" text-anchor="middle">م.عليا</text>
+                    <text x="70"  y="11" font-size="7" fill="#888" text-anchor="middle">عليا</text>
                     <text x="106" y="20" font-size="7" fill="#888" text-anchor="middle">أثرياء</text>
                     <text x="131" y="85" font-size="7" fill="#888" text-anchor="middle">فاحش</text>
                 </svg>
-                <div id="gauge-label" style="text-align:center; font-weight:bold; font-size:0.95rem; margin-top:8px; color:var(--dark);">—</div>
+                <div id="gauge-label" style="text-align:center;font-weight:bold;font-size:0.95rem;margin-top:8px;color:var(--dark);">—</div>
             </div>
-
             <div class="pyramid-container">
-                <h3 style="margin-bottom:15px; color:var(--dark);">🏛️ هرم الثروة</h3>
+                <h3 style="margin-bottom:15px;color:var(--dark);">🏛️ هرم الثروة</h3>
                 <div class="pyramid-levels">
-                    <div id="level-5" class="pyramid-level" style="width:100px; background:linear-gradient(135deg,#5a9d7a,#4a8d6a);">فاحشة الثراء</div>
-                    <div id="level-4" class="pyramid-level" style="width:160px; background:linear-gradient(135deg,#5a9d7a,#6ab0a0);">الأثرياء</div>
-                    <div id="level-3" class="pyramid-level" style="width:220px; background:linear-gradient(135deg,#f1c40f,#e89d5a);">المتوسطة العليا</div>
-                    <div id="level-2" class="pyramid-level" style="width:280px; background:linear-gradient(135deg,#e89d5a,#d88d4a);">المتوسطة</div>
-                    <div id="level-1" class="pyramid-level" style="width:340px; background:linear-gradient(135deg,#d67a6a,#c66a5a);">المستورة / المديونة</div>
+                    <div id="level-5" class="pyramid-level" style="width:100px;background:linear-gradient(135deg,#5a9d7a,#4a8d6a);">فاحشة الثراء</div>
+                    <div id="level-4" class="pyramid-level" style="width:160px;background:linear-gradient(135deg,#5a9d7a,#6ab0a0);">الأثرياء</div>
+                    <div id="level-3" class="pyramid-level" style="width:220px;background:linear-gradient(135deg,#f1c40f,#e89d5a);">المتوسطة العليا</div>
+                    <div id="level-2" class="pyramid-level" style="width:280px;background:linear-gradient(135deg,#e89d5a,#d88d4a);">المتوسطة</div>
+                    <div id="level-1" class="pyramid-level" style="width:340px;background:linear-gradient(135deg,#d67a6a,#c66a5a);">المستورة / المديونة</div>
                 </div>
             </div>
         </div>
-
         <div class="status-text" id="status-label">—</div>
         <div class="amount-text"  id="networth-display">0 ريال</div>
-
-        <div style="margin-top:20px; text-align:right; font-size:0.95em; border-top:1px solid #eee; padding-top:15px;">
+        <div style="margin-top:20px;text-align:right;font-size:0.95em;border-top:1px solid #eee;padding-top:15px;">
             <strong>تفاصيل الحساب:</strong>
-            <p id="details-text" style="margin-top:8px; line-height:2;"></p>
+            <p id="details-text" style="margin-top:8px;line-height:2;"></p>
         </div>
-
         <div class="sources-box">
-            <strong>تصنيف الطبقات المالية (السعودية):</strong>
-            <ul style="margin:10px 0; padding-right:20px; line-height:2;">
-                <li style="color:var(--red);">🔴 أقل من 75 ألف ريال: الطبقة المستورة / المديونة</li>
-                <li style="color:var(--orange);">🟠 75 ألف – 330 ألف: الطبقة المتوسطة</li>
-                <li style="color:#c9a700;">🟡 330 ألف – 1.875 مليون: الطبقة المتوسطة العليا</li>
-                <li style="color:var(--green);">🟢 1.875 مليون – 37.5 مليون: طبقة الأثرياء</li>
-                <li style="color:var(--dark-green);">🟢 أكثر من 37.5 مليون: طبقة فاحشة الثراء</li>
-            </ul>
-            <strong>المصادر:</strong>
-            <ul style="margin-top:8px; padding-right:15px;">
-                <li>📊 تحليل ادخار الأسر السعودية — <a href="https://assets.kpmg.com/content/dam/kpmg/sa/pdf/2021/house-holding-ar.pdf" target="_blank">KPMG</a></li>
-                <li>📊 ثروة السعودية تصل لمستوى قياسي — <a href="https://mediaavataarme.com/media-avataar-insights/29304/saudi-arabias-net-wealth-hits-record-high-reaching-3-70trln-in-2024/" target="_blank">Media Avataar</a></li>
-                <li>📊 الهرم العالمي للثروة — <a href="https://wealth-monitor.co.uk/the-global-wealth-pyramid/" target="_blank">Wealth Monitor</a></li>
+            <strong>تصنيف الطبقات:</strong>
+            <ul style="margin:10px 0;padding-right:20px;line-height:2;">
+                <li style="color:var(--red);">🔴 أقل من 75 ألف: المستورة / المديونة</li>
+                <li style="color:var(--orange);">🟠 75 ألف – 330 ألف: المتوسطة</li>
+                <li style="color:#c9a700;">🟡 330 ألف – 1.875 مليون: المتوسطة العليا</li>
+                <li style="color:var(--green);">🟢 1.875 مليون – 37.5 مليون: الأثرياء</li>
+                <li style="color:var(--dark-green);">🟢 أكثر من 37.5 مليون: فاحشة الثراء</li>
             </ul>
         </div>
-
-        <button class="btn-print no-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+        <button class="btn-print no-print" onclick="window.print()">🖨️ طباعة / PDF</button>
     </div>
-
 </div>
 
+<script src="results-engine.js"></script>
 <script>
-function resetAll() {
-    document.querySelectorAll('input[type="number"]').forEach(el => {
-        if (el.id === 'gold_price_per_gram') el.value = 420;
-        else el.value = '';
+function resetAll(){
+    document.querySelectorAll('input[type="number"]').forEach(el=>{
+        if(el.id==='gold_price_per_gram')el.value=420;
+        else el.value='';
     });
-    document.getElementById('printable-result').style.display = 'none';
-    document.querySelectorAll('.pyramid-level').forEach(l => l.classList.remove('active'));
+    const r=document.getElementById('printable-result');
+    r.style.display='none';
+    r.classList.remove('result-positive','result-negative','result-warning');
+    document.querySelectorAll('.pyramid-level').forEach(l=>l.classList.remove('active'));
 }
 
-function calculateAll() {
-    let assets = Array.from(document.querySelectorAll('input.asset'))
-        .reduce((s, el) => s + (parseFloat(el.value) || 0), 0);
-    const goldGrams = parseFloat(document.getElementById('gold_grams').value) || 0;
-    const goldPrice = parseFloat(document.getElementById('gold_price_per_gram').value) || 420;
-    assets += goldGrams * goldPrice;
-    const debts = Array.from(document.querySelectorAll('input.debt'))
-        .reduce((s, el) => s + (parseFloat(el.value) || 0), 0);
-    const netWorth = assets - debts;
-    let level, status, color, needleAngle;
-    if (netWorth < 75000)        { level=1; status='الطبقة المستورة / المديونة'; color='#d67a6a'; needleAngle=-90; }
-    else if (netWorth < 330000)  { level=2; status='الطبقة المتوسطة';            color='#e89d5a'; needleAngle=-45; }
-    else if (netWorth < 1875000) { level=3; status='الطبقة المتوسطة العليا';     color='#c9a700'; needleAngle=0;   }
-    else if (netWorth < 37500000){ level=4; status='طبقة الأثرياء';              color='#5a9d7a'; needleAngle=45;  }
-    else                         { level=5; status='طبقة فاحشة الثراء';          color='#4a8d6a'; needleAngle=90;  }
+function calculateAll(){
+    let assets=Array.from(document.querySelectorAll('input.asset')).reduce((s,el)=>s+(parseFloat(el.value)||0),0);
+    const goldGrams=parseFloat(document.getElementById('gold_grams').value)||0;
+    const goldPrice=parseFloat(document.getElementById('gold_price_per_gram').value)||420;
+    assets+=goldGrams*goldPrice;
+    const debts=Array.from(document.querySelectorAll('input.debt')).reduce((s,el)=>s+(parseFloat(el.value)||0),0);
+    const netWorth=assets-debts;
+    let level,status,color,needleAngle;
+    if(netWorth<75000)        {level=1;status='الطبقة المستورة / المديونة';color='#d67a6a';needleAngle=-90;}
+    else if(netWorth<330000) {level=2;status='الطبقة المتوسطة';            color='#e89d5a';needleAngle=-45;}
+    else if(netWorth<1875000){level=3;status='الطبقة المتوسطة العليا';     color='#c9a700';needleAngle=0;}
+    else if(netWorth<37500000){level=4;status='طبقة الأثرياء';              color='#5a9d7a';needleAngle=45;}
+    else                     {level=5;status='طبقة فاحشة الثراء';          color='#4a8d6a';needleAngle=90;}
+
     document.getElementById('needle').setAttribute('transform',`rotate(${needleAngle} 70 70)`);
-    document.getElementById('gauge-label').textContent = status;
-    document.getElementById('gauge-label').style.color = color;
-    document.querySelectorAll('.pyramid-level').forEach(el => el.classList.remove('active'));
-    const activeEl = document.getElementById(`level-${level}`);
-    if (activeEl) activeEl.classList.add('active');
-    document.getElementById('status-label').textContent  = status;
-    document.getElementById('status-label').style.color  = color;
-    document.getElementById('networth-display').textContent =
-        netWorth.toLocaleString('ar-SA', { maximumFractionDigits: 0 }) + ' ريال سعودي';
-    document.getElementById('networth-display').style.color = netWorth >= 0 ? 'var(--dark-green)' : 'var(--red)';
-    const debtRatio = assets > 0 ? ((debts / assets) * 100).toFixed(1) : '—';
-    document.getElementById('details-text').innerHTML = `
-        إجمالي الأصول: <strong>${assets.toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong><br>
-        إجمالي الالتزامات: <strong>${debts.toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong><br>
-        نسبة الديون للأصول: <strong>${debtRatio}%</strong>${debtRatio > 40 ? ' ⚠️ مرتفعة' : ''}<br>
-        قيمة الذهب: <strong>${(goldGrams * goldPrice).toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong>
-        (${goldGrams} جرام × ${goldPrice} ريال)
-    `;
-    document.getElementById('report-date').textContent = 'تاريخ التقرير: ' + new Date().toLocaleDateString('ar-SA');
-    const resultEl = document.getElementById('printable-result');
-    resultEl.style.display = 'block';
-    resultEl.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('gauge-label').textContent=status;
+    document.getElementById('gauge-label').style.color=color;
+    document.querySelectorAll('.pyramid-level').forEach(el=>el.classList.remove('active'));
+    const activeEl=document.getElementById(`level-${level}`);
+    if(activeEl)activeEl.classList.add('active');
+    document.getElementById('status-label').textContent=status;
+    document.getElementById('status-label').style.color=color;
+    document.getElementById('networth-display').textContent=netWorth.toLocaleString('ar-SA',{maximumFractionDigits:0})+' ريال سعودي';
+    document.getElementById('networth-display').style.color=netWorth>=0?'var(--dark-green)':'var(--red)';
+    const debtRatio=assets>0?((debts/assets)*100).toFixed(1):'—';
+    document.getElementById('details-text').innerHTML=`إجمالي الأصول: <strong>${assets.toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong><br>إجمالي الالتزامات: <strong>${debts.toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong><br>نسبة الديون: <strong>${debtRatio}%</strong>${debtRatio>40?' ⚠️ مرتفعة':''}<br>قيمة الذهب: <strong>${(goldGrams*goldPrice).toLocaleString('ar-SA',{maximumFractionDigits:0})} ريال</strong>`;
+    document.getElementById('report-date').textContent='تاريخ التقرير: '+new Date().toLocaleDateString('ar-SA');
+
+    const resultEl=document.getElementById('printable-result');
+    resultEl.classList.remove('result-positive','result-negative','result-warning');
+    if(level>=4)      resultEl.classList.add('result-positive');
+    else if(level===3)resultEl.classList.add('result-warning');
+    else              resultEl.classList.add('result-negative');
+    if(window.ResultsEngine)window.ResultsEngine.paint();
+
+    resultEl.style.display='block';
+    resultEl.scrollIntoView({behavior:'smooth'});
 }
 </script>
-
 <script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
