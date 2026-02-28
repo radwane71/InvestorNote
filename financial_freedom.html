@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حاسبة الحرية المالية (FIRE) - مفكرة مستثمر</title>
     <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,22 +43,38 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="index.html" class="navbar-item">🏠 الرئيسية</a>
-                <a href="advice.html" class="navbar-item">💰 حاسبة الثروة</a>
-                <a href="salary_calculator.html" class="navbar-item">💼 حاسبة الراتب</a>
-                <a href="zakat_purification.html" class="navbar-item">🕌 التطهير والزكاة</a>
-                <a href="financial_freedom.html" class="navbar-item active">🔥 الحرية المالية</a>
-                <a href="investor_tips.html" class="navbar-item">⚠️ نصائح الاستثمار</a>
-                <a href="snowball_calculator.html" class="navbar-item">❄️ حاسبة كرة الثلج</a>
-                <a href="emergency_fund_calculator.html" class="navbar-item">🛡️ صندوق الطوارئ</a>
-                <a href="average_calculator.html" class="navbar-item">📊 متوسط الشراء</a>
-                <a href="retirement_calculator.html" class="navbar-item">🏖️ حاسبة التقاعد</a>
-                <a href="portfolio_rating.html" class="navbar-item">🛡️ أمان المحفظة</a>
-            </div>
             <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html"                     class="navbar-item">🏠 الرئيسية</a>
+                <a href="advice.html"                    class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="salary_calculator.html"         class="navbar-item salary">💼 تقسيم الراتب</a>
+                <a href="zakat_purification.html"        class="navbar-item zakat">🕌 الزكاة</a>
+                <a href="financial_freedom.html"         class="navbar-item fire">🔥 الحرية المالية</a>
+                <a href="investor_tips.html"             class="navbar-item tips">⚠️ نصائح</a>
+                <a href="snowball_calculator.html"       class="navbar-item calculator">❄️ العائد المركب</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+                <a href="average_calculator.html"        class="navbar-item average">📊 متوسط الشراء</a>
+                <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
+                <a href="retirement_calculator.html"     class="navbar-item retirement">🏖️ التقاعد</a>
+                <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+                <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
+                <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+                <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
+                <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
+                <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
+            </div>
         </div>
     </nav>
+    <script>
+        function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+        document.addEventListener('DOMContentLoaded',function(){
+            const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0]||'index.html';
+            document.querySelectorAll('.navbar-item').forEach(function(el){
+                el.classList.remove('active');
+                if((el.getAttribute('href')||'').split('?')[0]===page)el.classList.add('active');
+            });
+        });
+    </script>
 
     <div class="container">
         <div class="header">
@@ -68,30 +85,12 @@
         <div class="calculator-section">
             <h2 class="section-title">📊 مدخلات الخطة</h2>
             <div class="input-grid">
-                <div class="input-group">
-                    <label>المصاريف الشهرية (ريال)</label>
-                    <input type="number" id="monthlyExpenses" value="10000">
-                </div>
-                <div class="input-group">
-                    <label>صافي الثروة الحالي (ريال)</label>
-                    <input type="number" id="currentWealth" value="100000">
-                </div>
-                <div class="input-group">
-                    <label>العائد السنوي المتوقع (%)</label>
-                    <input type="number" id="expectedReturn" value="8">
-                </div>
-                <div class="input-group">
-                    <label>الادخار الشهري (ريال)</label>
-                    <input type="number" id="monthlySavings" value="3000">
-                </div>
-                <div class="input-group">
-                    <label>العمر الحالي</label>
-                    <input type="number" id="currentAge" value="30">
-                </div>
-                <div class="input-group">
-                    <label>توقع العمر</label>
-                    <input type="number" id="lifeExpectancy" value="85">
-                </div>
+                <div class="input-group"><label>المصاريف الشهرية (ريال)</label><input type="number" id="monthlyExpenses" value="10000"></div>
+                <div class="input-group"><label>صافي الثروة الحالي (ريال)</label><input type="number" id="currentWealth" value="100000"></div>
+                <div class="input-group"><label>العائد السنوي المتوقع (%)</label><input type="number" id="expectedReturn" value="8"></div>
+                <div class="input-group"><label>الادخار الشهري (ريال)</label><input type="number" id="monthlySavings" value="3000"></div>
+                <div class="input-group"><label>العمر الحالي</label><input type="number" id="currentAge" value="30"></div>
+                <div class="input-group"><label>توقع العمر</label><input type="number" id="lifeExpectancy" value="85"></div>
             </div>
             <br>
             <button class="calculate-btn" onclick="calculateFIRE()">احسب مسار الحرية المالية</button>
@@ -100,28 +99,11 @@
         <div id="resultsSection" class="results-section" style="display:none;">
             <h2 class="section-title">📈 النتائج المتوقعة</h2>
             <div class="results-grid">
-                <div class="result-card fire-number">
-                    <h3>🎯 هدف الحرية المالية</h3>
-                    <div class="result-amount" id="fireNumber">-</div>
-                    <p id="targetDetails">رقم الحرية المالية المستهدف</p>
-                </div>
-                <div class="result-card">
-                    <h3>⏳ زمن الوصول</h3>
-                    <div class="result-amount" id="retirementAgeDisplay">-</div>
-                    <p id="retirementDetails">-</p>
-                </div>
-                <div class="result-card">
-                    <h3>📊 نسبة الإنجاز</h3>
-                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                    <div id="progressText">0%</div>
-                </div>
-                <div class="result-card">
-                    <h3>🛡️ استدامة المحفظة</h3>
-                    <div class="result-amount" id="longevityDisplay">-</div>
-                    <p id="longevityDetails">-</p>
-                </div>
+                <div class="result-card fire-number"><h3>🎯 هدف الحرية المالية</h3><div class="result-amount" id="fireNumber">-</div><p id="targetDetails">رقم الحرية المالية المستهدف</p></div>
+                <div class="result-card"><h3>⏳ زمن الوصول</h3><div class="result-amount" id="retirementAgeDisplay">-</div><p id="retirementDetails">-</p></div>
+                <div class="result-card"><h3>📊 نسبة الإنجاز</h3><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div id="progressText">0%</div></div>
+                <div class="result-card"><h3>🛡️ استدامة المحفظة</h3><div class="result-amount" id="longevityDisplay">-</div><p id="longevityDetails">-</p></div>
             </div>
-
             <div class="sensitivity-analysis">
                 <h3>🎛️ تحليل الحساسية (تغيير معدل السحب)</h3>
                 <div class="slider-container">
@@ -130,113 +112,48 @@
                 </div>
                 <div class="tips-section" id="riskWarning"></div>
             </div>
-
             <div class="chart-container">
                 <h2 class="section-title">📉 مسار نمو الثروة</h2>
-                <div class="chart-wrapper">
-                    <canvas id="fireChart"></canvas>
-                </div>
+                <div class="chart-wrapper"><canvas id="fireChart"></canvas></div>
             </div>
         </div>
     </div>
 
     <script>
         let fireChart = null;
-
-        function toggleNavbar() {
-            const menu = document.getElementById('navbarMenu');
-            menu.classList.toggle('collapsed');
+        function formatCurrency(amount){return new Intl.NumberFormat('ar-SA',{style:'currency',currency:'SAR',maximumFractionDigits:0}).format(amount);}
+        function calculateFIRE(){
+            const monthlyExpenses=parseFloat(document.getElementById('monthlyExpenses').value)||0;
+            const currentWealth=parseFloat(document.getElementById('currentWealth').value)||0;
+            const expectedReturn=parseFloat(document.getElementById('expectedReturn').value)||0;
+            const monthlySavings=parseFloat(document.getElementById('monthlySavings').value)||0;
+            const currentAge=parseInt(document.getElementById('currentAge').value)||0;
+            const lifeExpectancy=parseInt(document.getElementById('lifeExpectancy').value)||85;
+            const withdrawalRate=parseFloat(document.getElementById('withdrawalRateSlider').value)/100;
+            const annualExpenses=monthlyExpenses*12;
+            const fireTarget=annualExpenses/withdrawalRate;
+            let years=0,wealth=currentWealth,wealthData=[currentWealth],labels=[0];
+            while(wealth<fireTarget&&years<50){years++;wealth=wealth*(1+(expectedReturn/100))+(monthlySavings*12);wealthData.push(Math.round(wealth));labels.push(years);}
+            document.getElementById('resultsSection').style.display='block';
+            document.getElementById('fireNumber').textContent=formatCurrency(fireTarget);
+            document.getElementById('retirementAgeDisplay').textContent=`${years+currentAge} سنة`;
+            document.getElementById('retirementDetails').textContent=`ستصل للهدف بعد ${years} سنة تقريباً`;
+            const progress=Math.min((currentWealth/fireTarget)*100,100);
+            document.getElementById('progressFill').style.width=progress+'%';
+            document.getElementById('progressText').textContent=progress.toFixed(1)+'% محقق من الهدف';
+            const retirementYearsNeeded=lifeExpectancy-(currentAge+years);
+            document.getElementById('longevityDisplay').textContent=retirementYearsNeeded>0?`${retirementYearsNeeded} سنة`:"مؤمن";
+            document.getElementById('longevityDetails').textContent=`المحفظة ستحتاج لتغطية ${Math.max(0,retirementYearsNeeded)} سنة تقاعد`;
+            const realReturn=expectedReturn-3;
+            document.getElementById('riskWarning').innerHTML=realReturn<4?"⚠️ تنبيه: العائد الحقيقي منخفض. قد تضطر لزيادة الادخار أو تأجيل التقاعد.":"✅ خطة ممتازة: العائد الحقيقي يتجاوز التضخم بشكل آمن.";
+            updateChart(labels,wealthData,fireTarget);
+            setTimeout(()=>{document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});},100);
         }
-
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR', maximumFractionDigits: 0 }).format(amount);
-        }
-
-        function calculateFIRE() {
-            const monthlyExpenses = parseFloat(document.getElementById('monthlyExpenses').value) || 0;
-            const currentWealth = parseFloat(document.getElementById('currentWealth').value) || 0;
-            const expectedReturn = parseFloat(document.getElementById('expectedReturn').value) || 0;
-            const monthlySavings = parseFloat(document.getElementById('monthlySavings').value) || 0;
-            const currentAge = parseInt(document.getElementById('currentAge').value) || 0;
-            const lifeExpectancy = parseInt(document.getElementById('lifeExpectancy').value) || 85;
-            const withdrawalRate = parseFloat(document.getElementById('withdrawalRateSlider').value) / 100;
-
-            const annualExpenses = monthlyExpenses * 12;
-            const fireTarget = annualExpenses / withdrawalRate;
-
-            let years = 0;
-            let wealth = currentWealth;
-            let wealthData = [currentWealth];
-            let labels = [0];
-
-            // محاكاة النمو حتى الوصول للهدف أو 50 عاماً
-            while (wealth < fireTarget && years < 50) {
-                years++;
-                wealth = wealth * (1 + (expectedReturn / 100)) + (monthlySavings * 12);
-                wealthData.push(Math.round(wealth));
-                labels.push(years);
-            }
-
-            document.getElementById('resultsSection').style.display = 'block';
-            document.getElementById('fireNumber').textContent = formatCurrency(fireTarget);
-            document.getElementById('retirementAgeDisplay').textContent = `${years + currentAge} سنة`;
-            document.getElementById('retirementDetails').textContent = `ستصل للهدف بعد ${years} سنة تقريباً`;
-            
-            const progress = Math.min((currentWealth / fireTarget) * 100, 100);
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = progress.toFixed(1) + '% محقق من الهدف';
-
-            const retirementYearsNeeded = lifeExpectancy - (currentAge + years);
-            document.getElementById('longevityDisplay').textContent = retirementYearsNeeded > 0 ? `${retirementYearsNeeded} سنة` : "مؤمن";
-            document.getElementById('longevityDetails').textContent = `المحفظة ستحتاج لتغطية ${Math.max(0, retirementYearsNeeded)} سنة تقاعد`;
-
-            const realReturn = expectedReturn - 3; // افتراض تضخم 3%
-            const riskMsg = realReturn < 4 ? "⚠️ تنبيه: العائد الحقيقي منخفض (قريب من التضخم). قد تضطر لزيادة الادخار أو تأجيل التقاعد." : "✅ خطة ممتازة: العائد الحقيقي للمحفظة يتجاوز التضخم بشكل آمن.";
-            document.getElementById('riskWarning').innerHTML = riskMsg;
-
-            updateChart(labels, wealthData, fireTarget);
-            setTimeout(() => {
-                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        function updateWithdrawalRate(val) {
-            document.getElementById('withdrawalRateValue').textContent = val + '%';
-            calculateFIRE();
-        }
-
-        function updateChart(labels, data, target) {
-            const ctx = document.getElementById('fireChart').getContext('2d');
-            if (fireChart) fireChart.destroy();
-
-            fireChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels.map(l => 'سنة ' + l),
-                    datasets: [{
-                        label: 'نمو الثروة المتوقع',
-                        data: data,
-                        borderColor: '#5a9d7a',
-                        backgroundColor: 'rgba(90, 157, 122, 0.1)',
-                        fill: true,
-                        tension: 0.3
-                    }, {
-                        label: 'خط هدف الحرية المالية',
-                        data: labels.map(() => target),
-                        borderColor: '#d67a6a',
-                        borderDash: [5, 5],
-                        pointRadius: 0,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' }
-                    }
-                }
-            });
+        function updateWithdrawalRate(val){document.getElementById('withdrawalRateValue').textContent=val+'%';calculateFIRE();}
+        function updateChart(labels,data,target){
+            const ctx=document.getElementById('fireChart').getContext('2d');
+            if(fireChart)fireChart.destroy();
+            fireChart=new Chart(ctx,{type:'line',data:{labels:labels.map(l=>'سنة '+l),datasets:[{label:'نمو الثروة المتوقع',data:data,borderColor:'#5a9d7a',backgroundColor:'rgba(90,157,122,0.1)',fill:true,tension:0.3},{label:'خط هدف الحرية المالية',data:labels.map(()=>target),borderColor:'#d67a6a',borderDash:[5,5],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}}}});
         }
     </script>
 </body>
