@@ -8,32 +8,191 @@
     <link rel="stylesheet" href="dark-theme.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" defer></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%); min-height: 100vh; padding: 20px; color: #2c3e50; }
-        .container { max-width: 950px; margin: 0 auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .legal-banner { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 12px 16px; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        /* ===== الهوية البصرية ===== */
+        .legal-banner {
+            background: linear-gradient(135deg, #1a1400 0%, #2a1f00 60%, #1a1000) !important;
+            border: 2px solid var(--gold) !important;
+            border-radius: var(--radius-sm) !important;
+            padding: 14px 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: var(--shadow-glow-gold), inset 0 0 30px rgba(245,158,11,0.04);
+        }
         .legal-banner span:first-child { font-size: 1.3rem; flex-shrink: 0; }
-        .legal-banner p { color: #856404; font-weight: bold; font-size: 0.88rem; line-height: 1.5; flex: 1; }
-        h1 { text-align: center; color: #2c3e50; margin-bottom: 8px; font-size: 2rem; }
-        p.subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
-        .rule-item { background: #f8f9fa; border-radius: 15px; padding: 25px; margin: 20px 0; border-right: 5px solid #4ca1af; }
-        .rule-item h3 { color: #2c3e50; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .legal-banner p { color: #fde68a !important; font-weight: bold; font-size: 0.88rem; line-height: 1.5; flex: 1; }
+
+        h1 { text-align: center; color: var(--text-h) !important; margin-bottom: 8px; font-size: 2rem; }
+        p.subtitle { text-align: center; color: var(--text-muted) !important; margin-bottom: 30px; }
+
+        .rule-item {
+            background: var(--bg-card2) !important;
+            border-radius: var(--radius) !important;
+            padding: 25px;
+            margin: 20px 0;
+            border-right: 4px solid var(--blue) !important;
+            box-shadow: var(--shadow-card) !important;
+            transition: var(--transition);
+        }
+        .rule-item:hover {
+            border-right-color: var(--blue-light) !important;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow-b) !important;
+        }
+        .rule-item h3 { color: var(--blue-light) !important; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.1rem; }
+
         .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
         .input-group { margin-bottom: 5px; }
-        .input-group label { display: block; font-weight: bold; margin-bottom: 7px; font-size: 0.88rem; color: #34495e; }
-        .input-group input, .input-group select { width: 100%; padding: 11px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; transition: 0.3s; background: white; }
-        .input-group input:focus, .input-group select:focus { border-color: #4ca1af; outline: none; background: #f0f9ff; }
-        .results-section { background: #2c3e50; color: white; border-radius: 20px; padding: 30px; margin-top: 30px; }
-        .results-section.pending { opacity: 0.65; }
-        .result-content { display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 30px; }
-        .score-display { font-size: 4.5rem; font-weight: bold; color: #f1c40f; line-height: 1; }
-        .score-label { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-top: 4px; }
-        .chart-box { width: 180px; height: 180px; }
-        .evaluation-badge { display: inline-block; padding: 10px 25px; border-radius: 50px; margin-top: 14px; font-weight: bold; font-size: 1.1rem; background: #7f8c8d; transition: background 0.4s; }
-        .analysis-box { margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.08); border-radius: 10px; font-size: 0.95rem; line-height: 1.8; }
-        .analysis-box strong { display: block; margin-bottom: 10px; font-size: 1rem; }
-        .red-flag { color: #ff7675; font-weight: bold; margin-top: 12px; display: block; font-size: 0.95rem; }
-        @media (max-width: 768px) { .container { padding: 20px; } h1 { font-size: 1.6rem; } .score-display { font-size: 3rem; } .chart-box { width: 140px; height: 140px; } }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 7px; font-size: 0.9rem; color: var(--text-body) !important; }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border) !important;
+            border-radius: var(--radius-xs) !important;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: var(--bg-input) !important;
+            color: var(--text-h) !important;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--blue) !important;
+            outline: none;
+            box-shadow: var(--shadow-glow-b) !important;
+        }
+        .input-group input::placeholder { color: var(--text-muted) !important; }
+
+        /* ===== قسم النتائج ===== */
+        .results-section {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: var(--shadow-card) !important;
+            transition: var(--transition);
+        }
+        .results-section.pending { opacity: 0.6; }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .result-header h2 {
+            color: var(--text-h) !important;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        .result-header p {
+            color: var(--text-muted) !important;
+            font-size: 0.9rem;
+        }
+
+        .result-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .score-container {
+            text-align: center;
+            min-width: 180px;
+        }
+        .score-display {
+            font-size: 5rem;
+            font-weight: bold;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(245,158,11,0.4);
+        }
+        .score-label { color: var(--text-muted) !important; font-size: 0.9rem; margin-top: 8px; }
+
+        .chart-box {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .evaluation-badge {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-glow-b);
+        }
+
+        /* ===== صندوق التحليل ===== */
+        .analysis-box {
+            margin-top: 25px;
+            padding: 24px;
+            background: var(--bg-card2) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius-sm) !important;
+            font-size: 0.95rem;
+            line-height: 1.9;
+        }
+        .analysis-box strong {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            color: var(--blue-light) !important;
+        }
+        .analysis-box p { color: var(--text-body) !important; margin-bottom: 8px; }
+
+        .red-flag {
+            display: block;
+            margin-top: 15px;
+            padding: 12px 16px;
+            background: rgba(239,68,68,0.15) !important;
+            border: 1px solid rgba(239,68,68,0.3) !important;
+            border-radius: var(--radius-xs) !important;
+            color: var(--red-light) !important;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* ===== مؤشرات细致的 ===== */
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .indicator-card {
+            background: var(--bg-card2) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius-sm) !important;
+            padding: 15px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .indicator-card:hover {
+            border-color: var(--blue) !important;
+            transform: translateY(-2px);
+        }
+        .indicator-card .icon { font-size: 1.5rem; margin-bottom: 8px; }
+        .indicator-card .value { font-size: 1.1rem; font-weight: bold; color: var(--text-h) !important; }
+        .indicator-card .label { font-size: 0.8rem; color: var(--text-muted) !important; margin-top: 4px; }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.6rem; }
+            .score-display { font-size: 3.5rem; }
+            .chart-box { width: 150px; height: 150px; }
+            .result-content { gap: 25px; }
+        }
     </style>
 </head>
 <body>
@@ -106,17 +265,29 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
 
     <div class="results-section pending" id="resultsSection">
+        <div class="result-header">
+            <h2>📊 نتيجة التقييم</h2>
+            <p>بناءً على تحليل المؤشرات المالية والتشغيلية</p>
+        </div>
+        
         <div class="result-content">
-            <div style="text-align:center;">
+            <div class="score-container">
                 <div class="score-display" id="totalScore">—</div>
                 <div class="score-label">من 100</div>
                 <div id="evalBadge" class="evaluation-badge">أدخل البيانات</div>
             </div>
-            <div class="chart-box"><canvas id="qualityChart"></canvas></div>
+            <div class="chart-box">
+                <canvas id="qualityChart"></canvas>
+            </div>
         </div>
+
+        <div class="indicators-grid" id="indicatorsGrid">
+            <!-- سيتم ملؤه تلقائياً -->
+        </div>
+        
         <div class="analysis-box">
             <strong>📋 التحليل الذكي:</strong>
-            <p id="analysisText" style="color:rgba(255,255,255,0.7);">بانتظار اكتمال البيانات...</p>
+            <p id="analysisText">أكمل إدخال جميع الحقول لرؤية التحليل.</p>
             <span id="flagMsg" class="red-flag"></span>
         </div>
     </div>
@@ -177,7 +348,8 @@ function updateUI(){
         document.getElementById('analysisText').innerHTML='أكمل إدخال جميع الحقول لرؤية التحليل.';
         document.getElementById('flagMsg').innerHTML='';
         document.getElementById('evalBadge').textContent='بانتظار البيانات';
-        document.getElementById('evalBadge').style.background='#7f8c8d';
+        document.getElementById('evalBadge').style.background='var(--text-muted)';
+        document.getElementById('indicatorsGrid').innerHTML='';
         return;
     }
     const result=calculateSmartScore();
@@ -185,12 +357,50 @@ function updateUI(){
     document.getElementById('totalScore').textContent=result.total;
     document.getElementById('analysisText').innerHTML=result.analysis||'<span style="opacity:0.6">لا توجد تنبيهات إضافية.</span>';
     document.getElementById('flagMsg').innerHTML=result.flags;
-    const badge=document.getElementById('evalBadge');let color;
-    if(result.total>=80){badge.textContent='🌟 جودة استثنائية';badge.style.background='#27ae60';color='#2ecc71';}
-    else if(result.total>=65){badge.textContent='✅ شركة جيدة';badge.style.background='#2980b9';color='#3498db';}
-    else if(result.total>=45){badge.textContent='⚠️ جودة متوسطة';badge.style.background='#f39c12';color='#f39c12';}
-    else{badge.textContent='🚨 مخاطر عالية';badge.style.background='#c0392b';color='#e74c3c';}
+    
+    // تحديث المؤشرات
+    const indicatorsGrid = document.getElementById('indicatorsGrid');
+    const indicators = getIndicatorsData();
+    indicatorsGrid.innerHTML = indicators.map(ind => `
+        <div class="indicator-card">
+            <div class="icon">${ind.icon}</div>
+            <div class="value">${ind.value}</div>
+            <div class="label">${ind.label}</div>
+        </div>
+    `).join('');
+    
+    const badge=document.getElementById('evalBadge');let color, badgeBg;
+    if(result.total>=80){badge.textContent='🌟 جودة استثنائية';badgeBg='#10b981';color='#34d399';}
+    else if(result.total>=65){badge.textContent='✅ شركة جيدة';badgeBg='#3b82f6';color='#60a5fa';}
+    else if(result.total>=45){badge.textContent='⚠️ جودة متوسطة';badgeBg='#f59e0b';color='#fbbf24';}
+    else{badge.textContent='🚨 مخاطر عالية';badgeBg='#ef4444';color='#f87171';}
+    badge.style.background=badgeBg;
+    badge.style.color='#fff';
     updateChart(result.total,color);
+}
+
+function getIndicatorsData(){
+    const growth=parseFloat(document.getElementById('growth').value)||0;
+    const cycle=parseFloat(document.getElementById('cashCycle').value)||0;
+    const cashQ=document.getElementById('cashQuality').value;
+    const roe=parseFloat(document.getElementById('roe').value)||0;
+    const turnover=document.getElementById('assetTurnover').value;
+    const debt=parseFloat(document.getElementById('debt').value)||0;
+    const moat=document.getElementById('moat').value;
+    const capex=document.getElementById('capex').value;
+    const mgmt=document.getElementById('mgmt').value;
+    
+    return [
+        {icon:'📈',value:growth+'%',label:'نمو الأرباح'},
+        {icon:'⏱️',value:cycle+' يوم',label:'دورة الكاش'},
+        {icon:'💵',value:cashQ==='high'?'ممتازة':'ضعيفة',label:'جودة الأرباح'},
+        {icon:'📊',value:roe+'%',label:'العائد على الحقوق'},
+        {icon:'🔄',value:turnover==='high'?'مرتفع':turnover==='mid'?'متوسط':'منخفض',label:'دوران الأصول'},
+        {icon:'🏦',value:debt+'%',label:'مستوى الديون'},
+        {icon:'🏰',value:moat==='strong'?'قوي':'ضعيف',label:'ميزة تنافسية'},
+        {icon:'🏗️',value:capex==='light'?'خفيف':'ثقيل',label:'رأس المال'},
+        {icon:'👔',value:mgmt==='good'?'موثوقة':'مشكوك',label:'نزاهة الإدارة'}
+    ];
 }
 </script>
 <script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
