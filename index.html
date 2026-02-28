@@ -48,7 +48,6 @@
             height: 4px;
             background: linear-gradient(90deg, #5a7fb5, #6a8fc5);
             transform: scaleX(0);
-            /* ✅ RTL: transform-origin من اليمين صح */
             transform-origin: right;
             transition: transform 0.3s ease;
         }
@@ -141,7 +140,6 @@
             display: flex; align-items: center; justify-content: center;
             z-index: 999;
         }
-        /* ✅ visible بدل display:none/flex — أسلس */
         .back-to-top.visible {
             opacity: 1; pointer-events: auto;
         }
@@ -175,7 +173,6 @@
 </head>
 <body>
 
-<!-- ✅ back-to-top داخل body مباشرة — لا علاقة له بالـ container -->
 <button class="back-to-top" id="backToTop"
         onclick="window.scrollTo({top:0,behavior:'smooth'})"
         title="العودة للأعلى" aria-label="العودة للأعلى">↑</button>
@@ -200,10 +197,9 @@
                 <a href="company_valuation.html"         class="navbar-item company">🏢 تقييم الشركة</a>
                 <a href="retirement_calculator.html"     class="navbar-item retirement">🏖️ التقاعد</a>
                 <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
-                <!-- ✅ calculator بدل valuation — موجودة في CSS -->
                 <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
-                <!-- ✅ dca_calculator مضافة -->
                 <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+                <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
             </div>
         </div>
     </nav>
@@ -241,10 +237,11 @@
         <a href="portfolio_rating.html"          class="box internal"><span class="badge">✦ داخلي</span><h3>🛡️ أمان المحفظة</h3><span class="url">portfolio_rating.html</span></a>
         <a href="stock_valuation.html"           class="box internal"><span class="badge">✦ داخلي</span><h3>📊 تقييم الأسهم</h3><span class="url">stock_valuation.html</span></a>
         <a href="dca_calculator.html"            class="box internal"><span class="badge">✦ داخلي</span><h3>📅 DCA مقابل الشراء الفوري</h3><span class="url">dca_calculator.html</span></a>
-        <!-- ✅ مضافتان -->
         <a href="goal_calculator.html"           class="box internal"><span class="badge">✦ داخلي</span><h3>🎯 الهدف الاستثماري العكسي</h3><span class="url">goal_calculator.html</span></a>
         <a href="allocation_calculator.html"     class="box internal"><span class="badge">✦ داخلي</span><h3>⚖️ توزيع المحفظة</h3><span class="url">allocation_calculator.html</span></a>
         <a href="investor_tips.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>⚠️ نصائح الاستثمار</h3><span class="url">investor_tips.html</span></a>
+        <!-- ✅ مضافة جديدة -->
+        <a href="sell_decision.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>🤔 هل أبيع سهمي؟</h3><span class="url">sell_decision.html</span></a>
     </div>
 
     <!-- ===== أسعار وتقييمات ===== -->
@@ -374,16 +371,9 @@
         <p>صاحب الموقع لا يضمن دقة أو اكتمال المعلومات في الروابط الخارجية، ولا يتحمل أي مسؤولية عن أي خسائر مباشرة أو غير مباشرة. يُنصح دائماً باستشارة مستشار مالي مرخص قبل اتخاذ أي قرار استثماري.</p>
     </div>
 
-    <!--
-        ✅ عداد الزوار:
-        GoatCounter API يتطلب Token ولا يدعم CORS من المتصفح مباشرة.
-        الحل الصحيح: اعرض شارة GoatCounter الجاهزة فقط.
-        الشارة تعمل بدون Token وبدون CORS.
-    -->
     <div class="visitor-counter">
         <div class="counter-item">
             <span class="counter-label">إحصائيات الزيارات</span>
-            <!-- ✅ شارة GoatCounter الرسمية — تعمل مباشرة -->
             <a href="https://investornote.goatcounter.com"
                target="_blank" style="text-decoration:none;">
                 <img src="https://investornote.goatcounter.com/count?p=/"
