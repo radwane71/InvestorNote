@@ -11,90 +11,99 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c3e50;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh; padding: 20px; color: #f0f4f8;
         }
 
         .container { max-width: 780px; margin: 0 auto; }
 
         .page-header { text-align: center; margin-bottom: 30px; }
         .page-header h1 {
-            font-size: 2.2rem; color: #2c3e50;
-            font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            font-size: 2.2rem; color: #ffffff; font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
         }
         .page-header p {
-            font-size: 0.95rem; color: #5a7fa0;
-            margin-top: 8px; line-height: 1.6;
+            font-size: 0.95rem; color: #d0e1f9; margin-top: 8px; line-height: 1.6;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
         }
 
+        /* ===== Glassmorphism Card ===== */
         .advisor-card {
-            background: white; border-radius: 18px;
-            padding: 30px; box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 24px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
             margin-bottom: 20px; position: relative; overflow: hidden;
         }
         .advisor-card::before {
-            content: ''; position: absolute; top: 0; right: 0; left: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #c0392b, #e74c3c, #f39c12);
+            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c, #c0392b);
         }
 
         .progress-bar-wrap {
-            background: #eef2f7; border-radius: 10px;
+            background: rgba(255,255,255,0.08); border-radius: 10px;
             height: 8px; margin-bottom: 20px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #5a7fb5, #5a9d7a);
+            height: 100%; background: linear-gradient(90deg, #5a7fb5, #5a9d7a);
             border-radius: 10px; transition: width 0.4s ease; width: 0%;
         }
         .progress-label {
-            font-size: 0.78rem; color: #888;
-            text-align: left; margin-bottom: 6px; direction: ltr;
+            font-size: 0.78rem; color: #d0e1f9; text-align: left;
+            margin-bottom: 6px; direction: ltr; font-weight: 500;
         }
 
         .question-number {
-            font-size: 0.8rem; color: #c0392b;
-            font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px;
+            font-size: 0.8rem; color: #ffa726; font-weight: bold;
+            margin-bottom: 6px; letter-spacing: 0.5px;
         }
         .question-text {
-            font-size: 1.15rem; font-weight: bold;
-            color: #2c3e50; margin-bottom: 6px; line-height: 1.5;
+            font-size: 1.15rem; font-weight: bold; color: #ffffff;
+            margin-bottom: 6px; line-height: 1.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
         }
         .question-hint {
-            font-size: 0.82rem; color: #7f8c8d;
-            margin-bottom: 20px; line-height: 1.5;
+            font-size: 0.82rem; color: #c8d6e5; margin-bottom: 20px; line-height: 1.5;
             border-right: 3px solid #f39c12;
-            background: rgba(243,156,18,0.06);
-            padding: 8px 10px; border-radius: 0 6px 6px 0;
+            background: rgba(243,156,18,0.12); padding: 10px 12px;
+            border-radius: 0 8px 8px 0; backdrop-filter: blur(6px);
         }
 
         .input-group { margin-bottom: 20px; }
         .input-group input[type="number"] {
             width: 100%; padding: 12px 16px;
-            border: 2px solid #dde4ec; border-radius: 10px;
-            font-size: 1rem; font-family: inherit; color: #2c3e50;
-            background: #fafcfe; transition: border-color 0.2s;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 10px; font-size: 1rem; font-family: inherit;
+            color: #ffffff; background: rgba(255,255,255,0.06);
+            transition: border-color 0.2s, background 0.2s;
             text-align: right; direction: rtl;
         }
-        .input-group input:focus { outline: none; border-color: #5a7fb5; }
-
-        .choice-buttons {
-            display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px;
+        .input-group input:focus {
+            outline: none; border-color: #5a7fb5;
+            background: rgba(90,127,181,0.15);
         }
+        .input-group input::placeholder { color: rgba(255,255,255,0.4); }
+
+        .choice-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .btn-choice {
-            width: 100%; padding: 13px 16px;
-            font-size: 0.97rem; font-weight: bold;
-            border: 2px solid #dde4ec; border-radius: 12px;
-            cursor: pointer; background: #fafcfe; color: #2c3e50;
+            width: 100%; padding: 13px 16px; font-size: 0.97rem; font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 12px; cursor: pointer;
+            background: rgba(255,255,255,0.06); color: #ffffff;
             text-align: right; font-family: inherit;
             transition: border-color 0.2s, background 0.2s, transform 0.15s;
+            backdrop-filter: blur(6px);
         }
-        .btn-choice:hover { border-color: #5a7fb5; background: #eef4ff; transform: translateX(-3px); }
+        .btn-choice:hover {
+            border-color: #5a7fb5; background: rgba(90,127,181,0.2);
+            transform: translateX(-3px);
+        }
         .btn-choice.selected {
             background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
             color: white; border-color: #4a6fa5;
+            box-shadow: 0 4px 12px rgba(90,127,181,0.4);
         }
 
         .yn-buttons { display: flex; gap: 12px; margin-bottom: 10px; }
@@ -107,12 +116,12 @@
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white; box-shadow: 0 4px 12px rgba(39,174,96,0.3);
         }
-        .btn-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(39,174,96,0.4); }
+        .btn-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(39,174,96,0.5); }
         .btn-no {
             background: linear-gradient(135deg, #c0392b, #e74c3c);
             color: white; box-shadow: 0 4px 12px rgba(192,57,43,0.3);
         }
-        .btn-no:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(192,57,43,0.4); }
+        .btn-no:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(192,57,43,0.5); }
         .btn-yes.selected { outline: 3px solid #145a32; }
         .btn-no.selected  { outline: 3px solid #7b241c; }
 
@@ -120,46 +129,47 @@
             width: 100%; padding: 13px;
             background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
             color: white; border: none; border-radius: 12px;
-            font-size: 1rem; font-weight: bold; cursor: pointer;
-            font-family: inherit;
+            font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit;
             transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 4px 12px rgba(90,127,181,0.3);
-            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(90,127,181,0.3); margin-top: 8px;
         }
-        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(90,127,181,0.4); }
+        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(90,127,181,0.5); }
         .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         .result-card {
-            display: none; border-radius: 18px;
-            padding: 30px; box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+            display: none; border-radius: 24px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             text-align: center;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255,255,255,0.15);
         }
         .result-icon { font-size: 4rem; margin-bottom: 15px; }
         .result-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .result-title.sell   { color: #c0392b; }
-        .result-title.hold   { color: #27ae60; }
-        .result-title.review { color: #f39c12; }
+        .result-title.sell   { color: #e74c3c; text-shadow: 0 0 10px rgba(231,76,60,0.5); }
+        .result-title.hold   { color: #2ecc71; text-shadow: 0 0 10px rgba(46,204,113,0.5); }
+        .result-title.review { color: #f39c12; text-shadow: 0 0 10px rgba(243,156,18,0.5); }
 
         .result-summary {
-            font-size: 0.95rem; color: #555;
-            line-height: 1.7; margin-bottom: 20px; text-align: right;
+            font-size: 0.95rem; color: #d0e1f9; line-height: 1.7;
+            margin-bottom: 20px; text-align: right;
         }
 
         .factors-section {
-            background: #f7f9fc; border-radius: 12px;
+            background: rgba(255,255,255,0.06); border-radius: 12px;
             padding: 18px; margin-bottom: 20px; text-align: right;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .factors-section h4 {
-            font-size: 0.95rem; color: #2c3e50;
-            font-weight: bold; margin-bottom: 12px;
+            font-size: 0.95rem; color: #ffffff; font-weight: bold; margin-bottom: 12px;
         }
         .factor-item {
             display: flex; align-items: flex-start; gap: 10px;
-            margin-bottom: 8px; font-size: 0.88rem; color: #444; line-height: 1.5;
+            margin-bottom: 8px; font-size: 0.88rem; color: #c8d6e5; line-height: 1.5;
         }
         .factor-dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            margin-top: 4px; flex-shrink: 0;
+            width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0;
         }
         .dot-sell { background: #e74c3c; }
         .dot-hold { background: #27ae60; }
@@ -168,22 +178,21 @@
         .score-meter { margin: 20px 0; }
         .score-label {
             display: flex; justify-content: space-between;
-            font-size: 0.8rem; color: #888; margin-bottom: 6px;
+            font-size: 0.8rem; color: #c8d6e5; margin-bottom: 6px;
         }
         .score-bar-wrap {
-            background: #eef2f7; border-radius: 10px; height: 14px; overflow: hidden;
+            background: rgba(255,255,255,0.08); border-radius: 10px; height: 14px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .score-bar-fill {
-            height: 100%; border-radius: 10px; transition: width 0.6s ease;
-        }
-        .score-text { font-size: 0.85rem; color: #555; margin-top: 6px; text-align: center; }
+        .score-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+        .score-text { font-size: 0.85rem; color: #d0e1f9; margin-top: 6px; text-align: center; }
 
         .btn-restart {
             display: inline-block; padding: 12px 30px;
             background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
             color: white; border: none; border-radius: 12px;
-            font-size: 0.95rem; font-weight: bold; cursor: pointer;
-            font-family: inherit; transition: transform 0.15s; margin-top: 10px;
+            font-size: 0.95rem; font-weight: bold; cursor: pointer; font-family: inherit;
+            transition: transform 0.15s; margin-top: 10px;
         }
         .btn-restart:hover { transform: translateY(-2px); }
 
@@ -191,14 +200,21 @@
             position: fixed; bottom: 30px; left: 30px;
             background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
             color: white; border: none; border-radius: 50%;
-            width: 48px; height: 48px; font-size: 1.3rem;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(90,127,181,0.4);
+            width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(90,127,181,0.4);
             transition: transform 0.3s, opacity 0.3s;
             opacity: 0; pointer-events: none;
             display: flex; align-items: center; justify-content: center; z-index: 999;
         }
         .back-to-top.visible { opacity: 1; pointer-events: auto; }
         .back-to-top:hover { transform: translateY(-3px); }
+
+        .disclaimer-box {
+            background: rgba(243,156,18,0.12); border: 2px solid rgba(243,156,18,0.3);
+            border-radius: 12px; padding: 14px 16px; margin-top: 20px;
+            color: #ffa726; font-weight: bold; font-size: 0.85rem; line-height: 1.6;
+            backdrop-filter: blur(6px); text-align: center;
+        }
 
         @media (max-width: 600px) {
             .page-header h1 { font-size: 1.7rem; }
@@ -210,12 +226,9 @@
 </head>
 <body>
 
-<button class="back-to-top" id="backToTop"
-        onclick="window.scrollTo({top:0,behavior:'smooth'})"
-        title="العودة للأعلى" aria-label="العودة للأعلى">↑</button>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="العودة للأعلى" aria-label="العودة للأعلى">↑</button>
 
 <div class="container">
-
     <nav class="navbar">
         <div class="navbar-container">
             <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
@@ -243,11 +256,9 @@
     </nav>
 
     <script>
-        function toggleNavbar() {
-            document.getElementById('navbarMenu').classList.toggle('open');
-        }
+        function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('open'); }
         document.addEventListener('DOMContentLoaded', function () {
-            const raw  = window.location.pathname.split('/').pop() || 'index.html';
+            const raw = window.location.pathname.split('/').pop() || 'index.html';
             const page = raw.split('?')[0].split('#')[0] || 'index.html';
             document.querySelectorAll('.navbar-item').forEach(function (item) {
                 item.classList.remove('active');
@@ -260,14 +271,12 @@
     <div class="page-header">
         <h1>🤔 هل أبيع سهمي؟</h1>
         <p>جاوب بصدق على الأسئلة وستطلع لك توصية مدروسة<br>
-        <small style="color:#aaa;">لا عواطف، لا تخمين — فقط أرقام وواقع</small></p>
+        <small style="color:#b8c9d9;">لا عواطف، لا تخمين — فقط أرقام وواقع</small></p>
     </div>
 
     <div class="advisor-card" id="questionCard">
         <div class="progress-label"><span id="progressText">السؤال 1 من 12</span></div>
-        <div class="progress-bar-wrap">
-            <div class="progress-bar-fill" id="progressBar"></div>
-        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
         <div id="questionBody"></div>
     </div>
 
@@ -277,20 +286,13 @@
         ⚠️ هذه الأداة تعليمية إرشادية فقط. لا تُعدّ توصية مالية رسمية.
         القرار النهائي يعود لك. استشر مستشاراً مرخصاً قبل أي خطوة مهمة.
     </div>
-
 </div>
 
-<script data-goatcounter="https://investornote.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-
+<script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script src="results-engine.js"></script>
 <script>
 const questions = [
-    {
-        id: 'q1', type: 'choice',
-        text: 'ليش السهم نازل؟ وش أقرب شيء لوضعك؟',
-        hint: 'اختر الإجابة الأقرب للواقع.',
-        choices: [
+    { id: 'q1', type: 'choice', text: 'ليش السهم نازل؟ وش أقرب شيء لوضعك؟', hint: 'اختر الإجابة الأقرب للواقع.', choices: [
             { label: '📉 السوق كله نازل وسهمي نزل معه بدون سبب خاص', weight: +3, hint: 'هبوط السوق العام فرصة تاريخياً. من باع في كل هبطة خسر كثيراً.' },
             { label: '📰 خبر أو إعلان سلبي خاص بالشركة', weight: -1, hint: 'خبر سلبي يستوجب تحليل الأثر الفعلي على الأرباح قبل البيع.' },
             { label: '📊 تراجع في أرباح الشركة أو توزيعاتها', weight: -2, hint: 'تراجع الأرباح إشارة بنيوية تحتاج مراجعة جدية لمستقبل الشركة.' },
@@ -299,54 +301,34 @@ const questions = [
     },
     { id: 'q2', type: 'number', text: 'بكم اشتريت السهم؟ (متوسط سعرك)', hint: 'لو اشتريت أكثر من مرة، ادخل المتوسط.', placeholder: 'مثال: 45.50', key: 'costPrice' },
     { id: 'q3', type: 'number', text: 'كم سعر السهم الحين في السوق؟', hint: 'السعر اللي تشوفه الآن في تطبيق التداول.', placeholder: 'مثال: 38.00', key: 'currentPrice' },
-    {
-        id: 'q4', type: 'choice',
-        text: 'الشركة هذي ربحية؟',
-        hint: 'شوف آخر نتائجها الفصلية أو السنوية.',
-        choices: [
+    { id: 'q4', type: 'choice', text: 'الشركة هذي ربحية؟', hint: 'شوف آخر نتائجها الفصلية أو السنوية.', choices: [
             { label: '✅ نعم، ربحية وأرباحها تنمو أو ثابتة', weight: +3, hint: 'شركة ربحية بنمو ثابت من أقوى علامات الاحتفاظ.' },
             { label: '📉 ربحية لكن أرباحها تراجعت في آخر سنة أو سنتين', weight: 0, hint: 'تراجع مؤقت أم تراجع بنيوي؟ هذا السؤال يحدد كل شيء.' },
             { label: '❌ خسرانة أو على حافة التعادل', weight: -3, hint: 'شركة خسرانة بدون خطة واضحة للتعافي — مخاطرة عالية.' }
         ]
     },
-    {
-        id: 'q5', type: 'choice',
-        text: 'كيف وضع توزيعات الأرباح للشركة؟',
-        hint: 'اللي تعرفه عن آخر 3-5 سنوات من التوزيعات.',
-        choices: [
+    { id: 'q5', type: 'choice', text: 'كيف وضع توزيعات الأرباح للشركة؟', hint: 'اللي تعرفه عن آخر 3-5 سنوات من التوزيعات.', choices: [
             { label: '💰 تتوزع بانتظام وتوزيعاتها ثابتة أو تنمو', weight: +3, hint: 'التوزيع المنتظم المتنامي علامة صحة مالية قوية.' },
             { label: '📊 تتوزع لكن المبلغ يتذبذب', weight: +1, hint: 'التذبذب ليس جيداً ولا سيئاً — يعتمد على سبب التذبذب.' },
             { label: '⬇️ قلّت توزيعاتها بشكل واضح', weight: -2, hint: 'تراجع التوزيعات إشارة تحذير — الإدارة ترى ضغطاً مالياً.' },
             { label: '🚫 ما تتوزع أرباح أصلاً', weight: -1, hint: 'مقبول لو الأرباح تنمو بوضوح.' }
         ]
     },
-    {
-        id: 'q6', type: 'choice',
-        text: 'الشركة عليها ديون كبيرة؟',
-        hint: 'مو لازم أرقام دقيقة — تقدير عام يكفي.',
-        choices: [
+    { id: 'q6', type: 'choice', text: 'الشركة عليها ديون كبيرة؟', hint: 'مو لازم أرقام دقيقة — تقدير عام يكفي.', choices: [
             { label: '✅ ديونها قليلة أو معقولة مقارنة بأرباحها', weight: +2, hint: 'شركة بديون منخفضة أقل عرضة للمخاطر.' },
             { label: '⚠️ عليها ديون لكن تقدر تسدد من أرباحها', weight: +1, hint: 'وضع مقبول طالما التدفق النقدي يغطي الديون.' },
             { label: '🔴 ديونها عالية وأنا قلقان منها', weight: -2, hint: 'ديون عالية مع أرباح ضعيفة خطر حقيقي.' },
             { label: '❓ ما أعرف', weight: 0, hint: 'ابحث عن نسبة الدين للحقوق قبل أي قرار.' }
         ]
     },
-    {
-        id: 'q7', type: 'choice',
-        text: 'تحتاج هذي الفلوس الحين؟',
-        hint: 'الحاجة الفعلية للسيولة.',
-        choices: [
+    { id: 'q7', type: 'choice', text: 'تحتاج هذي الفلوس الحين؟', hint: 'الحاجة الفعلية للسيولة.', choices: [
             { label: '🔴 نعم، عندي التزام ضرورة ما تنأجل', weight: -3, hint: 'إذا الاحتياج حقيقي فالبيع مبرر.' },
             { label: '🟡 ممكن أحتاجها خلال 6 أشهر', weight: -1, hint: 'فكّر في بيع جزء فقط لا الكل.' },
             { label: '🟢 لا، الفلوس مستثمرة وما أحتاجها قريباً', weight: +2, hint: 'الوقت في صفك — الصبر أقوى سلاح.' }
         ]
     },
     { id: 'q8', type: 'yn', text: 'قرأت آخر نتائج الشركة المالية؟', hint: 'يكفي شفت الأرباح والإيرادات لآخر ربع أو سنة.', weightYes: +1, weightNo: -2, hintYes: 'ممتاز. المستثمر الواعي يقرأ الأرقام قبل القرار.', hintNo: 'البيع بدون ما تشوف الأرقام يعني إنك تتصرف على مشاعر.' },
-    {
-        id: 'q9', type: 'choice',
-        text: 'كم تقريباً وضعك الحالي مع السهم؟',
-        hint: 'مقارنة بسعر شرائك.',
-        choices: [
+    { id: 'q9', type: 'choice', text: 'كم تقريباً وضعك الحالي مع السهم؟', hint: 'مقارنة بسعر شرائك.', choices: [
             { label: '📈 رابح 20% أو أكثر', weight: -1, hint: 'هل الشركة لا تزال مقيّمة بأقل من قيمتها؟' },
             { label: '↔️ في المنطقة المعقولة (أقل من 20%)', weight: +1, hint: 'القرار يعتمد على أساسيات الشركة لا السعر.' },
             { label: '📉 خسران بين 20% و40%', weight: -1, hint: 'هل السبب مؤقت أم بنيوي؟' },
@@ -355,11 +337,7 @@ const questions = [
     },
     { id: 'q10', type: 'yn', text: 'عندك فرصة ثانية أفضل تبغى تحوّل الفلوس إليها؟', hint: 'مو مجرد إحساس — بل سهم أو فرصة درستها فعلاً.', weightYes: -1, weightNo: +2, hintYes: 'إذا الفرصة مدروسة — التحويل منطقي.', hintNo: 'الجلوس كاش بدون هدف مو استراتيجية.' },
     { id: 'q11', type: 'yn', text: 'صراحة — رغبتك في البيع الحين هي بسبب خوف أو ضغط نفسي؟', hint: 'كن صادقاً. الخوف حالة طبيعية لكنها أسوأ مستشار.', weightYes: +3, weightNo: -1, hintYes: 'الخوف أكبر سبب للبيع في القاع. خذ نفساً وانتظر يومين.', hintNo: 'قرارك مبني على تفكير — هذا هو الفرق الحقيقي.' },
-    {
-        id: 'q12', type: 'choice',
-        text: 'من كم وقت تحمل السهم هذا؟',
-        hint: 'المدة الزمنية مهمة في تقييم القرار.',
-        choices: [
+    { id: 'q12', type: 'choice', text: 'من كم وقت تحمل السهم هذا؟', hint: 'المدة الزمنية مهمة في تقييم القرار.', choices: [
             { label: '📅 أقل من 6 أشهر', weight: 0, hint: 'هل اشتريته بهدف طويل أم مضاربة؟' },
             { label: '📅 من 6 أشهر لسنتين', weight: +1, hint: 'قيّم الأساسيات لا السعر فقط.' },
             { label: '📅 أكثر من سنتين', weight: +2, hint: 'التقلبات جزء طبيعي من رحلة المستثمر الطويل.' }
@@ -383,11 +361,11 @@ function renderQuestion() {
         html += '<div class="choice-buttons" id="choiceGroup">';
         q.choices.forEach((c, i) => { html += `<button class="btn-choice" id="choice_${i}" onclick="selectChoice(${i})">${c.label}</button>`; });
         html += '</div>';
-        html += '<div id="choiceHint" style="font-size:0.82rem;color:#aaa;min-height:36px;margin-bottom:10px;"></div>';
+        html += '<div id="choiceHint" style="font-size:0.82rem;color:#c8d6e5;min-height:36px;margin-bottom:10px;"></div>';
         html += '<button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>';
     } else if (q.type === 'yn') {
         html += `<div class="yn-buttons"><button class="btn-yes" id="btnYes" onclick="selectYN('yes')">✅ نعم</button><button class="btn-no" id="btnNo" onclick="selectYN('no')">❌ لا</button></div>`;
-        html += '<div id="ynHint" style="font-size:0.82rem;color:#aaa;min-height:36px;margin-bottom:10px;"></div>';
+        html += '<div id="ynHint" style="font-size:0.82rem;color:#c8d6e5;min-height:36px;margin-bottom:10px;"></div>';
         html += '<button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>';
     } else if (q.type === 'number') {
         html += `<div class="input-group"><input type="number" id="numInput" placeholder="${q.placeholder}" min="0" step="0.01" oninput="validateNumber()"></div>`;
@@ -447,8 +425,7 @@ function showResult() {
     let total = 0;
     scores.forEach(s => total += s.weight);
 
-    const cost = answers.costPrice || 0;
-    const current = answers.currentPrice || 0;
+    const cost = answers.costPrice || 0, current = answers.currentPrice || 0;
     let changePct = 0;
     if (cost > 0 && current > 0) {
         changePct = ((current - cost) / cost) * 100;
@@ -486,7 +463,7 @@ function showResult() {
     let priceNote = '';
     if (cost > 0 && current > 0) {
         const sign = changePct >= 0 ? '+' : '';
-        const color = changePct >= 0 ? '#27ae60' : '#e74c3c';
+        const color = changePct >= 0 ? '#2ecc71' : '#e74c3c';
         priceNote = `<p style="font-size:0.9rem;color:${color};font-weight:bold;margin-bottom:15px;">سعر شرائك: ${cost.toFixed(2)} ر.س &nbsp;|&nbsp; السعر الحالي: ${current.toFixed(2)} ر.س &nbsp;|&nbsp; التغيير: ${sign}${changePct.toFixed(1)}%</p>`;
     }
 
@@ -503,13 +480,12 @@ function showResult() {
         </div>
         <div class="factors-section">
             <h4>📋 أبرز العوامل المؤثرة:</h4>
-            ${factorsHTML || '<p style="color:#999;font-size:0.85rem;">لا توجد عوامل بارزة.</p>'}
+            ${factorsHTML || '<p style="color:#888;font-size:0.85rem;">لا توجد عوامل بارزة.</p>'}
         </div>
         <button class="btn-restart" onclick="restart()">🔄 تقييم سهم آخر</button>
     `;
     resultCard.style.display = 'block';
 
-    /* ===== ضخّ اللون الديناميكي ===== */
     resultCard.classList.remove('result-positive','result-negative','result-warning');
     if (titleClass === 'hold')   resultCard.classList.add('result-positive');
     if (titleClass === 'sell')   resultCard.classList.add('result-negative');
