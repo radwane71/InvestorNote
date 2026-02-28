@@ -8,26 +8,229 @@
     <link rel="stylesheet" href="dark-theme.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%); min-height: 100vh; padding: 20px; color: #2c3e50; }
-        .container { max-width: 1200px; margin: 0 auto; margin-top: 20px; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 2.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
-        .calculator-section, .results-section, .chart-container, .sensitivity-analysis { background: rgba(255,255,255,0.9); border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .section-title { font-size: 1.4rem; color: #2c3e50; margin-bottom: 25px; border-bottom: 3px solid #5a7fb5; padding-bottom: 10px; }
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .input-group { background: #f8f9fa; padding: 15px; border-radius: 10px; border: 1px solid #ddd; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .input-group input, .input-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-        .calculate-btn { width: 100%; padding: 15px; background: #5a9d7a; color: white; border: none; border-radius: 10px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
-        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .result-card { color: white; padding: 20px; border-radius: 12px; text-align: center; }
-        .result-amount { font-size: 1.8rem; font-weight: bold; margin: 10px 0; }
-        .progress-bar { background: rgba(0,0,0,0.1); height: 15px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        .progress-fill { background: #2ecc71; height: 100%; width: 0%; transition: width 1s; }
-        .chart-wrapper { height: 400px; width: 100%; }
-        .slider-container input { width: 100%; margin: 15px 0; }
-        .tips-section { background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 5px solid #ffc107; margin-top: 15px; font-size: 0.9rem; }
+        /* ===== الهوية البصرية ===== */
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            margin-top: 20px; 
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+        }
+        .header h1 { 
+            font-size: 2.5rem; 
+            margin-bottom: 10px; 
+            color: var(--text-h) !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .header p {
+            color: var(--text-muted) !important;
+            font-size: 1.1rem;
+        }
+
+        .section-title { 
+            font-size: 1.4rem; 
+            color: var(--text-h) !important; 
+            margin-bottom: 25px; 
+            border-bottom: 2px solid var(--border); 
+            padding-bottom: 12px; 
+        }
+
+        /* ===== الأقسام ===== */
+        .calculator-section, .results-section, .chart-container, .sensitivity-analysis { 
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important; 
+            padding: 30px; 
+            margin-bottom: 30px; 
+            box-shadow: var(--shadow-card) !important;
+        }
+
+        /* ===== المدخلات ===== */
+        .input-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+        .input-group { 
+            background: var(--bg-card2) !important;
+            padding: 20px; 
+            border-radius: var(--radius-sm) !important; 
+            border: 1px solid var(--border) !important;
+            transition: var(--transition);
+        }
+        .input-group:hover {
+            border-color: var(--blue) !important;
+        }
+        .input-group label { 
+            display: block; 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+            color: var(--text-body) !important;
+            font-size: 0.95rem;
+        }
+        .input-group input, .input-group select { 
+            width: 100%; 
+            padding: 14px; 
+            border: 2px solid var(--border) !important;
+            border-radius: var(--radius-xs) !important; 
+            font-size: 1rem;
+            background: var(--bg-input) !important;
+            color: var(--text-h) !important;
+            transition: var(--transition);
+        }
+        .input-group input:focus, .input-group select:focus { 
+            outline: none; 
+            border-color: var(--blue) !important;
+            box-shadow: var(--shadow-glow-b) !important;
+        }
+        .input-group input::placeholder { 
+            color: var(--text-muted) !important; 
+        }
+
+        /* ===== زر الحساب ===== */
+        .calculate-btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: linear-gradient(135deg, var(--green), var(--teal)) !important;
+            color: white !important;
+            border: none; 
+            border-radius: var(--radius-sm) !important; 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: var(--transition);
+            box-shadow: var(--shadow-glow-g) !important;
+            margin-top: 10px;
+        }
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16,185,129,0.4) !important;
+        }
+
+        /* ===== النتائج ===== */
+        .results-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 25px;
+        }
+        .result-card { 
+            padding: 25px; 
+            border-radius: var(--radius) !important; 
+            text-align: center;
+            border: 1px solid var(--border) !important;
+            transition: var(--transition);
+        }
+        .result-card:hover {
+            transform: translateY(-3px);
+        }
+        .result-card h3 { 
+            color: var(--text-h) !important;
+            font-size: 1.1rem; 
+            margin-bottom: 15px; 
+        }
+        .result-amount { 
+            font-size: 2rem; 
+            font-weight: bold; 
+            margin: 10px 0; 
+        }
+
+        /* ألوان بطاقات النتائج */
+        .result-card.result-positive {
+            background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(20,184,166,0.1)) !important;
+            border-color: rgba(16,185,129,0.4) !important;
+        }
+        .result-card.result-positive .result-amount {
+            color: var(--green-light) !important;
+        }
+        .result-card.result-warning {
+            background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(251,191,36,0.1)) !important;
+            border-color: rgba(245,158,11,0.4) !important;
+        }
+        .result-card.result-warning .result-amount {
+            color: var(--gold-light) !important;
+        }
+        .result-card.result-negative {
+            background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(248,113,113,0.1)) !important;
+            border-color: rgba(239,68,68,0.4) !important;
+        }
+        .result-card.result-negative .result-amount {
+            color: var(--red-light) !important;
+        }
+
+        .progress-bar { 
+            background: var(--bg-input) !important; 
+            height: 18px; 
+            border-radius: var(--radius-xs) !important; 
+            overflow: hidden; 
+            margin: 15px 0; 
+            border: 1px solid var(--border) !important;
+        }
+        .progress-fill { 
+            background: linear-gradient(90deg, var(--green), var(--teal)) !important;
+            height: 100%; 
+            width: 0%; 
+            transition: width 1s ease-out;
+            box-shadow: var(--shadow-glow-g) !important;
+        }
+        #progressText {
+            color: var(--text-body) !important;
+            font-weight: 600;
+        }
+
+        /* ===== تحليل الحساسية ===== */
+        .sensitivity-analysis {
+            background: var(--bg-card2) !important;
+        }
+        .sensitivity-analysis h3 {
+            color: var(--text-h) !important;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .slider-container {
+            margin-bottom: 15px;
+        }
+        .slider-container label {
+            color: var(--text-body) !important;
+            font-weight: 600;
+        }
+        .slider-container input[type="range"] {
+            width: 100%;
+            margin: 15px 0;
+            accent-color: var(--blue);
+        }
+
+        .tips-section { 
+            background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(251,191,36,0.08)) !important;
+            padding: 18px; 
+            border-radius: var(--radius-xs) !important; 
+            border-right: 4px solid var(--gold) !important;
+            margin-top: 15px; 
+            font-size: 0.95rem;
+            color: var(--gold-light) !important;
+        }
+
+        /* ===== الرسم البياني ===== */
+        .chart-container {
+            background: var(--bg-card) !important;
+        }
+        .chart-container h2 {
+            color: var(--text-h) !important;
+        }
+        .chart-wrapper { 
+            height: 400px; 
+            width: 100%; 
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .calculator-section { padding: 20px; }
+            .results-grid { grid-template-columns: 1fr; }
+            .chart-wrapper { height: 300px; }
+        }
     </style>
 </head>
 <body>
@@ -173,7 +376,7 @@
         function updateChart(labels,data,target){
             const ctx=document.getElementById('fireChart').getContext('2d');
             if(fireChart)fireChart.destroy();
-            fireChart=new Chart(ctx,{type:'line',data:{labels:labels.map(l=>'سنة '+l),datasets:[{label:'نمو الثروة المتوقع',data:data,borderColor:'#5a9d7a',backgroundColor:'rgba(90,157,122,0.1)',fill:true,tension:0.3},{label:'خط هدف الحرية المالية',data:labels.map(()=>target),borderColor:'#d67a6a',borderDash:[5,5],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}}}});
+            fireChart=new Chart(ctx,{type:'line',data:{labels:labels.map(l=>'سنة '+l),datasets:[{label:'نمو الثروة المتوقع',data:data,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.15)',fill:true,tension:0.4,borderWidth:3,pointRadius:0,pointHoverRadius:6},{label:'خط هدف الحرية المالية',data:labels.map(()=>target),borderColor:'#f59e0b',borderDash:[6,4],pointRadius:0,fill:false,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{color:'#94a3b8',font:{size:12}}},tooltip:{mode:'index',intersect:false}},scales:{x:{ticks:{color:'#64748b'},grid:{color:'rgba(100,116,139,0.2)'}},y:{ticks:{color:'#64748b'},grid:{color:'rgba(100,116,139,0.2)'}}}},interaction:{mode:'index',intersect:false}}});
         }
     </script>
 </body>
