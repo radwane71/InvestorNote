@@ -15,25 +15,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="مفكرة مستثمر">
 
-    <!-- ✅ navigation.css في head -->
+    <!-- ✅ dark-theme.css في head -->
+    <link rel="stylesheet" href="dark-theme.css">
     <link rel="stylesheet" href="navigation.css">
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #e8f0f5 0%, #d0e0e8 100%);
-            min-height: 100vh; padding: 20px; color: #2c3e50;
-        }
-
+        /* ===== Container ===== */
         .container { max-width: 1200px; margin: 0 auto; }
 
         h1 {
-            text-align: center; color: #2c3e50;
+            text-align: center; color: var(--text-h);
             margin-bottom: 30px; font-size: 2.5rem;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
         /* ===== بطاقات ===== */
@@ -44,95 +38,115 @@
         }
 
         .box {
-            background: white; border-radius: 15px;
-            padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius) !important;
+            padding: 20px;
+            box-shadow: var(--shadow-card) !important;
+            transition: var(--transition);
             cursor: pointer; text-decoration: none;
             display: block; position: relative; overflow: hidden;
-            color: inherit;
+            color: var(--text-body) !important;
         }
 
         .box::before {
             content: '';
             position: absolute; top: 0; right: 0; left: 0;
             height: 4px;
-            background: linear-gradient(90deg, #5a7fb5, #6a8fc5);
+            background: linear-gradient(90deg, var(--blue), var(--blue-light));
             transform: scaleX(0);
             transform-origin: right;
             transition: transform 0.3s ease;
         }
         .box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-glow-b) !important;
+            border-color: var(--blue) !important;
         }
         .box:hover::before { transform: scaleX(1); }
 
         .box h3 {
-            color: #333; font-size: 1.1rem;
+            color: var(--text-h) !important;
+            font-size: 1.1rem;
             font-weight: bold; margin-bottom: 8px; line-height: 1.4;
         }
         .box .url {
-            color: #666; font-size: 0.82rem;
-            word-break: break-all; opacity: 0.8;
+            color: var(--text-muted) !important;
+            font-size: 0.82rem;
+            word-break: break-all;
         }
         .box small {
-            color: #666; font-size: 0.75rem;
+            color: var(--text-muted) !important;
+            font-size: 0.75rem;
             display: block; margin-top: 5px;
         }
 
         /* بطاقات داخلية */
-        .box.internal { border: 2px solid #5a9d7a; }
+        .box.internal {
+            border: 2px solid var(--green) !important;
+        }
         .box.internal::before {
-            background: linear-gradient(90deg, #5a9d7a, #4a8d6a);
+            background: linear-gradient(90deg, var(--green), var(--green-light));
         }
         .box .badge {
-            display: inline-block; background: #5a9d7a;
-            color: white; font-size: 0.7rem;
+            display: inline-block;
+            background: var(--green) !important;
+            color: white !important;
+            font-size: 0.7rem;
             padding: 2px 8px; border-radius: 10px;
             margin-bottom: 6px; font-weight: bold;
         }
 
         /* ===== تصنيفات ===== */
         .category {
-            background: rgba(74,111,165,0.15);
-            color: #2c3e50; padding: 8px 16px;
-            border-radius: 20px; margin: 25px 0 5px;
-            text-align: center; font-weight: bold;
-            backdrop-filter: blur(10px);
+            background: var(--bg-card2) !important;
+            color: var(--text-h) !important;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            margin: 30px 0 15px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid var(--border) !important;
         }
         .category.internal-cat {
-            background: rgba(90,157,122,0.2);
-            border: 1px solid rgba(90,157,122,0.4);
+            background: rgba(16,185,129,0.15) !important;
+            border: 1px solid rgba(16,185,129,0.4) !important;
         }
 
         /* ===== Footer ===== */
         footer {
-            background: rgba(74,111,165,0.12);
-            color: #2c3e50; padding: 30px 20px;
-            margin-top: 40px; border-radius: 15px 15px 0 0;
+            background: var(--bg-card) !important;
+            color: var(--text-body) !important;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            border-top: 1px solid var(--border) !important;
         }
         .disclaimer h4 {
-            color: #2c3e50; font-size: 1.1rem;
+            color: var(--gold-light) !important;
+            font-size: 1.1rem;
             margin-bottom: 15px; text-align: center; font-weight: bold;
         }
         .disclaimer p {
-            font-size: 0.85rem; line-height: 1.6;
-            margin-bottom: 10px; opacity: 0.9; text-align: justify;
+            font-size: 0.9rem; line-height: 1.7;
+            margin-bottom: 12px;
+            color: var(--text-body) !important;
+            text-align: justify;
         }
 
         /* ===== عداد الزوار ===== */
         .visitor-counter {
             display: flex; justify-content: center;
             gap: 30px; margin-top: 25px; padding-top: 20px;
-            border-top: 1px solid rgba(74,111,165,0.2);
+            border-top: 1px solid var(--border);
         }
         .counter-item {
             display: flex; flex-direction: column;
             align-items: center; text-align: center;
         }
-        .counter-label { font-size: 0.8rem; color: #5a7fb5; margin-bottom: 5px; }
+        .counter-label { font-size: 0.85rem; color: var(--blue-light) !important; margin-bottom: 5px; }
         .counter-number {
-            font-size: 1.5rem; font-weight: bold; color: #5a9d7a;
+            font-size: 1.5rem; font-weight: bold; color: var(--green-light) !important;
             animation: pulse 2s infinite;
         }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.75; } }
@@ -140,11 +154,11 @@
         /* ===== Back to Top ===== */
         .back-to-top {
             position: fixed; bottom: 30px; left: 30px;
-            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            background: linear-gradient(135deg, var(--blue), var(--purple)) !important;
             color: white; border: none; border-radius: 50%;
             width: 48px; height: 48px; font-size: 1.3rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(90,127,181,0.4);
+            box-shadow: 0 4px 15px rgba(59,130,246,0.4) !important;
             transition: transform 0.3s, opacity 0.3s;
             opacity: 0; pointer-events: none;
             display: flex; align-items: center; justify-content: center;
@@ -158,11 +172,13 @@
         /* ===== GoatCounter badge ===== */
         .gc-badge {
             text-align: center; margin-top: 20px;
-            padding: 10px; background: rgba(74,111,165,0.08);
-            border-radius: 8px;
+            padding: 12px;
+            background: var(--bg-card2) !important;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border) !important;
         }
-        .gc-badge small { color: #2c3e50; opacity: 0.75; font-size: 0.8rem; }
-        .gc-badge a { color: #5a9d7a; text-decoration: none; }
+        .gc-badge small { color: var(--text-muted) !important; font-size: 0.8rem; }
+        .gc-badge a { color: var(--green-light) !important; text-decoration: none; }
 
         /* ===== Responsive ===== */
         @media (max-width: 768px) {
