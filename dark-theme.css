@@ -1,354 +1,671 @@
-/* ============================================
-   dark-theme.css — Dark Mode موحد
-   مفكرة مستثمر
-   ============================================ */
+/* ============================================================
+   dark-theme.css — مفكرة مستثمر
+   تصميم احترافي داكن — يُطبَّق على كل صفحات الموقع
+   ============================================================ */
 
+/* ===== المتغيرات الأساسية ===== */
 :root {
-    --bg-main:        #0d1117;
-    --bg-card:        #161b22;
-    --bg-card-hover:  #1c2128;
-    --bg-input:       #0d1117;
-    --bg-section:     #1c2128;
-    --border:         #30363d;
-    --border-focus:   #58a6ff;
-    --text-primary:   #e6edf3;
-    --text-secondary: #8b949e;
-    --text-muted:     #6e7681;
-    --accent-blue:    #58a6ff;
-    --accent-green:   #3fb950;
-    --accent-red:     #f85149;
-    --accent-orange:  #d29922;
-    --accent-yellow:  #e3b341;
-    --accent-purple:  #a371f7;
-    --shadow:         0 8px 24px rgba(0,0,0,0.5);
-    --shadow-card:    0 4px 16px rgba(0,0,0,0.6);
+  --bg-page:        #0a0e1a;
+  --bg-card:        #111827;
+  --bg-card2:       #1a2236;
+  --bg-input:       #0d1424;
+  --bg-hover:       #1e2d45;
+  --border:         #1e3a5f;
+  --border-glow:    #2563eb;
+  --text-h:         #f0f6ff;
+  --text-body:      #94a3b8;
+  --text-muted:     #4b6280;
+  --blue:           #3b82f6;
+  --blue-light:     #60a5fa;
+  --green:          #10b981;
+  --green-light:    #34d399;
+  --red:            #ef4444;
+  --red-light:      #f87171;
+  --gold:           #f59e0b;
+  --gold-light:     #fbbf24;
+  --purple:         #8b5cf6;
+  --purple-light:   #a78bfa;
+  --teal:           #14b8a6;
+  --pink:           #ec4899;
+  --shadow:         0 4px 24px rgba(0,0,0,0.6);
+  --shadow-card:    0 2px 16px rgba(0,0,0,0.5);
+  --shadow-glow-b:  0 0 20px rgba(59,130,246,0.25);
+  --shadow-glow-g:  0 0 20px rgba(16,185,129,0.25);
+  --shadow-glow-r:  0 0 20px rgba(239,68,68,0.25);
+  --radius:         16px;
+  --radius-sm:      10px;
+  --radius-xs:      6px;
+  --transition:     all 0.25s cubic-bezier(.4,0,.2,1);
 }
 
-/* ===== Body ===== */
+/* ===== Reset عام ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ===== Body & HTML ===== */
 html, body {
-    background: var(--bg-main) !important;
-    color: var(--text-primary) !important;
+  background: var(--bg-page) !important;
+  color: var(--text-body) !important;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif !important;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ===== كل div وsection وarticle ===== */
-div, section, article, aside, main, header, form {
-    color: inherit;
+/* خلفية متدرجة بدل اللون المسطح */
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(37,99,235,0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(16,185,129,0.06), transparent),
+    #0a0e1a !important;
+  min-height: 100vh;
 }
 
 /* ===== العناوين ===== */
 h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary) !important;
+  color: var(--text-h) !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
-p, li, span:not(.navbar-item):not(.badge):not(.navbar-brand) {
-    color: var(--text-secondary);
-}
-label { color: var(--text-secondary) !important; }
+h1 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+h2 { font-size: clamp(1.2rem, 2.5vw, 1.8rem); }
 
-/* ===== البطاقات والبانلات ===== */
-.card, .box,
-.input-panel, .results-panel,
-.chart-container, .timeline-table,
-.calculator-container > div,
-.result-area, .panel, .widget,
-[class*="-card"], [class*="-panel"],
-[class*="-section"]:not(.assets-section):not(.debts-section):not(.internal-cat),
-[class*="-box"]:not(.warning-box):not(.note):not(.checkbox-group) {
-    background: var(--bg-card) !important;
-    border-color: var(--border) !important;
-    color: var(--text-primary) !important;
+p { color: var(--text-body) !important; }
+label { color: var(--text-body) !important; font-weight: 600; }
+small { color: var(--text-muted) !important; }
+
+/* ===== Container الرئيسي ===== */
+.container {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--text-body) !important;
 }
 
-/* شامل جميع البطاقات ===== */
-.input-panel, .results-panel,
-.chart-container, .timeline-table {
-    box-shadow: var(--shadow-card) !important;
+/* ===== البطاقات — كل الأنواع ===== */
+.input-panel,
+.results-panel,
+.chart-container,
+.timeline-table,
+.rules-section,
+.diversification-section,
+.decision-matrix,
+.result-area,
+.panel,
+.card,
+.box,
+[class*="-panel"],
+[class*="-section"]:not(.behavioral-biases):not(.valuation-ratios):not(.passive-investing):not(.zakat-section):not(.order-types):not(.time-horizons):not(.professional-tips) {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-body) !important;
 }
 
-/* ===== بطاقات الملخص (summary cards) — نحتفظ بألوانها ===== */
+/* ===== rule-item داخل الصفحات ===== */
+.rule-item {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-right: 3px solid var(--blue) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: var(--transition);
+}
+.rule-item:hover {
+  background: var(--bg-hover) !important;
+  border-right-color: var(--blue-light) !important;
+  box-shadow: var(--shadow-glow-b) !important;
+  transform: translateY(-2px);
+}
+.rule-item h4 { color: var(--blue-light) !important; }
+.rule-item p, .rule-item li { color: var(--text-body) !important; }
+
+/* ===== rule-item داخل الأقسام الملونة — يظل شبه شفاف ===== */
+.behavioral-biases .rule-item,
+.valuation-ratios .rule-item,
+.passive-investing .rule-item,
+.zakat-section .rule-item,
+.order-types .rule-item {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  border-right: 3px solid rgba(255,255,255,0.5) !important;
+}
+.behavioral-biases .rule-item:hover,
+.valuation-ratios .rule-item:hover,
+.passive-investing .rule-item:hover,
+.zakat-section .rule-item:hover,
+.order-types .rule-item:hover {
+  background: rgba(255,255,255,0.14) !important;
+}
+
+/* ===== behavior-tip (نصائح سلوكية) ===== */
+.behavior-tip {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: var(--radius-sm) !important;
+  backdrop-filter: blur(8px);
+}
+.behavior-tip h3 { color: var(--gold-light) !important; }
+.behavior-tip p  { color: rgba(255,255,255,0.88) !important; }
+
+/* ===== الأقسام الملونة — تحتفظ بألوانها مع تحسين ===== */
+.behavioral-biases {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%) !important;
+  border: 1px solid rgba(239,68,68,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(239,68,68,0.15) !important;
+}
+.valuation-ratios {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%) !important;
+  border: 1px solid rgba(59,130,246,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(59,130,246,0.15) !important;
+}
+.passive-investing {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 100%) !important;
+  border: 1px solid rgba(16,185,129,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(16,185,129,0.15) !important;
+}
+.zakat-section {
+  background: linear-gradient(135deg, #78350f 0%, #92400e 100%) !important;
+  border: 1px solid rgba(245,158,11,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(245,158,11,0.15) !important;
+}
+.order-types {
+  background: linear-gradient(135deg, #4c1d95 0%, #3730a3 100%) !important;
+  border: 1px solid rgba(139,92,246,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(139,92,246,0.15) !important;
+}
+.time-horizons {
+  background: linear-gradient(135deg, #134e4a 0%, #065f46 100%) !important;
+  border: 1px solid rgba(20,184,166,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(20,184,166,0.15) !important;
+}
+.professional-tips {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* النص داخل الأقسام الملونة */
+.behavioral-biases h2,
+.valuation-ratios h2,
+.passive-investing h2,
+.zakat-section h2,
+.order-types h2,
+.time-horizons h2,
+.professional-tips h2 {
+  color: #fff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.behavioral-biases p,
+.valuation-ratios p,
+.passive-investing p,
+.zakat-section p,
+.order-types p,
+.time-horizons p { color: rgba(255,255,255,0.9) !important; }
+
+/* ===== الـ intro (بداية صفحة النصائح) ===== */
+.intro {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #db2777 100%) !important;
+  border: 1px solid rgba(139,92,246,0.4) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 24px rgba(109,40,217,0.3) !important;
+}
+.intro h2, .intro p { color: #fff !important; }
+
+/* ===== Warning & Note ===== */
+.warning-box {
+  background: rgba(245,158,11,0.1) !important;
+  border: 1.5px solid rgba(245,158,11,0.4) !important;
+  border-radius: var(--radius-sm) !important;
+}
+.warning-box h4, .warning-box p { color: var(--gold-light) !important; }
+
+.important-note {
+  background: rgba(16,185,129,0.08) !important;
+  border: 1.5px solid rgba(16,185,129,0.3) !important;
+  border-radius: var(--radius-sm) !important;
+}
+.important-note p { color: var(--green-light) !important; }
+
+.note {
+  background: rgba(245,158,11,0.08) !important;
+  border: 1px solid rgba(245,158,11,0.3) !important;
+  border-radius: var(--radius-xs) !important;
+  color: var(--gold-light) !important;
+}
+
+/* ===== القاعدة الذهبية ===== */
+.golden-rule {
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(251,191,36,0.1)) !important;
+  border: 1.5px solid rgba(245,158,11,0.4) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--gold-light) !important;
+  box-shadow: 0 0 16px rgba(245,158,11,0.1);
+}
+.golden-rule strong { color: #fde68a !important; }
+
+/* ===== Golden Number ===== */
+.golden-number {
+  background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(251,191,36,0.08)) !important;
+  border: 1.5px solid rgba(245,158,11,0.35) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 0 20px rgba(245,158,11,0.12);
+}
+.golden-number h3 { color: var(--gold-light) !important; }
+.golden-number .number { color: #fde68a !important; font-size: 3rem; font-weight: 800; }
+.golden-number p { color: var(--text-body) !important; }
+
+/* ===== بطاقات الاقتباسات ===== */
+.quote-card {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-right: 4px solid var(--blue) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: var(--transition);
+}
+.quote-card:hover {
+  background: var(--bg-hover) !important;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow-b) !important;
+}
+.quote-card.buffett { border-right-color: var(--green) !important; }
+.quote-card.graham  { border-right-color: var(--red) !important; }
+.quote-card.lynch   { border-right-color: var(--blue) !important; }
+.quote-card.buffett:hover { box-shadow: var(--shadow-glow-g) !important; }
+.quote-card.graham:hover  { box-shadow: var(--shadow-glow-r) !important; }
+
+.quote-author { font-weight: 700; }
+.quote-card.buffett .quote-author { color: var(--green-light) !important; }
+.quote-card.graham  .quote-author { color: var(--red-light) !important; }
+.quote-card.lynch   .quote-author { color: var(--blue-light) !important; }
+.quote-text { color: var(--text-body) !important; font-style: italic; }
+.quote-text::before { color: var(--blue) !important; opacity: 0.5; }
+
+/* ===== summary-cards ===== */
 .summary-card {
-    color: white !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: #fff !important;
 }
-.summary-card h3, .summary-card .amount,
-.summary-card p, .summary-card span {
-    color: white !important;
+.summary-card h3 { color: rgba(255,255,255,0.85) !important; font-size: 0.88rem; }
+.summary-card .amount { color: #fff !important; font-size: 1.5rem; font-weight: 800; }
+.summary-card.deposits {
+  background: linear-gradient(135deg, #1e40af, #2563eb) !important;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.35) !important;
 }
-
-/* ===== البطاقات الداخلية (index.html) ===== */
-.box {
-    background: var(--bg-card) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: var(--shadow-card) !important;
-    color: var(--text-primary) !important;
+.summary-card.earnings {
+  background: linear-gradient(135deg, #065f46, #059669) !important;
+  box-shadow: 0 4px 16px rgba(5,150,105,0.35) !important;
 }
-.box h3 { color: var(--text-primary) !important; }
-.box .url { color: var(--text-secondary) !important; }
-.box small { color: var(--text-muted) !important; }
-.box:hover {
-    background: var(--bg-card-hover) !important;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.7) !important;
+.summary-card.final {
+  background: linear-gradient(135deg, #991b1b, #dc2626) !important;
+  box-shadow: 0 4px 16px rgba(220,38,38,0.35) !important;
 }
-.box.internal { border: 1px solid #238636 !important; }
-.box.internal::before {
-    background: linear-gradient(90deg, #238636, #2ea043) !important;
-}
-.box .badge { background: #238636 !important; }
-
-/* ===== Category labels ===== */
-.category {
-    background: rgba(88,166,255,0.1) !important;
-    color: var(--accent-blue) !important;
-    border: 1px solid rgba(88,166,255,0.2) !important;
-}
-.category.internal-cat {
-    background: rgba(63,185,80,0.1) !important;
-    color: var(--accent-green) !important;
-    border: 1px solid rgba(63,185,80,0.2) !important;
+.summary-card:not(.deposits):not(.earnings):not(.final) {
+  background: linear-gradient(135deg, #1e3a5f, #2d4a7a) !important;
+  box-shadow: 0 4px 16px rgba(30,58,95,0.5) !important;
 }
 
 /* ===== Inputs ===== */
 input[type="number"],
 input[type="text"],
 input[type="email"],
-input[type="password"],
 select, textarea {
-    background: var(--bg-input) !important;
-    color: var(--text-primary) !important;
-    border: 1.5px solid var(--border) !important;
-    border-radius: 8px;
+  background: var(--bg-input) !important;
+  color: var(--text-h) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: var(--radius-xs) !important;
+  transition: var(--transition);
+  padding: 10px 14px !important;
 }
 input:focus, select:focus, textarea:focus {
-    border-color: var(--border-focus) !important;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(88,166,255,0.15) !important;
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.2) !important;
+  outline: none;
 }
 input::placeholder { color: var(--text-muted) !important; }
-option { background: var(--bg-card); color: var(--text-primary); }
+option { background: var(--bg-card); color: var(--text-h); }
 
 /* ===== Checkbox & Radio ===== */
-.checkbox-group, .radio-group, .radio-option {
-    background: var(--bg-section) !important;
-    color: var(--text-secondary) !important;
+.checkbox-group {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-xs) !important;
+  color: var(--text-body) !important;
 }
-.radio-option:hover { background: var(--bg-card-hover) !important; }
-
-/* ===== الأقسام الخضراء / الحمراء ===== */
-.assets-section {
-    background: rgba(63,185,80,0.08) !important;
-    border: 1.5px solid rgba(63,185,80,0.3) !important;
+.radio-option {
+  color: var(--text-body) !important;
 }
-.assets-section h3 { color: var(--accent-green) !important; }
-
-.debts-section {
-    background: rgba(248,81,73,0.08) !important;
-    border: 1.5px solid rgba(248,81,73,0.3) !important;
-}
-.debts-section h3 { color: var(--accent-red) !important; }
-
-/* ===== بوكس التحذير ===== */
-.warning-box {
-    background: rgba(210,153,34,0.15) !important;
-    border: 1px solid rgba(210,153,34,0.4) !important;
-    color: var(--accent-yellow) !important;
-}
-.note {
-    background: rgba(210,153,34,0.1) !important;
-    border: 1px solid rgba(210,153,34,0.3) !important;
-    color: var(--accent-yellow) !important;
-}
-
-/* ===== الفلسفة / شرح ===== */
-.philosophy-section {
-    background: var(--bg-section) !important;
-    border: 1px solid var(--border) !important;
-}
-.philosophy-section h3 {
-    color: var(--accent-blue) !important;
-    border-color: var(--accent-blue) !important;
-}
-.philosophy-section p, .philosophy-section ul, .philosophy-section li {
-    color: var(--text-secondary) !important;
-}
-
-/* ===== الجاج / حاوية القياس ===== */
-.gauge-container {
-    background: var(--bg-section) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: var(--shadow-card) !important;
-}
-.gauge-svg text { fill: var(--text-muted) !important; }
-
-/* ===== Tables ===== */
-table {
-    background: var(--bg-card) !important;
-    color: var(--text-primary) !important;
-}
-th {
-    background: #21262d !important;
-    color: var(--accent-blue) !important;
-    border-color: var(--border) !important;
-}
-td {
-    border-color: var(--border) !important;
-    color: var(--text-primary) !important;
-}
-tr:hover td { background: var(--bg-card-hover) !important; }
-
-/* ألوان أعمدة الجدول ===== */
-.year-col { background: #1c2128 !important; color: var(--text-primary) !important; font-weight: bold; }
-.deposit-col, .total-deposit-col { background: rgba(31,111,235,0.15) !important; color: #79c0ff !important; }
-.earnings-col, .total-earnings-col { background: rgba(63,185,80,0.12) !important; color: var(--accent-green) !important; }
-.balance-col { background: rgba(248,81,73,0.12) !important; color: #ff7b72 !important; font-weight: bold !important; }
-.real-value-col { background: rgba(163,113,247,0.12) !important; color: #d2a8ff !important; }
-
-/* ===== Chart.js ===== */
-.chart-wrapper { background: var(--bg-card) !important; }
-
-/* ===== section-title ===== */
-.section-title {
-    color: var(--text-primary) !important;
-    border-color: var(--accent-green) !important;
+.radio-option:hover { background: var(--bg-hover) !important; }
+input[type="checkbox"], input[type="radio"] {
+  accent-color: var(--blue);
 }
 
 /* ===== Buttons ===== */
-button {
-    transition: all 0.25s ease !important;
-    cursor: pointer;
-}
 .calculate-btn, .btn-calc {
-    background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
-    color: white !important;
-    border: none !important;
+  background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--radius-xs) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.4) !important;
+  transition: var(--transition) !important;
 }
 .calculate-btn:hover, .btn-calc:hover {
-    background: linear-gradient(135deg, #388bfd, #58a6ff) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(31,111,235,0.4) !important;
+  background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+  box-shadow: 0 6px 24px rgba(59,130,246,0.5) !important;
+  transform: translateY(-2px);
 }
 .btn-reset {
-    background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
-    color: white !important;
-    border: none !important;
+  background: linear-gradient(135deg, #991b1b, #dc2626) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--radius-xs) !important;
+  box-shadow: 0 4px 16px rgba(220,38,38,0.35) !important;
 }
-.btn-print {
-    background: linear-gradient(135deg, #238636, #2ea043) !important;
-    color: white !important;
-    border: none !important;
+.btn-print, .export-btn {
+  background: linear-gradient(135deg, #065f46, #059669) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--radius-xs) !important;
+  box-shadow: 0 4px 14px rgba(5,150,105,0.35) !important;
 }
-.export-btn {
-    background: #1f6feb !important;
-    color: white !important;
-}
-.export-btn:hover { background: #388bfd !important; }
+.export-btn:hover { background: linear-gradient(135deg, #059669, #10b981) !important; }
 .theme-toggle {
-    background: #d29922 !important;
-    color: white !important;
+  background: linear-gradient(135deg, #92400e, #d97706) !important;
+  color: #fff !important;
+  border: none !important;
+}
+button { transition: var(--transition) !important; cursor: pointer; }
+
+/* ===== section-title ===== */
+.section-title {
+  color: var(--text-h) !important;
+  border-bottom: 2px solid var(--blue) !important;
+  padding-bottom: 8px;
 }
 
-/* ===== Result Area ===== */
-.result-area {
-    background: var(--bg-card) !important;
-    border: 1.5px solid var(--border) !important;
+/* ===== Header ===== */
+.header h1 {
+  color: var(--text-h) !important;
+  text-shadow: 0 2px 12px rgba(59,130,246,0.3);
+}
+.header p { color: var(--text-body) !important; }
+
+/* ===== Tables ===== */
+table { background: transparent !important; }
+th {
+  background: #0f1f3d !important;
+  color: var(--blue-light) !important;
+  border-bottom: 2px solid var(--border) !important;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+td {
+  color: var(--text-body) !important;
+  border-bottom: 1px solid rgba(30,58,95,0.5) !important;
+}
+tr:hover td {
+  background: var(--bg-hover) !important;
+  color: var(--text-h) !important;
 }
 
-/* ===== Sources Box ===== */
-.sources-box {
-    background: var(--bg-section) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text-secondary) !important;
-}
-.sources-box a { color: var(--accent-blue) !important; }
-.sources-box a:hover { color: #79c0ff !important; }
+/* أعمدة الجدول الزمني */
+.year-col           { background: rgba(15,31,61,0.8) !important; color: var(--text-h) !important; font-weight: 700; }
+.deposit-col,
+.total-deposit-col  { background: rgba(29,78,216,0.1) !important; color: #93c5fd !important; }
+.earnings-col,
+.total-earnings-col { background: rgba(5,150,105,0.1) !important; color: var(--green-light) !important; }
+.balance-col        { background: rgba(220,38,38,0.1) !important; color: #fca5a5 !important; font-weight: 700 !important; }
+.real-value-col     { background: rgba(139,92,246,0.1) !important; color: var(--purple-light) !important; }
 
-/* ===== Links عام ===== */
+/* جداول داخل الأقسام الملونة */
+.ratios-table th, .time-horizon-table th, .comparison-etf-table th {
+  background: rgba(255,255,255,0.12) !important;
+  color: #fff !important;
+}
+.ratios-table td, .time-horizon-table td, .comparison-etf-table td {
+  color: rgba(255,255,255,0.88) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+/* ===== Chart canvas ===== */
+.chart-wrapper { background: transparent !important; }
+canvas { border-radius: var(--radius-xs); }
+
+/* ===== index.html — بطاقات الأدوات ===== */
+.box {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-body) !important;
+  transition: var(--transition);
+  overflow: hidden;
+  position: relative;
+}
+.box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  opacity: 0;
+  transition: var(--transition);
+}
+.box:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--blue) !important;
+  box-shadow: var(--shadow-glow-b) !important;
+  transform: translateY(-4px);
+}
+.box:hover::before { opacity: 1; }
+.box h3 { color: var(--text-h) !important; font-weight: 700; }
+.box .url { color: var(--blue-light) !important; }
+.box small { color: var(--text-muted) !important; }
+.box.internal {
+  border-color: rgba(16,185,129,0.3) !important;
+}
+.box.internal::before {
+  background: linear-gradient(90deg, var(--green), var(--teal));
+  opacity: 1;
+}
+.box.internal:hover {
+  border-color: var(--green) !important;
+  box-shadow: var(--shadow-glow-g) !important;
+}
+.badge {
+  background: rgba(16,185,129,0.15) !important;
+  color: var(--green-light) !important;
+  border: 1px solid rgba(16,185,129,0.3) !important;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+}
+.category {
+  background: rgba(59,130,246,0.1) !important;
+  color: var(--blue-light) !important;
+  border: 1px solid rgba(59,130,246,0.25) !important;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  padding: 3px 10px;
+}
+.category.internal-cat {
+  background: rgba(16,185,129,0.1) !important;
+  color: var(--green-light) !important;
+  border-color: rgba(16,185,129,0.25) !important;
+}
+
+/* ===== matrix-item ===== */
+.matrix-item {
+  background: rgba(59,130,246,0.08) !important;
+  border: 1px solid rgba(59,130,246,0.2) !important;
+  border-radius: var(--radius-xs) !important;
+  transition: var(--transition);
+}
+.matrix-item:hover {
+  background: rgba(59,130,246,0.16) !important;
+  border-color: var(--blue) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-b);
+}
+.matrix-item strong { color: var(--text-h) !important; }
+
+/* ===== الصفحات الداخلية — أقسام الأصول والديون ===== */
+.assets-section {
+  background: rgba(16,185,129,0.06) !important;
+  border: 1.5px solid rgba(16,185,129,0.25) !important;
+  border-radius: var(--radius) !important;
+}
+.assets-section h3 { color: var(--green-light) !important; }
+.debts-section {
+  background: rgba(239,68,68,0.06) !important;
+  border: 1.5px solid rgba(239,68,68,0.25) !important;
+  border-radius: var(--radius) !important;
+}
+.debts-section h3 { color: var(--red-light) !important; }
+
+/* ===== Links ===== */
 a:not(.navbar-item):not(.navbar-brand):not(.box) {
-    color: var(--accent-blue);
+  color: var(--blue-light);
+  text-decoration: none;
+  transition: var(--transition);
 }
 a:not(.navbar-item):not(.navbar-brand):not(.box):hover {
-    color: #79c0ff;
+  color: #fff;
+  text-decoration: underline;
 }
 
-/* ===== Range inputs ===== */
-input[type="range"] { accent-color: var(--accent-blue); }
-input[type="range"]::-webkit-slider-runnable-track { background: var(--border); }
-input[type="range"]::-webkit-slider-thumb { background: var(--accent-blue); }
+/* ===== Range input ===== */
+input[type="range"] {
+  accent-color: var(--blue) !important;
+  cursor: pointer;
+}
 
-/* ===== Pyramid ===== */
-.pyramid-level { opacity: 0.6; }
-.pyramid-level.active { opacity: 1 !important; }
+/* ===== Disclaimer ===== */
+.disclaimer {
+  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.08)) !important;
+  border: 1.5px solid rgba(245,158,11,0.3) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 0 20px rgba(245,158,11,0.08) !important;
+}
+.disclaimer h3, .disclaimer h4 { color: var(--gold-light) !important; }
+.disclaimer p { color: var(--text-body) !important; opacity: 1 !important; }
 
 /* ===== Progress bars ===== */
-.progress-bar, .bar-fill { background: var(--accent-blue) !important; }
-.progress-track, .bar-track { background: var(--border) !important; }
-
-/* ===== Header section ===== */
-.header h1, .header p { color: var(--text-primary) !important; }
-
-/* ===== Scrollbar ===== */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-main); }
-::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #484f58; }
-
-/* ===== Footer ===== */
-footer {
-    background: var(--bg-card) !important;
-    border-top: 1px solid var(--border) !important;
-    color: var(--text-secondary) !important;
-    border-radius: 15px 15px 0 0;
-}
-.disclaimer h4 { color: var(--accent-yellow) !important; }
-.disclaimer p { color: var(--text-secondary) !important; }
-.gc-badge { background: var(--bg-section) !important; }
-.gc-badge small { color: var(--text-muted) !important; }
-.gc-badge a { color: var(--accent-green) !important; }
-.counter-label { color: var(--accent-blue) !important; }
-.counter-number { color: var(--accent-green) !important; }
-
-/* ===== Back to Top ===== */
-.back-to-top {
-    background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
-    box-shadow: 0 4px 15px rgba(31,111,235,0.4) !important;
+.progress-bar, .bar-fill { background: var(--blue) !important; border-radius: 4px; }
+.progress-track, .bar-track {
+  background: var(--border) !important;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-/* ===== صفحة النصائح (tips/cards) ===== */
+/* ===== Gauge ===== */
+.gauge-container {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+/* ===== philosophy-section ===== */
+.philosophy-section {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+.philosophy-section h3 {
+  color: var(--blue-light) !important;
+  border-color: var(--blue) !important;
+}
+.philosophy-section p, .philosophy-section li { color: var(--text-body) !important; }
+
+/* ===== Tip cards ===== */
 .tip-card, .tip-section {
-    background: var(--bg-section) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text-secondary) !important;
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: var(--transition);
 }
-.tip-card h3, .tip-section h3 { color: var(--text-primary) !important; }
+.tip-card:hover, .tip-section:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--blue) !important;
+}
+.tip-card h3, .tip-section h3 { color: var(--text-h) !important; }
 
-/* ===== مؤشر Portfolio Rating و غيره ===== */
+/* ===== Inline styles — override الأبيض الـ hardcoded ===== */
 [style*="background: white"],
 [style*="background:white"],
 [style*="background: #fff"],
 [style*="background:#fff"],
 [style*="background: #f8f9fa"],
-[style*="background: #f0f"],
-[style*="background: rgb(255"] {
-    background: var(--bg-card) !important;
-    color: var(--text-primary) !important;
-}
-
-/* ===== عناصر inline background بيضاء ===== */
+[style*="background: #f0f4f8"],
 [style*="background-color: white"],
 [style*="background-color: #fff"],
 [style*="background-color: #f8f9fa"] {
-    background-color: var(--bg-card) !important;
-    color: var(--text-primary) !important;
+  background: var(--bg-card) !important;
+  color: var(--text-body) !important;
 }
 
-/* ===== Chart.js canvas خلفية ===== */
-canvas { filter: brightness(0.92) !important; }
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--blue), var(--purple));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { opacity: 0.8; }
 
-/* ===== طباعة ===== */
+/* ===== Selection ===== */
+::selection {
+  background: rgba(59,130,246,0.35);
+  color: #fff;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: var(--bg-card) !important;
+  border-top: 1px solid var(--border) !important;
+  border-radius: var(--radius) var(--radius) 0 0;
+  color: var(--text-body) !important;
+}
+.gc-badge { background: var(--bg-card2) !important; }
+.gc-badge a { color: var(--green-light) !important; }
+.gc-badge small { color: var(--text-muted) !important; }
+.counter-label { color: var(--blue-light) !important; }
+.counter-number { color: var(--green-light) !important; }
+.disclaimer h4 { color: var(--gold-light) !important; }
+.back-to-top {
+  background: linear-gradient(135deg, var(--blue), var(--purple)) !important;
+  box-shadow: 0 4px 16px rgba(59,130,246,0.4) !important;
+  border-radius: 50% !important;
+}
+
+/* ===== sources-box ===== */
+.sources-box {
+  background: var(--bg-card2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-body) !important;
+}
+.sources-box a { color: var(--blue-light) !important; }
+
+/* ===== Print — ترجع الألوان للأبيض عند الطباعة ===== */
 @media print {
-    body { background: white !important; color: black !important; }
-    .card, .box, .result-area, .input-panel, .results-panel {
-        background: white !important;
-        color: black !important;
-        border-color: #ccc !important;
-    }
-    h1, h2, h3, h4 { color: black !important; }
-    label, p, td, th { color: black !important; }
+  html, body { background: white !important; color: #000 !important; }
+  .card, .box, .input-panel, .results-panel, .rule-item,
+  .chart-container, .timeline-table, .rules-section {
+    background: white !important;
+    border-color: #ddd !important;
+    box-shadow: none !important;
+  }
+  h1,h2,h3,h4,h5,h6 { color: #000 !important; }
+  p, li, td, th, label { color: #333 !important; }
+  .summary-card { background: #f0f0f0 !important; color: #000 !important; }
 }
