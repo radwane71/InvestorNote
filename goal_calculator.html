@@ -65,12 +65,16 @@
         .milestone-table td { padding: 9px 10px; text-align: center; border-bottom: 1px solid #f0f0f0; }
         .milestone-table tr:hover { background: #f0f4ff; }
         .milestone-table .goal-row { background: #fffde7 !important; font-weight: bold; color: #0f3460; }
-        .insight-box { background: linear-gradient(135deg, #e8f5e9, #f0fdf4); border: 2px solid #27ae60; border-radius: 12px; padding: 18px; margin-top: 20px; }
-        .insight-box h4 { color: #1e8449; margin-bottom: 10px; font-size: 0.95rem; }
-        .insight-box p { color: #2c3e50; font-size: 0.88rem; line-height: 1.7; margin: 6px 0; }
+        .insight-box { background: linear-gradient(135deg, #ffffff, #f8f9fa); border: 3px solid #0f3460; border-radius: 16px; padding: 24px; margin-top: 20px; box-shadow: 0 6px 20px rgba(15,52,96,0.15); position: relative; overflow: hidden; }
+        .insight-box::before { content: ''; position: absolute; top: 0; right: 0; width: 100px; height: 100px; background: radial-gradient(circle, rgba(15,52,96,0.08) 0%, transparent 70%); border-radius: 50%; }
+        .insight-box h4 { color: #0f3460; margin-bottom: 16px; font-size: 1.1rem; font-weight: bold; display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; }
+        .insight-box h4::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to left, transparent, #0f3460); margin-right: 12px; }
+        .insight-box p { color: #2c3e50; font-size: 0.93rem; line-height: 1.8; margin: 12px 0; padding: 14px 18px; background: white; border-radius: 10px; border-right: 4px solid #dfe6e9; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.3s ease; }
+        .insight-box p:hover { border-right-color: #0f3460; box-shadow: 0 4px 12px rgba(15,52,96,0.12); transform: translateX(-3px); }
+        .insight-box p strong { color: #0f3460; font-weight: 700; }
         .reset-btn { display: block; margin: 20px auto 0; padding: 11px 28px; background: #95a5a6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; transition: background 0.3s; }
         .reset-btn:hover { background: #7f8c8d; }
-        @media (max-width: 768px) { .container { padding: 20px; } h1 { font-size: 1.6rem; } .main-result .big-number { font-size: 2.5rem; } .mode-btn { font-size: 0.8rem; padding: 10px 6px; } }
+        @media (max-width: 768px) { .container { padding: 20px; } h1 { font-size: 1.6rem; } .main-result .big-number { font-size: 2.5rem; } .mode-btn { font-size: 0.8rem; padding: 10px 6px; } .insight-box { padding: 18px; } .insight-box h4 { font-size: 1rem; } .insight-box p { font-size: 0.88rem; padding: 12px 14px; } }
         @media (max-width: 480px) { body { padding: 10px; } .summary-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
