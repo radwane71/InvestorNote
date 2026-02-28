@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>هل أبيع سهمي؟ — مفكرة مستثمر</title>
     <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -79,7 +80,6 @@
         }
         .input-group input:focus { outline: none; border-color: #5a7fb5; }
 
-        /* أزرار الاختيار المتعدد */
         .choice-buttons {
             display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px;
         }
@@ -97,7 +97,6 @@
             color: white; border-color: #4a6fa5;
         }
 
-        /* أزرار نعم/لا */
         .yn-buttons { display: flex; gap: 12px; margin-bottom: 10px; }
         .btn-yes, .btn-no {
             flex: 1; padding: 14px; font-size: 1.05rem; font-weight: bold;
@@ -131,7 +130,7 @@
         .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         .result-card {
-            display: none; background: white; border-radius: 18px;
+            display: none; border-radius: 18px;
             padding: 30px; box-shadow: 0 6px 25px rgba(0,0,0,0.12);
             text-align: center;
         }
@@ -188,14 +187,6 @@
         }
         .btn-restart:hover { transform: translateY(-2px); }
 
-        .disclaimer-box {
-            background: rgba(243,156,18,0.08);
-            border: 1px solid rgba(243,156,18,0.35);
-            border-radius: 10px; padding: 14px 16px;
-            font-size: 0.8rem; color: #7d6608;
-            line-height: 1.6; margin-top: 20px; text-align: right;
-        }
-
         .back-to-top {
             position: fixed; bottom: 30px; left: 30px;
             background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
@@ -244,7 +235,9 @@
                 <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
                 <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
                 <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
-                <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
+                <a href="sell_decision.html"             class="navbar-item calculator active">🤔 هل أبيع؟</a>
+                <a href="goal_calculator.html"           class="navbar-item calculator">🎯 الهدف العكسي</a>
+                <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
             </div>
         </div>
     </nav>
@@ -290,205 +283,97 @@
 <script data-goatcounter="https://investornote.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
+<script src="results-engine.js"></script>
 <script>
-/*
-   محرك الأسئلة — "هل أبيع سهمي؟"
-   12 سؤال — كل سؤال له وزن، المجموع يحدد التوصية
-*/
-
 const questions = [
-
-    /* ── السؤال 1: سبب الهبوط ── */
     {
-        id: 'q1',
-        type: 'choice',
+        id: 'q1', type: 'choice',
         text: 'ليش السهم نازل؟ وش أقرب شيء لوضعك؟',
         hint: 'اختر الإجابة الأقرب للواقع.',
         choices: [
-            { label: '📉 السوق كله نازل وسهمي نزل معه بدون سبب خاص', weight: +3,
-              hint: 'هبوط السوق العام فرصة تاريخياً. من باع في كل هبطة خسر كثيراً.' },
-            { label: '📰 خبر أو إعلان سلبي خاص بالشركة', weight: -1,
-              hint: 'خبر سلبي يستوجب تحليل الأثر الفعلي على الأرباح قبل البيع.' },
-            { label: '📊 تراجع في أرباح الشركة أو توزيعاتها', weight: -2,
-              hint: 'تراجع الأرباح إشارة بنيوية تحتاج مراجعة جدية لمستقبل الشركة.' },
-            { label: '❓ ما أعرف السبب بالضبط', weight: +2,
-              hint: 'البيع بدون فهم السبب قرار عاطفي. ابحث أولاً ثم قرر.' }
+            { label: '📉 السوق كله نازل وسهمي نزل معه بدون سبب خاص', weight: +3, hint: 'هبوط السوق العام فرصة تاريخياً. من باع في كل هبطة خسر كثيراً.' },
+            { label: '📰 خبر أو إعلان سلبي خاص بالشركة', weight: -1, hint: 'خبر سلبي يستوجب تحليل الأثر الفعلي على الأرباح قبل البيع.' },
+            { label: '📊 تراجع في أرباح الشركة أو توزيعاتها', weight: -2, hint: 'تراجع الأرباح إشارة بنيوية تحتاج مراجعة جدية لمستقبل الشركة.' },
+            { label: '❓ ما أعرف السبب بالضبط', weight: +2, hint: 'البيع بدون فهم السبب قرار عاطفي. ابحث أولاً ثم قرر.' }
         ]
     },
-
-    /* ── السؤال 2: سعر الشراء ── */
+    { id: 'q2', type: 'number', text: 'بكم اشتريت السهم؟ (متوسط سعرك)', hint: 'لو اشتريت أكثر من مرة، ادخل المتوسط.', placeholder: 'مثال: 45.50', key: 'costPrice' },
+    { id: 'q3', type: 'number', text: 'كم سعر السهم الحين في السوق؟', hint: 'السعر اللي تشوفه الآن في تطبيق التداول.', placeholder: 'مثال: 38.00', key: 'currentPrice' },
     {
-        id: 'q2',
-        type: 'number',
-        text: 'بكم اشتريت السهم؟ (متوسط سعرك)',
-        hint: 'لو اشتريت أكثر من مرة، ادخل المتوسط.',
-        placeholder: 'مثال: 45.50',
-        key: 'costPrice'
-    },
-
-    /* ── السؤال 3: السعر الحالي ── */
-    {
-        id: 'q3',
-        type: 'number',
-        text: 'كم سعر السهم الحين في السوق؟',
-        hint: 'السعر اللي تشوفه الآن في تطبيق التداول.',
-        placeholder: 'مثال: 38.00',
-        key: 'currentPrice'
-    },
-
-    /* ── السؤال 4: ربحية الشركة ── */
-    {
-        id: 'q4',
-        type: 'choice',
+        id: 'q4', type: 'choice',
         text: 'الشركة هذي ربحية؟',
         hint: 'شوف آخر نتائجها الفصلية أو السنوية.',
         choices: [
-            { label: '✅ نعم، ربحية وأرباحها تنمو أو ثابتة', weight: +3,
-              hint: 'شركة ربحية بنمو ثابت من أقوى علامات الاحتفاظ.' },
-            { label: '📉 ربحية لكن أرباحها تراجعت في آخر سنة أو سنتين', weight: 0,
-              hint: 'تراجع مؤقت أم تراجع بنيوي؟ هذا السؤال يحدد كل شيء.' },
-            { label: '❌ خسرانة أو على حافة التعادل', weight: -3,
-              hint: 'شركة خسرانة بدون خطة واضحة للتعافي — مخاطرة عالية.' }
+            { label: '✅ نعم، ربحية وأرباحها تنمو أو ثابتة', weight: +3, hint: 'شركة ربحية بنمو ثابت من أقوى علامات الاحتفاظ.' },
+            { label: '📉 ربحية لكن أرباحها تراجعت في آخر سنة أو سنتين', weight: 0, hint: 'تراجع مؤقت أم تراجع بنيوي؟ هذا السؤال يحدد كل شيء.' },
+            { label: '❌ خسرانة أو على حافة التعادل', weight: -3, hint: 'شركة خسرانة بدون خطة واضحة للتعافي — مخاطرة عالية.' }
         ]
     },
-
-    /* ── السؤال 5: التوزيعات ── */
     {
-        id: 'q5',
-        type: 'choice',
+        id: 'q5', type: 'choice',
         text: 'كيف وضع توزيعات الأرباح للشركة؟',
         hint: 'اللي تعرفه عن آخر 3-5 سنوات من التوزيعات.',
         choices: [
-            { label: '💰 تتوزع بانتظام وتوزيعاتها ثابتة أو تنمو', weight: +3,
-              hint: 'التوزيع المنتظم المتنامي علامة صحة مالية قوية.' },
-            { label: '📊 تتوزع لكن المبلغ يتذبذب — أحياناً أكثر وأحياناً أقل', weight: +1,
-              hint: 'التذبذب ليس جيداً ولا سيئاً بالضرورة — يعتمد على سبب التذبذب.' },
-            { label: '⬇️ قلّت توزيعاتها بشكل واضح في آخر سنة أو سنتين', weight: -2,
-              hint: 'تراجع التوزيعات إشارة تحذير حقيقية — الإدارة ترى ضغطاً ماليا.' },
-            { label: '🚫 ما تتوزع أرباح أصلاً', weight: -1,
-              hint: 'بعض الشركات تحتفظ بالأرباح للنمو — مقبول لو الأرباح تنمو بوضوح.' }
+            { label: '💰 تتوزع بانتظام وتوزيعاتها ثابتة أو تنمو', weight: +3, hint: 'التوزيع المنتظم المتنامي علامة صحة مالية قوية.' },
+            { label: '📊 تتوزع لكن المبلغ يتذبذب', weight: +1, hint: 'التذبذب ليس جيداً ولا سيئاً — يعتمد على سبب التذبذب.' },
+            { label: '⬇️ قلّت توزيعاتها بشكل واضح', weight: -2, hint: 'تراجع التوزيعات إشارة تحذير — الإدارة ترى ضغطاً مالياً.' },
+            { label: '🚫 ما تتوزع أرباح أصلاً', weight: -1, hint: 'مقبول لو الأرباح تنمو بوضوح.' }
         ]
     },
-
-    /* ── السؤال 6: الديون ── */
     {
-        id: 'q6',
-        type: 'choice',
+        id: 'q6', type: 'choice',
         text: 'الشركة عليها ديون كبيرة؟',
         hint: 'مو لازم أرقام دقيقة — تقدير عام يكفي.',
         choices: [
-            { label: '✅ ديونها قليلة أو معقولة مقارنة بأرباحها', weight: +2,
-              hint: 'شركة بديون منخفضة أقل عرضة للمخاطر في الأوقات الصعبة.' },
-            { label: '⚠️ عليها ديون لكن تقدر تسدد من أرباحها', weight: +1,
-              hint: 'وضع مقبول طالما التدفق النقدي يغطي الديون.' },
-            { label: '🔴 ديونها عالية وأنا قلقان منها', weight: -2,
-              hint: 'ديون عالية مع أرباح ضعيفة خطر حقيقي خصوصاً في رفع الفائدة.' },
-            { label: '❓ ما أعرف', weight: 0,
-              hint: 'ابحث عن نسبة الدين للحقوق في القوائم السنوية قبل أي قرار.' }
+            { label: '✅ ديونها قليلة أو معقولة مقارنة بأرباحها', weight: +2, hint: 'شركة بديون منخفضة أقل عرضة للمخاطر.' },
+            { label: '⚠️ عليها ديون لكن تقدر تسدد من أرباحها', weight: +1, hint: 'وضع مقبول طالما التدفق النقدي يغطي الديون.' },
+            { label: '🔴 ديونها عالية وأنا قلقان منها', weight: -2, hint: 'ديون عالية مع أرباح ضعيفة خطر حقيقي.' },
+            { label: '❓ ما أعرف', weight: 0, hint: 'ابحث عن نسبة الدين للحقوق قبل أي قرار.' }
         ]
     },
-
-    /* ── السؤال 7: احتياج المال ── */
     {
-        id: 'q7',
-        type: 'choice',
+        id: 'q7', type: 'choice',
         text: 'تحتاج هذي الفلوس الحين؟',
-        hint: 'الحاجة الفعلية للسيولة — لا مجرد رغبة.',
+        hint: 'الحاجة الفعلية للسيولة.',
         choices: [
-            { label: '🔴 نعم، عندي التزام أو ضرورة ما تنأجل', weight: -3,
-              hint: 'إذا الاحتياج حقيقي فالبيع مبرر — لكن تأكد إنه ضرورة.' },
-            { label: '🟡 ممكن أحتاجها خلال 6 أشهر', weight: -1,
-              hint: 'إذا الاحتمال حقيقي، فكّر في بيع جزء فقط لا الكل.' },
-            { label: '🟢 لا، الفلوس هذي مستثمرة وما أحتاجها قريباً', weight: +2,
-              hint: 'الوقت في صفك — الصبر أقوى سلاح لأي مستثمر.' }
+            { label: '🔴 نعم، عندي التزام ضرورة ما تنأجل', weight: -3, hint: 'إذا الاحتياج حقيقي فالبيع مبرر.' },
+            { label: '🟡 ممكن أحتاجها خلال 6 أشهر', weight: -1, hint: 'فكّر في بيع جزء فقط لا الكل.' },
+            { label: '🟢 لا، الفلوس مستثمرة وما أحتاجها قريباً', weight: +2, hint: 'الوقت في صفك — الصبر أقوى سلاح.' }
         ]
     },
-
-    /* ── السؤال 8: القوائم المالية ── */
+    { id: 'q8', type: 'yn', text: 'قرأت آخر نتائج الشركة المالية؟', hint: 'يكفي شفت الأرباح والإيرادات لآخر ربع أو سنة.', weightYes: +1, weightNo: -2, hintYes: 'ممتاز. المستثمر الواعي يقرأ الأرقام قبل القرار.', hintNo: 'البيع بدون ما تشوف الأرقام يعني إنك تتصرف على مشاعر.' },
     {
-        id: 'q8',
-        type: 'yn',
-        text: 'قرأت آخر نتائج الشركة المالية؟ (ولو بشكل سريع)',
-        hint: 'يكفي تكون شفت الأرباح والإيرادات والتوزيعات لآخر ربع أو سنة.',
-        weightYes: +1,
-        weightNo: -2,
-        hintYes: 'ممتاز. المستثمر الواعي يقرأ الأرقام قبل القرار.',
-        hintNo: 'البيع بدون ما تشوف الأرقام يعني إنك تتصرف على مشاعر. خذ 30 دقيقة وشوف النتائج أولاً.'
-    },
-
-    /* ── السؤال 9: وضع الخسارة/الربح ── */
-    {
-        id: 'q9',
-        type: 'choice',
+        id: 'q9', type: 'choice',
         text: 'كم تقريباً وضعك الحالي مع السهم؟',
         hint: 'مقارنة بسعر شرائك.',
         choices: [
-            { label: '📈 رابح 20% أو أكثر', weight: -1,
-              hint: 'ربح كبير — هل الشركة لا تزال مقيّمة بأقل من قيمتها؟ راجع قبل البيع.' },
-            { label: '↔️ في المنطقة المعقولة (رابح أو خسران أقل من 20%)', weight: +1,
-              hint: 'وضع طبيعي — القرار يعتمد على أساسيات الشركة لا السعر.' },
-            { label: '📉 خسران بين 20% و40%', weight: -1,
-              hint: 'الخسارة مؤلمة — لكن هل السبب مؤقت أم بنيوي؟ هذا هو السؤال.' },
-            { label: '🔻 خسران أكثر من 40%', weight: -2,
-              hint: 'خسارة ضخمة تستدعي مراجعة جدية — هل القصة الاستثمارية لا تزال سليمة؟' }
+            { label: '📈 رابح 20% أو أكثر', weight: -1, hint: 'هل الشركة لا تزال مقيّمة بأقل من قيمتها؟' },
+            { label: '↔️ في المنطقة المعقولة (أقل من 20%)', weight: +1, hint: 'القرار يعتمد على أساسيات الشركة لا السعر.' },
+            { label: '📉 خسران بين 20% و40%', weight: -1, hint: 'هل السبب مؤقت أم بنيوي؟' },
+            { label: '🔻 خسران أكثر من 40%', weight: -2, hint: 'هل القصة الاستثمارية لا تزال سليمة؟' }
         ]
     },
-
-    /* ── السؤال 10: وجود بديل ── */
+    { id: 'q10', type: 'yn', text: 'عندك فرصة ثانية أفضل تبغى تحوّل الفلوس إليها؟', hint: 'مو مجرد إحساس — بل سهم أو فرصة درستها فعلاً.', weightYes: -1, weightNo: +2, hintYes: 'إذا الفرصة مدروسة — التحويل منطقي.', hintNo: 'الجلوس كاش بدون هدف مو استراتيجية.' },
+    { id: 'q11', type: 'yn', text: 'صراحة — رغبتك في البيع الحين هي بسبب خوف أو ضغط نفسي؟', hint: 'كن صادقاً. الخوف حالة طبيعية لكنها أسوأ مستشار.', weightYes: +3, weightNo: -1, hintYes: 'الخوف أكبر سبب للبيع في القاع. خذ نفساً وانتظر يومين.', hintNo: 'قرارك مبني على تفكير — هذا هو الفرق الحقيقي.' },
     {
-        id: 'q10',
-        type: 'yn',
-        text: 'عندك فرصة ثانية أفضل تبغى تحوّل الفلوس إليها؟',
-        hint: 'مو مجرد إحساس — بل سهم أو فرصة درستها فعلاً.',
-        weightYes: -1,
-        weightNo: +2,
-        hintYes: 'إذا الفرصة البديلة مدروسة — التحويل منطقي. لكن احذر من الشائعات.',
-        hintNo: 'الجلوس كاش بدون هدف واضح مو استراتيجية — التضخم يأكل الفلوس الراكدة.'
-    },
-
-    /* ── السؤال 11: الخوف والضغط النفسي ── */
-    {
-        id: 'q11',
-        type: 'yn',
-        text: 'صراحة — رغبتك في البيع الحين هي بسبب خوف أو ضغط نفسي بالدرجة الأولى؟',
-        hint: 'كن صادقاً مع نفسك. الخوف حالة طبيعية لكنها أسوأ مستشار.',
-        weightYes: +3,
-        weightNo: -1,
-        hintYes: 'الخوف أكبر سبب للبيع في القاع. خذ نفساً وانتظر يومين قبل أي قرار.',
-        hintNo: 'قرارك مبني على تفكير — هذا هو الفرق الحقيقي بين المضارب والمستثمر.'
-    },
-
-    /* ── السؤال 12: المدة الزمنية ── */
-    {
-        id: 'q12',
-        type: 'choice',
+        id: 'q12', type: 'choice',
         text: 'من كم وقت تحمل السهم هذا؟',
         hint: 'المدة الزمنية مهمة في تقييم القرار.',
         choices: [
-            { label: '📅 أقل من 6 أشهر', weight: 0,
-              hint: 'مدة قصيرة — هل اشتريته بهدف طويل أم مضاربة؟ هذا يغير كل شيء.' },
-            { label: '📅 من 6 أشهر لسنتين', weight: +1,
-              hint: 'مدة معقولة — قيّم الأساسيات لا السعر فقط.' },
-            { label: '📅 أكثر من سنتين', weight: +2,
-              hint: 'مستثمر طويل الأمد — التقلبات جزء طبيعي من الرحلة.' }
+            { label: '📅 أقل من 6 أشهر', weight: 0, hint: 'هل اشتريته بهدف طويل أم مضاربة؟' },
+            { label: '📅 من 6 أشهر لسنتين', weight: +1, hint: 'قيّم الأساسيات لا السعر فقط.' },
+            { label: '📅 أكثر من سنتين', weight: +2, hint: 'التقلبات جزء طبيعي من رحلة المستثمر الطويل.' }
         ]
     }
 ];
 
-/* ===== الحالة ===== */
-let currentQ  = 0;
-let scores    = [];
-let answers   = {};
-let pendingYN = null;
-let pendingChoiceIdx = null;
+let currentQ = 0, scores = [], answers = {}, pendingYN = null, pendingChoiceIdx = null;
 
-/* ===== رسم السؤال ===== */
 function renderQuestion() {
-    const q   = questions[currentQ];
+    const q = questions[currentQ];
     const pct = Math.round((currentQ / questions.length) * 100);
-    document.getElementById('progressBar').style.width  = pct + '%';
-    document.getElementById('progressText').textContent =
-        'السؤال ' + (currentQ + 1) + ' من ' + questions.length;
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = 'السؤال ' + (currentQ + 1) + ' من ' + questions.length;
 
     let html = '<div class="question-number">السؤال ' + (currentQ + 1) + '</div>';
     html += '<div class="question-text">' + q.text + '</div>';
@@ -496,91 +381,65 @@ function renderQuestion() {
 
     if (q.type === 'choice') {
         html += '<div class="choice-buttons" id="choiceGroup">';
-        q.choices.forEach((c, i) => {
-            html += `<button class="btn-choice" id="choice_${i}" onclick="selectChoice(${i})">${c.label}</button>`;
-        });
+        q.choices.forEach((c, i) => { html += `<button class="btn-choice" id="choice_${i}" onclick="selectChoice(${i})">${c.label}</button>`; });
         html += '</div>';
-        html += '<div id="choiceHint" style="font-size:0.82rem;color:#555;min-height:36px;margin-bottom:10px;"></div>';
+        html += '<div id="choiceHint" style="font-size:0.82rem;color:#aaa;min-height:36px;margin-bottom:10px;"></div>';
         html += '<button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>';
-
     } else if (q.type === 'yn') {
-        html += `
-            <div class="yn-buttons">
-                <button class="btn-yes" id="btnYes" onclick="selectYN('yes')">✅ نعم</button>
-                <button class="btn-no"  id="btnNo"  onclick="selectYN('no')">❌ لا</button>
-            </div>
-            <div id="ynHint" style="font-size:0.82rem;color:#555;min-height:36px;margin-bottom:10px;"></div>
-            <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>`;
-
+        html += `<div class="yn-buttons"><button class="btn-yes" id="btnYes" onclick="selectYN('yes')">✅ نعم</button><button class="btn-no" id="btnNo" onclick="selectYN('no')">❌ لا</button></div>`;
+        html += '<div id="ynHint" style="font-size:0.82rem;color:#aaa;min-height:36px;margin-bottom:10px;"></div>';
+        html += '<button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>';
     } else if (q.type === 'number') {
-        html += `
-            <div class="input-group">
-                <input type="number" id="numInput" placeholder="${q.placeholder}" min="0" step="0.01"
-                       oninput="validateNumber()">
-            </div>
-            <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>`;
+        html += `<div class="input-group"><input type="number" id="numInput" placeholder="${q.placeholder}" min="0" step="0.01" oninput="validateNumber()"></div>`;
+        html += '<button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>التالي ◀</button>';
     }
 
     document.getElementById('questionBody').innerHTML = html;
-    pendingYN = null;
-    pendingChoiceIdx = null;
-
+    pendingYN = null; pendingChoiceIdx = null;
     if (q.type === 'number') setTimeout(() => document.getElementById('numInput').focus(), 50);
 }
 
-/* ===== اختيار متعدد ===== */
 function selectChoice(idx) {
     pendingChoiceIdx = idx;
-    const q = questions[currentQ];
-    document.querySelectorAll('.btn-choice').forEach((b, i) => {
-        b.classList.toggle('selected', i === idx);
-    });
-    document.getElementById('choiceHint').textContent = q.choices[idx].hint;
+    document.querySelectorAll('.btn-choice').forEach((b, i) => b.classList.toggle('selected', i === idx));
+    document.getElementById('choiceHint').textContent = questions[currentQ].choices[idx].hint;
     document.getElementById('btnNext').disabled = false;
 }
 
-/* ===== نعم/لا ===== */
 function selectYN(val) {
     pendingYN = val;
     const q = questions[currentQ];
     document.getElementById('btnYes').classList.toggle('selected', val === 'yes');
-    document.getElementById('btnNo').classList.toggle('selected',  val === 'no');
+    document.getElementById('btnNo').classList.toggle('selected', val === 'no');
     document.getElementById('ynHint').textContent = val === 'yes' ? q.hintYes : q.hintNo;
     document.getElementById('btnNext').disabled = false;
 }
 
-/* ===== تحقق رقم ===== */
 function validateNumber() {
     const v = parseFloat(document.getElementById('numInput').value);
     document.getElementById('btnNext').disabled = isNaN(v) || v <= 0;
 }
 
-/* ===== التالي ===== */
 function nextQuestion() {
     const q = questions[currentQ];
-
     if (q.type === 'choice') {
         const c = q.choices[pendingChoiceIdx];
         scores.push({ id: q.id, weight: c.weight, text: q.text, hint: c.hint });
         answers[q.id] = pendingChoiceIdx;
-
     } else if (q.type === 'yn') {
         const w = pendingYN === 'yes' ? q.weightYes : q.weightNo;
-        const h = pendingYN === 'yes' ? q.hintYes   : q.hintNo;
+        const h = pendingYN === 'yes' ? q.hintYes : q.hintNo;
         scores.push({ id: q.id, weight: w, text: q.text, hint: h });
         answers[q.id] = pendingYN;
-
     } else if (q.type === 'number') {
         const v = parseFloat(document.getElementById('numInput').value);
         answers[q.key] = v;
         scores.push({ id: q.id, weight: 0, text: q.text, hint: '' });
     }
-
     currentQ++;
     currentQ < questions.length ? renderQuestion() : showResult();
 }
 
-/* ===== النتيجة ===== */
 function showResult() {
     document.getElementById('questionCard').style.display = 'none';
     document.getElementById('progressBar').style.width = '100%';
@@ -588,101 +447,83 @@ function showResult() {
     let total = 0;
     scores.forEach(s => total += s.weight);
 
-    const cost    = answers.costPrice    || 0;
+    const cost = answers.costPrice || 0;
     const current = answers.currentPrice || 0;
     let changePct = 0;
     if (cost > 0 && current > 0) {
         changePct = ((current - cost) / cost) * 100;
-        if (changePct > 30)  total += 1;  // ربح كبير → ربما وقت جني جزئي
-        if (changePct < -40) total -= 1;  // خسارة ضخمة → مراجعة
+        if (changePct > 30)  total += 1;
+        if (changePct < -40) total -= 1;
     }
 
-    /* نطاق متوقع: -20 → +22 */
-    const maxScore = 22;
-    const minScore = -20;
-    const range    = maxScore - minScore;
-    const pct      = Math.min(100, Math.max(0, ((total - minScore) / range) * 100));
+    const maxScore = 22, minScore = -20;
+    const pct = Math.min(100, Math.max(0, ((total - minScore) / (maxScore - minScore)) * 100));
 
     let decision, icon, titleClass, summary;
-
     if (total >= 8) {
-        decision   = 'احتفظ بالسهم';
-        icon       = '🟢';
-        titleClass = 'hold';
-        summary    = 'إجاباتك تشير بوضوح إلى أن البيع الآن قرار متسرع. '
-                   + 'الشركة تبدو بخير والضغط الحالي غالباً مؤقت. '
-                   + 'الصبر هنا مو ضعف — هو الاستراتيجية الصح.';
+        decision = 'احتفظ بالسهم'; icon = '🟢'; titleClass = 'hold';
+        summary = 'إجاباتك تشير بوضوح إلى أن البيع الآن قرار متسرع. الشركة تبدو بخير والضغط الحالي غالباً مؤقت. الصبر هنا مو ضعف — هو الاستراتيجية الصح.';
     } else if (total >= 2) {
-        decision   = 'توقف وراجع';
-        icon       = '🟡';
-        titleClass = 'review';
-        summary    = 'الصورة مو واضحة 100%. بعض العوامل تدعم الاحتفاظ وبعضها يستوجب القلق. '
-                   + 'لا تبيع وأنت في هذه الحالة. '
-                   + 'اقرأ آخر نتائج الشركة، فهم سبب الهبوط، ثم ارجع وقرر.';
+        decision = 'توقف وراجع'; icon = '🟡'; titleClass = 'review';
+        summary = 'الصورة مو واضحة 100%. لا تبيع وأنت في هذه الحالة. اقرأ آخر نتائج الشركة، فهم سبب الهبوط، ثم ارجع وقرر.';
     } else {
-        decision   = 'فكّر جدياً في البيع';
-        icon       = '🔴';
-        titleClass = 'sell';
-        summary    = 'إجاباتك تشير إلى أن الاحتفاظ ينطوي على مخاطر حقيقية. '
-                   + 'قبل ما تبيع: تأكد إن قرارك على الأرقام مو الخوف، '
-                   + 'وإن عندك خطة واضحة لأين تذهب هذي الفلوس بعدين.';
+        decision = 'فكّر جدياً في البيع'; icon = '🔴'; titleClass = 'sell';
+        summary = 'إجاباتك تشير إلى أن الاحتفاظ ينطوي على مخاطر حقيقية. تأكد إن قرارك على الأرقام مو الخوف، وإن عندك خطة واضحة.';
     }
 
     let barColor;
-    if (pct >= 60) barColor = 'linear-gradient(90deg, #27ae60, #2ecc71)';
-    else if (pct >= 35) barColor = 'linear-gradient(90deg, #f39c12, #f1c40f)';
-    else barColor = 'linear-gradient(90deg, #c0392b, #e74c3c)';
+    if (pct >= 60) barColor = 'linear-gradient(90deg,#27ae60,#2ecc71)';
+    else if (pct >= 35) barColor = 'linear-gradient(90deg,#f39c12,#f1c40f)';
+    else barColor = 'linear-gradient(90deg,#c0392b,#e74c3c)';
 
     let factorsHTML = '';
     scores.forEach(s => {
         if (s.weight === 0 || !s.hint) return;
         const dotClass = s.weight > 0 ? 'dot-hold' : 'dot-sell';
-        factorsHTML += `
-            <div class="factor-item">
-                <div class="factor-dot ${dotClass}"></div>
-                <div>${s.hint}</div>
-            </div>`;
+        factorsHTML += `<div class="factor-item"><div class="factor-dot ${dotClass}"></div><div>${s.hint}</div></div>`;
     });
 
     let priceNote = '';
     if (cost > 0 && current > 0) {
-        const sign  = changePct >= 0 ? '+' : '';
+        const sign = changePct >= 0 ? '+' : '';
         const color = changePct >= 0 ? '#27ae60' : '#e74c3c';
-        priceNote = `<p style="font-size:0.9rem;color:${color};font-weight:bold;margin-bottom:15px;">
-            سعر شرائك: ${cost.toFixed(2)} ر.س &nbsp;|&nbsp;
-            السعر الحالي: ${current.toFixed(2)} ر.س &nbsp;|&nbsp;
-            التغيير: ${sign}${changePct.toFixed(1)}%
-        </p>`;
+        priceNote = `<p style="font-size:0.9rem;color:${color};font-weight:bold;margin-bottom:15px;">سعر شرائك: ${cost.toFixed(2)} ر.س &nbsp;|&nbsp; السعر الحالي: ${current.toFixed(2)} ر.س &nbsp;|&nbsp; التغيير: ${sign}${changePct.toFixed(1)}%</p>`;
     }
 
-    document.getElementById('resultCard').innerHTML = `
+    const resultCard = document.getElementById('resultCard');
+    resultCard.innerHTML = `
         <div class="result-icon">${icon}</div>
         <div class="result-title ${titleClass}">${decision}</div>
         ${priceNote}
         <p class="result-summary">${summary}</p>
         <div class="score-meter">
             <div class="score-label"><span>بيع واضح</span><span>احتفظ بثقة</span></div>
-            <div class="score-bar-wrap">
-                <div class="score-bar-fill" style="width:${pct}%;background:${barColor};"></div>
-            </div>
+            <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${pct}%;background:${barColor};"></div></div>
             <div class="score-text">مؤشر الاحتفاظ: ${Math.round(pct)}%</div>
         </div>
         <div class="factors-section">
-            <h4>📋 أبرز العوامل المؤثرة في توصيتك:</h4>
+            <h4>📋 أبرز العوامل المؤثرة:</h4>
             ${factorsHTML || '<p style="color:#999;font-size:0.85rem;">لا توجد عوامل بارزة.</p>'}
         </div>
         <button class="btn-restart" onclick="restart()">🔄 تقييم سهم آخر</button>
     `;
+    resultCard.style.display = 'block';
 
-    document.getElementById('resultCard').style.display = 'block';
-    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    /* ===== ضخّ اللون الديناميكي ===== */
+    resultCard.classList.remove('result-positive','result-negative','result-warning');
+    if (titleClass === 'hold')   resultCard.classList.add('result-positive');
+    if (titleClass === 'sell')   resultCard.classList.add('result-negative');
+    if (titleClass === 'review') resultCard.classList.add('result-warning');
+    if (window.ResultsEngine)    window.ResultsEngine.paint();
+
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ===== إعادة البدء ===== */
 function restart() {
-    currentQ = 0; scores = []; answers = {};
-    pendingYN = null; pendingChoiceIdx = null;
-    document.getElementById('resultCard').style.display = 'none';
+    currentQ = 0; scores = []; answers = {}; pendingYN = null; pendingChoiceIdx = null;
+    const rc = document.getElementById('resultCard');
+    rc.style.display = 'none';
+    rc.classList.remove('result-positive','result-negative','result-warning');
     document.getElementById('questionCard').style.display = 'block';
     renderQuestion();
     window.scrollTo({ top: 0, behavior: 'smooth' });
