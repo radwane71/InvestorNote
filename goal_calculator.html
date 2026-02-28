@@ -5,245 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حاسبة الهدف الاستثماري العكسي | مفكرة مستثمر</title>
     <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" defer></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh; padding: 20px; color: #2c3e50;
-        }
-
+        body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; padding: 20px; color: #2c3e50; }
         .navbar-wrapper { max-width: 900px; margin: 0 auto 15px; }
-
-        .container {
-            max-width: 900px; margin: 0 auto;
-            background: white; border-radius: 20px;
-            padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-        }
-
-        /* ===== Legal Banner ===== */
-        .legal-banner {
-            background: #fff3cd; border: 2px solid #ffc107;
-            border-radius: 8px; padding: 11px 15px;
-            margin-bottom: 25px;
-            display: flex; align-items: flex-start; gap: 10px;
-        }
-        .legal-banner p {
-            color: #856404; font-size: 0.83rem;
-            font-weight: bold; line-height: 1.5; flex: 1;
-        }
-
-        /* ===== Header ===== */
-        h1 {
-            text-align: center; color: #0f3460;
-            font-size: 2rem; margin-bottom: 6px;
-        }
-        .subtitle {
-            text-align: center; color: #7f8c8d;
-            margin-bottom: 30px; font-size: 0.92rem;
-        }
-
-        /* ===== Sections ===== */
-        .rule-item {
-            background: #f8f9fa; border-radius: 15px;
-            padding: 25px; margin: 20px 0;
-            border-right: 5px solid #0f3460;
-        }
-        .rule-item h3 {
-            color: #0f3460; margin-bottom: 18px;
-            font-size: 1rem; border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 10px;
-        }
-
-        /* ===== Input Grid ===== */
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 18px;
-        }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+        .legal-banner { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 11px 15px; margin-bottom: 25px; display: flex; align-items: flex-start; gap: 10px; }
+        .legal-banner p { color: #856404; font-size: 0.83rem; font-weight: bold; line-height: 1.5; flex: 1; }
+        h1 { text-align: center; color: #0f3460; font-size: 2rem; margin-bottom: 6px; }
+        .subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; font-size: 0.92rem; }
+        .rule-item { background: #f8f9fa; border-radius: 15px; padding: 25px; margin: 20px 0; border-right: 5px solid #0f3460; }
+        .rule-item h3 { color: #0f3460; margin-bottom: 18px; font-size: 1rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; }
         .input-group { display: flex; flex-direction: column; }
-        .input-group label {
-            font-weight: bold; font-size: 0.85rem;
-            color: #34495e; margin-bottom: 7px;
-        }
-        .input-group input, .input-group select {
-            padding: 11px; border: 2px solid #e0e0e0;
-            border-radius: 8px; font-size: 0.95rem;
-            transition: border-color 0.3s; background: white;
-        }
-        .input-group input:focus,
-        .input-group select:focus {
-            border-color: #0f3460; outline: none; background: #f0f4ff;
-        }
-        .input-hint {
-            font-size: 0.75rem; color: #95a5a6; margin-top: 4px;
-        }
-
-        /* ===== Mode Switcher ===== */
-        .mode-switcher {
-            display: flex; gap: 10px; margin-bottom: 25px;
-            background: #f0f4ff; border-radius: 12px; padding: 6px;
-        }
-        .mode-btn {
-            flex: 1; padding: 12px; border: none;
-            border-radius: 9px; cursor: pointer;
-            font-size: 0.9rem; font-weight: bold;
-            transition: all 0.3s; color: #666; background: transparent;
-        }
-        .mode-btn.active {
-            background: #0f3460; color: white;
-            box-shadow: 0 4px 12px rgba(15,52,96,0.3);
-        }
-
-        /* ===== Calculate Button ===== */
-        .calc-btn {
-            display: block; width: 100%; padding: 16px;
-            background: linear-gradient(135deg, #0f3460, #16213e);
-            color: white; border: none; border-radius: 12px;
-            font-size: 1.1rem; font-weight: bold;
-            cursor: pointer; margin: 25px 0;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .calc-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(15,52,96,0.4);
-        }
-
-        /* ===== Results ===== */
+        .input-group label { font-weight: bold; font-size: 0.85rem; color: #34495e; margin-bottom: 7px; }
+        .input-group input, .input-group select { padding: 11px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.3s; background: white; }
+        .input-group input:focus, .input-group select:focus { border-color: #0f3460; outline: none; background: #f0f4ff; }
+        .input-hint { font-size: 0.75rem; color: #95a5a6; margin-top: 4px; }
+        .mode-switcher { display: flex; gap: 10px; margin-bottom: 25px; background: #f0f4ff; border-radius: 12px; padding: 6px; }
+        .mode-btn { flex: 1; padding: 12px; border: none; border-radius: 9px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: all 0.3s; color: #666; background: transparent; }
+        .mode-btn.active { background: #0f3460; color: white; box-shadow: 0 4px 12px rgba(15,52,96,0.3); }
+        .calc-btn { display: block; width: 100%; padding: 16px; background: linear-gradient(135deg, #0f3460, #16213e); color: white; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin: 25px 0; transition: transform 0.2s, box-shadow 0.2s; }
+        .calc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,52,96,0.4); }
         .results-section { display: none; }
-
-        /* البطاقة الرئيسية */
-        .main-result {
-            background: linear-gradient(135deg, #0f3460, #533483);
-            color: white; border-radius: 18px;
-            padding: 35px; text-align: center; margin-bottom: 20px;
-        }
-        .main-result .label {
-            font-size: 1rem; opacity: 0.85; margin-bottom: 10px;
-        }
-        .main-result .big-number {
-            font-size: 3.5rem; font-weight: bold;
-            color: #f1c40f; line-height: 1; margin-bottom: 8px;
-        }
-        .main-result .sub-label {
-            font-size: 0.88rem; opacity: 0.75;
-        }
-
-        /* شبكة الملخص */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px; margin-bottom: 20px;
-        }
-        .summary-card {
-            background: #f8f9fa; border-radius: 12px;
-            padding: 16px; text-align: center;
-            border-top: 3px solid #0f3460;
-        }
-        .summary-card .s-label {
-            font-size: 0.78rem; color: #7f8c8d; margin-bottom: 6px;
-        }
-        .summary-card .s-value {
-            font-size: 1.2rem; font-weight: bold; color: #0f3460;
-        }
+        .main-result { background: linear-gradient(135deg, #0f3460, #533483); color: white; border-radius: 18px; padding: 35px; text-align: center; margin-bottom: 20px; }
+        .main-result .label { font-size: 1rem; opacity: 0.85; margin-bottom: 10px; }
+        .main-result .big-number { font-size: 3.5rem; font-weight: bold; color: #f1c40f; line-height: 1; margin-bottom: 8px; }
+        .main-result .sub-label { font-size: 0.88rem; opacity: 0.75; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .summary-card { background: #f8f9fa; border-radius: 12px; padding: 16px; text-align: center; border-top: 3px solid #0f3460; }
+        .summary-card .s-label { font-size: 0.78rem; color: #7f8c8d; margin-bottom: 6px; }
+        .summary-card .s-value { font-size: 1.2rem; font-weight: bold; color: #0f3460; }
         .summary-card.highlight { border-top-color: #27ae60; }
         .summary-card.highlight .s-value { color: #27ae60; }
         .summary-card.warn { border-top-color: #e74c3c; }
         .summary-card.warn .s-value { color: #e74c3c; }
-
-        /* ===== Scenarios ===== */
-        .scenarios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 12px; margin-top: 5px;
-        }
-        .scenario-card {
-            border-radius: 10px; padding: 14px; text-align: center;
-            border: 2px solid #e0e0e0;
-        }
-        .scenario-card .sc-rate {
-            font-size: 1rem; font-weight: bold; margin-bottom: 6px;
-        }
-        .scenario-card .sc-amount {
-            font-size: 1.3rem; font-weight: bold; color: #0f3460;
-        }
-        .scenario-card .sc-label {
-            font-size: 0.75rem; color: #7f8c8d; margin-top: 4px;
-        }
+        .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 5px; }
+        .scenario-card { border-radius: 10px; padding: 14px; text-align: center; border: 2px solid #e0e0e0; }
+        .scenario-card .sc-rate { font-size: 1rem; font-weight: bold; margin-bottom: 6px; }
+        .scenario-card .sc-amount { font-size: 1.3rem; font-weight: bold; color: #0f3460; }
+        .scenario-card .sc-label { font-size: 0.75rem; color: #7f8c8d; margin-top: 4px; }
         .scenario-card.conservative { border-color: #e74c3c; background: #fdf0f0; }
         .scenario-card.conservative .sc-rate { color: #e74c3c; }
-        .scenario-card.moderate     { border-color: #f39c12; background: #fef9f0; }
+        .scenario-card.moderate { border-color: #f39c12; background: #fef9f0; }
         .scenario-card.moderate .sc-rate { color: #f39c12; }
-        .scenario-card.optimistic   { border-color: #27ae60; background: #f0fdf4; }
+        .scenario-card.optimistic { border-color: #27ae60; background: #f0fdf4; }
         .scenario-card.optimistic .sc-rate { color: #27ae60; }
-        .scenario-card.aggressive   { border-color: #8e44ad; background: #f9f0ff; }
+        .scenario-card.aggressive { border-color: #8e44ad; background: #f9f0ff; }
         .scenario-card.aggressive .sc-rate { color: #8e44ad; }
-
-        /* ===== Timeline Chart ===== */
-        .chart-wrapper {
-            background: #f8f9fa; border-radius: 12px;
-            padding: 20px; margin-top: 20px;
-        }
-        .chart-wrapper h4 {
-            color: #0f3460; margin-bottom: 15px; font-size: 0.95rem;
-        }
+        .chart-wrapper { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 20px; }
+        .chart-wrapper h4 { color: #0f3460; margin-bottom: 15px; font-size: 0.95rem; }
         .chart-container { position: relative; height: 280px; }
-
-        /* ===== Milestone Table ===== */
-        .milestone-table {
-            width: 100%; border-collapse: collapse;
-            font-size: 0.85rem; margin-top: 5px;
-        }
-        .milestone-table th {
-            background: #0f3460; color: white;
-            padding: 10px; text-align: center;
-        }
-        .milestone-table td {
-            padding: 9px 10px; text-align: center;
-            border-bottom: 1px solid #f0f0f0;
-        }
+        .milestone-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 5px; }
+        .milestone-table th { background: #0f3460; color: white; padding: 10px; text-align: center; }
+        .milestone-table td { padding: 9px 10px; text-align: center; border-bottom: 1px solid #f0f0f0; }
         .milestone-table tr:hover { background: #f0f4ff; }
-        .milestone-table .goal-row {
-            background: #fffde7 !important;
-            font-weight: bold; color: #0f3460;
-        }
-
-        /* ===== Insight Box ===== */
-        .insight-box {
-            background: linear-gradient(135deg, #e8f5e9, #f0fdf4);
-            border: 2px solid #27ae60; border-radius: 12px;
-            padding: 18px; margin-top: 20px;
-        }
+        .milestone-table .goal-row { background: #fffde7 !important; font-weight: bold; color: #0f3460; }
+        .insight-box { background: linear-gradient(135deg, #e8f5e9, #f0fdf4); border: 2px solid #27ae60; border-radius: 12px; padding: 18px; margin-top: 20px; }
         .insight-box h4 { color: #1e8449; margin-bottom: 10px; font-size: 0.95rem; }
-        .insight-box p  { color: #2c3e50; font-size: 0.88rem; line-height: 1.7; margin: 6px 0; }
-
-        /* ===== Reset ===== */
-        .reset-btn {
-            display: block; margin: 20px auto 0;
-            padding: 11px 28px; background: #95a5a6;
-            color: white; border: none; border-radius: 10px;
-            cursor: pointer; font-size: 0.95rem;
-            transition: background 0.3s;
-        }
+        .insight-box p { color: #2c3e50; font-size: 0.88rem; line-height: 1.7; margin: 6px 0; }
+        .reset-btn { display: block; margin: 20px auto 0; padding: 11px 28px; background: #95a5a6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; transition: background 0.3s; }
         .reset-btn:hover { background: #7f8c8d; }
-
-        /* ===== Responsive ===== */
-        @media (max-width: 768px) {
-            .container { padding: 20px; }
-            h1 { font-size: 1.6rem; }
-            .main-result .big-number { font-size: 2.5rem; }
-            .mode-btn { font-size: 0.8rem; padding: 10px 6px; }
-        }
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .summary-grid { grid-template-columns: 1fr 1fr; }
-        }
+        @media (max-width: 768px) { .container { padding: 20px; } h1 { font-size: 1.6rem; } .main-result .big-number { font-size: 2.5rem; } .mode-btn { font-size: 0.8rem; padding: 10px 6px; } }
+        @media (max-width: 480px) { body { padding: 10px; } .summary-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
-
 <div class="navbar-wrapper">
     <nav class="navbar">
         <div class="navbar-container">
@@ -264,467 +93,147 @@
                 <a href="portfolio_rating.html"          class="navbar-item portfolio">🛡️ أمان المحفظة</a>
                 <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
                 <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
+                <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
                 <a href="goal_calculator.html"           class="navbar-item calculator active">🎯 الهدف العكسي</a>
+                <a href="allocation_calculator.html"     class="navbar-item allocation">⚖️ توزيع المحفظة</a>
             </div>
         </div>
     </nav>
 </div>
-
 <div class="container">
-
-    <div class="legal-banner">
-        <span>⚠️</span>
-        <p>إقرار قانوني: هذه الأداة تعليمية تقديرية. النتائج مبنية على افتراضات رياضية مثالية لا تضمن عوائد فعلية. قرار الاستثمار يقع على عاتق المستخدم وحده.</p>
-    </div>
-
+    <div class="legal-banner"><span>⚠️</span><p>إقرار قانوني: هذه الأداة تعليمية تقديرية. قرار الاستثمار يقع على عاتق المستخدم وحده.</p></div>
     <h1>🎯 حاسبة الهدف الاستثماري العكسي</h1>
     <p class="subtitle">أدخل هدفك — نحسب لك كم تحتاج تدّخر كل شهر</p>
-
-    <!-- Mode Switcher -->
     <div class="mode-switcher">
-        <button class="mode-btn active" id="btn-monthly"
-                onclick="switchMode('monthly')">
-            📅 كم أدّخر شهرياً؟
-        </button>
-        <button class="mode-btn" id="btn-years"
-                onclick="switchMode('years')">
-            ⏳ كم سنة أحتاج؟
-        </button>
-        <button class="mode-btn" id="btn-rate"
-                onclick="switchMode('rate')">
-            📈 أي عائد أحتاج؟
-        </button>
+        <button class="mode-btn active" id="btn-monthly" onclick="switchMode('monthly')">📅 كم أدّخر شهرياً؟</button>
+        <button class="mode-btn" id="btn-years" onclick="switchMode('years')">⏳ كم سنة أحتاج؟</button>
+        <button class="mode-btn" id="btn-rate" onclick="switchMode('rate')">📈 أي عائد أحتاج؟</button>
     </div>
-
-    <!-- ===== المدخلات ===== -->
     <div class="rule-item">
         <h3 id="inputTitle">🎯 أدخل بيانات هدفك</h3>
         <div class="input-grid" id="inputGrid">
-
-            <div class="input-group">
-                <label>🏆 الهدف المالي المطلوب</label>
-                <input type="number" id="goalAmount"
-                       placeholder="مثال: 1000000" min="1">
-                <span class="input-hint">بأي عملة تريد</span>
-            </div>
-
-            <div class="input-group" id="field-savings">
-                <label>💰 المدّخرات الحالية (اختياري)</label>
-                <input type="number" id="currentSavings"
-                       placeholder="0" min="0">
-                <span class="input-hint">ما عندك الآن في الحساب</span>
-            </div>
-
-            <!-- يظهر/يختفي حسب الوضع -->
-            <div class="input-group" id="field-monthly">
-                <label>📅 المبلغ الشهري الذي تستطيع توفيره</label>
-                <input type="number" id="monthlyAmount"
-                       placeholder="مثال: 2000" min="0">
-                <span class="input-hint">يظهر في وضع "كم سنة" و"أي عائد"</span>
-            </div>
-
-            <div class="input-group" id="field-years">
-                <label>📆 عدد السنوات للوصول للهدف</label>
-                <input type="number" id="targetYears"
-                       placeholder="مثال: 15" min="1" max="50">
-                <span class="input-hint">يظهر في وضع "كم أدّخر" و"أي عائد"</span>
-            </div>
-
-            <div class="input-group" id="field-rate">
-                <label>📈 العائد السنوي المتوقع (%)</label>
-                <input type="number" id="annualRate"
-                       placeholder="مثال: 8" step="0.1" min="0" max="50">
-                <span class="input-hint">يظهر في وضع "كم أدّخر" و"كم سنة"</span>
-            </div>
-
-            <div class="input-group">
-                <label>📊 التضخم السنوي المتوقع (%)</label>
-                <input type="number" id="inflationRate"
-                       placeholder="مثال: 3" step="0.1" min="0" max="20"
-                       value="3">
-                <span class="input-hint">يُحسب العائد الحقيقي بعد التضخم</span>
-            </div>
-
+            <div class="input-group"><label>🏆 الهدف المالي</label><input type="number" id="goalAmount" placeholder="1000000" min="1"><span class="input-hint">بأي عملة تريد</span></div>
+            <div class="input-group" id="field-savings"><label>💰 المدّخرات الحالية</label><input type="number" id="currentSavings" placeholder="0" min="0"><span class="input-hint">اختياري</span></div>
+            <div class="input-group" id="field-monthly"><label>📅 المبلغ الشهري</label><input type="number" id="monthlyAmount" placeholder="2000" min="0"></div>
+            <div class="input-group" id="field-years"><label>📆 عدد السنوات</label><input type="number" id="targetYears" placeholder="15" min="1" max="50"></div>
+            <div class="input-group" id="field-rate"><label>📈 العائد السنوي (%)</label><input type="number" id="annualRate" placeholder="8" step="0.1" min="0" max="50"></div>
+            <div class="input-group"><label>📊 التضخم (%)</label><input type="number" id="inflationRate" placeholder="3" step="0.1" min="0" max="20" value="3"></div>
         </div>
     </div>
-
     <button class="calc-btn" onclick="calculate()">🎯 احسب هدفي</button>
-
-    <!-- ===== النتائج ===== -->
     <div class="results-section" id="resultsSection">
-
-        <!-- الرقم الرئيسي -->
         <div class="main-result">
             <div class="label" id="mainLabel">—</div>
             <div class="big-number" id="mainNumber">—</div>
             <div class="sub-label" id="mainSub">—</div>
         </div>
-
-        <!-- ملخص الأرقام -->
         <div class="summary-grid" id="summaryGrid"></div>
-
-        <!-- سيناريوهات العائد -->
-        <div class="rule-item">
-            <h3>📊 مقارنة السيناريوهات (عوائد مختلفة)</h3>
-            <div class="scenarios-grid" id="scenariosGrid"></div>
-        </div>
-
-        <!-- الرسم البياني -->
-        <div class="chart-wrapper">
-            <h4>📈 نمو المحفظة عبر الزمن</h4>
-            <div class="chart-container">
-                <canvas id="growthChart"></canvas>
-            </div>
-        </div>
-
-        <!-- جدول المراحل -->
-        <div class="rule-item">
-            <h3>🗓️ جدول الوصول للمعالم</h3>
-            <div style="overflow-x:auto;">
-                <table class="milestone-table" id="milestoneTable">
-                    <thead>
-                        <tr>
-                            <th>السنة</th>
-                            <th>المدّخر التراكمي</th>
-                            <th>العائد المتراكم</th>
-                            <th>إجمالي المحفظة</th>
-                            <th>% من الهدف</th>
-                        </tr>
-                    </thead>
-                    <tbody id="milestoneBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- تحليل ذكي -->
-        <div class="insight-box" id="insightBox">
-            <h4>💡 تحليل الهدف</h4>
-            <p id="insightText">—</p>
-        </div>
-
+        <div class="rule-item"><h3>📊 مقارنة السيناريوهات</h3><div class="scenarios-grid" id="scenariosGrid"></div></div>
+        <div class="chart-wrapper"><h4>📈 نمو المحفظة</h4><div class="chart-container"><canvas id="growthChart"></canvas></div></div>
+        <div class="rule-item"><h3>🗓️ جدول المراحل</h3><div style="overflow-x:auto;"><table class="milestone-table" id="milestoneTable"><thead><tr><th>السنة</th><th>المدّخر التراكمي</th><th>العائد</th><th>إجمالي</th><th>% من الهدف</th></tr></thead><tbody id="milestoneBody"></tbody></table></div></div>
+        <div class="insight-box" id="insightBox"><h4>💡 تحليل الهدف</h4><p id="insightText">—</p></div>
         <button class="reset-btn" onclick="resetAll()">🔄 إعادة تعيين</button>
     </div>
-
 </div>
-
+<script src="results-engine.js"></script>
 <script>
-    /* ===== Navbar ===== */
-    function toggleNavbar() {
-        document.getElementById('navbarMenu').classList.toggle('open');
-    }
-    document.addEventListener('DOMContentLoaded', function () {
-        const raw  = window.location.pathname.split('/').pop() || 'index.html';
-        const page = raw.split('?')[0].split('#')[0] || 'index.html';
-        document.querySelectorAll('.navbar-item').forEach(function (item) {
-            item.classList.remove('active');
-            const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
-            if (href === page) item.classList.add('active');
-        });
+function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+document.addEventListener('DOMContentLoaded',function(){
+    const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0].split('#')[0]||'index.html';
+    document.querySelectorAll('.navbar-item').forEach(function(el){
+        el.classList.remove('active');
+        if((el.getAttribute('href')||'').split('?')[0].split('#')[0]===page)el.classList.add('active');
     });
-
-    /* ===== الوضع الحالي ===== */
-    let currentMode = 'monthly'; /* monthly | years | rate */
-    let growthChart = null;
-
-    function switchMode(mode) {
-        currentMode = mode;
-        ['monthly','years','rate'].forEach(m => {
-            document.getElementById('btn-' + m).classList.toggle('active', m === mode);
-        });
-
-        /* إظهار/إخفاء الحقول حسب الوضع */
-        /* monthly: نحسب الدفعة → نحتاج years + rate */
-        /* years:   نحسب المدة  → نحتاج monthly + rate */
-        /* rate:    نحسب العائد → نحتاج monthly + years */
-        const show = {
-            monthly: { monthly: false, years: true,  rate: true  },
-            years:   { monthly: true,  years: false, rate: true  },
-            rate:    { monthly: true,  years: true,  rate: false }
-        };
-        const titles = {
-            monthly: '📅 كم أدّخر شهرياً للوصول لهدفك؟',
-            years:   '⏳ كم سنة تحتاج للوصول لهدفك؟',
-            rate:    '📈 أي عائد تحتاج للوصول لهدفك؟'
-        };
-        document.getElementById('inputTitle').textContent = titles[mode];
-
-        Object.entries(show[mode]).forEach(([field, visible]) => {
-            const el = document.getElementById('field-' + field);
-            if (el) el.style.display = visible ? '' : 'none';
-        });
-
-        document.getElementById('resultsSection').style.display = 'none';
+});
+let currentMode='monthly';
+let growthChart=null;
+function switchMode(mode){
+    currentMode=mode;
+    ['monthly','years','rate'].forEach(m=>document.getElementById('btn-'+m).classList.toggle('active',m===mode));
+    const show={monthly:{monthly:false,years:true,rate:true},years:{monthly:true,years:false,rate:true},rate:{monthly:true,years:true,rate:false}};
+    const titles={monthly:'📅 كم أدّخر شهرياً؟',years:'⏳ كم سنة أحتاج؟',rate:'📈 أي عائد أحتاج؟'};
+    document.getElementById('inputTitle').textContent=titles[mode];
+    Object.entries(show[mode]).forEach(([field,visible])=>{const el=document.getElementById('field-'+field);if(el)el.style.display=visible?'':'none';});
+    document.getElementById('resultsSection').style.display='none';
+}
+const fmt=n=>Number(n.toFixed(0)).toLocaleString('ar-SA');
+function calculate(){
+    const goal=parseFloat(document.getElementById('goalAmount').value)||0;
+    const current=parseFloat(document.getElementById('currentSavings').value)||0;
+    const monthly=parseFloat(document.getElementById('monthlyAmount').value)||0;
+    const years=parseFloat(document.getElementById('targetYears').value)||0;
+    const rate=parseFloat(document.getElementById('annualRate').value)||0;
+    const inflation=parseFloat(document.getElementById('inflationRate').value)||0;
+    if(!goal){alert('⚠️ أدخل الهدف أولاً.');return;}
+    let result,mainLabel,mainSub;
+    const r=rate/100/12;
+    if(currentMode==='monthly'){
+        if(!years||!rate){alert('⚠️ أدخل عدد السنوات والعائد.');return;}
+        const n=years*12,factor=Math.pow(1+r,n);
+        result=r>0?(goal-current*factor)*r/(factor-1):(goal-current)/n;
+        result=Math.max(0,result);
+        mainLabel='تحتاج أن تدّخر شهرياً';
+        mainSub=`للوصول إلى ${fmt(goal)} خلال ${years} سنة بعائد ${rate}%`;
+    } else if(currentMode==='years'){
+        if(!monthly||!rate){alert('⚠️ أدخل المبلغ الشهري والعائد.');return;}
+        let n=1;
+        while(n<=600){const fv=r>0?current*Math.pow(1+r,n)+monthly*(Math.pow(1+r,n)-1)/r:current+monthly*n;if(fv>=goal)break;n++;}
+        result=n/12;
+        mainLabel='تحتاج تقريباً';
+        mainSub=`لتصل إلى ${fmt(goal)} بادّخار ${fmt(monthly)} شهرياً`;
+    } else {
+        if(!monthly||!years){alert('⚠️ أدخل المبلغ وعدد السنوات.');return;}
+        const n=years*12;let lo=0,hi=1,mid,fv;
+        for(let i=0;i<100;i++){mid=(lo+hi)/2;fv=mid>0?current*Math.pow(1+mid,n)+monthly*(Math.pow(1+mid,n)-1)/mid:current+monthly*n;if(fv<goal)lo=mid;else hi=mid;}
+        result=mid*12*100;
+        mainLabel='تحتاج عائداً سنوياً';
+        mainSub=`لتصل إلى ${fmt(goal)} خلال ${years} سنة`;
     }
-
-    /* ===== تنسيق الأرقام ===== */
-    const fmt  = n => Number(n.toFixed(0)).toLocaleString('ar-SA');
-    const fmt2 = n => Number(n.toFixed(2)).toLocaleString('ar-SA');
-
-    /* ===== الحساب الرئيسي ===== */
-    function calculate() {
-        const goal     = parseFloat(document.getElementById('goalAmount').value)    || 0;
-        const current  = parseFloat(document.getElementById('currentSavings').value) || 0;
-        const monthly  = parseFloat(document.getElementById('monthlyAmount').value) || 0;
-        const years    = parseFloat(document.getElementById('targetYears').value)   || 0;
-        const rate     = parseFloat(document.getElementById('annualRate').value)    || 0;
-        const inflation= parseFloat(document.getElementById('inflationRate').value) || 0;
-
-        if (!goal) { alert('⚠️ أدخل الهدف المالي أولاً.'); return; }
-
-        let result, mainLabel, mainSub;
-        const realRate = rate - inflation; /* العائد الحقيقي بعد التضخم */
-
-        /* العائد الشهري */
-        const r = rate / 100 / 12;
-
-        if (currentMode === 'monthly') {
-            if (!years || !rate) { alert('⚠️ أدخل عدد السنوات والعائد السنوي.'); return; }
-            const n = years * 12;
-            /* PMT = (FV - PV*(1+r)^n) * r / ((1+r)^n - 1) */
-            const fv  = goal;
-            const pv  = current;
-            const factor = Math.pow(1 + r, n);
-            result = r > 0
-                ? (fv - pv * factor) * r / (factor - 1)
-                : (fv - pv) / n;
-            result = Math.max(0, result);
-            mainLabel = 'تحتاج أن تدّخر شهرياً';
-            mainSub   = `للوصول إلى ${fmt(goal)} خلال ${years} سنة بعائد ${rate}%`;
-
-        } else if (currentMode === 'years') {
-            if (!monthly || !rate) { alert('⚠️ أدخل المبلغ الشهري والعائد السنوي.'); return; }
-            /* حل تكراري لإيجاد n */
-            let n = 1, pv = current;
-            while (n <= 600) {
-                const fv = r > 0
-                    ? pv * Math.pow(1+r,n) + monthly * (Math.pow(1+r,n)-1) / r
-                    : pv + monthly * n;
-                if (fv >= goal) break;
-                n++;
-            }
-            result    = n / 12;
-            mainLabel = 'تحتاج تقريباً';
-            mainSub   = `لتصل إلى ${fmt(goal)} بادّخار ${fmt(monthly)} شهرياً بعائد ${rate}%`;
-
-        } else { /* rate */
-            if (!monthly || !years) { alert('⚠️ أدخل المبلغ الشهري وعدد السنوات.'); return; }
-            const n = years * 12;
-            /* حل تكراري لإيجاد r */
-            let lo = 0, hi = 1, mid, fv;
-            for (let i = 0; i < 100; i++) {
-                mid = (lo + hi) / 2;
-                fv  = mid > 0
-                    ? current * Math.pow(1+mid,n) + monthly * (Math.pow(1+mid,n)-1) / mid
-                    : current + monthly * n;
-                if (fv < goal) lo = mid;
-                else           hi = mid;
-            }
-            result    = mid * 12 * 100;
-            mainLabel = 'تحتاج عائداً سنوياً بنسبة';
-            mainSub   = `لتصل إلى ${fmt(goal)} خلال ${years} سنة بادّخار ${fmt(monthly)} شهرياً`;
-        }
-
-        /* ===== عرض النتيجة الرئيسية ===== */
-        document.getElementById('resultsSection').style.display = 'block';
-        document.getElementById('resultsSection')
-                .scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        document.getElementById('mainLabel').textContent = mainLabel;
-        document.getElementById('mainSub').textContent   = mainSub;
-
-        if (currentMode === 'monthly') {
-            document.getElementById('mainNumber').textContent = fmt(result) + ' شهرياً';
-        } else if (currentMode === 'years') {
-            document.getElementById('mainNumber').textContent =
-                result.toFixed(1) + ' سنة';
-        } else {
-            document.getElementById('mainNumber').textContent =
-                result.toFixed(2) + '%';
-        }
-
-        /* ===== ملخص الأرقام ===== */
-        const usedMonthly = currentMode === 'monthly' ? result : monthly;
-        const usedYears   = currentMode === 'years'   ? result : years;
-        const usedRate    = currentMode === 'rate'    ? result : rate;
-        const usedR       = usedRate / 100 / 12;
-        const usedN       = Math.round(usedYears * 12);
-
-        const totalSaved  = usedMonthly * usedN + current;
-        const finalFV     = usedR > 0
-            ? current * Math.pow(1+usedR, usedN) + usedMonthly * (Math.pow(1+usedR,usedN)-1) / usedR
-            : current + usedMonthly * usedN;
-        const totalReturn = finalFV - totalSaved;
-        const returnPct   = totalSaved > 0 ? (totalReturn / totalSaved * 100) : 0;
-
-        document.getElementById('summaryGrid').innerHTML = `
-            <div class="summary-card">
-                <div class="s-label">الهدف المالي</div>
-                <div class="s-value">${fmt(goal)}</div>
-            </div>
-            <div class="summary-card">
-                <div class="s-label">إجمالي ما ستدّخره</div>
-                <div class="s-value">${fmt(totalSaved)}</div>
-            </div>
-            <div class="summary-card highlight">
-                <div class="s-label">العائد المتراكم</div>
-                <div class="s-value">${fmt(totalReturn)}</div>
-            </div>
-            <div class="summary-card">
-                <div class="s-label">نسبة الربح على الادّخار</div>
-                <div class="s-value">${returnPct.toFixed(0)}%</div>
-            </div>
-            <div class="summary-card">
-                <div class="s-label">العائد الحقيقي (بعد تضخم ${inflation}%)</div>
-                <div class="s-value">${(usedRate - inflation).toFixed(1)}%</div>
-            </div>
-            <div class="summary-card ${usedRate - inflation < 3 ? 'warn' : 'highlight'}">
-                <div class="s-label">قيمة هدفك اليوم</div>
-                <div class="s-value">${fmt(goal / Math.pow(1 + inflation/100, usedYears))}</div>
-            </div>
-        `;
-
-        /* ===== سيناريوهات العائد ===== */
-        const scenarios = [
-            { label: 'متحفظ',    rate: 4,  cls: 'conservative' },
-            { label: 'معتدل',    rate: 7,  cls: 'moderate'     },
-            { label: 'متفائل',   rate: 10, cls: 'optimistic'   },
-            { label: 'عدواني',   rate: 15, cls: 'aggressive'   },
-        ];
-        document.getElementById('scenariosGrid').innerHTML = scenarios.map(sc => {
-            const sr     = sc.rate / 100 / 12;
-            const sfv    = sr > 0
-                ? current * Math.pow(1+sr, usedN) + usedMonthly * (Math.pow(1+sr,usedN)-1) / sr
-                : current + usedMonthly * usedN;
-            const pct    = (sfv / goal * 100).toFixed(0);
-            return `
-                <div class="scenario-card ${sc.cls}">
-                    <div class="sc-rate">${sc.rate}% سنوياً</div>
-                    <div class="sc-amount">${fmt(sfv)}</div>
-                    <div class="sc-label">${pct}% من هدفك — ${sc.label}</div>
-                </div>
-            `;
-        }).join('');
-
-        /* ===== الرسم البياني ===== */
-        const chartLabels  = [];
-        const chartSaved   = [];
-        const chartPortfolio = [];
-        let   cumSaved = current, cumFV = current;
-
-        for (let y = 0; y <= Math.ceil(usedYears); y++) {
-            chartLabels.push('س' + y);
-            chartSaved.push(+(current + usedMonthly * y * 12).toFixed(0));
-            const n2 = y * 12;
-            const fv2 = usedR > 0
-                ? current * Math.pow(1+usedR,n2) + usedMonthly*(Math.pow(1+usedR,n2)-1)/usedR
-                : current + usedMonthly * n2;
-            chartPortfolio.push(+fv2.toFixed(0));
-        }
-
-        if (growthChart) { growthChart.destroy(); growthChart = null; }
-        const ctx = document.getElementById('growthChart').getContext('2d');
-        growthChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: chartLabels,
-                datasets: [
-                    {
-                        label: 'قيمة المحفظة',
-                        data: chartPortfolio,
-                        borderColor: '#0f3460',
-                        backgroundColor: 'rgba(15,52,96,0.1)',
-                        fill: true, tension: 0.4, pointRadius: 3
-                    },
-                    {
-                        label: 'المدّخر الفعلي',
-                        data: chartSaved,
-                        borderColor: '#e74c3c',
-                        borderDash: [6,3],
-                        backgroundColor: 'transparent',
-                        fill: false, tension: 0.1, pointRadius: 0
-                    },
-                    {
-                        label: 'الهدف',
-                        data: Array(chartLabels.length).fill(goal),
-                        borderColor: '#27ae60',
-                        borderDash: [4,4],
-                        backgroundColor: 'transparent',
-                        fill: false, pointRadius: 0
-                    }
-                ]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: true, position: 'top' } },
-                scales: { y: { beginAtZero: false } }
-            }
-        });
-
-        /* ===== جدول المراحل ===== */
-        const milestones = [1,2,3,5,7,10,15,20,25,30]
-            .filter(y => y <= Math.ceil(usedYears) + 2);
-        const goalYear = Math.ceil(usedYears);
-
-        document.getElementById('milestoneBody').innerHTML = milestones.map(y => {
-            const n3   = y * 12;
-            const fv3  = usedR > 0
-                ? current * Math.pow(1+usedR,n3) + usedMonthly*(Math.pow(1+usedR,n3)-1)/usedR
-                : current + usedMonthly * n3;
-            const saved3  = current + usedMonthly * n3;
-            const return3 = fv3 - saved3;
-            const pct3    = (fv3 / goal * 100).toFixed(0);
-            const isGoal  = y === goalYear;
-            return `
-                <tr class="${isGoal ? 'goal-row' : ''}">
-                    <td>${y} ${isGoal ? '🎯' : ''}</td>
-                    <td>${fmt(saved3)}</td>
-                    <td>${fmt(return3)}</td>
-                    <td>${fmt(fv3)}</td>
-                    <td>${pct3}%</td>
-                </tr>
-            `;
-        }).join('');
-
-        /* ===== التحليل الذكي ===== */
-        const insights = [];
-        const realR = usedRate - inflation;
-
-        if (realR < 0) {
-            insights.push(`⚠️ عائدك الحقيقي سالب (${realR.toFixed(1)}%) — التضخم يأكل مدّخراتك. تحتاج عائداً أعلى من ${inflation}% فقط للحفاظ على قيمة أموالك.`);
-        } else if (realR < 3) {
-            insights.push(`⚠️ عائدك الحقيقي منخفض (${realR.toFixed(1)}%) — ضع في اعتبارك أدوات استثمار بعائد أعلى.`);
-        } else {
-            insights.push(`✅ عائدك الحقيقي جيد (${realR.toFixed(1)}%) — أموالك تنمو فعلاً بعد احتساب التضخم.`);
-        }
-
-        if (currentMode === 'monthly') {
-            const pctOfGoal = usedMonthly / goal * 100;
-            insights.push(`📊 الدفعة الشهرية تمثل ${pctOfGoal.toFixed(2)}% من هدفك — ${pctOfGoal < 1 ? 'ممتاز، الهدف كبير والمدة طويلة' : 'خطة معقولة'}.`);
-        }
-
-        const compoundRatio = totalReturn / totalSaved * 100;
-        if (compoundRatio > 100) {
-            insights.push(`🚀 المركّب يعمل لصالحك — العائد (${fmt(totalReturn)}) يتجاوز ما ادّخرته بنفسك (${fmt(totalSaved)}). هذا هو سر الاستثمار طويل الأمد.`);
-        }
-
-        document.getElementById('insightText').innerHTML =
-            insights.map(i => `<p>${i}</p>`).join('');
-    }
-
-    /* ===== Reset ===== */
-    function resetAll() {
-        if (!confirm('إعادة تعيين جميع البيانات؟')) return;
-        ['goalAmount','currentSavings','monthlyAmount','targetYears','annualRate']
-            .forEach(id => document.getElementById(id).value = '');
-        document.getElementById('inflationRate').value = '3';
-        document.getElementById('resultsSection').style.display = 'none';
-        if (growthChart) { growthChart.destroy(); growthChart = null; }
-        switchMode('monthly');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    /* ===== Init ===== */
+    document.getElementById('resultsSection').style.display='block';
+    document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+    document.getElementById('mainLabel').textContent=mainLabel;
+    document.getElementById('mainSub').textContent=mainSub;
+    document.getElementById('mainNumber').textContent=currentMode==='monthly'?fmt(result)+' شهرياً':currentMode==='years'?result.toFixed(1)+' سنة':result.toFixed(2)+'%';
+    const usedMonthly=currentMode==='monthly'?result:monthly;
+    const usedYears=currentMode==='years'?result:years;
+    const usedRate=currentMode==='rate'?result:rate;
+    const usedR=usedRate/100/12;
+    const usedN=Math.round(usedYears*12);
+    const totalSaved=usedMonthly*usedN+current;
+    const finalFV=usedR>0?current*Math.pow(1+usedR,usedN)+usedMonthly*(Math.pow(1+usedR,usedN)-1)/usedR:current+usedMonthly*usedN;
+    const totalReturn=finalFV-totalSaved;
+    const returnPct=totalSaved>0?(totalReturn/totalSaved*100):0;
+    document.getElementById('summaryGrid').innerHTML=`<div class="summary-card"><div class="s-label">الهدف</div><div class="s-value">${fmt(goal)}</div></div><div class="summary-card"><div class="s-label">ما ستدّخره</div><div class="s-value">${fmt(totalSaved)}</div></div><div class="summary-card highlight"><div class="s-label">العائد</div><div class="s-value">${fmt(totalReturn)}</div></div><div class="summary-card"><div class="s-label">نسبة الربح</div><div class="s-value">${returnPct.toFixed(0)}%</div></div><div class="summary-card"><div class="s-label">عائد حقيقي</div><div class="s-value">${(usedRate-inflation).toFixed(1)}%</div></div><div class="summary-card ${usedRate-inflation<3?'warn':'highlight'}"><div class="s-label">قيمة هدفك اليوم</div><div class="s-value">${fmt(goal/Math.pow(1+inflation/100,usedYears))}</div></div>`;
+    const scenarios=[{label:'متحفظ',rate:4,cls:'conservative'},{label:'معتدل',rate:7,cls:'moderate'},{label:'متفائل',rate:10,cls:'optimistic'},{label:'عدواني',rate:15,cls:'aggressive'}];
+    document.getElementById('scenariosGrid').innerHTML=scenarios.map(sc=>{const sr=sc.rate/100/12;const sfv=sr>0?current*Math.pow(1+sr,usedN)+usedMonthly*(Math.pow(1+sr,usedN)-1)/sr:current+usedMonthly*usedN;const pct=(sfv/goal*100).toFixed(0);return`<div class="scenario-card ${sc.cls}"><div class="sc-rate">${sc.rate}% سنوياً</div><div class="sc-amount">${fmt(sfv)}</div><div class="sc-label">${pct}% من هدفك — ${sc.label}</div></div>`;}).join('');
+    const chartLabels=[],chartSaved=[],chartPortfolio=[];
+    for(let y=0;y<=Math.ceil(usedYears);y++){chartLabels.push('س'+y);chartSaved.push(+(current+usedMonthly*y*12).toFixed(0));const n2=y*12;const fv2=usedR>0?current*Math.pow(1+usedR,n2)+usedMonthly*(Math.pow(1+usedR,n2)-1)/usedR:current+usedMonthly*n2;chartPortfolio.push(+fv2.toFixed(0));}
+    if(growthChart){growthChart.destroy();growthChart=null;}
+    const ctx=document.getElementById('growthChart').getContext('2d');
+    growthChart=new Chart(ctx,{type:'line',data:{labels:chartLabels,datasets:[{label:'قيمة المحفظة',data:chartPortfolio,borderColor:'#0f3460',backgroundColor:'rgba(15,52,96,0.1)',fill:true,tension:0.4,pointRadius:3},{label:'المدّخر الفعلي',data:chartSaved,borderColor:'#e74c3c',borderDash:[6,3],backgroundColor:'transparent',fill:false,tension:0.1,pointRadius:0},{label:'الهدف',data:Array(chartLabels.length).fill(goal),borderColor:'#27ae60',borderDash:[4,4],backgroundColor:'transparent',fill:false,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top'}},scales:{y:{beginAtZero:false}}}});
+    const milestones=[1,2,3,5,7,10,15,20,25,30].filter(y=>y<=Math.ceil(usedYears)+2);
+    const goalYear=Math.ceil(usedYears);
+    document.getElementById('milestoneBody').innerHTML=milestones.map(y=>{const n3=y*12;const fv3=usedR>0?current*Math.pow(1+usedR,n3)+usedMonthly*(Math.pow(1+usedR,n3)-1)/usedR:current+usedMonthly*n3;const saved3=current+usedMonthly*n3;const return3=fv3-saved3;const pct3=(fv3/goal*100).toFixed(0);const isGoal=y===goalYear;return`<tr class="${isGoal?'goal-row':''}"><td>${y} ${isGoal?'🎯':''}</td><td>${fmt(saved3)}</td><td>${fmt(return3)}</td><td>${fmt(fv3)}</td><td>${pct3}%</td></tr>`;}).join('');
+    const insights=[];
+    const realR=usedRate-inflation;
+    if(realR<0)insights.push(`⚠️ عائدك الحقيقي سالب (${realR.toFixed(1)}%) — التضخم يأكل مدّخراتك.`);
+    else if(realR<3)insights.push(`⚠️ عائدك الحقيقي منخفض (${realR.toFixed(1)}%) — ضع في اعتبارك أدوات بعائد أعلى.`);
+    else insights.push(`✅ عائدك الحقيقي جيد (${realR.toFixed(1)}%) — أموالك تنمو بعد التضخم.`);
+    const compoundRatio=totalReturn/totalSaved*100;
+    if(compoundRatio>100)insights.push(`🚀 العائد (${fmt(totalReturn)}) يتجاوز ما ادّخرته بنفسك (${fmt(totalSaved)}) — هذا سر الاستثمار طويل الأمد.`);
+    document.getElementById('insightText').innerHTML=insights.map(i=>`<p>${i}</p>`).join('');
+    if(window.ResultsEngine)window.ResultsEngine.paint();
+}
+function resetAll(){
+    if(!confirm('إعادة تعيين؟'))return;
+    ['goalAmount','currentSavings','monthlyAmount','targetYears','annualRate'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('inflationRate').value='3';
+    document.getElementById('resultsSection').style.display='none';
+    if(growthChart){growthChart.destroy();growthChart=null;}
     switchMode('monthly');
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+switchMode('monthly');
 </script>
 </body>
 </html>
