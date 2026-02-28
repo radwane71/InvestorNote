@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مفكرة مستثمر</title>
 
+    <!-- ===== Favicon & PWA Icons ===== -->
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4a6fa5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="مفكرة مستثمر">
+
     <!-- ✅ navigation.css في head -->
     <link rel="stylesheet" href="navigation.css">
 
@@ -205,7 +215,6 @@
     </nav>
 
     <script>
-        /* ✅ open بدل collapsed */
         function toggleNavbar() {
             document.getElementById('navbarMenu').classList.toggle('open');
         }
@@ -240,7 +249,6 @@
         <a href="goal_calculator.html"           class="box internal"><span class="badge">✦ داخلي</span><h3>🎯 الهدف الاستثماري العكسي</h3><span class="url">goal_calculator.html</span></a>
         <a href="allocation_calculator.html"     class="box internal"><span class="badge">✦ داخلي</span><h3>⚖️ توزيع المحفظة</h3><span class="url">allocation_calculator.html</span></a>
         <a href="investor_tips.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>⚠️ نصائح الاستثمار</h3><span class="url">investor_tips.html</span></a>
-        <!-- ✅ مضافة جديدة -->
         <a href="sell_decision.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>🤔 هل أبيع سهمي؟</h3><span class="url">sell_decision.html</span></a>
     </div>
 
@@ -394,7 +402,6 @@
 </footer>
 
 <script>
-    /* ===== Back to Top ===== */
     window.addEventListener('scroll', function () {
         document.getElementById('backToTop')
                 .classList.toggle('visible', window.scrollY > 400);
