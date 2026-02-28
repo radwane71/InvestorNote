@@ -32,6 +32,7 @@
   --shadow-glow-b:  0 0 20px rgba(59,130,246,0.25);
   --shadow-glow-g:  0 0 20px rgba(16,185,129,0.25);
   --shadow-glow-r:  0 0 20px rgba(239,68,68,0.25);
+  --shadow-glow-gold: 0 0 24px rgba(245,158,11,0.3);
   --radius:         16px;
   --radius-sm:      10px;
   --radius-xs:      6px;
@@ -50,7 +51,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* خلفية متدرجة بدل اللون المسطح */
 body {
   background:
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(37,99,235,0.12), transparent),
@@ -100,7 +100,7 @@ small { color: var(--text-muted) !important; }
   color: var(--text-body) !important;
 }
 
-/* ===== rule-item داخل الصفحات ===== */
+/* ===== rule-item ===== */
 .rule-item {
   background: var(--bg-card2) !important;
   border: 1px solid var(--border) !important;
@@ -118,7 +118,6 @@ small { color: var(--text-muted) !important; }
 .rule-item h4 { color: var(--blue-light) !important; }
 .rule-item p, .rule-item li { color: var(--text-body) !important; }
 
-/* ===== rule-item داخل الأقسام الملونة — يظل شبه شفاف ===== */
 .behavioral-biases .rule-item,
 .valuation-ratios .rule-item,
 .passive-investing .rule-item,
@@ -136,7 +135,7 @@ small { color: var(--text-muted) !important; }
   background: rgba(255,255,255,0.14) !important;
 }
 
-/* ===== behavior-tip (نصائح سلوكية) ===== */
+/* ===== behavior-tip ===== */
 .behavior-tip {
   background: rgba(255,255,255,0.06) !important;
   border: 1px solid rgba(255,255,255,0.12) !important;
@@ -146,7 +145,7 @@ small { color: var(--text-muted) !important; }
 .behavior-tip h3 { color: var(--gold-light) !important; }
 .behavior-tip p  { color: rgba(255,255,255,0.88) !important; }
 
-/* ===== الأقسام الملونة — تحتفظ بألوانها مع تحسين ===== */
+/* ===== الأقسام الملونة ===== */
 .behavioral-biases {
   background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%) !important;
   border: 1px solid rgba(239,68,68,0.3) !important;
@@ -189,7 +188,6 @@ small { color: var(--text-muted) !important; }
   border-radius: var(--radius) !important;
 }
 
-/* النص داخل الأقسام الملونة */
 .behavioral-biases h2,
 .valuation-ratios h2,
 .passive-investing h2,
@@ -207,7 +205,7 @@ small { color: var(--text-muted) !important; }
 .order-types p,
 .time-horizons p { color: rgba(255,255,255,0.9) !important; }
 
-/* ===== الـ intro (بداية صفحة النصائح) ===== */
+/* ===== intro ===== */
 .intro {
   background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #db2777 100%) !important;
   border: 1px solid rgba(139,92,246,0.4) !important;
@@ -216,14 +214,80 @@ small { color: var(--text-muted) !important; }
 }
 .intro h2, .intro p { color: #fff !important; }
 
-/* ===== Warning & Note ===== */
-.warning-box {
-  background: rgba(245,158,11,0.1) !important;
-  border: 1.5px solid rgba(245,158,11,0.4) !important;
+/* ============================================================
+   ⚠️ بوكس التنبيه الذهبي الموحّد — يُطبَّق على كل الصفحات
+   استخدم: class="alert-legal" أو class="disclaimer" أو class="legal-banner" أو class="disclaimer-box"
+   ============================================================ */
+.alert-legal,
+.legal-banner,
+.disclaimer-box,
+.disclaimer,
+.warning-box,
+.tips-section,
+.note,
+.golden-rule {
+  background: linear-gradient(135deg, #1a1400 0%, #2a1f00 60%, #1a1000 100%) !important;
+  border: 2px solid var(--gold) !important;
+  border-right: 5px solid var(--gold) !important;
   border-radius: var(--radius-sm) !important;
+  color: #fde68a !important;
+  box-shadow: var(--shadow-glow-gold), inset 0 0 30px rgba(245,158,11,0.04) !important;
+  padding: 18px 20px !important;
+  position: relative;
+  overflow: hidden;
 }
-.warning-box h4, .warning-box p { color: var(--gold-light) !important; }
 
+.alert-legal::before,
+.legal-banner::before,
+.disclaimer-box::before,
+.disclaimer::before,
+.warning-box::before,
+.tips-section::before,
+.note::before,
+.golden-rule::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.6;
+}
+
+.alert-legal *,
+.legal-banner *,
+.disclaimer-box *,
+.disclaimer *,
+.warning-box *,
+.tips-section *,
+.note *,
+.golden-rule * {
+  color: #fde68a !important;
+}
+
+.alert-legal h3, .alert-legal h4,
+.legal-banner h3, .legal-banner h4,
+.disclaimer-box h3, .disclaimer-box h4,
+.disclaimer h3, .disclaimer h4,
+.warning-box h3, .warning-box h4 {
+  color: var(--gold-light) !important;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.alert-legal p,
+.legal-banner p,
+.disclaimer-box p,
+.disclaimer p,
+.warning-box p,
+.tips-section p,
+.note p {
+  color: #fde68a !important;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  opacity: 0.95;
+}
+
+/* ===== important-note — أخضر ===== */
 .important-note {
   background: rgba(16,185,129,0.08) !important;
   border: 1.5px solid rgba(16,185,129,0.3) !important;
@@ -231,38 +295,7 @@ small { color: var(--text-muted) !important; }
 }
 .important-note p { color: var(--green-light) !important; }
 
-.note {
-  background: rgba(245,158,11,0.08) !important;
-  border: 1px solid rgba(245,158,11,0.3) !important;
-  border-radius: var(--radius-xs) !important;
-  color: var(--gold-light) !important;
-}
-
-/* ===== alert-legal (الإقرار القانوني) ===== */
-.alert-legal,
-.legal-banner,
-.disclaimer-box {
-  background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(239,68,68,0.08)) !important;
-  border: 1.5px solid rgba(245,158,11,0.35) !important;
-  border-radius: var(--radius-sm) !important;
-  color: var(--gold-light) !important;
-  box-shadow: 0 0 16px rgba(245,158,11,0.08) !important;
-}
-.alert-legal p,
-.legal-banner p,
-.disclaimer-box { color: var(--gold-light) !important; }
-
 /* ===== القاعدة الذهبية ===== */
-.golden-rule {
-  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(251,191,36,0.1)) !important;
-  border: 1.5px solid rgba(245,158,11,0.4) !important;
-  border-radius: var(--radius-sm) !important;
-  color: var(--gold-light) !important;
-  box-shadow: 0 0 16px rgba(245,158,11,0.1);
-}
-.golden-rule strong { color: #fde68a !important; }
-
-/* ===== Golden Number ===== */
 .golden-number {
   background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(251,191,36,0.08)) !important;
   border: 1.5px solid rgba(245,158,11,0.35) !important;
@@ -298,7 +331,6 @@ small { color: var(--text-muted) !important; }
 .quote-card.graham  .quote-author { color: var(--red-light) !important; }
 .quote-card.lynch   .quote-author { color: var(--blue-light) !important; }
 .quote-text { color: var(--text-body) !important; font-style: italic; }
-.quote-text::before { color: var(--blue) !important; opacity: 0.5; }
 
 /* ===== summary-cards ===== */
 .summary-card {
@@ -325,14 +357,105 @@ small { color: var(--text-muted) !important; }
   box-shadow: 0 4px 16px rgba(30,58,95,0.5) !important;
 }
 
-/* ===== result-card (نتيجة الاستبيانات والحاسبات) ===== */
-.result-card {
+/* ============================================================
+   🎨 بوكس النتائج الديناميكي — ألوان حسب النتيجة
+   ============================================================ */
+
+/* النتيجة الإيجابية — أخضر */
+.result-card,
+.result-card.positive,
+.result-card.good,
+.result-card.safe,
+.result-area {
   background: var(--bg-card) !important;
   border: 1px solid var(--border) !important;
   border-radius: var(--radius) !important;
   box-shadow: var(--shadow-card) !important;
   color: var(--text-body) !important;
+  transition: var(--transition);
 }
+
+/* نتيجة إيجابية — خضراء */
+.result-card.result-positive,
+.result-card.result-good,
+.result-card.result-hold,
+.result-card.result-safe,
+.result-card.fire-number,
+.results-section .result-card:nth-child(2) {
+  background: linear-gradient(135deg, #052e16 0%, #064e3b 100%) !important;
+  border: 1.5px solid rgba(16,185,129,0.45) !important;
+  box-shadow: 0 4px 24px rgba(16,185,129,0.2) !important;
+}
+.result-card.result-positive *,
+.result-card.result-good *,
+.result-card.result-hold *,
+.result-card.result-safe * { color: var(--green-light) !important; }
+
+/* نتيجة سلبية — حمراء */
+.result-card.result-negative,
+.result-card.result-bad,
+.result-card.result-sell,
+.result-card.result-danger,
+.result-card.fire-number {
+  background: linear-gradient(135deg, #2d0a0a 0%, #450a0a 100%) !important;
+  border: 1.5px solid rgba(239,68,68,0.45) !important;
+  box-shadow: 0 4px 24px rgba(239,68,68,0.2) !important;
+}
+.result-card.result-negative *,
+.result-card.result-bad *,
+.result-card.result-sell *,
+.result-card.result-danger * { color: var(--red-light) !important; }
+
+/* نتيجة تحذيرية — ذهبية */
+.result-card.result-warning,
+.result-card.result-review,
+.result-card.result-neutral {
+  background: linear-gradient(135deg, #1a1000 0%, #2a1a00 100%) !important;
+  border: 1.5px solid rgba(245,158,11,0.45) !important;
+  box-shadow: 0 4px 24px rgba(245,158,11,0.15) !important;
+}
+.result-card.result-warning *,
+.result-card.result-review *,
+.result-card.result-neutral * { color: var(--gold-light) !important; }
+
+/* بطاقات النتائج العامة — ألوان متنوعة وجذابة */
+.results-grid .result-card:nth-child(1) {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%) !important;
+  border: 1.5px solid rgba(139,92,246,0.4) !important;
+  box-shadow: 0 4px 20px rgba(139,92,246,0.2) !important;
+}
+.results-grid .result-card:nth-child(2) {
+  background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%) !important;
+  border: 1.5px solid rgba(59,130,246,0.4) !important;
+  box-shadow: 0 4px 20px rgba(59,130,246,0.2) !important;
+}
+.results-grid .result-card:nth-child(3) {
+  background: linear-gradient(135deg, #052e16 0%, #065f46 100%) !important;
+  border: 1.5px solid rgba(16,185,129,0.4) !important;
+  box-shadow: 0 4px 20px rgba(16,185,129,0.2) !important;
+}
+.results-grid .result-card:nth-child(4) {
+  background: linear-gradient(135deg, #1a1000 0%, #92400e 100%) !important;
+  border: 1.5px solid rgba(245,158,11,0.4) !important;
+  box-shadow: 0 4px 20px rgba(245,158,11,0.15) !important;
+}
+.results-grid .result-card:nth-child(5) {
+  background: linear-gradient(135deg, #2d0a3a 0%, #4c1d95 100%) !important;
+  border: 1.5px solid rgba(139,92,246,0.4) !important;
+  box-shadow: 0 4px 20px rgba(139,92,246,0.2) !important;
+}
+.results-grid .result-card:nth-child(6) {
+  background: linear-gradient(135deg, #0a2e2e 0%, #134e4a 100%) !important;
+  border: 1.5px solid rgba(20,184,166,0.4) !important;
+  box-shadow: 0 4px 20px rgba(20,184,166,0.2) !important;
+}
+
+.results-grid .result-card * { color: #fff !important; }
+.results-grid .result-card h3 { color: rgba(255,255,255,0.8) !important; font-size: 0.9rem; }
+.results-grid .result-card .result-amount,
+.results-grid .result-card .result-value { color: #fff !important; font-size: 1.6rem; font-weight: 800; }
+
+/* result-card داخل نتائج الاستبيانات */
 .result-card .result-title.hold   { color: var(--green-light) !important; }
 .result-card .result-title.sell   { color: var(--red-light) !important; }
 .result-card .result-title.review { color: var(--gold-light) !important; }
@@ -378,13 +501,9 @@ option { background: var(--bg-card); color: var(--text-h); }
   border-radius: var(--radius-xs) !important;
   color: var(--text-body) !important;
 }
-.radio-option {
-  color: var(--text-body) !important;
-}
+.radio-option { color: var(--text-body) !important; }
 .radio-option:hover { background: var(--bg-hover) !important; }
-input[type="checkbox"], input[type="radio"] {
-  accent-color: var(--blue);
-}
+input[type="checkbox"], input[type="radio"] { accent-color: var(--blue); }
 
 /* ===== Buttons ===== */
 .calculate-btn, .btn-calc {
@@ -456,7 +575,6 @@ tr:hover td {
   color: var(--text-h) !important;
 }
 
-/* أعمدة الجدول الزمني */
 .year-col           { background: rgba(15,31,61,0.8) !important; color: var(--text-h) !important; font-weight: 700; }
 .deposit-col,
 .total-deposit-col  { background: rgba(29,78,216,0.1) !important; color: #93c5fd !important; }
@@ -465,7 +583,6 @@ tr:hover td {
 .balance-col        { background: rgba(220,38,38,0.1) !important; color: #fca5a5 !important; font-weight: 700 !important; }
 .real-value-col     { background: rgba(139,92,246,0.1) !important; color: var(--purple-light) !important; }
 
-/* جداول داخل الأقسام الملونة */
 .ratios-table th, .time-horizon-table th, .comparison-etf-table th {
   background: rgba(255,255,255,0.12) !important;
   color: #fff !important;
@@ -509,9 +626,7 @@ canvas { border-radius: var(--radius-xs); }
 .box h3 { color: var(--text-h) !important; font-weight: 700; }
 .box .url { color: var(--blue-light) !important; }
 .box small { color: var(--text-muted) !important; }
-.box.internal {
-  border-color: rgba(16,185,129,0.3) !important;
-}
+.box.internal { border-color: rgba(16,185,129,0.3) !important; }
 .box.internal::before {
   background: linear-gradient(90deg, var(--green), var(--teal));
   opacity: 1;
@@ -557,7 +672,7 @@ canvas { border-radius: var(--radius-xs); }
 }
 .matrix-item strong { color: var(--text-h) !important; }
 
-/* ===== الصفحات الداخلية — أقسام الأصول والديون ===== */
+/* ===== أقسام الأصول والديون ===== */
 .assets-section {
   background: rgba(16,185,129,0.06) !important;
   border: 1.5px solid rgba(16,185,129,0.25) !important;
@@ -587,16 +702,6 @@ input[type="range"] {
   accent-color: var(--blue) !important;
   cursor: pointer;
 }
-
-/* ===== Disclaimer ===== */
-.disclaimer {
-  background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.08)) !important;
-  border: 1.5px solid rgba(245,158,11,0.3) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: 0 0 20px rgba(245,158,11,0.08) !important;
-}
-.disclaimer h3, .disclaimer h4 { color: var(--gold-light) !important; }
-.disclaimer p { color: var(--text-body) !important; opacity: 1 !important; }
 
 /* ===== Progress bars ===== */
 .progress-bar, .bar-fill { background: var(--blue) !important; border-radius: 4px; }
@@ -639,7 +744,7 @@ input[type="range"] {
 }
 .tip-card h3, .tip-section h3 { color: var(--text-h) !important; }
 
-/* ===== Inline styles — override الأبيض الـ hardcoded ===== */
+/* ===== Inline styles override ===== */
 [style*="background: white"],
 [style*="background:white"],
 [style*="background: #fff"],
@@ -699,8 +804,6 @@ footer {
 /* ============================================================
    salary_calculator.html + emergency_fund_calculator.html
    ============================================================ */
-
-/* الكارد الرئيسي للحاسبة */
 .calculator-section {
   background: var(--bg-card) !important;
   border: 1px solid var(--border) !important;
@@ -708,8 +811,6 @@ footer {
   box-shadow: var(--shadow-card) !important;
   color: var(--text-body) !important;
 }
-
-/* أقسام المعلومات */
 .info-section {
   background: var(--bg-card) !important;
   border: 1px solid var(--border) !important;
@@ -720,7 +821,6 @@ footer {
 .info-section h2 { color: var(--text-h) !important; }
 .info-section p  { color: var(--text-body) !important; }
 
-/* شرح القواعد المالية */
 .rule-explanation {
   background: var(--bg-card2) !important;
   border: 1px solid var(--border) !important;
@@ -730,7 +830,6 @@ footer {
 }
 .rule-explanation h3 { color: var(--blue-light) !important; }
 
-/* نتائج الراتب */
 .salary-breakdown {
   background: var(--bg-card2) !important;
   border: 1px solid var(--border) !important;
@@ -817,9 +916,7 @@ footer {
   border: 1px solid var(--border) !important;
   border-radius: var(--radius-xs) !important;
 }
-.stock-row:hover {
-  box-shadow: var(--shadow-glow-b) !important;
-}
+.stock-row:hover { box-shadow: var(--shadow-glow-b) !important; }
 .chart-box {
   background: var(--bg-card2) !important;
   border: 1px solid var(--border) !important;
