@@ -1,661 +1,661 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هل أبيع سهمي؟ — مفكرة مستثمر</title>
-    <link rel="stylesheet" href="navigation.css">
-    <link rel="stylesheet" href="dark-theme.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هل أبيع سهمي؟ — مفكرة مستثمر</title>
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            min-height: 100vh; padding: 20px; color: #f0f4f8;
-        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh; padding: 20px; color: #f0f4f8;
+        }
 
-        .container { max-width: 780px; margin: 0 auto; }
+        .container { max-width: 780px; margin: 0 auto; }
 
-        .page-header { text-align: center; margin-bottom: 30px; }
-        .page-header h1 {
-            font-size: 2.2rem; color: #ffffff; font-weight: bold;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-        }
-        .page-header p {
-            font-size: 0.95rem; color: #d0e1f9; margin-top: 8px; line-height: 1.6;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-        }
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .page-header h1 {
+            font-size: 2.2rem; color: #ffffff; font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+        .page-header p {
+            font-size: 0.95rem; color: #d0e1f9; margin-top: 8px; line-height: 1.6;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
 
-        .advisor-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255,255,255,0.15);
-            border-radius: 24px; padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-            margin-bottom: 20px; position: relative; overflow: hidden;
-        }
-        .advisor-card::before {
-            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px;
-            background: linear-gradient(90deg, #f39c12, #e74c3c, #c0392b);
-        }
+        .advisor-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 24px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        .advisor-card::before {
+            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c, #c0392b);
+        }
 
-        .progress-bar-wrap {
-            background: rgba(255,255,255,0.08); border-radius: 10px;
-            height: 8px; margin-bottom: 20px; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .progress-bar-fill {
-            height: 100%; background: linear-gradient(90deg, #5a7fb5, #5a9d7a);
-            border-radius: 10px; transition: width 0.4s ease; width: 0%;
-        }
-        .progress-label {
-            font-size: 0.78rem; color: #d0e1f9; text-align: left;
-            margin-bottom: 6px; direction: ltr; font-weight: 500;
-        }
+        .progress-bar-wrap {
+            background: rgba(255,255,255,0.08); border-radius: 10px;
+            height: 8px; margin-bottom: 20px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #5a7fb5, #5a9d7a);
+            border-radius: 10px; transition: width 0.4s ease; width: 0%;
+        }
+        .progress-label {
+            font-size: 0.78rem; color: #d0e1f9; text-align: left;
+            margin-bottom: 6px; direction: ltr; font-weight: 500;
+        }
 
-        .question-number {
-            font-size: 0.8rem; color: #ffa726; font-weight: bold;
-            margin-bottom: 6px; letter-spacing: 0.5px;
-        }
-        .question-text {
-            font-size: 1.15rem; font-weight: bold; color: #ffffff;
-            margin-bottom: 6px; line-height: 1.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-        }
-        .question-hint {
-            font-size: 0.82rem; color: #c8d6e5; margin-bottom: 20px; line-height: 1.5;
-            border-right: 3px solid #f39c12;
-            background: rgba(243,156,18,0.12); padding: 10px 12px;
-            border-radius: 0 8px 8px 0; backdrop-filter: blur(6px);
-        }
+        .question-number {
+            font-size: 0.8rem; color: #ffa726; font-weight: bold;
+            margin-bottom: 6px; letter-spacing: 0.5px;
+        }
+        .question-text {
+            font-size: 1.15rem; font-weight: bold; color: #ffffff;
+            margin-bottom: 6px; line-height: 1.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        .question-hint {
+            font-size: 0.82rem; color: #c8d6e5; margin-bottom: 20px; line-height: 1.5;
+            border-right: 3px solid #f39c12;
+            background: rgba(243,156,18,0.12); padding: 10px 12px;
+            border-radius: 0 8px 8px 0; backdrop-filter: blur(6px);
+        }
 
-        .input-group { margin-bottom: 20px; }
-        .input-group input[type="number"] {
-            width: 100%; padding: 12px 16px;
-            border: 2px solid rgba(255,255,255,0.15);
-            border-radius: 10px; font-size: 1rem; font-family: inherit;
-            color: #ffffff; background: rgba(255,255,255,0.06);
-            transition: border-color 0.2s, background 0.2s;
-            text-align: right; direction: rtl;
-        }
-        .input-group input:focus {
-            outline: none; border-color: #5a7fb5;
-            background: rgba(90,127,181,0.15);
-        }
-        .input-group input::placeholder { color: rgba(255,255,255,0.4); }
+        .input-group { margin-bottom: 20px; }
+        .input-group input[type="number"] {
+            width: 100%; padding: 12px 16px;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 10px; font-size: 1rem; font-family: inherit;
+            color: #ffffff; background: rgba(255,255,255,0.06);
+            transition: border-color 0.2s, background 0.2s;
+            text-align: right; direction: rtl;
+        }
+        .input-group input:focus {
+            outline: none; border-color: #5a7fb5;
+            background: rgba(90,127,181,0.15);
+        }
+        .input-group input::placeholder { color: rgba(255,255,255,0.4); }
 
-        .choice-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .btn-choice {
-            width: 100%; padding: 13px 16px; font-size: 0.97rem; font-weight: bold;
-            border: 2px solid rgba(255,255,255,0.15);
-            border-radius: 12px; cursor: pointer;
-            background: rgba(255,255,255,0.06); color: #ffffff;
-            text-align: right; font-family: inherit;
-            transition: border-color 0.2s, background 0.2s, transform 0.15s;
-            backdrop-filter: blur(6px);
-        }
-        .btn-choice:hover {
-            border-color: #5a7fb5; background: rgba(90,127,181,0.2);
-            transform: translateX(-3px);
-        }
-        .btn-choice.selected {
-            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
-            color: white; border-color: #4a6fa5;
-            box-shadow: 0 4px 12px rgba(90,127,181,0.4);
-        }
+        .choice-buttons { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .btn-choice {
+            width: 100%; padding: 13px 16px; font-size: 0.97rem; font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 12px; cursor: pointer;
+            background: rgba(255,255,255,0.06); color: #ffffff;
+            text-align: right; font-family: inherit;
+            transition: border-color 0.2s, background 0.2s, transform 0.15s;
+            backdrop-filter: blur(6px);
+        }
+        .btn-choice:hover {
+            border-color: #5a7fb5; background: rgba(90,127,181,0.2);
+            transform: translateX(-3px);
+        }
+        .btn-choice.selected {
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            color: white; border-color: #4a6fa5;
+            box-shadow: 0 4px 12px rgba(90,127,181,0.4);
+        }
 
-        .yn-buttons { display: flex; gap: 12px; margin-bottom: 10px; }
-        .btn-yes, .btn-no {
-            flex: 1; padding: 14px; font-size: 1.05rem; font-weight: bold;
-            border: none; border-radius: 12px; cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.15s; font-family: inherit;
-        }
-        .btn-yes {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: white; box-shadow: 0 4px 12px rgba(39,174,96,0.3);
-        }
-        .btn-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(39,174,96,0.5); }
-        .btn-no {
-            background: linear-gradient(135deg, #c0392b, #e74c3c);
-            color: white; box-shadow: 0 4px 12px rgba(192,57,43,0.3);
-        }
-        .btn-no:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(192,57,43,0.5); }
-        .btn-yes.selected { outline: 3px solid #145a32; }
-        .btn-no.selected  { outline: 3px solid #7b241c; }
+        .yn-buttons { display: flex; gap: 12px; margin-bottom: 10px; }
+        .btn-yes, .btn-no {
+            flex: 1; padding: 14px; font-size: 1.05rem; font-weight: bold;
+            border: none; border-radius: 12px; cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s; font-family: inherit;
+        }
+        .btn-yes {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white; box-shadow: 0 4px 12px rgba(39,174,96,0.3);
+        }
+        .btn-yes:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(39,174,96,0.5); }
+        .btn-no {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white; box-shadow: 0 4px 12px rgba(192,57,43,0.3);
+        }
+        .btn-no:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(192,57,43,0.5); }
+        .btn-yes.selected { outline: 3px solid #145a32; }
+        .btn-no.selected  { outline: 3px solid #7b241c; }
 
-        .btn-next {
-            width: 100%; padding: 13px;
-            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
-            color: white; border: none; border-radius: 12px;
-            font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit;
-            transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 4px 12px rgba(90,127,181,0.3); margin-top: 8px;
-        }
-        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(90,127,181,0.5); }
-        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-next {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            color: white; border: none; border-radius: 12px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; font-family: inherit;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 12px rgba(90,127,181,0.3); margin-top: 8px;
+        }
+        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(90,127,181,0.5); }
+        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-        .result-card {
-            display: none; border-radius: 24px; padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            text-align: center;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255,255,255,0.15);
-        }
-        .result-icon { font-size: 4rem; margin-bottom: 15px; }
-        .result-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
-        .result-title.sell   { color: #e74c3c; text-shadow: 0 0 10px rgba(231,76,60,0.5); }
-        .result-title.hold   { color: #2ecc71; text-shadow: 0 0 10px rgba(46,204,113,0.5); }
-        .result-title.review { color: #f39c12; text-shadow: 0 0 10px rgba(243,156,18,0.5); }
+        .result-card {
+            display: none; border-radius: 24px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255,255,255,0.15);
+        }
+        .result-icon { font-size: 4rem; margin-bottom: 15px; }
+        .result-title { font-size: 1.6rem; font-weight: bold; margin-bottom: 10px; }
+        .result-title.sell   { color: #e74c3c; text-shadow: 0 0 10px rgba(231,76,60,0.5); }
+        .result-title.hold   { color: #2ecc71; text-shadow: 0 0 10px rgba(46,204,113,0.5); }
+        .result-title.review { color: #f39c12; text-shadow: 0 0 10px rgba(243,156,18,0.5); }
 
-        .result-summary {
-            font-size: 0.95rem; color: #d0e1f9; line-height: 1.7;
-            margin-bottom: 20px; text-align: right;
-        }
+        .result-summary {
+            font-size: 0.95rem; color: #d0e1f9; line-height: 1.7;
+            margin-bottom: 20px; text-align: right;
+        }
 
-        .factors-section {
-            background: rgba(255,255,255,0.06); border-radius: 12px;
-            padding: 18px; margin-bottom: 20px; text-align: right;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .factors-section h4 {
-            font-size: 0.95rem; color: #ffffff; font-weight: bold; margin-bottom: 12px;
-        }
-        .factor-item {
-            display: flex; align-items: flex-start; gap: 10px;
-            margin-bottom: 8px; font-size: 0.88rem; color: #c8d6e5; line-height: 1.5;
-        }
-        .factor-dot {
-            width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0;
-        }
-        .dot-sell { background: #e74c3c; }
-        .dot-hold { background: #27ae60; }
-        .dot-neutral { background: #f39c12; }
+        .factors-section {
+            background: rgba(255,255,255,0.06); border-radius: 12px;
+            padding: 18px; margin-bottom: 20px; text-align: right;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .factors-section h4 {
+            font-size: 0.95rem; color: #ffffff; font-weight: bold; margin-bottom: 12px;
+        }
+        .factor-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 8px; font-size: 0.88rem; color: #c8d6e5; line-height: 1.5;
+        }
+        .factor-dot {
+            width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0;
+        }
+        .dot-sell { background: #e74c3c; }
+        .dot-hold { background: #27ae60; }
+        .dot-neutral { background: #f39c12; }
 
-        .score-meter { margin: 20px 0; }
-        .score-label {
-            display: flex; justify-content: space-between;
-            font-size: 0.8rem; color: #c8d6e5; margin-bottom: 6px;
-        }
-        .score-bar-wrap {
-            background: rgba(255,255,255,0.08); border-radius: 10px; height: 14px; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .score-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
-        .score-text { font-size: 0.85rem; color: #d0e1f9; margin-top: 6px; text-align: center; }
+        .score-meter { margin: 20px 0; }
+        .score-label {
+            display: flex; justify-content: space-between;
+            font-size: 0.8rem; color: #c8d6e5; margin-bottom: 6px;
+        }
+        .score-bar-wrap {
+            background: rgba(255,255,255,0.08); border-radius: 10px; height: 14px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .score-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+        .score-text { font-size: 0.85rem; color: #d0e1f9; margin-top: 6px; text-align: center; }
 
-        .btn-restart {
-            display: inline-block; padding: 12px 30px;
-            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
-            color: white; border: none; border-radius: 12px;
-            font-size: 0.95rem; font-weight: bold; cursor: pointer; font-family: inherit;
-            transition: transform 0.15s; margin-top: 10px;
-        }
-        .btn-restart:hover { transform: translateY(-2px); }
+        .btn-restart {
+            display: inline-block; padding: 12px 30px;
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            color: white; border: none; border-radius: 12px;
+            font-size: 0.95rem; font-weight: bold; cursor: pointer; font-family: inherit;
+            transition: transform 0.15s; margin-top: 10px;
+        }
+        .btn-restart:hover { transform: translateY(-2px); }
 
-        .back-to-top {
-            position: fixed; bottom: 30px; left: 30px;
-            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
-            color: white; border: none; border-radius: 50%;
-            width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(90,127,181,0.4);
-            transition: transform 0.3s, opacity 0.3s;
-            opacity: 0; pointer-events: none;
-            display: flex; align-items: center; justify-content: center; z-index: 999;
-        }
-        .back-to-top.visible { opacity: 1; pointer-events: auto; }
-        .back-to-top:hover { transform: translateY(-3px); }
+        .back-to-top {
+            position: fixed; bottom: 30px; left: 30px;
+            background: linear-gradient(135deg, #5a7fb5, #4a6fa5);
+            color: white; border: none; border-radius: 50%;
+            width: 48px; height: 48px; font-size: 1.3rem; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(90,127,181,0.4);
+            transition: transform 0.3s, opacity 0.3s;
+            opacity: 0; pointer-events: none;
+            display: flex; align-items: center; justify-content: center; z-index: 999;
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; }
+        .back-to-top:hover { transform: translateY(-3px); }
 
-        .disclaimer-box {
-            background: rgba(243,156,18,0.12); border: 2px solid rgba(243,156,18,0.3);
-            border-radius: 12px; padding: 14px 16px; margin-top: 20px;
-            color: #ffa726; font-weight: bold; font-size: 0.85rem; line-height: 1.6;
-            backdrop-filter: blur(6px); text-align: center;
-        }
+        .disclaimer-box {
+            background: rgba(243,156,18,0.12); border: 2px solid rgba(243,156,18,0.3);
+            border-radius: 12px; padding: 14px 16px; margin-top: 20px;
+            color: #ffa726; font-weight: bold; font-size: 0.85rem; line-height: 1.6;
+            backdrop-filter: blur(6px); text-align: center;
+        }
 
-        .override-alert {
-            background: rgba(231,76,60,0.15); border: 2px solid #e74c3c;
-            border-radius: 12px; padding: 15px; margin-bottom: 20px;
-            color: #ffcccc; font-weight: bold; text-align: right; line-height: 1.6;
-        }
+        .override-alert {
+            background: rgba(231,76,60,0.15); border: 2px solid #e74c3c;
+            border-radius: 12px; padding: 15px; margin-bottom: 20px;
+            color: #ffcccc; font-weight: bold; text-align: right; line-height: 1.6;
+        }
 
-        @media (max-width: 600px) {
-            .page-header h1 { font-size: 1.7rem; }
-            .advisor-card { padding: 20px; }
-            .question-text { font-size: 1rem; }
-            .yn-buttons { flex-direction: column; }
-        }
-    </style>
+        @media (max-width: 600px) {
+            .page-header h1 { font-size: 1.7rem; }
+            .advisor-card { padding: 20px; }
+            .question-text { font-size: 1rem; }
+            .yn-buttons { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="العودة للأعلى">↑</button>
 
 <div class="container">
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
-            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="index.html" class="navbar-item">🏠 الرئيسية</a>
-                <a href="advice.html" class="navbar-item calculator">💰 صافي الثروة</a>
-                <a href="salary_calculator.html" class="navbar-item salary">💼 تقسيم الراتب</a>
-                <a href="zakat_purification.html" class="navbar-item zakat">🕌 الزكاة</a>
-                <a href="financial_freedom.html" class="navbar-item fire">🔥 الحرية المالية</a>
-                <a href="investor_tips.html" class="navbar-item tips">⚠️ نصائح</a>
-                <a href="snowball_calculator.html" class="navbar-item calculator">❄️ العائد المركب</a>
-                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
-                <a href="average_calculator.html" class="navbar-item average">📊 متوسط الشراء</a>
-                <a href="company_valuation.html" class="navbar-item company">🏢 تقييم الشركة</a>
-                <a href="retirement_calculator.html" class="navbar-item retirement">🏖️ التقاعد</a>
-                <a href="portfolio_rating.html" class="navbar-item portfolio">🛡️ أمان المحفظة</a>
-                <a href="stock_valuation.html" class="navbar-item calculator">📊 تقييم الأسهم</a>
-                <a href="dca_calculator.html" class="navbar-item calculator">📅 DCA</a>
-                <a href="sell_decision.html" class="navbar-item calculator active">🤔 هل أبيع؟</a>
-                <a href="goal_calculator.html" class="navbar-item calculator">🎯 الهدف العكسي</a>
-                <a href="allocation_calculator.html" class="navbar-item allocation">⚖️ توزيع المحفظة</a>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html" class="navbar-item">🏠 الرئيسية</a>
+                <a href="advice.html" class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="salary_calculator.html" class="navbar-item salary">💼 تقسيم الراتب</a>
+                <a href="zakat_purification.html" class="navbar-item zakat">🕌 الزكاة</a>
+                <a href="financial_freedom.html" class="navbar-item fire">🔥 الحرية المالية</a>
+                <a href="investor_tips.html" class="navbar-item tips">⚠️ نصائح</a>
+                <a href="snowball_calculator.html" class="navbar-item calculator">❄️ العائد المركب</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+                <a href="average_calculator.html" class="navbar-item average">📊 متوسط الشراء</a>
+                <a href="company_valuation.html" class="navbar-item company">🏢 تقييم الشركة</a>
+                <a href="retirement_calculator.html" class="navbar-item retirement">🏖️ التقاعد</a>
+                <a href="portfolio_rating.html" class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+                <a href="stock_valuation.html" class="navbar-item calculator">📊 تقييم الأسهم</a>
+                <a href="dca_calculator.html" class="navbar-item calculator">📅 DCA</a>
+                <a href="sell_decision.html" class="navbar-item calculator active">🤔 هل أبيع؟</a>
+                <a href="goal_calculator.html" class="navbar-item calculator">🎯 الهدف العكسي</a>
+                <a href="allocation_calculator.html" class="navbar-item allocation">⚖️ توزيع المحفظة</a>
+            </div>
+        </div>
+    </nav>
 
-    <script>
-        function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('open'); }
-        document.addEventListener('DOMContentLoaded', function () {
-            const raw = window.location.pathname.split('/').pop() || 'index.html';
-            const page = raw.split('?')[0].split('#')[0] || 'index.html';
-            document.querySelectorAll('.navbar-item').forEach(function (item) {
-                item.classList.remove('active');
-                const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
-                if (href === page) item.classList.add('active');
-            });
-        });
-    </script>
+    <script>
+        function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('open'); }
+        document.addEventListener('DOMContentLoaded', function () {
+            const raw = window.location.pathname.split('/').pop() || 'index.html';
+            const page = raw.split('?')[0].split('#')[0] || 'index.html';
+            document.querySelectorAll('.navbar-item').forEach(function (item) {
+                item.classList.remove('active');
+                const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
+                if (href === page) item.classList.add('active');
+            });
+        });
+    </script>
 
-    <div class="page-header">
-        <h1>🤔 هل أبيع سهمي؟</h1>
-        <p>آلة قرار مالية تمزج بين الأساسيات والسلوك. أجب بصدق، واترك على الخوارزمية الباقي.</p>
-    </div>
+    <div class="page-header">
+        <h1>🤔 هل أبيع سهمي؟</h1>
+        <p>آلة قرار مالية تمزج بين الأساسيات والسلوك. أجب بصدق، واترك على الخوارزمية الباقي.</p>
+    </div>
 
-    <div class="advisor-card" id="questionCard">
-        <div class="progress-label"><span id="progressText">السؤال 1 من 13</span></div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
-        <div id="questionBody"></div>
-    </div>
+    <div class="advisor-card" id="questionCard">
+        <div class="progress-label"><span id="progressText">السؤال 1 من 13</span></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+        <div id="questionBody"></div>
+    </div>
 
-    <div class="result-card" id="resultCard"></div>
+    <div class="result-card" id="resultCard"></div>
 
-    <div class="disclaimer-box">
-        ⚠️ هذه الأداة نموذج تقييم رياضي وسلوكي مبسط. لا تغني عن التحليل المالي التفصيلي أو استشارة مستشار استثمار مرخص. قرار البيع والشراء يقع بالكامل على مسؤوليتك.
-    </div>
+    <div class="disclaimer-box">
+        ⚠️ هذه الأداة نموذج تقييم رياضي وسلوكي مبسط. لا تغني عن التحليل المالي التفصيلي أو استشارة مستشار استثمار مرخص. قرار البيع والشراء يقع بالكامل على مسؤوليتك.
+    </div>
 </div>
 
 <script src="results-engine.js"></script>
 <script>
 const SellDecisionApp = (function() {
-    const questions = [
-        { id: 'q1', type: 'choice', text: 'ما هو السبب الرئيسي لهبوط السهم؟', hint: 'اختر الوصف الأقرب لواقع السوق الحالي.', choices: [
-            { label: '📉 السوق بأكمله هابط وسهمي تأثر بالتبعية', weight: 3, hint: 'التسييل في موجات التصحيح العامة للسوق قرار خاطئ تاريخياً.' },
-            { label: '📰 إعلان أو خبر سلبي يخص الشركة', weight: -1, hint: 'الأخبار السلبية تتطلب تقييم الأثر الفعلي على الأرباح وليس السعر فقط.' },
-            { label: '📊 تراجع فعلي في أرباح الشركة أو توزيعاتها', weight: -2, hint: 'التراجع التشغيلي إشارة بنيوية تستوجب مراجعة جدوى الاستثمار بعمق.' },
-            { label: '❓ لا أعرف السبب', weight: 1, hint: 'الجهل بالسبب يعني أن القرار القادم سيكون عاطفياً. ابحث أولاً.' }
-        ]},
-        { id: 'q2', type: 'number', text: 'بكم اشتريت السهم؟ (متوسط التكلفة)', hint: 'أدخل متوسط السعر بدقة.', placeholder: 'مثال: 45.50', key: 'costPrice' },
-        { id: 'q3', type: 'number', text: 'كم السعر الحالي للسهم بالسوق؟', hint: 'أدخل السعر الحالي.', placeholder: 'مثال: 38.00', key: 'currentPrice' },
-        { id: 'q4', type: 'choice', text: 'كيف تقيم ربحية الشركة؟', hint: 'راجع القوائم المالية الأخيرة.', choices: [
-            { label: '✅ تحقق أرباحاً مستقرة أو متنامية', weight: 3, flag: 'profitable', hint: 'الربحية المستقرة هي خط الدفاع الأول ضد تقلبات الأسعار.' },
-            { label: '📉 رابحة لكن الأرباح تراجعت مؤخراً', weight: 0, flag: 'declining', hint: 'يجب التفرقة بين التراجع الموسمي والضعف الهيكلي المستمر.' },
-            { label: '❌ تسجل خسائر مستمرة أو بالكاد تتعادل', weight: -3, flag: 'losing', hint: 'التمسك بشركة خاسرة بلا خطة تعافٍ واضحة يدمر رأس المال.' }
-        ]},
-        { id: 'q5', type: 'choice', text: 'كيف هو سجل توزيعات الأرباح؟', hint: 'تقييم آخر 3 إلى 5 سنوات.', choices: [
-            { label: '💰 توزيعات منتظمة ومستقرة أو متنامية', weight: 3, hint: 'التوزيع المنتظم يثبت جودة التدفقات النقدية وانضباط الإدارة.' },
-            { label: '📊 توزع لكن المبالغ تتذبذب', weight: 1, hint: 'تذبذب التوزيع مقبول في الشركات الدورية.' },
-            { label: '⬇️ تم تقليص التوزيعات بوضوح', weight: -2, hint: 'خفض التوزيعات هو أقوى إشارة من الإدارة بوجود ضائقة مالية.' },
-            { label: '🚫 لا توزع أرباحاً', weight: -1, hint: 'الشركات التي لا توزع يجب أن تُظهر نمواً استثنائياً لتبرير الاحتفاظ بها.' }
-        ]},
-        { id: 'q6', type: 'choice', text: 'ما هو حجم الرافعة المالية (الديون) للشركة؟', hint: 'تقدير عام لمستوى الديون قياساً بالأصول والأرباح.', choices: [
-            { label: '✅ ديون منخفضة أو معدومة', weight: 2, flag: 'lowDebt', hint: 'الشركات منخفضة الديون تنجو بسهولة من الركود الاقتصادي.' },
-            { label: '⚠️ ديون متوسطة لكن التدفقات تغطيها', weight: 1, flag: 'midDebt', hint: 'مخاطرة مقبولة تشغيلياً طالما لم ترتفع أسعار الفائدة بشدة.' },
-            { label: '🔴 ديون عالية جداً وتشكل عبئاً', weight: -2, flag: 'highDebt', hint: 'الديون العالية مع تذبذب الأرباح تمهد لخطر الإفلاس المالي.' },
-            { label: '❓ لا توجد لدي معلومات', weight: -1, flag: 'unknownDebt', hint: 'عدم معرفة حجم ديون شركتك يعادل القيادة بعينين مغمضتين.' }
-        ]},
-        { id: 'q13', type: 'choice', text: 'كيف ترى تقييم السهم (Valuation) حالياً؟', hint: 'بناءً على مكررات الأرباح أو القيمة الدفترية أو المقارنة بالقطاع.', choices: [
-            { label: '💎 رخيص جداً أو قريب من العادل', weight: 3, hint: 'السهم ذو الأساسيات القوية والتقييم الرخيص نادراً ما يكون مرشحاً للبيع.' },
-            { label: '⚖️ تقييم متوسط ومقبول', weight: 0, hint: 'السعر لا يشكل ميزة إضافية ولا خطراً جسيماً.' },
-            { label: '📛 غالي جداً مقارنة بنتائج الشركة', weight: -3, hint: 'حتى الشركات الممتازة تصبح استثمارات سيئة إذا كان سعرها مبالغاً فيه.' },
-            { label: '❓ لم أقم بتقييمه', weight: -1, hint: 'تجاهل التقييم يجعلك عرضة لشراء فقاعات وبيع قيعان.' }
-        ]},
-        { id: 'q7', type: 'choice', text: 'هل تحتاج لتسييل هذا الاستثمار لغرض مالي طارئ؟', hint: 'الحاجة الفعلية للسيولة النقدية الآن.', choices: [
-            { label: '🔴 نعم، التزام ضروري لا يقبل التأجيل', weight: 0, isEmergency: true, hint: 'تم تفعيل التجاوز: الحاجة للسيولة الطارئة تفرض التسييل الفوري.' },
-            { label: '🟡 قد أحتاج السيولة خلال الأشهر الستة القادمة', weight: -1, hint: 'اقتراب موعد استحقاق مالي يتطلب خطة تسييل تدريجية لتجنب قاع السوق.' },
-            { label: '🟢 لا، المبلغ مخصص للاستثمار طويل الأجل', weight: 2, hint: 'عدم الحاجة للسيولة يعطيك ميزة الصبر على تذبذبات السوق.' }
-        ]},
-        { id: 'q8', type: 'yn', text: 'هل قمت بقراءة القوائم المالية الأخيرة للشركة؟', hint: 'هل اطلعت على الأرقام الحقيقية أم تعتمد على الآراء؟', weightYes: 1, weightNo: -1,
-          hintYes: 'القرار المبني على الأرقام هو أساس الاستثمار المؤسسي.',
-          hintNo: 'عدم قراءة القوائم يعني أن أي قرار بيع الآن مبني على العاطفة فقط.' },
-        // Q9 وزن مالي = صفر. يستخدم فقط للتحقق المتقاطع مع Q2 و Q3.
-        { id: 'q9', type: 'choice', text: 'في ذهنك، كيف ترى وضعك الحالي مع السهم؟', hint: 'مقارنة نسبة التغير بناء على التكلفة.', choices: [
-            { label: '📈 رابح بنسبة ملحوظة (+20% فأكثر)', weight: 0, bucket: 'up_20', hint: '' },
-            { label: '↔️ قريب جداً من رأس المال أو ربح/خسارة طفيفة', weight: 0, bucket: 'neutral', hint: '' },
-            { label: '📉 خسران بنسبة متوسطة (-20% إلى -40%)', weight: 0, bucket: 'down_20_40', hint: '' },
-            { label: '🔻 خسران بنسبة حادة (-40% فأكثر)', weight: 0, bucket: 'down_40', hint: '' }
-        ]},
-        { id: 'q10', type: 'yn', text: 'هل يوجد أصل بديل مدروس تريد نقل السيولة إليه؟', hint: 'التحويل المدروس مقابل الكاش المعطل.', weightYes: -1, weightNo: 1,
-          hintYes: 'تدوير رأس المال نحو فرص ذات عائد متوقع أعلى ممارسة استثمارية سليمة.',
-          hintNo: 'البيع للبقاء خارج السوق بدون خطة يقلل من العائد التراكمي.' },
-        // Q11 سلوكي بحت: لا وزن مالي، يُستخدم فقط لاستكشاف الذعر الأعمى.
-        { id: 'q11', type: 'yn', text: 'هل تشعر أن دافعك الرئيسي للبيع الآن هو الخوف والضغط النفسي؟', hint: 'تقييم ذاتي للحالة العاطفية.', weightYes: 0, weightNo: 0,
-          hintYes: 'يجب تأجيل قرارات التسييل عندما يكون الخوف هو المحرك الأساسي.',
-          hintNo: 'السيطرة على العواطف هي الخطوة الأولى نحو قرار مالي سليم.' },
-        { id: 'q12', type: 'choice', text: 'كم هي المدة التي قضيتها مستثمراً في هذا السهم؟', hint: 'قياس أفق الاستثمار الفعلي.', choices: [
-            { label: '📅 أقل من 6 أشهر', weight: 0, hint: 'التقلبات في الأمد القصير لا تعكس القيمة الجوهرية للشركة.' },
-            { label: '📅 من 6 أشهر إلى سنتين', weight: 1, hint: 'فترة كافية لبدء ظهور نتائج الخطط الاستراتيجية للإدارة.' },
-            { label: '📅 أكثر من سنتين', weight: 2, hint: 'الاستثمار اجتاز اختبار الزمن ومراحل الدورات الاقتصادية.' }
-        ]}
-    ];
+    const questions = [
+        { id: 'q1', type: 'choice', text: 'ما هو السبب الرئيسي لهبوط السهم؟', hint: 'اختر الوصف الأقرب لواقع السوق الحالي.', choices: [
+            { label: '📉 السوق بأكمله هابط وسهمي تأثر بالتبعية', weight: 3, hint: 'التسييل في موجات التصحيح العامة للسوق قرار خاطئ تاريخياً.' },
+            { label: '📰 إعلان أو خبر سلبي يخص الشركة', weight: -1, hint: 'الأخبار السلبية تتطلب تقييم الأثر الفعلي على الأرباح وليس السعر فقط.' },
+            { label: '📊 تراجع فعلي في أرباح الشركة أو توزيعاتها', weight: -2, hint: 'التراجع التشغيلي إشارة بنيوية تستوجب مراجعة جدوى الاستثمار بعمق.' },
+            { label: '❓ لا أعرف السبب', weight: 1, hint: 'الجهل بالسبب يعني أن القرار القادم سيكون عاطفياً. ابحث أولاً.' }
+        ]},
+        { id: 'q2', type: 'number', text: 'بكم اشتريت السهم؟ (متوسط التكلفة)', hint: 'أدخل متوسط السعر بدقة.', placeholder: 'مثال: 45.50', key: 'costPrice' },
+        { id: 'q3', type: 'number', text: 'كم السعر الحالي للسهم بالسوق؟', hint: 'أدخل السعر الحالي.', placeholder: 'مثال: 38.00', key: 'currentPrice' },
+        { id: 'q4', type: 'choice', text: 'كيف تقيم ربحية الشركة؟', hint: 'راجع القوائم المالية الأخيرة.', choices: [
+            { label: '✅ تحقق أرباحاً مستقرة أو متنامية', weight: 3, flag: 'profitable', hint: 'الربحية المستقرة هي خط الدفاع الأول ضد تقلبات الأسعار.' },
+            { label: '📉 رابحة لكن الأرباح تراجعت مؤخراً', weight: 0, flag: 'declining', hint: 'يجب التفرقة بين التراجع الموسمي والضعف الهيكلي المستمر.' },
+            { label: '❌ تسجل خسائر مستمرة أو بالكاد تتعادل', weight: -3, flag: 'losing', hint: 'التمسك بشركة خاسرة بلا خطة تعافٍ واضحة يدمر رأس المال.' }
+        ]},
+        { id: 'q5', type: 'choice', text: 'كيف هو سجل توزيعات الأرباح؟', hint: 'تقييم آخر 3 إلى 5 سنوات.', choices: [
+            { label: '💰 توزيعات منتظمة ومستقرة أو متنامية', weight: 3, hint: 'التوزيع المنتظم يثبت جودة التدفقات النقدية وانضباط الإدارة.' },
+            { label: '📊 توزع لكن المبالغ تتذبذب', weight: 1, hint: 'تذبذب التوزيع مقبول في الشركات الدورية.' },
+            { label: '⬇️ تم تقليص التوزيعات بوضوح', weight: -2, hint: 'خفض التوزيعات هو أقوى إشارة من الإدارة بوجود ضائقة مالية.' },
+            { label: '🚫 لا توزع أرباحاً', weight: -1, hint: 'الشركات التي لا توزع يجب أن تُظهر نمواً استثنائياً لتبرير الاحتفاظ بها.' }
+        ]},
+        { id: 'q6', type: 'choice', text: 'ما هو حجم الرافعة المالية (الديون) للشركة؟', hint: 'تقدير عام لمستوى الديون قياساً بالأصول والأرباح.', choices: [
+            { label: '✅ ديون منخفضة أو معدومة', weight: 2, flag: 'lowDebt', hint: 'الشركات منخفضة الديون تنجو بسهولة من الركود الاقتصادي.' },
+            { label: '⚠️ ديون متوسطة لكن التدفقات تغطيها', weight: 1, flag: 'midDebt', hint: 'مخاطرة مقبولة تشغيلياً طالما لم ترتفع أسعار الفائدة بشدة.' },
+            { label: '🔴 ديون عالية جداً وتشكل عبئاً', weight: -2, flag: 'highDebt', hint: 'الديون العالية مع تذبذب الأرباح تمهد لخطر الإفلاس المالي.' },
+            { label: '❓ لا توجد لدي معلومات', weight: -1, flag: 'unknownDebt', hint: 'عدم معرفة حجم ديون شركتك يعادل القيادة بعينين مغمضتين.' }
+        ]},
+        { id: 'q13', type: 'choice', text: 'كيف ترى تقييم السهم (Valuation) حالياً؟', hint: 'بناءً على مكررات الأرباح أو القيمة الدفترية أو المقارنة بالقطاع.', choices: [
+            { label: '💎 رخيص جداً أو قريب من العادل', weight: 3, hint: 'السهم ذو الأساسيات القوية والتقييم الرخيص نادراً ما يكون مرشحاً للبيع.' },
+            { label: '⚖️ تقييم متوسط ومقبول', weight: 0, hint: 'السعر لا يشكل ميزة إضافية ولا خطراً جسيماً.' },
+            { label: '📛 غالي جداً مقارنة بنتائج الشركة', weight: -3, hint: 'حتى الشركات الممتازة تصبح استثمارات سيئة إذا كان سعرها مبالغاً فيه.' },
+            { label: '❓ لم أقم بتقييمه', weight: -1, hint: 'تجاهل التقييم يجعلك عرضة لشراء فقاعات وبيع قيعان.' }
+        ]},
+        { id: 'q7', type: 'choice', text: 'هل تحتاج لتسييل هذا الاستثمار لغرض مالي طارئ؟', hint: 'الحاجة الفعلية للسيولة النقدية الآن.', choices: [
+            { label: '🔴 نعم، التزام ضروري لا يقبل التأجيل', weight: 0, isEmergency: true, hint: 'تم تفعيل التجاوز: الحاجة للسيولة الطارئة تفرض التسييل الفوري.' },
+            { label: '🟡 قد أحتاج السيولة خلال الأشهر الستة القادمة', weight: -1, hint: 'اقتراب موعد استحقاق مالي يتطلب خطة تسييل تدريجية لتجنب قاع السوق.' },
+            { label: '🟢 لا، المبلغ مخصص للاستثمار طويل الأجل', weight: 2, hint: 'عدم الحاجة للسيولة يعطيك ميزة الصبر على تذبذبات السوق.' }
+        ]},
+        { id: 'q8', type: 'yn', text: 'هل قمت بقراءة القوائم المالية الأخيرة للشركة؟', hint: 'هل اطلعت على الأرقام الحقيقية أم تعتمد على الآراء؟', weightYes: 1, weightNo: -1,
+          hintYes: 'القرار المبني على الأرقام هو أساس الاستثمار المؤسسي.',
+          hintNo: 'عدم قراءة القوائم يعني أن أي قرار بيع الآن مبني على العاطفة فقط.' },
+        // Q9 وزن مالي = صفر. يستخدم فقط للتحقق المتقاطع مع Q2 و Q3.
+        { id: 'q9', type: 'choice', text: 'في ذهنك، كيف ترى وضعك الحالي مع السهم؟', hint: 'مقارنة نسبة التغير بناء على التكلفة.', choices: [
+            { label: '📈 رابح بنسبة ملحوظة (+20% فأكثر)', weight: 0, bucket: 'up_20', hint: '' },
+            { label: '↔️ قريب جداً من رأس المال أو ربح/خسارة طفيفة', weight: 0, bucket: 'neutral', hint: '' },
+            { label: '📉 خسران بنسبة متوسطة (-20% إلى -40%)', weight: 0, bucket: 'down_20_40', hint: '' },
+            { label: '🔻 خسران بنسبة حادة (-40% فأكثر)', weight: 0, bucket: 'down_40', hint: '' }
+        ]},
+        { id: 'q10', type: 'yn', text: 'هل يوجد أصل بديل مدروس تريد نقل السيولة إليه؟', hint: 'التحويل المدروس مقابل الكاش المعطل.', weightYes: -1, weightNo: 1,
+          hintYes: 'تدوير رأس المال نحو فرص ذات عائد متوقع أعلى ممارسة استثمارية سليمة.',
+          hintNo: 'البيع للبقاء خارج السوق بدون خطة يقلل من العائد التراكمي.' },
+        // Q11 سلوكي بحت: لا وزن مالي، يُستخدم فقط لاستكشاف الذعر الأعمى.
+        { id: 'q11', type: 'yn', text: 'هل تشعر أن دافعك الرئيسي للبيع الآن هو الخوف والضغط النفسي؟', hint: 'تقييم ذاتي للحالة العاطفية.', weightYes: 0, weightNo: 0,
+          hintYes: 'يجب تأجيل قرارات التسييل عندما يكون الخوف هو المحرك الأساسي.',
+          hintNo: 'السيطرة على العواطف هي الخطوة الأولى نحو قرار مالي سليم.' },
+        { id: 'q12', type: 'choice', text: 'كم هي المدة التي قضيتها مستثمراً في هذا السهم؟', hint: 'قياس أفق الاستثمار الفعلي.', choices: [
+            { label: '📅 أقل من 6 أشهر', weight: 0, hint: 'التقلبات في الأمد القصير لا تعكس القيمة الجوهرية للشركة.' },
+            { label: '📅 من 6 أشهر إلى سنتين', weight: 1, hint: 'فترة كافية لبدء ظهور نتائج الخطط الاستراتيجية للإدارة.' },
+            { label: '📅 أكثر من سنتين', weight: 2, hint: 'الاستثمار اجتاز اختبار الزمن ومراحل الدورات الاقتصادية.' }
+        ]}
+    ];
 
-    let currentQ = 0;
-    let scores   = [];
-    let answers  = {};
-    let pendingValue = null;
+    let currentQ = 0;
+    let scores   = [];
+    let answers  = {};
+    let pendingValue = null;
 
-    function render() {
-        const q   = questions[currentQ];
-        const pct = Math.round((currentQ / questions.length) * 100);
+    function render() {
+        const q   = questions[currentQ];
+        const pct = Math.round((currentQ / questions.length) * 100);
 
-        document.getElementById('progressBar').style.width  = pct + '%';
-        document.getElementById('progressText').textContent = `السؤال ${currentQ + 1} من ${questions.length}`;
+        document.getElementById('progressBar').style.width  = pct + '%';
+        document.getElementById('progressText').textContent = `السؤال ${currentQ + 1} من ${questions.length}`;
 
-        let html = `
-            <div class="question-number">السؤال ${currentQ + 1}</div>
-            <div class="question-text">${q.text}</div>
-            <div class="question-hint">${q.hint}</div>
-        `;
+        let html = `
+            <div class="question-number">السؤال ${currentQ + 1}</div>
+            <div class="question-text">${q.text}</div>
+            <div class="question-hint">${q.hint}</div>
+        `;
 
-        if (q.type === 'choice') {
-            html += `<div class="choice-buttons">`;
-            q.choices.forEach((c, idx) => {
-                html += `<button class="btn-choice" onclick="SellDecisionApp.selectChoice(${idx})">${c.label}</button>`;
-            });
-            html += `</div>
-                     <div id="choiceHint" style="font-size:0.82rem;color:#c8d6e5;min-height:36px;margin-bottom:10px;"></div>
-                     <button class="btn-next" id="btnNext" onclick="SellDecisionApp.next()" disabled>التالي ◀</button>`;
-        } else if (q.type === 'yn') {
-            html += `
-                <div class="yn-buttons">
-                    <button class="btn-yes" id="btnYes" onclick="SellDecisionApp.selectYN('yes')">✅ نعم</button>
-                    <button class="btn-no"  id="btnNo"  onclick="SellDecisionApp.selectYN('no')">❌ لا</button>
-                </div>
-                <div id="ynHint" style="font-size:0.82rem;color:#c8d6e5;min-height:36px;margin-bottom:10px;"></div>
-                <button class="btn-next" id="btnNext" onclick="SellDecisionApp.next()" disabled>التالي ◀</button>
-            `;
-        } else if (q.type === 'number') {
-            html += `
-                <div class="input-group">
-                    <input type="number" id="numInput" placeholder="${q.placeholder}" min="0" step="0.01" oninput="SellDecisionApp.validateNum()">
-                </div>
-                <button class="btn-next" id="btnNext" onclick="SellDecisionApp.next()" disabled>التالي ◀</button>
-            `;
-        }
+        if (q.type === 'choice') {
+            html += `<div class="choice-buttons">`;
+            q.choices.forEach((c, idx) => {
+                html += `<button class="btn-choice" onclick="SellDecisionApp.selectChoice(${idx})">${c.label}</button>`;
+            });
+            html += `</div>
+                     <div id="choiceHint" style="font-size:0.82rem;color:#c8d6e5;min-height:36px;margin-bottom:10px;"></div>
+                     <button class="btn-next" id="btnNext" onclick="SellDecisionApp.next()" disabled>التالي ◀</button>`;
+        } else if (q.type === 'yn') {
+            html += `
+                <div class="yn-buttons">
+                    <button class="btn-yes" id="btnYes" onclick="SellDecisionApp.selectYN('yes')">✅ نعم</button>
+                    <button class="btn-no"  id="btnNo"  onclick="SellDecisionApp.selectYN('no')">❌ لا</button>
+                </div>
+                <div id="ynHint" style="font-size:0.82rem;color:#c8d6e5;min-height:36px;margin-bottom:10px;"></div>
+                <button class="btn-next" id="btnNext" onclick="SellDecisionApp.next()" disabled>التالي ◀</button>
+            `;
+        } else if (q.type === 'number') {
+            html += `
+                <div class="input-group">
+                    <input type="number" id="numInput" placeholder="${q.placeholder}" min="0" step="0.01" oninput="SellDecisionApp.validateNum()">
+                </div>
+                <button class="btn-next" id="btnNext" onclick="SellDecisionApp.next()" disabled>التالي ◀</button>
+            `;
+        }
 
-        document.getElementById('questionBody').innerHTML = html;
-        pendingValue = null;
-        if (q.type === 'number') setTimeout(() => document.getElementById('numInput').focus(), 80);
-    }
+        document.getElementById('questionBody').innerHTML = html;
+        pendingValue = null;
+        if (q.type === 'number') setTimeout(() => document.getElementById('numInput').focus(), 80);
+    }
 
-    function selectChoice(idx) {
-        pendingValue = idx;
-        const buttons = document.querySelectorAll('.btn-choice');
-        buttons.forEach((b, i) => b.classList.toggle('selected', i === idx));
-        const q = questions[currentQ];
-        document.getElementById('choiceHint').textContent = q.choices[idx].hint || '';
-        document.getElementById('btnNext').disabled = false;
-    }
+    function selectChoice(idx) {
+        pendingValue = idx;
+        const buttons = document.querySelectorAll('.btn-choice');
+        buttons.forEach((b, i) => b.classList.toggle('selected', i === idx));
+        const q = questions[currentQ];
+        document.getElementById('choiceHint').textContent = q.choices[idx].hint || '';
+        document.getElementById('btnNext').disabled = false;
+    }
 
-    function selectYN(val) {
-        pendingValue = val;
-        document.getElementById('btnYes').classList.toggle('selected', val === 'yes');
-        document.getElementById('btnNo').classList.toggle('selected',  val === 'no');
-        const q = questions[currentQ];
-        document.getElementById('ynHint').textContent = val === 'yes' ? q.hintYes : q.hintNo;
-        document.getElementById('btnNext').disabled   = false;
-    }
+    function selectYN(val) {
+        pendingValue = val;
+        document.getElementById('btnYes').classList.toggle('selected', val === 'yes');
+        document.getElementById('btnNo').classList.toggle('selected',  val === 'no');
+        const q = questions[currentQ];
+        document.getElementById('ynHint').textContent = val === 'yes' ? q.hintYes : q.hintNo;
+        document.getElementById('btnNext').disabled   = false;
+    }
 
-    function validateNum() {
-        const v = parseFloat(document.getElementById('numInput').value);
-        document.getElementById('btnNext').disabled = isNaN(v) || v <= 0;
-    }
+    function validateNum() {
+        const v = parseFloat(document.getElementById('numInput').value);
+        document.getElementById('btnNext').disabled = isNaN(v) || v <= 0;
+    }
 
-    function next() {
-        const q = questions[currentQ];
+    function next() {
+        const q = questions[currentQ];
 
-        if (q.type === 'choice') {
-            const c = q.choices[pendingValue];
-            scores.push({
-                id: q.id,
-                weight: c.weight,
-                hint: c.hint,
-                flag: c.flag || null,
-                isEmergency: c.isEmergency || false,
-                bucket: c.bucket || null
-            });
-            answers[q.id] = pendingValue;
+        if (q.type === 'choice') {
+            const c = q.choices[pendingValue];
+            scores.push({
+                id: q.id,
+                weight: c.weight,
+                hint: c.hint,
+                flag: c.flag || null,
+                isEmergency: c.isEmergency || false,
+                bucket: c.bucket || null
+            });
+            answers[q.id] = pendingValue;
 
-        } else if (q.type === 'yn') {
-            const yes = pendingValue === 'yes';
-            const w   = yes ? q.weightYes : q.weightNo;
-            const h   = yes ? q.hintYes   : q.hintNo;
-            scores.push({ id: q.id, weight: w, hint: h });
-            answers[q.id] = pendingValue;
+        } else if (q.type === 'yn') {
+            const yes = pendingValue === 'yes';
+            const w   = yes ? q.weightYes : q.weightNo;
+            const h   = yes ? q.hintYes   : q.hintNo;
+            scores.push({ id: q.id, weight: w, hint: h });
+            answers[q.id] = pendingValue;
 
-        } else if (q.type === 'number') {
-            const v = parseFloat(document.getElementById('numInput').value);
-            answers[q.key] = v;
-            scores.push({ id: q.id, weight: 0, hint: '' });
-        }
+        } else if (q.type === 'number') {
+            const v = parseFloat(document.getElementById('numInput').value);
+            answers[q.key] = v;
+            scores.push({ id: q.id, weight: 0, hint: '' });
+        }
 
-        currentQ++;
-        if (currentQ < questions.length) render();
-        else                             calculateResult();
-    }
+        currentQ++;
+        if (currentQ < questions.length) render();
+        else                             calculateResult();
+    }
 
-    function calculateResult() {
-        document.getElementById('questionCard').style.display = 'none';
-        document.getElementById('progressBar').style.width    = '100%';
+    function calculateResult() {
+        document.getElementById('questionCard').style.display = 'none';
+        document.getElementById('progressBar').style.width    = '100%';
 
-        let totalScore = 0;
-        scores.forEach(s => totalScore += s.weight);
+        let totalScore = 0;
+        scores.forEach(s => totalScore += s.weight);
 
-        const cost    = answers.costPrice    || 0;
-        const current = answers.currentPrice || 0;
-        let changePct = 0;
-        let crossCheckWarning = '';
+        const cost    = answers.costPrice    || 0;
+        const current = answers.currentPrice || 0;
+        let changePct = 0;
+        let crossCheckWarning = '';
 
-        if (cost > 0 && current > 0) {
-            changePct = ((current - cost) / cost) * 100;
+        if (cost > 0 && current > 0) {
+            changePct = ((current - cost) / cost) * 100;
 
-            // تعديل سعري استراتيجي
-            if (changePct > 50)  totalScore -= 2; // أرباح ضخمة → حافز لجني الأرباح
-            if (changePct < -50) totalScore -= 1; // هبوط حاد → احتمال مشكلة بنيوية
+            // تعديل سعري استراتيجي
+            if (changePct > 50)  totalScore -= 2; // أرباح ضخمة → حافز لجني الأرباح
+            if (changePct < -50) totalScore -= 1; // هبوط حاد → احتمال مشكلة بنيوية
 
-            // تحقق متقاطع بين الواقع والإدراك (Q2/Q3 vs Q9)
-            if (answers['q9'] !== undefined) {
-                let actualBucket = '';
-                if (changePct >= 20)      actualBucket = 'up_20';
-                else if (changePct <= -40) actualBucket = 'down_40';
-                else if (changePct <= -20) actualBucket = 'down_20_40';
-                else                       actualBucket = 'neutral';
+            // تحقق متقاطع بين الواقع والإدراك (Q2/Q3 vs Q9)
+            if (answers['q9'] !== undefined) {
+                let actualBucket = '';
+                if (changePct >= 20)      actualBucket = 'up_20';
+                else if (changePct <= -40) actualBucket = 'down_40';
+                else if (changePct <= -20) actualBucket = 'down_20_40';
+                else                       actualBucket = 'neutral';
 
-                const userChoice = questions.find(q => q.id === 'q9').choices[answers['q9']];
-                if (userChoice && userChoice.bucket !== actualBucket) {
-                    crossCheckWarning = `
-                        <div class="override-alert" style="background: rgba(243,156,18,0.15); border-color: #f39c12; color: #f39c12;">
-                            ⚠️ <strong>تناقض إدراكي رُصد:</strong> حسب الأرقام، التغير الحقيقي في مركزك هو ${changePct > 0 ? '+' : ''}${changePct.toFixed(1)}%،
-                            لكن وصفك الذهني لا يتطابق مع ذلك. هذا يعني أن مشاعرك تشوّه رؤيتك للواقع الرقمي.
-                            سيتم تجاهل هذا التقييم الذهني، واعتماد الأرقام الفعلية في القرار.
-                        </div>`;
-                }
-            }
-        }
+                const userChoice = questions.find(q => q.id === 'q9').choices[answers['q9']];
+                if (userChoice && userChoice.bucket !== actualBucket) {
+                    crossCheckWarning = `
+                        <div class="override-alert" style="background: rgba(243,156,18,0.15); border-color: #f39c12; color: #f39c12;">
+                            ⚠️ <strong>تناقض إدراكي رُصد:</strong> حسب الأرقام، التغير الحقيقي في مركزك هو ${changePct > 0 ? '+' : ''}${changePct.toFixed(1)}%،
+                            لكن وصفك الذهني لا يتطابق مع ذلك. هذا يعني أن مشاعرك تشوّه رؤيتك للواقع الرقمي.
+                            سيتم تجاهل هذا التقييم الذهني، واعتماد الأرقام الفعلية في القرار.
+                        </div>`;
+                }
+            }
+        }
 
-        // موانع قاطعة (Hard Stops)
-        const isLiquidityEmergency = scores.some(s => s.isEmergency === true);
+        // موانع قاطعة (Hard Stops)
+        const isLiquidityEmergency = scores.some(s => s.isEmergency === true);
 
-        const q4Index   = answers['q4'];
-        const q6Index   = answers['q6'];
-        const q4Choice  = typeof q4Index === 'number' ? questions.find(q => q.id === 'q4').choices[q4Index] : null;
-        const q6Choice  = typeof q6Index === 'number' ? questions.find(q => q.id === 'q6').choices[q6Index] : null;
-        const isFundamentalRuin = (q4Choice && q4Choice.flag === 'losing') &&
-                                  (q6Choice && q6Choice.flag === 'highDebt');
+        const q4Index   = answers['q4'];
+        const q6Index   = answers['q6'];
+        const q4Choice  = typeof q4Index === 'number' ? questions.find(q => q.id === 'q4').choices[q4Index] : null;
+        const q6Choice  = typeof q6Index === 'number' ? questions.find(q => q.id === 'q6').choices[q6Index] : null;
+        const isFundamentalRuin = (q4Choice && q4Choice.flag === 'losing') &&
+                                  (q6Choice && q6Choice.flag === 'highDebt');
 
-        const isBlindPanic = (answers['q8'] === 'no') && (answers['q11'] === 'yes');
+        const isBlindPanic = (answers['q8'] === 'no') && (answers['q11'] === 'yes');
 
-        let decisionType, icon, titleClass, summary, barColor, pct;
-        let partialExitNote = '';
+        let decisionType, icon, titleClass, summary, barColor, pct;
+        let partialExitNote = '';
 
-        if (isLiquidityEmergency) {
-            decisionType = 'تسييل إلزامي';
-            icon         = '🚨';
-            titleClass   = 'sell';
-            pct          = 10;
-            barColor     = 'linear-gradient(90deg,#c0392b,#e74c3c)';
-            summary      = 'الالتزامات المالية الضرورية تسبق جودة السهم. القاعدة المالية: السيولة للطوارئ قبل أي استثمار. التسييل هنا إجراء دفاعي لحماية حياتك المالية، لا حكماً على الشركة نفسها.';
+        if (isLiquidityEmergency) {
+            decisionType = 'تسييل إلزامي';
+            icon         = '🚨';
+            titleClass   = 'sell';
+            pct          = 10;
+            barColor     = 'linear-gradient(90deg,#c0392b,#e74c3c)';
+            summary      = 'الالتزامات المالية الضرورية تسبق جودة السهم. القاعدة المالية: السيولة للطوارئ قبل أي استثمار. التسييل هنا إجراء دفاعي لحماية حياتك المالية، لا حكماً على الشركة نفسها.';
 
-        } else if (isFundamentalRuin) {
-            decisionType = 'خروج وقائي لحفظ رأس المال';
-            icon         = '🔴';
-            titleClass   = 'sell';
-            pct          = 20;
-            barColor     = 'linear-gradient(90deg,#c0392b,#e74c3c)';
-            summary      = 'الأساسيات تظهر خسائر مستمرة مع ديون مرتفعة. بقاء رأس المال في هذا السهم يشبه ربط مصيرك بشركة تعاني نزيفاً تشغيلياً ومالياً معاً. القرار المنطقي هنا هو تقليص أو تصفية المركز لحماية محفظتك.';
+        } else if (isFundamentalRuin) {
+            decisionType = 'خروج وقائي لحفظ رأس المال';
+            icon         = '🔴';
+            titleClass   = 'sell';
+            pct          = 20;
+            barColor     = 'linear-gradient(90deg,#c0392b,#e74c3c)';
+            summary      = 'الأساسيات تظهر خسائر مستمرة مع ديون مرتفعة. بقاء رأس المال في هذا السهم يشبه ربط مصيرك بشركة تعاني نزيفاً تشغيلياً ومالياً معاً. القرار المنطقي هنا هو تقليص أو تصفية المركز لحماية محفظتك.';
 
-        } else if (isBlindPanic) {
-            decisionType = 'إيقاف فوري للقرار';
-            icon         = '✋';
-            titleClass   = 'review';
-            pct          = 50;
-            barColor     = 'linear-gradient(90deg,#f39c12,#f1c40f)';
-            summary      = 'أنت في حالة ذعر ولم تقرأ القوائم المالية. يُمنع استخدام هذه الآلة لتبرير بيع تحت الخوف الأعمى. أغلق التطبيق، اهدأ، اقرأ الأرقام أو استعن بمختص، ثم عد للقرار بعقل بارد.';
+        } else if (isBlindPanic) {
+            decisionType = 'إيقاف فوري للقرار';
+            icon         = '✋';
+            titleClass   = 'review';
+            pct          = 50;
+            barColor     = 'linear-gradient(90deg,#f39c12,#f1c40f)';
+            summary      = 'أنت في حالة ذعر ولم تقرأ القوائم المالية. يُمنع استخدام هذه الآلة لتبرير بيع تحت الخوف الأعمى. أغلق التطبيق، اهدأ، اقرأ الأرقام أو استعن بمختص، ثم عد للقرار بعقل بارد.';
 
-        } else {
-            const maxScore = 20;
-            const minScore = -20;
-            pct = Math.min(100, Math.max(0, ((totalScore - minScore) / (maxScore - minScore)) * 100));
+        } else {
+            const maxScore = 20;
+            const minScore = -20;
+            pct = Math.min(100, Math.max(0, ((totalScore - minScore) / (maxScore - minScore)) * 100));
 
-            if (totalScore >= 7) {
-                decisionType = 'احتفاظ استراتيجي';
-                icon         = '🟢';
-                titleClass   = 'hold';
-                barColor     = 'linear-gradient(90deg,#27ae60,#2ecc71)';
-                summary      = 'المؤشرات الأساسية (ربحية، توزيعات، ديون، تقييم) تميل لصالح الشركة. التذبذب الحالي جزء من ضوضاء السوق، لا مبرر قوي للتسييل. المنطقي هنا هو الاحتفاظ مع مراقبة دورية للقوائم المالية.';
+            if (totalScore >= 7) {
+                decisionType = 'احتفاظ استراتيجي';
+                icon         = '🟢';
+                titleClass   = 'hold';
+                barColor     = 'linear-gradient(90deg,#27ae60,#2ecc71)';
+                summary      = 'المؤشرات الأساسية (ربحية، توزيعات، ديون، تقييم) تميل لصالح الشركة. التذبذب الحالي جزء من ضوضاء السوق، لا مبرر قوي للتسييل. المنطقي هنا هو الاحتفاظ مع مراقبة دورية للقوائم المالية.';
 
-            } else if (totalScore >= 1) {
-                decisionType = 'مراجعة وتقليص للمخاطر';
-                icon         = '🟡';
-                titleClass   = 'review';
-                barColor     = 'linear-gradient(90deg,#f39c12,#f1c40f)';
-                summary      = 'الصورة مختلطة: لا يوجد إنذار أحمر، لكن لا توجد مثالية تجعل الاحتفاظ الكامل مريحاً. الأفضل هنا تخفيف المخاطر لا الهروب الكامل.';
-                partialExitNote = `
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-top: 15px; border-right: 3px solid #f39c12; text-align:right;">
-                        💡 <strong>اقتراح سلوكي ومالي معاً:</strong> فكّر في تسييل <strong>25–33%</strong> من كميتك في السهم. 
-                        هذا يعطيك هوامش نفسية ومالية، ويبقيك شريكاً في القصة لو تحسنت النتائج.
-                    </div>`;
-            } else {
-                decisionType = 'تسييل منظم وإعادة توجيه';
-                icon         = '🔴';
-                titleClass   = 'sell';
-                barColor     = 'linear-gradient(90deg,#c0392b,#e74c3c)';
-                summary      = 'النموذج يرى أن المخاطر المتبقية لا تقابلها عوائد متوقعة كافية. الخروج التدريجي (على عدة دفعات) أو النقل إلى أصول أعلى جودة، خطوة منطقية لإعادة بناء محفظتك على أسس أقوى.';
-            }
-        }
+            } else if (totalScore >= 1) {
+                decisionType = 'مراجعة وتقليص للمخاطر';
+                icon         = '🟡';
+                titleClass   = 'review';
+                barColor     = 'linear-gradient(90deg,#f39c12,#f1c40f)';
+                summary      = 'الصورة مختلطة: لا يوجد إنذار أحمر، لكن لا توجد مثالية تجعل الاحتفاظ الكامل مريحاً. الأفضل هنا تخفيف المخاطر لا الهروب الكامل.';
+                partialExitNote = `
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-top: 15px; border-right: 3px solid #f39c12; text-align:right;">
+                        💡 <strong>اقتراح سلوكي ومالي معاً:</strong> فكّر في تسييل <strong>25–33%</strong> من كميتك في السهم. 
+                        هذا يعطيك هوامش نفسية ومالية، ويبقيك شريكاً في القصة لو تحسنت النتائج.
+                    </div>`;
+            } else {
+                decisionType = 'تسييل منظم وإعادة توجيه';
+                icon         = '🔴';
+                titleClass   = 'sell';
+                barColor     = 'linear-gradient(90deg,#c0392b,#e74c3c)';
+                summary      = 'النموذج يرى أن المخاطر المتبقية لا تقابلها عوائد متوقعة كافية. الخروج التدريجي (على عدة دفعات) أو النقل إلى أصول أعلى جودة، خطوة منطقية لإعادة بناء محفظتك على أسس أقوى.';
+            }
+        }
 
-        let overrideAlert = '';
-        if (isLiquidityEmergency || isFundamentalRuin || isBlindPanic) {
-            overrideAlert = `
-                <div class="override-alert">
-                    🚨 تم تفعيل طبقة الحماية الآلية: الخوارزمية تجاوزت نظام النقاط، لأنها رصدت مدخلات حرجة 
-                    (طارئ سيولة، أو انهيار أساسي، أو قرار مبني على الذعر دون قراءة الأرقام).
-                </div>`;
-        }
+        let overrideAlert = '';
+        if (isLiquidityEmergency || isFundamentalRuin || isBlindPanic) {
+            overrideAlert = `
+                <div class="override-alert">
+                    🚨 تم تفعيل طبقة الحماية الآلية: الخوارزمية تجاوزت نظام النقاط، لأنها رصدت مدخلات حرجة 
+                    (طارئ سيولة، أو انهيار أساسي، أو قرار مبني على الذعر دون قراءة الأرقام).
+                </div>`;
+        }
 
-        let factorsHTML = '';
-        scores.forEach(s => {
-            if (s.weight === 0 || !s.hint) return;
-            const dotClass = s.weight > 0 ? 'dot-hold' : 'dot-sell';
-            factorsHTML += `
-                <div class="factor-item">
-                    <div class="factor-dot ${dotClass}"></div>
-                    <div>${s.hint}</div>
-                </div>`;
-        });
+        let factorsHTML = '';
+        scores.forEach(s => {
+            if (s.weight === 0 || !s.hint) return;
+            const dotClass = s.weight > 0 ? 'dot-hold' : 'dot-sell';
+            factorsHTML += `
+                <div class="factor-item">
+                    <div class="factor-dot ${dotClass}"></div>
+                    <div>${s.hint}</div>
+                </div>`;
+        });
 
-        let priceNote = '';
-        if (cost > 0 && current > 0) {
-            const sign  = changePct >= 0 ? '+' : '';
-            const color = changePct >= 0 ? '#2ecc71' : '#e74c3c';
-            priceNote = `
-                <p style="font-size:1.05rem;color:${color};font-weight:bold;margin-bottom:20px;direction:ltr;">
-                    التكلفة: ${cost.toFixed(2)} | الحالي: ${current.toFixed(2)} | التغير: ${sign}${changePct.toFixed(1)}%
-                </p>`;
-        }
+        let priceNote = '';
+        if (cost > 0 && current > 0) {
+            const sign  = changePct >= 0 ? '+' : '';
+            const color = changePct >= 0 ? '#2ecc71' : '#e74c3c';
+            priceNote = `
+                <p style="font-size:1.05rem;color:${color};font-weight:bold;margin-bottom:20px;direction:ltr;">
+                    التكلفة: ${cost.toFixed(2)} | الحالي: ${current.toFixed(2)} | التغير: ${sign}${changePct.toFixed(1)}%
+                </p>`;
+        }
 
-        const rc = document.getElementById('resultCard');
-        rc.innerHTML = `
-            ${crossCheckWarning}
-            ${overrideAlert}
-            <div class="result-icon">${icon}</div>
-            <div class="result-title ${titleClass}">${decisionType}</div>
-            ${priceNote}
-            <p class="result-summary">${summary}</p>
-            ${partialExitNote}
+        const rc = document.getElementById('resultCard');
+        rc.innerHTML = `
+            ${crossCheckWarning}
+            ${overrideAlert}
+            <div class="result-icon">${icon}</div>
+            <div class="result-title ${titleClass}">${decisionType}</div>
+            ${priceNote}
+            <p class="result-summary">${summary}</p>
+            ${partialExitNote}
 
-            <div class="score-meter" style="margin-top:30px;">
-                <div class="score-label"><span>تسييل قوي</span><span>احتفاظ صلب</span></div>
-                <div class="score-bar-wrap">
-                    <div class="score-bar-fill" style="width:${Math.round(pct)}%;background:${barColor};"></div>
-                </div>
-                <div class="score-text">مؤشر القوة المالية: ${Math.round(pct)}%</div>
-            </div>
+            <div class="score-meter" style="margin-top:30px;">
+                <div class="score-label"><span>تسييل قوي</span><span>احتفاظ صلب</span></div>
+                <div class="score-bar-wrap">
+                    <div class="score-bar-fill" style="width:${Math.round(pct)}%;background:${barColor};"></div>
+                </div>
+                <div class="score-text">مؤشر القوة المالية: ${Math.round(pct)}%</div>
+            </div>
 
-            <div class="factors-section" style="margin-top:30px;">
-                <h4>📋 تعليقات الخوارزمية بناءً على إجاباتك:</h4>
-                ${factorsHTML || '<p style="color:#888;font-size:0.85rem;">الإجابات متوازنة جداً، ولم تظهر عوامل حاسمة في اتجاه واحد.</p>'}
-            </div>
+            <div class="factors-section" style="margin-top:30px;">
+                <h4>📋 تعليقات الخوارزمية بناءً على إجاباتك:</h4>
+                ${factorsHTML || '<p style="color:#888;font-size:0.85rem;">الإجابات متوازنة جداً، ولم تظهر عوامل حاسمة في اتجاه واحد.</p>'}
+            </div>
 
-            <button class="btn-restart" onclick="SellDecisionApp.restart()">🔄 تقييم سهم جديد</button>
-        `;
+            <button class="btn-restart" onclick="SellDecisionApp.restart()">🔄 تقييم سهم جديد</button>
+        `;
 
-        rc.style.display = 'block';
-        rc.classList.remove('result-positive','result-negative','result-warning');
-        if (titleClass === 'hold')   rc.classList.add('result-positive');
-        if (titleClass === 'sell')   rc.classList.add('result-negative');
-        if (titleClass === 'review') rc.classList.add('result-warning');
-        if (window.ResultsEngine)    window.ResultsEngine.paint();
-        rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+        rc.style.display = 'block';
+        rc.classList.remove('result-positive','result-negative','result-warning');
+        if (titleClass === 'hold')   rc.classList.add('result-positive');
+        if (titleClass === 'sell')   rc.classList.add('result-negative');
+        if (titleClass === 'review') rc.classList.add('result-warning');
+        if (window.ResultsEngine)    window.ResultsEngine.paint();
+        rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
-    function restart() {
-        currentQ      = 0;
-        scores        = [];
-        answers       = {};
-        pendingValue  = null;
+    function restart() {
+        currentQ      = 0;
+        scores        = [];
+        answers       = {};
+        pendingValue  = null;
 
-        const rc = document.getElementById('resultCard');
-        rc.style.display = 'none';
-        rc.classList.remove('result-positive','result-negative','result-warning');
+        const rc = document.getElementById('resultCard');
+        rc.style.display = 'none';
+        rc.classList.remove('result-positive','result-negative','result-warning');
 
-        document.getElementById('questionCard').style.display = 'block';
-        render();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+        document.getElementById('questionCard').style.display = 'block';
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-    return { init: render, selectChoice, selectYN, validateNum, next, restart };
+    return { init: render, selectChoice, selectYN, validateNum, next, restart };
 })();
 
 window.addEventListener('scroll', function () {
-    const btn = document.getElementById('backToTop');
-    if (btn) btn.classList.toggle('visible', window.scrollY > 300);
+    const btn = document.getElementById('backToTop');
+    if (btn) btn.classList.toggle('visible', window.scrollY > 300);
 });
 
 document.addEventListener('DOMContentLoaded', SellDecisionApp.init);
