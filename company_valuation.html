@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="dark-theme.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" defer></script>
     <style>
-        /* ===== الهوية البصرية ===== */
         .legal-banner {
             background: linear-gradient(135deg, #1a1400 0%, #2a1f00 60%, #1a1000) !important;
             border: 2px solid var(--gold) !important;
@@ -55,7 +54,6 @@
             color: var(--text-h) !important;
         }
 
-        /* ===== تحسين قسم النتائج الاحترافي ===== */
         .results-section {
             background: var(--bg-card) !important;
             border: 1px solid var(--border) !important;
@@ -82,10 +80,13 @@
         .score-circle-text {
             font-size: 5.5rem;
             font-weight: 900;
+            /* ⚠️ إزالة اللون الثابت — يتحكم فيه JavaScript */
             background: linear-gradient(135deg, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             line-height: 1;
+            transition: all 0.4s ease;
         }
 
         .evaluation-label {
@@ -97,27 +98,48 @@
             display: inline-block;
         }
 
-        /* شبكة المؤشرات (Indicator Cards) */
+        /* ✅ شريط التقدم */
+        .score-bar-wrapper {
+            margin-top: 15px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50px;
+            height: 10px;
+            width: 200px;
+            overflow: hidden;
+        }
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 50px;
+            transition: width 0.8s ease, background 0.4s ease;
+        }
+
         .indicators-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 15px;
             margin-bottom: 35px;
         }
         .ind-card {
             background: var(--bg-card2);
-            padding: 20px;
+            padding: 18px;
             border-radius: 15px;
             text-align: center;
             border: 1px solid var(--border);
             transition: 0.3s;
         }
         .ind-card:hover { border-color: var(--gold); transform: translateY(-3px); }
-        .ind-card .ind-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
-        .ind-card .ind-val { font-size: 1.1rem; font-weight: bold; color: var(--text-h); }
-        .ind-card .ind-lbl { font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 5px; }
+        .ind-card .ind-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+        /* ✅ اللون يأتي من JS عبر style inline */
+        .ind-card .ind-val { font-size: 1.1rem; font-weight: bold; }
+        .ind-card .ind-lbl { font-size: 0.78rem; color: var(--text-muted); display: block; margin-top: 5px; }
+        /* ✅ شريط صغير تحت كل كارد */
+        .ind-card .ind-bar {
+            margin-top: 8px;
+            height: 4px;
+            border-radius: 50px;
+            opacity: 0.7;
+        }
 
-        /* صندوق التحليل */
         .analysis-container {
             background: rgba(59, 130, 246, 0.05);
             border-right: 5px solid var(--blue);
@@ -126,11 +148,11 @@
         }
         .analysis-container h4 { color: var(--blue-light); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .analysis-list { list-style: none; padding: 0; }
-        .analysis-list li { 
-            position: relative; 
-            padding-right: 25px; 
-            margin-bottom: 12px; 
-            color: var(--text-body); 
+        .analysis-list li {
+            position: relative;
+            padding-right: 25px;
+            margin-bottom: 12px;
+            color: var(--text-body);
             line-height: 1.6;
             font-size: 0.95rem;
         }
@@ -145,6 +167,28 @@
             color: var(--red-light);
         }
         .red-flag-zone h5 { font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+
+        /* ✅ قسم شرح الدرجات */
+        .score-guide {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .score-guide-item {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .score-guide-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
 
         @media (max-width: 768px) {
             .result-main-info { flex-direction: column; }
@@ -181,21 +225,41 @@
 </nav>
 
 <div class="container">
-    <div class="legal-banner"><span>⚠️</span><p>إقرار قانوني: هذه الأداة تعليمية تقديرية. النتائج لا تُمثّل استشارة مالية ملزمة. قرار الاستفادة يقع على عاتق المستخدم.</p></div>
-    
+    <div class="legal-banner">
+        <span>⚠️</span>
+        <p>إقرار قانوني: هذه الأداة تعليمية تقديرية. النتائج لا تُمثّل استشارة مالية ملزمة. قرار الاستثمار يقع على عاتق المستخدم.</p>
+    </div>
+
     <h1>🏢 محلل جودة الأعمال الذكي</h1>
     <p class="subtitle">تقييم شامل يعتمد على كفاءة الإدارة والنمو الحقيقي</p>
+
+    <!-- شرح مقياس الدرجات -->
+    <div class="score-guide">
+        <div class="score-guide-item"><div class="score-guide-dot" style="background:#10b981"></div>80-100 استثنائية</div>
+        <div class="score-guide-item"><div class="score-guide-dot" style="background:#3b82f6"></div>60-79 جيدة</div>
+        <div class="score-guide-item"><div class="score-guide-dot" style="background:#f59e0b"></div>40-59 متوسطة</div>
+        <div class="score-guide-item"><div class="score-guide-dot" style="background:#ef4444"></div>0-39 مخاطر عالية</div>
+    </div>
+
+    <br>
 
     <div class="rule-item">
         <h3>1️⃣ الكفاءة التشغيلية وجودة الأرباح</h3>
         <div class="input-grid">
-            <div class="input-group"><label>نمو الأرباح السنوي (%)</label><input type="number" id="growth" placeholder="15" oninput="scheduleUpdate()"></div>
-            <div class="input-group"><label>دورة تحويل الكاش (أيام)</label><input type="number" id="cashCycle" placeholder="مثال: 35" oninput="scheduleUpdate()"></div>
-            <div class="input-group"><label>جودة الأرباح (الكاش)</label>
+            <div class="input-group">
+                <label>نمو الأرباح السنوي (%)</label>
+                <input type="number" id="growth" placeholder="مثال: 15" oninput="scheduleUpdate()">
+            </div>
+            <div class="input-group">
+                <label>دورة تحويل الكاش (أيام)</label>
+                <input type="number" id="cashCycle" placeholder="مثال: 35" oninput="scheduleUpdate()">
+            </div>
+            <div class="input-group">
+                <label>جودة الأرباح (الكاش)</label>
                 <select id="cashQuality" onchange="scheduleUpdate()">
                     <option value="">— اختر —</option>
-                    <option value="high">كاش التشغيل > صافي الربح</option>
-                    <option value="low">كاش التشغيل < صافي الربح</option>
+                    <option value="high">كاش التشغيل > صافي الربح ✅</option>
+                    <option value="low">كاش التشغيل < صافي الربح ⚠️</option>
                 </select>
             </div>
         </div>
@@ -204,69 +268,87 @@
     <div class="rule-item">
         <h3>2️⃣ الرافعة المالية والميزة</h3>
         <div class="input-grid">
-            <div class="input-group"><label>العائد على الحقوق ROE (%)</label><input type="number" id="roe" placeholder="18" oninput="scheduleUpdate()"></div>
-            <div class="input-group"><label>دوران الأصول</label>
+            <div class="input-group">
+                <label>العائد على الحقوق ROE (%)</label>
+                <input type="number" id="roe" placeholder="مثال: 18" oninput="scheduleUpdate()">
+            </div>
+            <div class="input-group">
+                <label>دوران الأصول</label>
                 <select id="assetTurnover" onchange="scheduleUpdate()">
                     <option value="">— اختر —</option>
-                    <option value="high">مرتفع (كفاءة)</option>
+                    <option value="high">مرتفع (كفاءة عالية)</option>
                     <option value="mid">متوسط</option>
                     <option value="low">منخفض</option>
                 </select>
             </div>
-            <div class="input-group"><label>نسبة الديون (%)</label><input type="number" id="debt" placeholder="30" oninput="scheduleUpdate()"></div>
+            <div class="input-group">
+                <label>نسبة الديون (%)</label>
+                <input type="number" id="debt" placeholder="مثال: 30" oninput="scheduleUpdate()">
+            </div>
         </div>
     </div>
 
     <div class="rule-item">
         <h3>3️⃣ النوعية والنزاهة</h3>
         <div class="input-grid">
-            <div class="input-group"><label>خندق تنافسي (Moat)</label>
+            <div class="input-group">
+                <label>خندق تنافسي (Moat)</label>
                 <select id="moat" onchange="scheduleUpdate()">
                     <option value="">— اختر —</option>
-                    <option value="strong">قوي جداً</option>
+                    <option value="strong">قوي جداً 🏰</option>
                     <option value="none">ضعيف / لا يوجد</option>
                 </select>
             </div>
-            <div class="input-group"><label>رأس المال (CapEx)</label>
+            <div class="input-group">
+                <label>رأس المال (CapEx)</label>
                 <select id="capex" onchange="scheduleUpdate()">
-                    <option value="light">أصول خفيفة (ممتاز)</option>
-                    <option value="heavy">أصول ثقيلة</option>
+                    <option value="light">أصول خفيفة (ممتاز) ✅</option>
+                    <option value="heavy">أصول ثقيلة ⚠️</option>
                 </select>
             </div>
-            <div class="input-group"><label>نزاهة الإدارة</label>
+            <div class="input-group">
+                <label>نزاهة الإدارة</label>
                 <select id="mgmt" onchange="scheduleUpdate()">
-                    <option value="good">موثوقة</option>
-                    <option value="bad">شبهات / تلاعب</option>
+                    <option value="good">موثوقة ✅</option>
+                    <option value="bad">شبهات / تلاعب 🚨</option>
                 </select>
             </div>
         </div>
     </div>
 
+    <!-- قسم النتائج -->
     <div class="results-section pending" id="resultsSection">
+
         <div class="result-main-info">
             <div class="score-box">
                 <div class="score-circle-text" id="totalScore">0</div>
-                <div style="color: var(--text-muted); font-weight: bold;">نقاط الجودة الإجمالية</div>
-                <div id="evalBadge" class="evaluation-label">تحليل البيانات...</div>
+                <div style="color: var(--text-muted); font-weight: bold; font-size:0.9rem; margin-top:5px;">نقاط الجودة الإجمالية / 100</div>
+                <div id="evalBadge" class="evaluation-label" style="margin-top:10px;">تحليل البيانات...</div>
+                <!-- ✅ شريط التقدم -->
+                <div class="score-bar-wrapper" style="margin: 12px auto 0;">
+                    <div class="score-bar-fill" id="scoreBarFill" style="width:0%; background:#f59e0b;"></div>
+                </div>
             </div>
             <div class="chart-box" style="width: 220px; height: 220px;">
                 <canvas id="qualityChart"></canvas>
             </div>
         </div>
 
-        <div class="indicators-grid" id="indicatorsGrid">
-            </div>
+        <!-- بطاقات المؤشرات -->
+        <div class="indicators-grid" id="indicatorsGrid"></div>
 
+        <!-- التحليل النصي -->
         <div class="analysis-container">
             <h4>🔍 ملخص التحليل الاستراتيجي:</h4>
-            <ul class="analysis-list" id="analysisText">
-                </ul>
+            <ul class="analysis-list" id="analysisText"></ul>
         </div>
 
+        <!-- الأعلام الحمراء -->
         <div id="redFlagContainer" class="red-flag-zone" style="display:none;">
-            <h5 id="redFlagHeader">🛑 تحذيرات حرجة (Red Flags):</h5>
+            <h5>🛑 تحذيرات حرجة (Red Flags):</h5>
             <div id="flagMsg"></div>
         </div>
+
     </div>
 </div>
 
@@ -274,11 +356,19 @@
 let qChart = null;
 let updateTimer = null;
 
-function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
+function toggleNavbar() {
+    document.getElementById('navbarMenu').classList.toggle('open');
+}
 
 function scheduleUpdate() {
     clearTimeout(updateTimer);
     updateTimer = setTimeout(updateUI, 300);
+}
+
+// ✅ إصلاح: إخفاء النتائج عند مسح أي حقل
+function isDataComplete() {
+    const ids = ['growth', 'cashCycle', 'roe', 'debt', 'cashQuality', 'assetTurnover', 'moat', 'mgmt'];
+    return ids.every(id => document.getElementById(id).value !== "");
 }
 
 function updateChart(score, color) {
@@ -293,91 +383,252 @@ function updateChart(score, color) {
                 borderWidth: 0
             }]
         },
-        options: { cutout: '85%', plugins: { tooltip: { enabled: false }, legend: { display: false } } }
+        options: {
+            cutout: '85%',
+            plugins: { tooltip: { enabled: false }, legend: { display: false } },
+            animation: { duration: 600 }
+        }
     });
 }
 
 function updateUI() {
-    if (!isDataComplete()) return;
+    const section = document.getElementById('resultsSection');
+
+    // ✅ إخفاء النتائج إذا البيانات ناقصة
+    if (!isDataComplete()) {
+        section.classList.add('pending');
+        return;
+    }
 
     const res = calculateSmartScore();
-    const section = document.getElementById('resultsSection');
     section.classList.remove('pending');
 
-    // تحديث النتيجة
-    document.getElementById('totalScore').textContent = res.total;
-    
-    // تحديد الألوان
-    let color = '#f59e0b';
-    let badge = document.getElementById('evalBadge');
-    if(res.total >= 80) { color = '#10b981'; badge.textContent = '🌟 شركة استثنائية'; badge.style.color = '#10b981'; }
-    else if(res.total >= 60) { color = '#3b82f6'; badge.textContent = '✅ شركة جيدة'; badge.style.color = '#3b82f6'; }
-    else { color = '#ef4444'; badge.textContent = '🚨 مخاطر عالية'; badge.style.color = '#ef4444'; }
-    
+    // ✅ تحديث الرقم مع لونه الديناميكي
+    const scoreEl = document.getElementById('totalScore');
+    scoreEl.textContent = res.total;
+
+    let color, badgeText, badgeColor;
+    if (res.total >= 80) {
+        color = '#10b981';
+        badgeText = '🌟 شركة استثنائية';
+        badgeColor = '#10b981';
+        scoreEl.style.backgroundImage = 'linear-gradient(135deg, #10b981, #34d399)';
+    } else if (res.total >= 60) {
+        color = '#3b82f6';
+        badgeText = '✅ شركة جيدة';
+        badgeColor = '#3b82f6';
+        scoreEl.style.backgroundImage = 'linear-gradient(135deg, #3b82f6, #60a5fa)';
+    } else if (res.total >= 40) {
+        color = '#f59e0b';
+        badgeText = '⚠️ شركة متوسطة';
+        badgeColor = '#f59e0b';
+        scoreEl.style.backgroundImage = 'linear-gradient(135deg, #f59e0b, #fbbf24)';
+    } else {
+        color = '#ef4444';
+        badgeText = '🚨 مخاطر عالية';
+        badgeColor = '#ef4444';
+        scoreEl.style.backgroundImage = 'linear-gradient(135deg, #ef4444, #f87171)';
+    }
+
+    // إعادة تطبيق خاصية background-clip بعد تغيير الـ background
+    scoreEl.style.webkitBackgroundClip = 'text';
+    scoreEl.style.backgroundClip = 'text';
+    scoreEl.style.webkitTextFillColor = 'transparent';
+
+    const badge = document.getElementById('evalBadge');
+    badge.textContent = badgeText;
+    badge.style.color = badgeColor;
+
+    // ✅ تحديث شريط التقدم
+    const bar = document.getElementById('scoreBarFill');
+    bar.style.width = res.total + '%';
+    bar.style.background = color;
+
     updateChart(res.total, color);
 
-    // تحديث المؤشرات
+    // ✅ بطاقات المؤشرات مع ألوان ديناميكية
     const indGrid = document.getElementById('indicatorsGrid');
     indGrid.innerHTML = res.indicators.map(i => `
         <div class="ind-card">
             <span class="ind-icon">${i.icon}</span>
-            <span class="ind-val">${i.val}</span>
+            <span class="ind-val" style="color:${i.color}">${i.val}</span>
             <span class="ind-lbl">${i.label}</span>
+            <div class="ind-bar" style="background:${i.color}; width:100%;"></div>
         </div>
     `).join('');
 
     // تحديث التحليل
-    document.getElementById('analysisText').innerHTML = res.analysis.map(a => `<li>${a}</li>`).join('');
+    document.getElementById('analysisText').innerHTML =
+        res.analysis.map(a => `<li>${a}</li>`).join('');
 
-    // تحديث الأعلام الحمراء
+    // الأعلام الحمراء
     const flagContainer = document.getElementById('redFlagContainer');
-    if(res.flags.length > 0) {
+    if (res.flags.length > 0) {
         flagContainer.style.display = 'block';
-        document.getElementById('flagMsg').innerHTML = res.flags.map(f => `• ${f}`).join('<br>');
+        document.getElementById('flagMsg').innerHTML =
+            res.flags.map(f => `<div style="margin-bottom:6px;">🚩 ${f}</div>`).join('');
     } else {
         flagContainer.style.display = 'none';
     }
 }
 
-function isDataComplete() {
-    const ids = ['growth', 'cashCycle', 'roe', 'debt', 'cashQuality', 'assetTurnover', 'moat', 'mgmt'];
-    return ids.every(id => document.getElementById(id).value !== "");
-}
-
+// ========================================================
+// ✅ دالة الحساب المعدلة كلياً
+// ========================================================
 function calculateSmartScore() {
-    const g = parseFloat(document.getElementById('growth').value);
-    const c = parseFloat(document.getElementById('cashCycle').value);
-    const roe = parseFloat(document.getElementById('roe').value);
-    const d = parseFloat(document.getElementById('debt').value);
-    const q = document.getElementById('cashQuality').value;
-    const m = document.getElementById('moat').value;
-    const mg = document.getElementById('mgmt').value;
-    const t = document.getElementById('assetTurnover').value;
+    const g    = parseFloat(document.getElementById('growth').value);
+    const c    = parseFloat(document.getElementById('cashCycle').value);
+    const roe  = parseFloat(document.getElementById('roe').value);
+    const d    = parseFloat(document.getElementById('debt').value);
+    const q    = document.getElementById('cashQuality').value;
+    const m    = document.getElementById('moat').value;
+    const mg   = document.getElementById('mgmt').value;
+    const t    = document.getElementById('assetTurnover').value;
+    const capex = document.getElementById('capex').value; // ✅ مُفعَّل الآن
 
     let score = 0;
     let analysis = [];
     let flags = [];
 
-    // المنطق البرمجي للتحليل
-    if(roe >= 15 && d <= 30) { score += 30; analysis.push("كفاءة ممتازة في استخدام رأس المال مع ديون منخفضة."); }
-    else if(roe < 10) { score += 5; analysis.push("العائد على حقوق المساهمين ضعيف مقارنة بالفرص الأخرى."); }
-    
-    if(q === 'high' && c <= 45) { score += 25; analysis.push("جودة أرباح حقيقية (Cash Cow) مع دورة تحصيل سريعة."); }
-    else if(q === 'low') { score -= 10; flags.push("تحذير: الأرباح المحاسبية لا تتحول إلى سيولة نقدية."); }
+    // === Block 1: ROE + الديون (max 25) ===
+    // ✅ 3 تدرجات بدل تدرجين
+    if (roe >= 15) {
+        if (d <= 30) {
+            score += 25;
+            analysis.push("ROE ممتاز (≥15%) مع ديون منخفضة — كفاءة رأس مال حقيقية.");
+        } else if (d <= 60) {
+            score += 15;
+            analysis.push("ROE جيد لكن الديون متوسطة — راقب نسبة تغطية الفوائد.");
+            flags.push("الديون تتجاوز 30%: تحقق من قدرة الشركة على خدمة الدين.");
+        } else {
+            score += 5;
+            analysis.push("ROE مرتفع لكنه مدعوم بديون خطيرة — قد يكون مضللاً.");
+            flags.push("ديون تتجاوز 60% مع ROE مرتفع: الرافعة المالية تُضخّم العائد اصطناعياً.");
+        }
+    } else if (roe >= 10) {
+        score += 10;
+        analysis.push("ROE متوسط (10–14%) — قارن بمتوسط القطاع قبل الحكم.");
+    } else {
+        score += 0;
+        flags.push("ROE أقل من 10%: الشركة لا تُحقق عائداً كافياً على رأس المال.");
+        analysis.push("العائد على حقوق المساهمين ضعيف — ابحث عن السبب الجوهري.");
+    }
 
-    if(g >= 15) { score += 20; analysis.push("نمو قوي يتجاوز متوسط السوق."); }
-    if(m === 'strong') { score += 15; analysis.push("الشركة تمتلك خندق تنافسي يحمي هوامش ربحها."); }
-    if(mg === 'bad') { score -= 40; flags.push("خطر إداري حرج: النزاهة والشفافية مفقودة."); }
+    // === Block 2: جودة الكاش + دورة التحصيل (max 20) ===
+    // ✅ إصلاح: دورة الكاش لها وزن مستقل الآن
+    if (q === 'high') {
+        if (c <= 30) {
+            score += 20;
+            analysis.push("جودة أرباح عالية ودورة تحصيل سريعة جداً — Cash Cow حقيقية.");
+        } else if (c <= 60) {
+            score += 12;
+            analysis.push("جودة كاش جيدة، لكن دورة التحصيل (31–60 يوم) تحتاج مراقبة.");
+        } else {
+            score += 5;
+            analysis.push("الأرباح نقدية لكن دورة التحصيل بطيئة — السيولة قد تكون مقيدة مؤقتاً.");
+            flags.push("دورة التحصيل تتجاوز 60 يوماً رغم جودة الكاش — راجع سياسة الائتمان.");
+        }
+    } else {
+        score -= 10;
+        flags.push("تحذير: الأرباح المحاسبية لا تتحول إلى سيولة نقدية — مراجعة عميقة ضرورية.");
+        analysis.push("فجوة بين الربح المحاسبي والكاش الفعلي — علامة تستحق التمحيص.");
+    }
 
+    // === Block 3: النمو (max 15) ===
+    if (g >= 15) {
+        score += 15;
+        analysis.push("نمو قوي (≥15%) يتجاوز متوسط السوق — دليل على ميزة تنافسية حقيقية.");
+    } else if (g >= 8) {
+        score += 8;
+        analysis.push("نمو معقول (8–14%) — مستدام لكن لا يُبرر علاوة سعرية كبيرة.");
+    } else if (g >= 0) {
+        score += 2;
+        analysis.push("نمو ضعيف (<8%) — الشركة تعمل لكن بلا زخم حقيقي.");
+    } else {
+        score -= 5;
+        flags.push("تراجع في الأرباح: تحقق من طبيعته (دوري أم هيكلي) قبل أي قرار.");
+        analysis.push("الأرباح في تراجع — ليس كل انخفاض خطر، لكنه يستوجب السؤال.");
+    }
+
+    // === Block 4: الخندق التنافسي (max 15) ===
+    if (m === 'strong') {
+        score += 15;
+        analysis.push("الخندق التنافسي يحمي الهوامش على المدى البعيد.");
+    } else {
+        analysis.push("غياب الخندق يعرّض الهوامش للضغط التنافسي المستقبلي.");
+    }
+
+    // === Block 5: CapEx ✅ مُفعَّل الآن (max 8) ===
+    if (capex === 'light') {
+        score += 8;
+        analysis.push("أصول خفيفة = تدفق نقدي حر مرتفع وقدرة توزيع أفضل للمساهمين.");
+    } else {
+        score -= 3;
+        analysis.push("أصول ثقيلة تستنزف جزءاً من التدفق النقدي للصيانة والتوسع.");
+    }
+
+    // === Block 6: دوران الأصول ✅ مُفعَّل الآن (max 7) ===
+    if (t === 'high') {
+        score += 7;
+        analysis.push("دوران أصول مرتفع — الإدارة تستخدم أصولها بكفاءة تشغيلية.");
+    } else if (t === 'mid') {
+        score += 3;
+        analysis.push("دوران أصول متوسط — هناك مجال للتحسين التشغيلي.");
+    } else {
+        analysis.push("دوران أصول منخفض — الأصول لا تُنتج قيمة كافية مقارنة بحجمها.");
+    }
+
+    // === Block 7: نزاهة الإدارة (عقوبة نووية) ===
+    if (mg === 'bad') {
+        score -= 40;
+        flags.push("خطر إداري حرج: غياب النزاهة يُبطل كل مؤشر إيجابي آخر — ابتعد.");
+    }
+
+    // ✅ خط أساس 10 نقاط (floor للشركات التي لم تخسر نقاطاً)
+    const total = Math.max(0, Math.min(score + 10, 100));
+
+    // ✅ بطاقات المؤشرات بألوان ديناميكية حسب الجودة
     return {
-        total: Math.max(0, Math.min(score + 20, 100)),
-        analysis: analysis,
-        flags: flags,
+        total,
+        analysis,
+        flags,
         indicators: [
-            {icon: '📈', val: g+'%', label: 'النمو'},
-            {icon: '🏦', val: d+'%', label: 'الديون'},
-            {icon: '🔄', val: roe+'%', label: 'ROE'},
-            {icon: '⏱️', val: c+' يوم', label: 'دورة الكاش'}
+            {
+                icon: g >= 15 ? '🚀' : g >= 8 ? '📈' : g >= 0 ? '📉' : '🔻',
+                val: g + '%',
+                label: 'نمو الأرباح',
+                color: g >= 15 ? '#10b981' : g >= 8 ? '#f59e0b' : '#ef4444'
+            },
+            {
+                icon: d <= 30 ? '🟢' : d <= 60 ? '🟡' : '🔴',
+                val: d + '%',
+                label: 'نسبة الديون',
+                color: d <= 30 ? '#10b981' : d <= 60 ? '#f59e0b' : '#ef4444'
+            },
+            {
+                icon: roe >= 15 ? '💎' : roe >= 10 ? '✅' : '⚠️',
+                val: roe + '%',
+                label: 'ROE',
+                color: roe >= 15 ? '#10b981' : roe >= 10 ? '#f59e0b' : '#ef4444'
+            },
+            {
+                icon: c <= 30 ? '⚡' : c <= 60 ? '🔄' : '🐢',
+                val: c + ' يوم',
+                label: 'دورة الكاش',
+                color: c <= 30 ? '#10b981' : c <= 60 ? '#f59e0b' : '#ef4444'
+            },
+            {
+                icon: q === 'high' ? '💰' : '⚠️',
+                val: q === 'high' ? 'حقيقية' : 'ورقية',
+                label: 'جودة الكاش',
+                color: q === 'high' ? '#10b981' : '#ef4444'
+            },
+            {
+                icon: m === 'strong' ? '🏰' : '🚧',
+                val: m === 'strong' ? 'قوي' : 'ضعيف',
+                label: 'الخندق التنافسي',
+                color: m === 'strong' ? '#10b981' : '#f59e0b'
+            }
         ]
     };
 }
