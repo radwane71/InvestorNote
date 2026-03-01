@@ -22,6 +22,7 @@
         .input-group input, .select-group select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; background: white; }
         .input-group input:focus, .select-group select:focus { outline: none; border-color: #5a7fb5; }
         .checkbox-group input[type="checkbox"] { margin-left: 10px; transform: scale(1.2); }
+        .field-hint { font-size: 0.78rem; color: #888; margin-top: 5px; line-height: 1.4; }
         .info-box { background: rgba(90,127,181,0.1); border: 2px solid #5a7fb5; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
         .info-box h4 { color: #4a6fa5; margin-bottom: 10px; }
         .info-box p  { color: #424242; line-height: 1.6; }
@@ -97,8 +98,14 @@
     </style>
 </head>
 <body>
+
 <div id="loadingOverlay" class="loading-overlay hidden"><div class="loading-spinner"></div></div>
-<div id="helpModal" class="help-modal hidden"><div class="help-modal-content"><button class="help-modal-close" onclick="closeHelp()">×</button><div id="helpContent"></div></div></div>
+<div id="helpModal" class="help-modal hidden">
+    <div class="help-modal-content">
+        <button class="help-modal-close" onclick="closeHelp()">×</button>
+        <div id="helpContent"></div>
+    </div>
+</div>
 <div id="legalModal" class="legal-modal">
     <div class="legal-modal-content">
         <div class="legal-modal-title">⚠️ إقرار قانوني ومسؤولية فنية</div>
@@ -135,48 +142,788 @@
 </nav>
 <script>
 function toggleNavbar(){document.getElementById('navbarMenu').classList.toggle('open');}
-document.addEventListener('DOMContentLoaded',function(){
-    const page=(window.location.pathname.split('/').pop()||'index.html').split('?')[0]||'index.html';
+document.addEventListener('DOMContentLoaded', function(){
+    const page = (window.location.pathname.split('/').pop() || 'index.html').split('?')[0] || 'index.html';
     document.querySelectorAll('.navbar-item').forEach(function(el){
         el.classList.remove('active');
-        if((el.getAttribute('href')||'').split('?')[0]===page)el.classList.add('active');
+        if ((el.getAttribute('href') || '').split('?')[0] === page) el.classList.add('active');
     });
 });
 </script>
 
 <div class="container">
-    <div class="header"><h1>📊 حاسبة القيمة العادلة للأسهم</h1><p>احسب القيمة العادلة للأسهم باستخدام نماذج التقييم المالية المختلفة</p></div>
-    <div class="warning-box"><span>⚠️</span><div><strong>إقرار قانوني:</strong> هذه الحاسبة أداة تعليمية رياضية فقط. النتائج بناءً على مدخلاتك ولا تعكس سعراً سوقياً أو توصية استثمارية. الاستخدام تحت مسؤوليتك الكاملة.</div></div>
-    <div class="calculator-grid">
-        <div class="card"><h2 class="section-title">📊 البيانات الأساسية</h2><div class="select-group"><label>نوع الشركة <button class="help-icon" onclick="showHelp('companyType')">ℹ️</button></label><select id="companyType" onchange="toggleCompanyType()"><option value="normal">شركة عادية</option><option value="reit">صندوق ريت عقاري</option></select></div><div id="normalCompanyInputs"><div class="input-group"><label>الربح للسهم (EPS) <button class="help-icon" onclick="showHelp('eps')">ℹ️</button></label><input type="number" id="eps" value="5.0" step="0.01"></div><div class="input-group"><label>التدفق النقدي الحر للسهم (FCF) <button class="help-icon" onclick="showHelp('fcf')">ℹ️</button></label><input type="number" id="fcf" value="3.0" step="0.1"></div><div class="input-group"><label>النقد والنقدية المعادلة للسهم <button class="help-icon" onclick="showHelp('cash')">ℹ️</button></label><input type="number" id="cash" value="1.0" step="0.1" min="0"></div></div><div id="reitInputs" style="display:none;"><div class="input-group"><label>صافي قيمة الأصول الإجمالية (NAV) <button class="help-icon" onclick="showHelp('nav')">ℹ️</button></label><input type="number" id="nav" value="100" step="0.1" min="0"></div><div class="input-group"><label>عدد وحدات الريت <button class="help-icon" onclick="showHelp('totalUnits')">ℹ️</button></label><input type="number" id="totalUnits" value="1000000" step="1000" min="1" placeholder="مثال: 1000000"></div><div class="input-group"><label>التدفقات النقدية التشغيلية للوحدة (FFO) <button class="help-icon" onclick="showHelp('ffo')">ℹ️</button></label><input type="number" id="ffo" value="8.0" step="0.1" min="0"></div><div class="input-group"><label>معدل الرسملة العقارية (Cap Rate) % <button class="help-icon" onclick="showHelp('capRate')">ℹ️</button></label><input type="number" id="capRate" value="8.0" step="0.1" min="0.1" max="30"></div><div class="input-group"><label>إجمالي الديون <button class="help-icon" onclick="showHelp('totalDebt')">ℹ️</button></label><input type="number" id="totalDebt" value="0" step="0.1" min="0"></div></div><div class="input-group"><label>نسبة النمو للسنوات 5 القادمة (%) <button class="help-icon" onclick="showHelp('growth5yr')">ℹ️</button></label><input type="number" id="growth5yr" value="10.0" step="0.1" min="0"></div><div class="input-group"><label>نسبة النمو الدائم (%) — max 3% <button class="help-icon" onclick="showHelp('growthPerp')">ℹ️</button></label><input type="number" id="growthPerp" value="2.5" step="0.1" min="0" max="3" oninput="validateGrowthPerp()"><div id="growthPerpWarning">⚠️ النمو الدائم لا يتجاوز 3% — تم التصحيح تلقائياً</div></div><div class="input-group"><label>معدل الخصم (WACC) (%) <button class="help-icon" onclick="showHelp('discountRate')">ℹ️</button></label><input type="number" id="discountRate" value="8.0" step="0.1" min="0.1"></div><div class="input-group"><label>مكرر الربحية الحالي (P/E) <button class="help-icon" onclick="showHelp('currentPe')">ℹ️</button></label><input type="number" id="currentPe" value="15.0" step="0.1" min="0"></div><div class="input-group"><label>مكرر ربحية القطاع <button class="help-icon" onclick="showHelp('sectorPe')">ℹ️</button></label><input type="number" id="sectorPe" value="18.0" step="0.1" min="0"></div><div class="input-group"><label>توزيعات الأرباح السنوية للسهم <button class="help-icon" onclick="showHelp('dividends')">ℹ️</button></label><input type="number" id="dividends" value="1.0" step="0.1" min="0"></div><div class="input-group"><label>القيمة الدفترية للسهم <button class="help-icon" onclick="showHelp('bookValue')">ℹ️</button></label><input type="number" id="bookValue" value="20.0" step="0.1" min="0"></div><div class="input-group"><label>عائد السندات الحكومية 10 سنوات (%) <button class="help-icon" onclick="showHelp('bondYield')">ℹ️</button></label><input type="number" id="bondYield" value="6.5" step="0.1" min="0.1" max="30"></div><div class="input-group"><label>السعر الحالي للسهم <button class="help-icon" onclick="showHelp('currentPrice')">ℹ️</button></label><input type="number" id="currentPrice" value="50.0" step="0.1" min="0"></div></div>
-        <div class="card"><h2 class="section-title">⚙️ الإعدادات المتقدمة</h2><div class="checkbox-group"><label><input type="checkbox" id="useWacc">حساب WACC تلقائياً <button class="help-icon" onclick="showHelp('useWacc')">ℹ️</button></label></div><div id="waccInputs" style="display:none;"><div class="input-group"><label>معدل العائد الخالي من المخاطر (%) <button class="help-icon" onclick="showHelp('riskFree')">ℹ️</button></label><input type="number" id="riskFree" value="4.0" step="0.1" min="0"></div><div class="input-group"><label>بيتا (Beta) <button class="help-icon" onclick="showHelp('beta')">ℹ️</button></label><input type="number" id="beta" value="1.2" step="0.05" min="0"></div><div class="input-group"><label>عائد السوق المتوقع (%) <button class="help-icon" onclick="showHelp('marketReturn')">ℹ️</button></label><input type="number" id="marketReturn" value="8.0" step="0.1" min="0"></div><div class="input-group"><label>تكلفة الدين (%) <button class="help-icon" onclick="showHelp('debtCost')">ℹ️</button></label><input type="number" id="debtCost" value="5.0" step="0.1" min="0"></div><div class="input-group"><label>معدل الضريبة (%) <button class="help-icon" onclick="showHelp('taxRate')">ℹ️</button></label><input type="number" id="taxRate" value="20.0" step="0.1" min="0" max="100"></div><div class="input-group"><label>نسبة الدين إلى حقوق الملكية (D/E) <button class="help-icon" onclick="showHelp('debtEquity')">ℹ️</button></label><input type="number" id="debtEquity" value="0.5" step="0.05" min="0"></div></div><div class="select-group"><label>السيناريو <button class="help-icon" onclick="showHelp('scenario')">ℹ️</button></label><select id="scenario"><option value="realistic">واقعي</option><option value="optimistic">متفائل (+2%)</option><option value="conservative">محتاط (-2%)</option></select></div><div class="input-group"><label>مكرر القيمة الدفترية العادل (P/B) <button class="help-icon" onclick="showHelp('fairPb')">ℹ️</button></label><input type="number" id="fairPb" value="1.5" step="0.1" min="0.1"></div><h3 class="section-title" style="margin-top:20px;">🎯 نطاقات تحليل الحساسية (DCF)</h3><div class="input-group"><label>الحد الأدنى للنمو (%) <button class="help-icon" onclick="showHelp('growthMin')">ℹ️</button></label><input type="number" id="growthMin" value="5.0" step="0.1" min="0"></div><div class="input-group"><label>الحد الأعلى للنمو (%) <button class="help-icon" onclick="showHelp('growthMax')">ℹ️</button></label><input type="number" id="growthMax" value="15.0" step="0.1" min="0"></div><div class="input-group"><label>الحد الأدنى للخصم (%) <button class="help-icon" onclick="showHelp('discountMin')">ℹ️</button></label><input type="number" id="discountMin" value="6.0" step="0.1" min="0.1"></div><div class="input-group"><label>الحد الأعلى للخصم (%) <button class="help-icon" onclick="showHelp('discountMax')">ℹ️</button></label><input type="number" id="discountMax" value="12.0" step="0.1" min="0.1"></div><h3 class="section-title" style="margin-top:20px;">📐 النسب المالية (للعرض)</h3><div class="input-group"><label>نسبة الدين (%) <button class="help-icon" onclick="showHelp('debtRatio')">ℹ️</button></label><input type="number" id="debtRatio" value="30.0" step="0.1" min="0"></div><div class="input-group"><label>نسبة السيولة <button class="help-icon" onclick="showHelp('liquidityRatio')">ℹ️</button></label><input type="number" id="liquidityRatio" value="1.5" step="0.1" min="0"></div><div class="input-group"><label>جودة الأرباح (ROE %) <button class="help-icon" onclick="showHelp('earningsQuality')">ℹ️</button></label><input type="number" id="earningsQuality" value="15.0" step="0.1" min="0"></div><button class="calculate-btn" onclick="calculateFairValue()">احسب القيمة العادلة</button></div>
+    <div class="header">
+        <h1>📊 حاسبة القيمة العادلة للأسهم</h1>
+        <p>احسب القيمة العادلة للأسهم باستخدام نماذج التقييم المالية المختلفة</p>
     </div>
-    <div class="results-section" id="resultsSection"><div class="result-card"><h2>🏢 قيمة المنشأة (Enterprise Value)</h2><div class="result-amount" id="enterpriseValueRange">-</div><div class="result-period"  id="enterpriseValueDetails">-</div><p class="disclaimer-text">⚠️ هذه القيمة إجمالي قيمة الشركة قبل خصم الديون وإضافة النقد</p></div><div class="result-card"><h2>💰 القيمة العادلة للسهم الواحد</h2><div class="result-amount" id="fairValueRange">-</div><div class="result-period"  id="fairValueDetails">-</div><p class="disclaimer-text">⚠️ أداة تعليمية رياضية فقط — ليست توصية استثمارية</p></div><div id="outlierWarning" class="outlier-warning" style="display:none;"></div><div class="breakdown-table"><h2 class="section-title">📋 نتائج النماذج</h2><table><thead><tr><th>النموذج</th><th>القيمة العادلة</th><th>الوضع</th></tr></thead><tbody id="modelsTable"></tbody></table></div><div class="chart-container"><h2 class="section-title">📊 مقارنة النماذج</h2><div class="chart-wrapper"><canvas id="modelsChart"></canvas></div></div><div class="breakdown-table"><h2 class="section-title">🔍 تحليل الحساسية — DCF (النمو \ معدل الخصم)</h2><table id="sensitivityTable"></table></div><div class="dashboard"><div class="dashboard-card"><h4>نسبة الدين</h4><div class="dashboard-value" id="dashboardDebt">-</div></div><div class="dashboard-card"><h4>نسبة السيولة</h4><div class="dashboard-value" id="dashboardLiquidity">-</div></div><div class="dashboard-card"><h4>جودة الأرباح (ROE)</h4><div class="dashboard-value" id="dashboardEarnings">-</div></div><div class="dashboard-card"><h4>هامش الأمان</h4><div class="dashboard-value" id="dashboardMargin">-</div></div></div></div>
-    <div class="methodology-section"><h2 class="section-title">📚 كيف تعمل الحاسبة؟</h2><p class="methodology-intro">لتعزيز الشفافية، نوضح جميع المعادلات والنماذج المالية المستخدمة:</p><div class="methodology-grid"><div class="methodology-card"><h3>📊 DCF — التدفق النقدي المخصوم</h3><div class="formula">القيمة = Σ FCF<sub>t</sub>/(1+r)<sup>t</sup> + TV/(1+r)<sup>10</sup><br>TV = FCF<sub>10</sub> × (1+g) / (r − g)</div><div class="formula-details"><p>السنوات 1-5: FCF ينمو بـ growth_5yr | السنوات 6-10: ينمو بـ growth_perp</p><p>القيمة النهائية = قيمة النمو إلى الأبد بعد السنة 10</p></div></div><div class="methodology-card"><h3>📈 معادلة جراهام المعدلة</h3><div class="formula">V = (EPS × min(8.5 + 2g, 25) × 4.4) / Y</div><div class="formula-details"><p>g = نسبة النمو المتوقع (%) | Y = عائد السندات 10 سنوات (%)</p><p>الحد الأقصى للمضاعف 25 لمنع المبالغة بشركات النمو السريع</p></div></div><div class="methodology-card"><h3>💰 نموذج P/E</h3><div class="formula">القيمة = EPS × min(P/E القطاع, 40)</div><div class="formula-details"><p>الحد الأقصى 40 لمنع التضخم في التقييم</p></div></div><div class="methodology-card"><h3>🌱 نموذج جوردون (Gordon Growth)</h3><div class="formula">V = D₁ / (r − g) = Div × (1+g) / (r−g)</div><div class="formula-details"><p>يُطبق فقط إذا كان r > g | للشركات ذات التوزيعات المستقرة</p></div></div><div class="methodology-card"><h3>📖 القيمة الدفترية المعدلة</h3><div class="formula">V = القيمة الدفترية × P/B العادل</div><div class="formula-details"><p>يعكس القيمة المحاسبية مع مراعاة جودة الأصول</p></div></div><div class="methodology-card"><h3>⚙️ WACC</h3><div class="formula">WACC = (E/V × Re) + (D/V × Rd × (1−T))<br>Re = Rf + β × (Rm − Rf)</div><div class="formula-details"><p>Re = تكلفة حقوق الملكية (CAPM) | Rd = تكلفة الدين | T = الضريبة</p></div></div></div><div class="methodology-note"><h4>⚠️ حدود الاستخدام:</h4><ul><li>الحاسبة أداة تعليمية — ليست توصية استثمارية بأي شكل</li><li>جودة النتائج تعتمد على جودة المدخلات (GIGO)</li><li>النماذج تستبعد الشركات الخاسرة (EPS ≤ 0) من حسابات جراهام و P/E</li><li>نموذج Gordon يستبعد تلقائياً إذا كانت التوزيعات = 0 أو r ≤ g</li><li>القيم الشاذة (outliers) يتم إبلاغك عنها تلقائياً</li></ul></div></div>
+    <div class="warning-box">
+        <span>⚠️</span>
+        <div><strong>إقرار قانوني:</strong> هذه الحاسبة أداة تعليمية رياضية فقط. النتائج بناءً على مدخلاتك ولا تعكس سعراً سوقياً أو توصية استثمارية. الاستخدام تحت مسؤوليتك الكاملة.</div>
+    </div>
+
+    <div class="calculator-grid">
+        <!-- ===== بطاقة المدخلات الأساسية ===== -->
+        <div class="card">
+            <h2 class="section-title">📊 البيانات الأساسية</h2>
+
+            <div class="select-group">
+                <label>نوع الشركة <button class="help-icon" onclick="showHelp('companyType')">ℹ️</button></label>
+                <select id="companyType" onchange="toggleCompanyType()">
+                    <option value="normal">شركة عادية</option>
+                    <option value="reit">صندوق ريت عقاري</option>
+                </select>
+            </div>
+
+            <!-- مدخلات الشركة العادية -->
+            <div id="normalCompanyInputs">
+                <div class="input-group">
+                    <label>الربح للسهم (EPS) <button class="help-icon" onclick="showHelp('eps')">ℹ️</button></label>
+                    <input type="number" id="eps" value="5.0" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>التدفق النقدي الحر للسهم (FCF) <button class="help-icon" onclick="showHelp('fcf')">ℹ️</button></label>
+                    <input type="number" id="fcf" value="3.0" step="0.1">
+                </div>
+                <!-- ✅ إصلاح: استبدال حقلي النقد والديون بحقل واحد "الدين الصافي للسهم" -->
+                <div class="input-group">
+                    <label>الدين الصافي للسهم <button class="help-icon" onclick="showHelp('netDebt')">ℹ️</button></label>
+                    <input type="number" id="netDebt" value="0" step="0.1">
+                    <p class="field-hint">= (إجمالي الديون − النقد والمعادلات) ÷ عدد الأسهم. أدخل قيمة سالبة إذا كانت الشركة نقدية صافية (cash-rich).</p>
+                </div>
+            </div>
+
+            <!-- مدخلات الريت -->
+            <div id="reitInputs" style="display:none;">
+                <!-- ✅ إصلاح: توضيح وحدة NAV -->
+                <div class="input-group">
+                    <label>صافي قيمة الأصول الإجمالية NAV (بالريال) <button class="help-icon" onclick="showHelp('nav')">ℹ️</button></label>
+                    <input type="number" id="nav" value="500000000" step="1000000" min="0">
+                    <p class="field-hint">أدخل القيمة الإجمالية بالريال. مثال: صندوق بأصول 500 مليون → أدخل 500000000</p>
+                </div>
+                <div class="input-group">
+                    <label>عدد وحدات الريت <button class="help-icon" onclick="showHelp('totalUnits')">ℹ️</button></label>
+                    <input type="number" id="totalUnits" value="10000000" step="100000" min="1" placeholder="مثال: 10000000">
+                </div>
+                <div class="input-group">
+                    <label>التدفقات النقدية التشغيلية للوحدة (FFO) <button class="help-icon" onclick="showHelp('ffo')">ℹ️</button></label>
+                    <input type="number" id="ffo" value="8.0" step="0.1" min="0">
+                </div>
+                <!-- ✅ إصلاح: إضافة مضاعف P/FFO بدلاً من Cap Rate وحده -->
+                <div class="input-group">
+                    <label>مضاعف P/FFO العادل <button class="help-icon" onclick="showHelp('pffoMultiple')">ℹ️</button></label>
+                    <input type="number" id="pffoMultiple" value="12" step="0.5" min="1" max="40">
+                    <p class="field-hint">مضاعف P/FFO المعتاد للريتات 10–16x. استخدم متوسط القطاع كمرجع.</p>
+                </div>
+                <div class="input-group">
+                    <label>معدل الرسملة العقارية Cap Rate (%) <button class="help-icon" onclick="showHelp('capRate')">ℹ️</button></label>
+                    <input type="number" id="capRate" value="8.0" step="0.1" min="0.1" max="30">
+                    <p class="field-hint">يُستخدم لحساب قيمة الأصول العقارية بطريقة NOI ÷ Cap Rate كمقياس ثانوي.</p>
+                </div>
+                <div class="input-group">
+                    <label>إجمالي الديون (بالريال) <button class="help-icon" onclick="showHelp('totalDebt')">ℹ️</button></label>
+                    <input type="number" id="totalDebt" value="0" step="1000" min="0">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>نسبة النمو للسنوات 5 القادمة (%) <button class="help-icon" onclick="showHelp('growth5yr')">ℹ️</button></label>
+                <input type="number" id="growth5yr" value="10.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>نسبة النمو الدائم (%) — max 3% <button class="help-icon" onclick="showHelp('growthPerp')">ℹ️</button></label>
+                <input type="number" id="growthPerp" value="2.5" step="0.1" min="0" max="3" oninput="validateGrowthPerp()">
+                <div id="growthPerpWarning">⚠️ النمو الدائم لا يتجاوز 3% — تم التصحيح تلقائياً</div>
+            </div>
+            <div class="input-group">
+                <label>معدل الخصم WACC (%) <button class="help-icon" onclick="showHelp('discountRate')">ℹ️</button></label>
+                <input type="number" id="discountRate" value="8.0" step="0.1" min="0.1">
+            </div>
+            <div class="input-group">
+                <label>مكرر الربحية الحالي P/E <button class="help-icon" onclick="showHelp('currentPe')">ℹ️</button></label>
+                <input type="number" id="currentPe" value="15.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>مكرر ربحية القطاع <button class="help-icon" onclick="showHelp('sectorPe')">ℹ️</button></label>
+                <input type="number" id="sectorPe" value="18.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>توزيعات الأرباح السنوية للسهم <button class="help-icon" onclick="showHelp('dividends')">ℹ️</button></label>
+                <input type="number" id="dividends" value="1.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>القيمة الدفترية للسهم <button class="help-icon" onclick="showHelp('bookValue')">ℹ️</button></label>
+                <input type="number" id="bookValue" value="20.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>عائد السندات الحكومية 10 سنوات (%) <button class="help-icon" onclick="showHelp('bondYield')">ℹ️</button></label>
+                <input type="number" id="bondYield" value="6.5" step="0.1" min="0.1" max="30">
+            </div>
+            <div class="input-group">
+                <label>السعر الحالي للسهم <button class="help-icon" onclick="showHelp('currentPrice')">ℹ️</button></label>
+                <input type="number" id="currentPrice" value="50.0" step="0.1" min="0">
+            </div>
+        </div>
+
+        <!-- ===== بطاقة الإعدادات المتقدمة ===== -->
+        <div class="card">
+            <h2 class="section-title">⚙️ الإعدادات المتقدمة</h2>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="useWacc">حساب WACC تلقائياً <button class="help-icon" onclick="showHelp('useWacc')">ℹ️</button></label>
+            </div>
+            <div id="waccInputs" style="display:none;">
+                <div class="input-group">
+                    <label>معدل العائد الخالي من المخاطر (%) <button class="help-icon" onclick="showHelp('riskFree')">ℹ️</button></label>
+                    <input type="number" id="riskFree" value="4.0" step="0.1" min="0">
+                </div>
+                <div class="input-group">
+                    <label>بيتا Beta <button class="help-icon" onclick="showHelp('beta')">ℹ️</button></label>
+                    <input type="number" id="beta" value="1.2" step="0.05" min="0">
+                </div>
+                <div class="input-group">
+                    <label>عائد السوق المتوقع (%) <button class="help-icon" onclick="showHelp('marketReturn')">ℹ️</button></label>
+                    <input type="number" id="marketReturn" value="8.0" step="0.1" min="0">
+                </div>
+                <div class="input-group">
+                    <label>تكلفة الدين (%) <button class="help-icon" onclick="showHelp('debtCost')">ℹ️</button></label>
+                    <input type="number" id="debtCost" value="5.0" step="0.1" min="0">
+                </div>
+                <div class="input-group">
+                    <label>معدل الضريبة (%) <button class="help-icon" onclick="showHelp('taxRate')">ℹ️</button></label>
+                    <input type="number" id="taxRate" value="20.0" step="0.1" min="0" max="100">
+                </div>
+                <div class="input-group">
+                    <label>نسبة الدين إلى حقوق الملكية D/E <button class="help-icon" onclick="showHelp('debtEquity')">ℹ️</button></label>
+                    <input type="number" id="debtEquity" value="0.5" step="0.05" min="0">
+                </div>
+            </div>
+
+            <div class="select-group">
+                <label>السيناريو <button class="help-icon" onclick="showHelp('scenario')">ℹ️</button></label>
+                <select id="scenario">
+                    <option value="realistic">واقعي</option>
+                    <option value="optimistic">متفائل (+2%)</option>
+                    <option value="conservative">محتاط (-2%)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>مكرر القيمة الدفترية العادل P/B <button class="help-icon" onclick="showHelp('fairPb')">ℹ️</button></label>
+                <input type="number" id="fairPb" value="1.5" step="0.1" min="0.1">
+            </div>
+
+            <h3 class="section-title" style="margin-top:20px;">🎯 نطاقات تحليل الحساسية (DCF)</h3>
+            <div class="input-group">
+                <label>الحد الأدنى للنمو (%) <button class="help-icon" onclick="showHelp('growthMin')">ℹ️</button></label>
+                <input type="number" id="growthMin" value="5.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>الحد الأعلى للنمو (%) <button class="help-icon" onclick="showHelp('growthMax')">ℹ️</button></label>
+                <input type="number" id="growthMax" value="15.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>الحد الأدنى للخصم (%) <button class="help-icon" onclick="showHelp('discountMin')">ℹ️</button></label>
+                <input type="number" id="discountMin" value="6.0" step="0.1" min="0.1">
+            </div>
+            <div class="input-group">
+                <label>الحد الأعلى للخصم (%) <button class="help-icon" onclick="showHelp('discountMax')">ℹ️</button></label>
+                <input type="number" id="discountMax" value="12.0" step="0.1" min="0.1">
+            </div>
+
+            <h3 class="section-title" style="margin-top:20px;">📐 النسب المالية (للعرض)</h3>
+            <div class="input-group">
+                <label>نسبة الدين (%) <button class="help-icon" onclick="showHelp('debtRatio')">ℹ️</button></label>
+                <input type="number" id="debtRatio" value="30.0" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>نسبة السيولة <button class="help-icon" onclick="showHelp('liquidityRatio')">ℹ️</button></label>
+                <input type="number" id="liquidityRatio" value="1.5" step="0.1" min="0">
+            </div>
+            <div class="input-group">
+                <label>جودة الأرباح ROE (%) <button class="help-icon" onclick="showHelp('earningsQuality')">ℹ️</button></label>
+                <input type="number" id="earningsQuality" value="15.0" step="0.1" min="0">
+            </div>
+
+            <button class="calculate-btn" onclick="calculateFairValue()">احسب القيمة العادلة</button>
+        </div>
+    </div>
+
+    <!-- ===== قسم النتائج ===== -->
+    <div class="results-section" id="resultsSection">
+
+        <div class="result-card">
+            <h2>🏢 قيمة المنشأة (Enterprise Value)</h2>
+            <div class="result-amount" id="enterpriseValueRange">-</div>
+            <div class="result-period"  id="enterpriseValueDetails">-</div>
+            <p class="disclaimer-text">⚠️ هذه القيمة إجمالي قيمة الشركة قبل خصم الديون الصافية</p>
+        </div>
+
+        <div class="result-card">
+            <h2>💰 القيمة العادلة للسهم الواحد</h2>
+            <div class="result-amount" id="fairValueRange">-</div>
+            <div class="result-period"  id="fairValueDetails">-</div>
+            <p class="disclaimer-text">⚠️ أداة تعليمية رياضية فقط — ليست توصية استثمارية</p>
+        </div>
+
+        <div id="outlierWarning" class="outlier-warning" style="display:none;"></div>
+
+        <div class="breakdown-table">
+            <h2 class="section-title">📋 نتائج النماذج</h2>
+            <table>
+                <thead><tr><th>النموذج</th><th>القيمة العادلة</th><th>الوضع</th></tr></thead>
+                <tbody id="modelsTable"></tbody>
+            </table>
+        </div>
+
+        <div class="chart-container">
+            <h2 class="section-title">📊 مقارنة النماذج</h2>
+            <div class="chart-wrapper"><canvas id="modelsChart"></canvas></div>
+        </div>
+
+        <div class="breakdown-table">
+            <h2 class="section-title">🔍 تحليل الحساسية — DCF (النمو \ معدل الخصم)</h2>
+            <table id="sensitivityTable"></table>
+        </div>
+
+        <div class="dashboard">
+            <div class="dashboard-card"><h4>نسبة الدين</h4><div class="dashboard-value" id="dashboardDebt">-</div></div>
+            <div class="dashboard-card"><h4>نسبة السيولة</h4><div class="dashboard-value" id="dashboardLiquidity">-</div></div>
+            <div class="dashboard-card"><h4>جودة الأرباح ROE</h4><div class="dashboard-value" id="dashboardEarnings">-</div></div>
+            <div class="dashboard-card"><h4>هامش الأمان</h4><div class="dashboard-value" id="dashboardMargin">-</div></div>
+        </div>
+    </div>
+
+    <!-- ===== قسم المنهجية ===== -->
+    <div class="methodology-section">
+        <h2 class="section-title">📚 كيف تعمل الحاسبة؟</h2>
+        <p class="methodology-intro">لتعزيز الشفافية، نوضح جميع المعادلات والنماذج المالية المستخدمة:</p>
+        <div class="methodology-grid">
+            <div class="methodology-card">
+                <h3>📊 DCF — التدفق النقدي المخصوم</h3>
+                <div class="formula">القيمة = Σ FCF<sub>t</sub>/(1+r)<sup>t</sup> + TV/(1+r)<sup>10</sup><br>TV = FCF<sub>10</sub> × (1+g) / (r − g)<br>قيمة السهم = EV − الدين الصافي للسهم</div>
+                <div class="formula-details">
+                    <p>السنوات 1-5: FCF ينمو بـ growth_5yr | السنوات 6-10: ينمو بـ growth_perp</p>
+                    <p>✅ الدين الصافي يُطرح من EV للحصول على قيمة حقوق الملكية الفعلية</p>
+                </div>
+            </div>
+            <div class="methodology-card">
+                <h3>📈 معادلة جراهام المعدلة</h3>
+                <div class="formula">V = (EPS × min(8.5 + 2g, 25) × 4.4) / Y</div>
+                <div class="formula-details">
+                    <p>g = نسبة النمو المتوقع (%) | Y = عائد السندات 10 سنوات (%)</p>
+                    <p>الحد الأقصى للمضاعف 25 لمنع المبالغة بشركات النمو السريع</p>
+                </div>
+            </div>
+            <div class="methodology-card">
+                <h3>💰 نموذج P/E</h3>
+                <div class="formula">القيمة = EPS × min(P/E القطاع, 40)</div>
+                <div class="formula-details"><p>الحد الأقصى 40 لمنع التضخم في التقييم</p></div>
+            </div>
+            <div class="methodology-card">
+                <h3>🌱 نموذج جوردون (Gordon Growth)</h3>
+                <div class="formula">V = D₁ / (r − g) = Div × (1+g) / (r−g)</div>
+                <div class="formula-details"><p>يُطبق فقط إذا كان r > g | للشركات ذات التوزيعات المستقرة</p></div>
+            </div>
+            <div class="methodology-card">
+                <h3>📖 القيمة الدفترية المعدلة</h3>
+                <div class="formula">V = القيمة الدفترية × P/B العادل</div>
+                <div class="formula-details"><p>يعكس القيمة المحاسبية مع مراعاة جودة الأصول</p></div>
+            </div>
+            <div class="methodology-card">
+                <h3>🏢 تقييم الريت</h3>
+                <div class="formula">NAV للوحدة = (NAV − الديون) ÷ عدد الوحدات<br>قيمة P/FFO = FFO × مضاعف P/FFO</div>
+                <div class="formula-details">
+                    <p>✅ P/FFO هو المقياس الصحيح للريتات — مشابه للـ P/E للأسهم العادية</p>
+                    <p>NAV ÷ Cap Rate يُعطى كمقياس ثانوي للتحقق فقط</p>
+                </div>
+            </div>
+            <div class="methodology-card">
+                <h3>⚙️ WACC</h3>
+                <div class="formula">WACC = (E/V × Re) + (D/V × Rd × (1−T))<br>Re = Rf + β × (Rm − Rf)</div>
+                <div class="formula-details"><p>Re = تكلفة حقوق الملكية (CAPM) | Rd = تكلفة الدين | T = الضريبة</p></div>
+            </div>
+        </div>
+        <div class="methodology-note">
+            <h4>⚠️ حدود الاستخدام:</h4>
+            <ul>
+                <li>الحاسبة أداة تعليمية — ليست توصية استثمارية بأي شكل</li>
+                <li>جودة النتائج تعتمد على جودة المدخلات (GIGO)</li>
+                <li>النماذج تستبعد الشركات الخاسرة (EPS ≤ 0) من حسابات جراهام و P/E</li>
+                <li>نموذج Gordon يستبعد تلقائياً إذا كانت التوزيعات = 0 أو r ≤ g</li>
+                <li>الدين الصافي للسهم يُطرح من قيمة DCF — ضع قيمة سالبة للشركات النقدية</li>
+                <li>القيم الشاذة (outliers) يتم إبلاغك عنها تلقائياً</li>
+            </ul>
+        </div>
+    </div>
 </div>
+
 <script>
-let modelsChart=null;const helpContent={eps:{title:'الربح للسهم (EPS)',body:'<p>صافي ربح الشركة ÷ عدد الأسهم. يستخدم في نماذج جراهام و P/E.</p><p><strong>أين تجده:</strong> موقع تداول → البيانات المالية → الربح للسهم.</p>'},fcf:{title:'التدفق النقدي الحر للسهم',body:'<p>النقد المتاح بعد النفقات التشغيلية والاستثمارية. الأساس في نموذج DCF.</p><p>حساب: التدفق التشغيلي − نفقات رأس المال</p>'},cash:{title:'النقد للسهم',body:'<p>النقد والنقدية المعادلة ÷ عدد الأسهم. يُضاف لقيمة DCF لأنه يعود للمساهمين مباشرة.</p>'},nav:{title:'NAV — صافي قيمة الأصول',body:'<p>إجمالي قيمة أصول الريت بالسوق. يُقسم على عدد الوحدات للحصول على NAV للوحدة.</p>'},totalUnits:{title:'عدد وحدات الريت',body:'<p>عدد الوحدات الاستثمارية المصدرة. يُستخدم لتحويل NAV الإجمالي إلى NAV للوحدة.</p>'},ffo:{title:'FFO — التدفق النقدي التشغيلي للوحدة',body:'<p>معيار أساسي لتقييم الريتات. يقيس التدفق النقدي بعد خصم الديون وبدون الاستهلاك.</p>'},capRate:{title:'Cap Rate — معدل الرسملة العقارية',body:'<p>نسبة الدخل التشغيلي الصافي إلى قيمة العقار. يُستخدم لتحويل FFO إلى قيمة عقارية.</p>'},totalDebt:{title:'إجمالي الديون',body:'<p>إجمالي ديون الريت. يُطرح من NAV الإجمالي لحساب صافي القيمة للمساهمين.</p>'},growth5yr:{title:'نسبة النمو 5 سنوات',body:'<p>النمو السنوي المتوقع للسنوات الخمس القادمة. يؤثر بشكل كبير على قيمة DCF وجراهام.</p><p>كن واقعياً — معظم الشركات الناضجة 5-12%.</p>'},growthPerp:{title:'النمو الدائم',body:'<p>النمو المتوقع بعد السنة 10 إلى الأبد. يجب أن يكون أقل من WACC وأقل من نمو الاقتصاد. عادة 2-3%.</p>'},discountRate:{title:'WACC — معدل الخصم',body:'<p>العائد المطلوب من المستثمرين. يمكن إدخاله يدوياً أو حسابه تلقائياً. شركة مستقرة ≈ 8%، مخاطرة عالية ≈ 12%.</p>'},currentPe:{title:'P/E الحالي',body:'<p>سعر السهم ÷ EPS. يُستخدم للمقارنة بـ P/E القطاع.</p>'},sectorPe:{title:'P/E القطاع',body:'<p>متوسط P/E للشركات المنافسة في نفس القطاع. أساس نموذج التقييم النسبي.</p>'},dividends:{title:'التوزيعات السنوية',body:'<p>التوزيعات النقدية للسهم سنوياً. يستخدمه نموذج Gordon. إذا لا توزيعات، يتجاهل النموذج هذا المدخل.</p>'},bookValue:{title:'القيمة الدفترية',body:'<p>حقوق الملكية ÷ عدد الأسهم. يُضرب في P/B العادل لتقدير القيمة العادلة.</p>'},bondYield:{title:'عائد السندات الحكومية 10 سنوات',body:'<p>يُستخدم في معادلة جراهام كمقياس لبيئة الفائدة. في السعودية يتراوح 5.5-7.5%.</p>'},currentPrice:{title:'السعر الحالي',body:'<p>يُستخدم لحساب هامش الأمان: (القيمة العادلة − السعر) ÷ القيمة العادلة.</p>'},useWacc:{title:'حساب WACC تلقائياً',body:'<p>يحسب WACC من CAPM + تكلفة الدين. أدق من التقدير اليدوي لو توفرت البيانات.</p>'},riskFree:{title:'معدل الخالي من المخاطر',body:'<p>عادةً عائد السندات الحكومية 10 سنوات. يمثل الحد الأدنى للعائد المتوقع.</p>'},beta:{title:'Beta — معامل المخاطر',body:'<p>β<1: أقل تقلباً من السوق | β=1: يتحرك مع السوق | β>1: أكثر تقلباً. يجده المستثمر في مواقع مالية مثل Bloomberg.</p>'},marketReturn:{title:'عائد السوق',body:'<p>متوسط العائد السنوي التاريخي للسوق. للسوق السعودي (تاسي) يتراوح 7-10% تاريخياً.</p>'},debtCost:{title:'تكلفة الدين',body:'<p>معدل الفائدة المدفوع على قروض الشركة. يُطبق عليه الوفر الضريبي: Rd × (1−T).</p>'},taxRate:{title:'معدل الضريبة',body:'<p>الضريبة الفعلية على أرباح الشركة. 20% للشركات السعودية، 25% للأجنبية.</p>'},debtEquity:{title:'D/E — نسبة الدين لحقوق الملكية',body:'<p>يحدد أوزان الدين وحقوق الملكية في WACC. D/E=0.5 يعني الدين نصف حقوق الملكية.</p>'},scenario:{title:'السيناريو',body:'<p>يعدّل نسب النمو: متفائل +2% | محتاط -2%. استخدم الثلاثة لمعرفة نطاق التقييم.</p>'},fairPb:{title:'P/B العادل',body:'<p>المضاعف الذي تستحقه الشركة بناءً على جودة أصولها. 1.0 لأصول عادية، 1.5 لأصول جيدة، 2+ لأصول ممتازة.</p>'},growthMin:{title:'الحد الأدنى للنمو',body:'<p>أدنى نمو في جدول الحساسية. اختبر السيناريو المتشائم.</p>'},growthMax:{title:'الحد الأعلى للنمو',body:'<p>أعلى نمو في جدول الحساسية. اختبر السيناريو المتفائل.</p>'},discountMin:{title:'الحد الأدنى للخصم',body:'<p>أدنى WACC في جدول الحساسية. خصم منخفض = تقييم أعلى.</p>'},discountMax:{title:'الحد الأعلى للخصم',body:'<p>أعلى WACC في جدول الحساسية. خصم مرتفع = تقييم أقل.</p>'},debtRatio:{title:'نسبة الدين',body:'<p>الدين ÷ إجمالي الأصول. < 30% منخفض | 30-60% معتدل | > 60% مرتفع ومقلق.</p>'},liquidityRatio:{title:'نسبة السيولة',body:'<p>الأصول المتداولة ÷ الخصوم المتداولة. < 1 خطر | 1-1.5 مقبول | > 1.5 جيد.</p>'},earningsQuality:{title:'ROE — العائد على حقوق الملكية',body:'<p>صافي الربح ÷ حقوق الملكية. < 10% ضعيف | 10-15% جيد | > 15% ممتاز.</p>'},companyType:{title:'نوع الشركة',body:'<p><strong>شركة عادية:</strong> تستخدم DCF + جراهام + P/E + Gordon + القيمة الدفترية.</p><p><strong>ريت عقاري:</strong> يستخدم NAV للوحدة + مضاعف FFO فقط.</p>'},};
-function showHelp(field){const h=helpContent[field];if(!h)return;document.getElementById('helpContent').innerHTML=`<h3>${h.title}</h3>${h.body}`;const m=document.getElementById('helpModal');m.style.display='flex';m.classList.remove('hidden');}
-function closeHelp(){const m=document.getElementById('helpModal');m.style.display='none';m.classList.add('hidden');}
-document.addEventListener('click',e=>{const modal=document.getElementById('helpModal');if(e.target===modal)closeHelp();});
-function formatCurrency(amount){if(!isFinite(amount))return'—';return new Intl.NumberFormat('ar-SA',{style:'currency',currency:'SAR',minimumFractionDigits:2,maximumFractionDigits:2}).format(amount);}
-function formatPercent(v){return v.toFixed(1)+'%';}
-function validateGrowthPerp(){const el=document.getElementById('growthPerp');const v=parseFloat(el.value);const w=document.getElementById('growthPerpWarning');if(v>3){el.value=3;w.style.display='block';}else{w.style.display='none';}}
-function toggleCompanyType(){const t=document.getElementById('companyType').value;document.getElementById('normalCompanyInputs').style.display=t==='normal'?'':'none';document.getElementById('reitInputs').style.display=t==='reit'?'':'none';}
-function calculate_dcf(fcf,growth_5yr,growth_perp,discount_rate,total_debt,cash){if(discount_rate<=growth_perp)return null;if(fcf<=0)return null;let pv_sum=0;let cf5=fcf*Math.pow(1+growth_5yr,5);for(let n=1;n<=5;n++){const cf=fcf*Math.pow(1+growth_5yr,n);pv_sum+=cf/Math.pow(1+discount_rate,n);}let cf_prev=cf5;for(let n=6;n<=10;n++){cf_prev=cf_prev*(1+growth_perp);pv_sum+=cf_prev/Math.pow(1+discount_rate,n);}const tv_cf=cf_prev*(1+growth_perp);const tv=tv_cf/(discount_rate-growth_perp);const pv_tv=tv/Math.pow(1+discount_rate,10);const enterprise_value=pv_sum+pv_tv;const equity_value=enterprise_value-(total_debt||0)+(cash||0);return{enterpriseValue:enterprise_value,equityValue:equity_value};}
-function calculateGraham(eps,growth_rate,bond_yield){if(eps<=0||bond_yield<=0)return null;const multiplier=Math.min(8.5+(2*growth_rate),25);return(eps*multiplier*4.4)/bond_yield;}
-function calculate_pe(eps,sector_pe){if(eps<=0)return null;return eps*Math.min(sector_pe,40);}
-function calculate_gordon(dividends,growth_perp,discount_rate){if(dividends<=0||discount_rate<=growth_perp)return null;return dividends*(1+growth_perp)/(discount_rate-growth_perp);}
-function calculate_book_value(book_value,fair_pb){if(book_value<=0||fair_pb<=0)return null;return book_value*fair_pb;}
-function calculateWACC(risk_free,beta,market_return,debt_cost,tax_rate,debt_equity){const re=risk_free+beta*(market_return-risk_free);const d=debt_equity;const e=1;const v=d+e;const wacc=(e/v*re)+(d/v*debt_cost*(1-tax_rate));return wacc;}
-function calculateFairValue(){try{document.getElementById('loadingOverlay').classList.remove('hidden');const companyType=document.getElementById('companyType').value;let growth_perp=(parseFloat(document.getElementById('growthPerp').value)||0)/100;let discount_rate=(parseFloat(document.getElementById('discountRate').value)||0)/100;if(document.getElementById('useWacc').checked){const rf=(parseFloat(document.getElementById('riskFree').value)||0)/100;const b=parseFloat(document.getElementById('beta').value)||1;const rm=(parseFloat(document.getElementById('marketReturn').value)||0)/100;const rd=(parseFloat(document.getElementById('debtCost').value)||0)/100;const tx=(parseFloat(document.getElementById('taxRate').value)||0)/100;const de=parseFloat(document.getElementById('debtEquity').value)||0;discount_rate=calculateWACC(rf,b,rm,rd,tx,de);document.getElementById('discountRate').value=(discount_rate*100).toFixed(2);}const scenario=document.getElementById('scenario').value;const growth_adj=scenario==='optimistic'?0.02:scenario==='conservative'?-0.02:0;const growth_perp_final=growth_perp+growth_adj;if(growth_perp_final>=discount_rate){document.getElementById('loadingOverlay').classList.add('hidden');alert(`❌ خطأ: النمو الدائم (${(growth_perp_final*100).toFixed(1)}%) يجب أن يكون أقل من معدل الخصم (${(discount_rate*100).toFixed(1)}%). يرجى تعديل المدخلات.`);return;}let values={};let enterprise_value=0;let fair_value_range='';let fair_value_detail='';if(companyType==='reit'){const nav_total=parseFloat(document.getElementById('nav').value)||0;const totalUnits=Math.max(parseFloat(document.getElementById('totalUnits').value)||1_000_000,1);const ffo=parseFloat(document.getElementById('ffo').value)||0;const totalDebt=parseFloat(document.getElementById('totalDebt').value)||0;const capRate=(parseFloat(document.getElementById('capRate').value)||8)/100;const currentPrice=parseFloat(document.getElementById('currentPrice').value)||0;if(nav_total<=0&&ffo<=0){document.getElementById('loadingOverlay').classList.add('hidden');alert('❌ يجب إدخال NAV أو FFO موجب للريت.');return;}const nav_per_unit=(nav_total-totalDebt)/totalUnits;const ffo_multiplier=capRate>0?ffo/capRate:0;const ffo_yield=currentPrice>0?(ffo/currentPrice*100):0;enterprise_value=nav_total;const valid_reit=[nav_per_unit,ffo_multiplier].filter(v=>v>0);const avg_fair=valid_reit.length>0?valid_reit.reduce((a,b)=>a+b,0)/valid_reit.length:0;values={'NAV للوحدة':nav_per_unit>0?nav_per_unit:null,'مضاعف FFO':ffo_multiplier>0?ffo_multiplier:null,};fair_value_range=formatCurrency(avg_fair);fair_value_detail=`متوسط NAV (${formatCurrency(nav_per_unit)}) و مضاعف FFO (${formatCurrency(ffo_multiplier)}) | عائد FFO: ${ffo_yield.toFixed(2)}%`;}else{const eps=parseFloat(document.getElementById('eps').value)||0;const fcf=parseFloat(document.getElementById('fcf').value)||0;const cash=parseFloat(document.getElementById('cash').value)||0;const growth_5yr=(parseFloat(document.getElementById('growth5yr').value)||0)/100;const sector_pe=parseFloat(document.getElementById('sectorPe').value)||0;const dividends=parseFloat(document.getElementById('dividends').value)||0;const book_value=parseFloat(document.getElementById('bookValue').value)||0;const bond_yield=parseFloat(document.getElementById('bondYield').value)||6.5;const fair_pb=parseFloat(document.getElementById('fairPb').value)||1.5;const currentPrice=parseFloat(document.getElementById('currentPrice').value)||0;if(eps<=0&&fcf<=0){document.getElementById('loadingOverlay').classList.add('hidden');alert('❌ يجب إدخال EPS أو FCF موجب للشركة العادية.');return;}if(bond_yield<=0){document.getElementById('loadingOverlay').classList.add('hidden');alert('❌ عائد السندات يجب أن يكون موجباً.');return;}const growth_5yr_adj=growth_5yr+growth_adj;const dcf_result=calculate_dcf(fcf,growth_5yr_adj,growth_perp_final,discount_rate,0,cash);const dcf_value=dcf_result?dcf_result.equityValue:null;enterprise_value=dcf_result?dcf_result.enterpriseValue:0;const graham_value=calculateGraham(eps,growth_5yr_adj*100,bond_yield);const pe_value=calculate_pe(eps,sector_pe);const gordon_value=calculate_gordon(dividends,growth_perp_final,discount_rate);const bv_value=calculate_book_value(book_value,fair_pb);values={'DCF':dcf_value,'جراهام':graham_value,'مكرر الربحية P/E':pe_value,'جوردون':gordon_value,'القيمة الدفترية':bv_value,};const valid_values=Object.values(values).filter(v=>v!==null&&v>0&&isFinite(v));if(valid_values.length===0){document.getElementById('loadingOverlay').classList.add('hidden');alert('❌ لم ينتج أي نموذج قيمة صالحة. تحقق من المدخلات.');return;}const avg=valid_values.reduce((a,b)=>a+b,0)/valid_values.length;const minV=Math.min(...valid_values);const maxV=Math.max(...valid_values);fair_value_range=`${formatCurrency(minV)} — ${formatCurrency(maxV)}`;fair_value_detail=`المتوسط: ${formatCurrency(avg)} | السيناريو: ${scenario==='realistic'?'واقعي':scenario==='optimistic'?'متفائل':'محتاط'}`;if(currentPrice>0&&avg>0){const margin=((avg-currentPrice)/avg*100);document.getElementById('dashboardMargin').textContent=`${margin>0?'✅':'⚠️'} ${Math.abs(margin).toFixed(1)}% ${margin>0?'هامش أمان':'مبالغ فيه'}`;}else{document.getElementById('dashboardMargin').textContent='—';}const valid_for_dcf=Object.fromEntries(Object.entries(values).filter(([,v])=>v!==null&&v>0));createSensitivityTable(fcf,growth_5yr_adj,growth_perp_final,discount_rate);detectAndShowOutliers(valid_for_dcf);}document.getElementById('enterpriseValueRange').textContent=formatCurrency(enterprise_value);document.getElementById('enterpriseValueDetails').textContent=enterprise_value>0?'قيمة الشركة الإجمالية قبل الديون والنقد':'—';document.getElementById('fairValueRange').textContent=fair_value_range;document.getElementById('fairValueDetails').textContent=fair_value_detail;buildModelsTable(values);const chart_values=Object.fromEntries(Object.entries(values).filter(([,v])=>v!==null&&v>0&&isFinite(v)));createModelsChart(chart_values);document.getElementById('dashboardDebt').textContent=`${document.getElementById('debtRatio').value}%`;document.getElementById('dashboardLiquidity').textContent=parseFloat(document.getElementById('liquidityRatio').value).toFixed(1);document.getElementById('dashboardEarnings').textContent=`${document.getElementById('earningsQuality').value}%`;document.getElementById('resultsSection').style.display='block';document.getElementById('loadingOverlay').classList.add('hidden');document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});}catch(err){document.getElementById('loadingOverlay').classList.add('hidden');console.error(err);alert('خطأ أثناء الحساب: '+err.message);}}
-function buildModelsTable(values){const currentPrice=parseFloat(document.getElementById('currentPrice').value)||0;const tbody=document.getElementById('modelsTable');tbody.innerHTML='';Object.entries(values).forEach(([name,val])=>{const tr=document.createElement('tr');let status='—';if(val!==null&&val>0&&isFinite(val)&&currentPrice>0){const diff=((val-currentPrice)/val*100);status=diff>15?`✅ مقيّم بأقل (${diff.toFixed(0)}%)`:diff<-15?`⚠️ مقيّم بأكثر (${Math.abs(diff).toFixed(0)}%)`:`🔄 قريب من السعر`;}tr.innerHTML=`<td><strong>${name}</strong></td><td>${val!==null&&isFinite(val)&&val>0?formatCurrency(val):'<em>غير مُطبق</em>'}</td><td>${status}</td>`;tbody.appendChild(tr);});}
-function createModelsChart(valid_values){const ctx=document.getElementById('modelsChart').getContext('2d');const labels=Object.keys(valid_values);const data=Object.values(valid_values);const colors=['#5a7fb5','#d67a6a','#e89d5a','#5a9d7a','#8a7ba8'];const currentPrice=parseFloat(document.getElementById('currentPrice').value)||0;if(modelsChart)modelsChart.destroy();const datasets=[{label:'القيمة العادلة',data,backgroundColor:colors.slice(0,labels.length),borderWidth:1}];if(currentPrice>0){datasets.push({label:'السعر الحالي',data:Array(labels.length).fill(currentPrice),type:'line',borderColor:'#e74c3c',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false});}modelsChart=new Chart(ctx,{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>formatCurrency(c.parsed.y)}}},scales:{y:{beginAtZero:false,ticks:{callback:v=>formatCurrency(v)}}}}});}
-function createSensitivityTable(fcf,growth_5yr,growth_perp,base_discount){const growth_min=(parseFloat(document.getElementById('growthMin').value)||5)/100;const growth_max=(parseFloat(document.getElementById('growthMax').value)||15)/100;const disc_min=(parseFloat(document.getElementById('discountMin').value)||6)/100;const disc_max=(parseFloat(document.getElementById('discountMax').value)||12)/100;const g_steps=Array.from({length:5},(_,i)=>growth_min+(growth_max-growth_min)*i/4);const d_steps=Array.from({length:5},(_,i)=>disc_min+(disc_max-disc_min)*i/4);let html='<thead><tr><th>النمو \\ الخصم</th>';d_steps.forEach(d=>{html+=`<th>${(d*100).toFixed(1)}%</th>`;});html+='</tr></thead><tbody>';g_steps.forEach(g=>{html+=`<tr><td><strong>${(g*100).toFixed(1)}%</strong></td>`;d_steps.forEach(d=>{const res=calculate_dcf(fcf,g,growth_perp,d,0,0);const val=res?res.equityValue:null;const color=val&&val>0?'':'color:#e74c3c;';html+=`<td style="${color}">${val&&val>0?formatCurrency(val):'—'}</td>`;});html+='</tr>';});html+='</tbody>';document.getElementById('sensitivityTable').innerHTML=html;}
-function detectAndShowOutliers(values){const arr=Object.entries(values).filter(([,v])=>v>0&&isFinite(v));if(arr.length<3){document.getElementById('outlierWarning').style.display='none';return;}const vals=arr.map(([,v])=>v);const mean=vals.reduce((a,b)=>a+b,0)/vals.length;const stdDev=Math.sqrt(vals.reduce((s,v)=>s+Math.pow(v-mean,2),0)/vals.length);const out=arr.filter(([,v])=>Math.abs(v-mean)>2*stdDev);const box=document.getElementById('outlierWarning');if(out.length>0){box.style.display='block';box.textContent=`⚠️ قيم شاذة: ${out.map(([n,v])=>`${n} (${formatCurrency(v)})`).join(' | ')} — تختلف عن المتوسط (${formatCurrency(mean)}) بأكثر من انحرافين معياريين. قد يكون النموذج غير ملائم لهذه الشركة.`;}else{box.style.display='none';}}
-document.getElementById('useWacc').addEventListener('change',function(){document.getElementById('waccInputs').style.display=this.checked?'':'none';});
-document.getElementById('legalAccept').addEventListener('change',function(){const btn=document.getElementById('enterButton');btn.disabled=!this.checked;btn.classList.toggle('enabled',this.checked);});
-document.getElementById('enterButton').addEventListener('click',function(){if(document.getElementById('legalAccept').checked){document.getElementById('legalModal').classList.add('hidden');}});
+let modelsChart = null;
+
+// ===== Help System =====
+const helpContent = {
+    eps:         { title: 'الربح للسهم (EPS)',         body: '<p>صافي ربح الشركة ÷ عدد الأسهم. يستخدم في نماذج جراهام و P/E.</p><p><strong>أين تجده:</strong> موقع تداول → البيانات المالية → الربح للسهم.</p>' },
+    fcf:         { title: 'التدفق النقدي الحر للسهم',  body: '<p>النقد المتاح بعد النفقات التشغيلية والاستثمارية. الأساس في نموذج DCF.</p><p>حساب: التدفق التشغيلي − نفقات رأس المال</p>' },
+    // ✅ حقل جديد
+    netDebt:     { title: 'الدين الصافي للسهم',        body: '<p>= (إجمالي الديون − النقد والمعادلات) ÷ عدد الأسهم.</p><p>يُطرح من قيمة المنشأة (EV) للوصول إلى قيمة حقوق الملكية الفعلية.</p><p>إذا كان النقد أكبر من الديون، أدخل قيمة سالبة (مثال: −5).</p>' },
+    nav:         { title: 'NAV — صافي قيمة الأصول',   body: '<p>إجمالي قيمة أصول الريت بالسوق بالريال. يُقسم على عدد الوحدات بعد طرح الديون.</p><p>أدخل القيمة الإجمالية بالريال كاملاً (مثال: 500000000 لـ 500 مليون).</p>' },
+    totalUnits:  { title: 'عدد وحدات الريت',           body: '<p>عدد الوحدات الاستثمارية المصدرة. يُستخدم لتحويل NAV الإجمالي إلى NAV للوحدة.</p>' },
+    ffo:         { title: 'FFO — التدفق النقدي التشغيلي للوحدة', body: '<p>معيار أساسي لتقييم الريتات. يقيس التدفق النقدي بعد خصم الديون وبدون الاستهلاك.</p>' },
+    // ✅ حقل جديد
+    pffoMultiple:{ title: 'مضاعف P/FFO العادل',        body: '<p>يشبه P/E للأسهم العادية. يُحدد كم يدفع السوق مقابل كل ريال من FFO.</p><p>الريتات السعودية: 10–14x عادة. ريتات النمو: 14–18x.</p>' },
+    capRate:     { title: 'Cap Rate — معدل الرسملة العقارية', body: '<p>نسبة دخل الإيجار الصافي إلى قيمة العقار. يُستخدم كمقياس ثانوي للتحقق.</p>' },
+    totalDebt:   { title: 'إجمالي الديون',              body: '<p>إجمالي ديون الريت بالريال. يُطرح من NAV الإجمالي لحساب صافي القيمة للمستثمرين.</p>' },
+    growth5yr:   { title: 'نسبة النمو 5 سنوات',        body: '<p>النمو السنوي المتوقع للسنوات الخمس القادمة. يؤثر بشكل كبير على قيمة DCF وجراهام.</p><p>كن واقعياً — معظم الشركات الناضجة 5-12%.</p>' },
+    growthPerp:  { title: 'النمو الدائم',               body: '<p>النمو المتوقع بعد السنة 10 إلى الأبد. يجب أن يكون أقل من WACC وأقل من نمو الاقتصاد. عادة 2-3%.</p>' },
+    discountRate:{ title: 'WACC — معدل الخصم',         body: '<p>العائد المطلوب من المستثمرين. شركة مستقرة ≈ 8%، مخاطرة عالية ≈ 12%.</p>' },
+    currentPe:   { title: 'P/E الحالي',                body: '<p>سعر السهم ÷ EPS. للمقارنة مع P/E القطاع.</p>' },
+    sectorPe:    { title: 'P/E القطاع',                body: '<p>متوسط P/E للشركات المنافسة. أساس نموذج التقييم النسبي.</p>' },
+    dividends:   { title: 'التوزيعات السنوية',          body: '<p>التوزيعات النقدية للسهم سنوياً. يستخدمه نموذج Gordon.</p>' },
+    bookValue:   { title: 'القيمة الدفترية',            body: '<p>حقوق الملكية ÷ عدد الأسهم. يُضرب في P/B العادل.</p>' },
+    bondYield:   { title: 'عائد السندات الحكومية',      body: '<p>يُستخدم في معادلة جراهام. في السعودية يتراوح 5.5-7.5%.</p>' },
+    currentPrice:{ title: 'السعر الحالي',               body: '<p>يُستخدم لحساب هامش الأمان: (القيمة العادلة − السعر) ÷ القيمة العادلة.</p>' },
+    useWacc:     { title: 'حساب WACC تلقائياً',        body: '<p>يحسب WACC من CAPM + تكلفة الدين.</p>' },
+    riskFree:    { title: 'معدل الخالي من المخاطر',    body: '<p>عادةً عائد السندات الحكومية 10 سنوات.</p>' },
+    beta:        { title: 'Beta — معامل المخاطر',       body: '<p>β<1: أقل تقلباً | β=1: مع السوق | β>1: أكثر تقلباً.</p>' },
+    marketReturn:{ title: 'عائد السوق',                 body: '<p>متوسط العائد السنوي للسوق. للتاسي 7-10% تاريخياً.</p>' },
+    debtCost:    { title: 'تكلفة الدين',                body: '<p>معدل الفائدة على قروض الشركة. يُطبق عليه الوفر الضريبي.</p>' },
+    taxRate:     { title: 'معدل الضريبة',               body: '<p>20% للشركات السعودية، 25% للأجنبية.</p>' },
+    debtEquity:  { title: 'D/E',                        body: '<p>يحدد أوزان الدين وحقوق الملكية في WACC.</p>' },
+    scenario:    { title: 'السيناريو',                  body: '<p>يعدّل نسب النمو: متفائل +2% | محتاط -2%.</p>' },
+    fairPb:      { title: 'P/B العادل',                body: '<p>1.0 لأصول عادية | 1.5 لأصول جيدة | 2+ لأصول ممتازة.</p>' },
+    growthMin:   { title: 'الحد الأدنى للنمو',         body: '<p>أدنى نمو في جدول الحساسية.</p>' },
+    growthMax:   { title: 'الحد الأعلى للنمو',         body: '<p>أعلى نمو في جدول الحساسية.</p>' },
+    discountMin: { title: 'الحد الأدنى للخصم',         body: '<p>خصم منخفض = تقييم أعلى.</p>' },
+    discountMax: { title: 'الحد الأعلى للخصم',         body: '<p>خصم مرتفع = تقييم أقل.</p>' },
+    debtRatio:   { title: 'نسبة الدين',                body: '<p>< 30% منخفض | 30-60% معتدل | > 60% مرتفع.</p>' },
+    liquidityRatio:{ title: 'نسبة السيولة',            body: '<p>< 1 خطر | 1-1.5 مقبول | > 1.5 جيد.</p>' },
+    earningsQuality:{ title: 'ROE',                    body: '<p>< 10% ضعيف | 10-15% جيد | > 15% ممتاز.</p>' },
+    companyType: { title: 'نوع الشركة',                body: '<p><strong>شركة عادية:</strong> DCF + جراهام + P/E + Gordon + القيمة الدفترية.</p><p><strong>ريت عقاري:</strong> NAV للوحدة + مضاعف P/FFO.</p>' },
+};
+
+function showHelp(field) {
+    const h = helpContent[field];
+    if (!h) return;
+    document.getElementById('helpContent').innerHTML = `<h3>${h.title}</h3>${h.body}`;
+    const m = document.getElementById('helpModal');
+    m.style.display = 'flex';
+    m.classList.remove('hidden');
+}
+function closeHelp() {
+    const m = document.getElementById('helpModal');
+    m.style.display = 'none';
+    m.classList.add('hidden');
+}
+document.addEventListener('click', e => {
+    const modal = document.getElementById('helpModal');
+    if (e.target === modal) closeHelp();
+});
+
+// ===== Legal Modal =====
+document.getElementById('legalAccept').addEventListener('change', function() {
+    const btn = document.getElementById('enterButton');
+    btn.disabled = !this.checked;
+    btn.classList.toggle('enabled', this.checked);
+});
+document.getElementById('enterButton').addEventListener('click', function() {
+    if (!this.disabled) document.getElementById('legalModal').classList.add('hidden');
+});
+
+// ===== Utilities =====
+function formatCurrency(amount) {
+    if (!isFinite(amount)) return '—';
+    return new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+}
+function formatPercent(v) { return v.toFixed(1) + '%'; }
+
+function validateGrowthPerp() {
+    const el = document.getElementById('growthPerp');
+    const v  = parseFloat(el.value);
+    const w  = document.getElementById('growthPerpWarning');
+    if (v > 3) { el.value = 3; w.style.display = 'block'; }
+    else        { w.style.display = 'none'; }
+}
+
+function toggleCompanyType() {
+    const t = document.getElementById('companyType').value;
+    document.getElementById('normalCompanyInputs').style.display = t === 'normal' ? '' : 'none';
+    document.getElementById('reitInputs').style.display          = t === 'reit'   ? '' : 'none';
+}
+
+// ===== نماذج الحساب =====
+
+// ✅ إصلاح: total_debt الآن يمثل الدين الصافي للسهم (net debt per share)
+//    equity_value = enterprise_value - net_debt  (إذا سالب = نقدية صافية، تُضاف)
+function calculate_dcf(fcf, growth_5yr, growth_perp, discount_rate, net_debt) {
+    if (discount_rate <= growth_perp) return null;
+    if (fcf <= 0) return null;
+
+    let pv_sum = 0;
+    let cf5 = fcf * Math.pow(1 + growth_5yr, 5);
+
+    for (let n = 1; n <= 5; n++) {
+        const cf = fcf * Math.pow(1 + growth_5yr, n);
+        pv_sum += cf / Math.pow(1 + discount_rate, n);
+    }
+
+    let cf_prev = cf5;
+    for (let n = 6; n <= 10; n++) {
+        cf_prev = cf_prev * (1 + growth_perp);
+        pv_sum += cf_prev / Math.pow(1 + discount_rate, n);
+    }
+
+    const tv_cf           = cf_prev * (1 + growth_perp);
+    const tv              = tv_cf / (discount_rate - growth_perp);
+    const pv_tv           = tv / Math.pow(1 + discount_rate, 10);
+    const enterprise_value = pv_sum + pv_tv;
+
+    // ✅ equity = EV − net_debt
+    //    net_debt > 0 → مديونة → تُخفض القيمة
+    //    net_debt < 0 → نقدية صافية → تُرفع القيمة
+    const equity_value = enterprise_value - (net_debt || 0);
+    return { enterpriseValue: enterprise_value, equityValue: equity_value };
+}
+
+function calculateGraham(eps, growth_rate, bond_yield) {
+    if (eps <= 0 || bond_yield <= 0) return null;
+    const multiplier = Math.min(8.5 + (2 * growth_rate), 25);
+    return (eps * multiplier * 4.4) / bond_yield;
+}
+
+function calculate_pe(eps, sector_pe) {
+    if (eps <= 0) return null;
+    return eps * Math.min(sector_pe, 40);
+}
+
+function calculate_gordon(dividends, growth_perp, discount_rate) {
+    if (dividends <= 0 || discount_rate <= growth_perp) return null;
+    return dividends * (1 + growth_perp) / (discount_rate - growth_perp);
+}
+
+function calculate_book_value(book_value, fair_pb) {
+    if (book_value <= 0 || fair_pb <= 0) return null;
+    return book_value * fair_pb;
+}
+
+function calculateWACC(risk_free, beta, market_return, debt_cost, tax_rate, debt_equity) {
+    const re = risk_free + beta * (market_return - risk_free);
+    const d  = debt_equity;
+    const e  = 1;
+    const v  = d + e;
+    return (e / v * re) + (d / v * debt_cost * (1 - tax_rate));
+}
+
+// ===== الدالة الرئيسية =====
+function calculateFairValue() {
+    try {
+        document.getElementById('loadingOverlay').classList.remove('hidden');
+
+        const companyType = document.getElementById('companyType').value;
+        let growth_perp   = (parseFloat(document.getElementById('growthPerp').value)    || 0) / 100;
+        let discount_rate = (parseFloat(document.getElementById('discountRate').value)   || 0) / 100;
+
+        // WACC تلقائي
+        if (document.getElementById('useWacc').checked) {
+            const rf = (parseFloat(document.getElementById('riskFree').value)     || 0) / 100;
+            const b  =  parseFloat(document.getElementById('beta').value)          || 1;
+            const rm = (parseFloat(document.getElementById('marketReturn').value)  || 0) / 100;
+            const rd = (parseFloat(document.getElementById('debtCost').value)      || 0) / 100;
+            const tx = (parseFloat(document.getElementById('taxRate').value)       || 0) / 100;
+            const de =  parseFloat(document.getElementById('debtEquity').value)    || 0;
+            discount_rate = calculateWACC(rf, b, rm, rd, tx, de);
+            document.getElementById('discountRate').value = (discount_rate * 100).toFixed(2);
+        }
+
+        const scenario    = document.getElementById('scenario').value;
+        const growth_adj  = scenario === 'optimistic' ? 0.02 : scenario === 'conservative' ? -0.02 : 0;
+        const growth_perp_final = growth_perp + growth_adj;
+
+        if (growth_perp_final >= discount_rate) {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            alert(`❌ خطأ: النمو الدائم (${(growth_perp_final * 100).toFixed(1)}%) يجب أن يكون أقل من معدل الخصم (${(discount_rate * 100).toFixed(1)}%).`);
+            return;
+        }
+
+        let values = {};
+        let enterprise_value = 0;
+        let fair_value_range = '';
+        let fair_value_detail = '';
+
+        if (companyType === 'reit') {
+            // ===== تقييم الريت =====
+            const nav_total   =  parseFloat(document.getElementById('nav').value)          || 0;
+            const totalUnits  = Math.max(parseFloat(document.getElementById('totalUnits').value) || 1, 1);
+            const ffo         =  parseFloat(document.getElementById('ffo').value)          || 0;
+            const totalDebtR  =  parseFloat(document.getElementById('totalDebt').value)    || 0;
+            const capRate     = (parseFloat(document.getElementById('capRate').value)       || 8) / 100;
+            // ✅ حقل جديد: مضاعف P/FFO
+            const pffo        =  parseFloat(document.getElementById('pffoMultiple').value) || 12;
+            const currentPrice=  parseFloat(document.getElementById('currentPrice').value) || 0;
+
+            if (nav_total <= 0 && ffo <= 0) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('❌ يجب إدخال NAV أو FFO موجب للريت.');
+                return;
+            }
+
+            const nav_per_unit = (nav_total - totalDebtR) / totalUnits;
+
+            // ✅ إصلاح: P/FFO المنهج الصحيح للريتات
+            const pffo_value  = ffo > 0 ? ffo * pffo : null;
+
+            // مقياس Cap Rate ثانوي للتحقق (NOI ≈ FFO تقريبي)
+            const caprate_check = (ffo > 0 && capRate > 0) ? ffo / capRate : null;
+
+            const ffo_yield   = currentPrice > 0 ? (ffo / currentPrice * 100) : 0;
+            enterprise_value  = nav_total;
+
+            const valid_reit  = [nav_per_unit, pffo_value].filter(v => v !== null && v > 0);
+            const avg_fair    = valid_reit.length > 0 ? valid_reit.reduce((a, b) => a + b, 0) / valid_reit.length : 0;
+
+            values = {
+                'NAV للوحدة':  nav_per_unit > 0 ? nav_per_unit : null,
+                'مضاعف P/FFO': pffo_value,
+                'Cap Rate (مرجع)': caprate_check,
+            };
+
+            fair_value_range  = formatCurrency(avg_fair);
+            fair_value_detail = `متوسط NAV (${formatCurrency(nav_per_unit)}) و P/FFO (${formatCurrency(pffo_value)}) | عائد FFO: ${ffo_yield.toFixed(2)}%`;
+
+            if (currentPrice > 0 && avg_fair > 0) {
+                const margin = ((avg_fair - currentPrice) / avg_fair * 100);
+                document.getElementById('dashboardMargin').textContent = `${margin > 0 ? '✅' : '⚠️'} ${Math.abs(margin).toFixed(1)}% ${margin > 0 ? 'هامش أمان' : 'مبالغ فيه'}`;
+            } else {
+                document.getElementById('dashboardMargin').textContent = '—';
+            }
+
+        } else {
+            // ===== تقييم الشركة العادية =====
+            const eps          =  parseFloat(document.getElementById('eps').value)          || 0;
+            const fcf          =  parseFloat(document.getElementById('fcf').value)          || 0;
+            // ✅ إصلاح: قراءة الدين الصافي للسهم
+            const net_debt     =  parseFloat(document.getElementById('netDebt').value)      || 0;
+            const growth_5yr   = (parseFloat(document.getElementById('growth5yr').value)    || 0) / 100;
+            const sector_pe    =  parseFloat(document.getElementById('sectorPe').value)     || 0;
+            const dividends    =  parseFloat(document.getElementById('dividends').value)    || 0;
+            const book_value   =  parseFloat(document.getElementById('bookValue').value)    || 0;
+            const bond_yield   =  parseFloat(document.getElementById('bondYield').value)    || 6.5;
+            const fair_pb      =  parseFloat(document.getElementById('fairPb').value)       || 1.5;
+            const currentPrice =  parseFloat(document.getElementById('currentPrice').value) || 0;
+
+            if (eps <= 0 && fcf <= 0) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('❌ يجب إدخال EPS أو FCF موجب للشركة العادية.');
+                return;
+            }
+            if (bond_yield <= 0) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('❌ عائد السندات يجب أن يكون موجباً.');
+                return;
+            }
+
+            const growth_5yr_adj = growth_5yr + growth_adj;
+
+            // ✅ إصلاح: تمرير net_debt بدلاً من 0
+            const dcf_result  = calculate_dcf(fcf, growth_5yr_adj, growth_perp_final, discount_rate, net_debt);
+            const dcf_value   = dcf_result ? dcf_result.equityValue : null;
+            enterprise_value  = dcf_result ? dcf_result.enterpriseValue : 0;
+
+            const graham_value = calculateGraham(eps, growth_5yr_adj * 100, bond_yield);
+            const pe_value     = calculate_pe(eps, sector_pe);
+            const gordon_value = calculate_gordon(dividends, growth_perp_final, discount_rate);
+            const bv_value     = calculate_book_value(book_value, fair_pb);
+
+            values = {
+                'DCF':              dcf_value,
+                'جراهام':           graham_value,
+                'مكرر الربحية P/E': pe_value,
+                'جوردون':           gordon_value,
+                'القيمة الدفترية':  bv_value,
+            };
+
+            const valid_values = Object.values(values).filter(v => v !== null && v > 0 && isFinite(v));
+            if (valid_values.length === 0) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                alert('❌ لم ينتج أي نموذج قيمة صالحة. تحقق من المدخلات.');
+                return;
+            }
+
+            const avg  = valid_values.reduce((a, b) => a + b, 0) / valid_values.length;
+            const minV = Math.min(...valid_values);
+            const maxV = Math.max(...valid_values);
+
+            fair_value_range  = `${formatCurrency(minV)} — ${formatCurrency(maxV)}`;
+            fair_value_detail = `المتوسط: ${formatCurrency(avg)} | السيناريو: ${scenario === 'realistic' ? 'واقعي' : scenario === 'optimistic' ? 'متفائل' : 'محتاط'}`;
+
+            if (currentPrice > 0 && avg > 0) {
+                const margin = ((avg - currentPrice) / avg * 100);
+                document.getElementById('dashboardMargin').textContent = `${margin > 0 ? '✅' : '⚠️'} ${Math.abs(margin).toFixed(1)}% ${margin > 0 ? 'هامش أمان' : 'مبالغ فيه'}`;
+            } else {
+                document.getElementById('dashboardMargin').textContent = '—';
+            }
+
+            // ✅ إصلاح: تمرير net_debt لجدول الحساسية
+            createSensitivityTable(fcf, growth_5yr_adj, growth_perp_final, discount_rate, net_debt);
+            detectAndShowOutliers(Object.fromEntries(Object.entries(values).filter(([, v]) => v !== null && v > 0)));
+        }
+
+        // ✅ إصلاح: عرض EV بشكل واضح حتى عند DCF=null
+        document.getElementById('enterpriseValueRange').textContent =
+            enterprise_value > 0 ? formatCurrency(enterprise_value) : 'غير متاح (FCF ≤ 0 أو لا يُستخدم هنا)';
+        document.getElementById('enterpriseValueDetails').textContent =
+            enterprise_value > 0 ? 'قيمة الشركة الإجمالية قبل خصم الدين الصافي' : '—';
+
+        document.getElementById('fairValueRange').textContent  = fair_value_range;
+        document.getElementById('fairValueDetails').textContent = fair_value_detail;
+
+        buildModelsTable(values);
+        const chart_values = Object.fromEntries(Object.entries(values).filter(([, v]) => v !== null && v > 0 && isFinite(v)));
+        createModelsChart(chart_values);
+
+        document.getElementById('dashboardDebt').textContent      = `${document.getElementById('debtRatio').value}%`;
+        document.getElementById('dashboardLiquidity').textContent  = parseFloat(document.getElementById('liquidityRatio').value).toFixed(1);
+        document.getElementById('dashboardEarnings').textContent   = `${document.getElementById('earningsQuality').value}%`;
+
+        document.getElementById('resultsSection').style.display = 'block';
+        document.getElementById('loadingOverlay').classList.add('hidden');
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err) {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+        console.error(err);
+        alert('خطأ أثناء الحساب: ' + err.message);
+    }
+}
+
+// ===== جدول النماذج =====
+function buildModelsTable(values) {
+    const currentPrice = parseFloat(document.getElementById('currentPrice').value) || 0;
+    const tbody = document.getElementById('modelsTable');
+    tbody.innerHTML = '';
+    Object.entries(values).forEach(([name, val]) => {
+        const tr = document.createElement('tr');
+        let status = '—';
+        if (val !== null && val > 0 && currentPrice > 0) {
+            const diff = ((val - currentPrice) / val * 100);
+            status = diff > 15
+                ? `<span style="color:#27ae60;font-weight:bold">✅ مقيّمة بأقل من قيمتها (${diff.toFixed(1)}%)</span>`
+                : diff < -15
+                    ? `<span style="color:#e74c3c;font-weight:bold">🔴 مبالغ في تقييمها (${Math.abs(diff).toFixed(1)}%)</span>`
+                    : `<span style="color:#f39c12;font-weight:bold">🟡 قرب القيمة العادلة</span>`;
+        }
+        tr.innerHTML = `
+            <td><strong>${name}</strong></td>
+            <td>${val !== null && val > 0 ? formatCurrency(val) : '<span style="color:#aaa">لا ينطبق</span>'}</td>
+            <td>${status}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+// ===== رسم بياني للنماذج =====
+function createModelsChart(values) {
+    const ctx    = document.getElementById('modelsChart').getContext('2d');
+    const labels = Object.keys(values);
+    const data   = Object.values(values);
+    const currentPrice = parseFloat(document.getElementById('currentPrice').value) || 0;
+    const colors = data.map(v => v >= currentPrice * 0.85 ? 'rgba(90,157,122,0.7)' : 'rgba(231,76,60,0.7)');
+    if (modelsChart) modelsChart.destroy();
+    modelsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'القيمة العادلة',
+                    data,
+                    backgroundColor: colors,
+                    borderRadius: 8,
+                },
+                ...(currentPrice > 0 ? [{
+                    label: 'السعر الحالي',
+                    data: new Array(labels.length).fill(currentPrice),
+                    type: 'line',
+                    borderColor: '#e74c3c',
+                    borderDash: [6, 3],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false,
+                }] : [])
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + formatCurrency(ctx.parsed.y) } }
+            },
+            scales: { y: { beginAtZero: false, ticks: { callback: v => formatCurrency(v) } } }
+        }
+    });
+}
+
+// ===== جدول الحساسية =====
+// ✅ إصلاح: إضافة معامل net_debt لعدم إسقاط قيمته في كل خلية
+function createSensitivityTable(fcf, base_growth, growth_perp, base_discount, net_debt) {
+    const growthMin   = (parseFloat(document.getElementById('growthMin').value)   || 5)  / 100;
+    const growthMax   = (parseFloat(document.getElementById('growthMax').value)   || 15) / 100;
+    const discountMin = (parseFloat(document.getElementById('discountMin').value) || 6)  / 100;
+    const discountMax = (parseFloat(document.getElementById('discountMax').value) || 12) / 100;
+
+    const g_steps = [growthMin, (growthMin + growthMax) / 2, growthMax];
+    const d_steps = [discountMin, (discountMin + discountMax) / 2, discountMax];
+
+    const table = document.getElementById('sensitivityTable');
+    const currentPrice = parseFloat(document.getElementById('currentPrice').value) || 0;
+
+    let html = '<thead><tr><th>النمو \\ الخصم</th>';
+    d_steps.forEach(d => { html += `<th>${(d * 100).toFixed(1)}%</th>`; });
+    html += '</tr></thead><tbody>';
+
+    g_steps.forEach(g => {
+        html += `<tr><td>${(g * 100).toFixed(1)}%</td>`;
+        d_steps.forEach(d => {
+            // ✅ إصلاح: تمرير net_debt بدلاً من 0
+            const res = calculate_dcf(fcf, g, growth_perp, d, net_debt || 0);
+            const v   = res ? res.equityValue : null;
+            let color = '#f8f9fa';
+            if (v && currentPrice > 0) {
+                color = v > currentPrice * 1.15 ? 'rgba(39,174,96,0.15)'
+                      : v < currentPrice * 0.85 ? 'rgba(231,76,60,0.15)'
+                      : 'rgba(243,156,18,0.15)';
+            }
+            html += `<td style="background:${color}">${v ? formatCurrency(v) : '—'}</td>`;
+        });
+        html += '</tr>';
+    });
+
+    html += '</tbody>';
+    table.innerHTML = html;
+}
+
+// ===== كشف الشواذ =====
+function detectAndShowOutliers(values) {
+    const el   = document.getElementById('outlierWarning');
+    const arr  = Object.entries(values);
+    const vals = arr.map(([, v]) => v);
+    if (vals.length < 3) { el.style.display = 'none'; return; }
+
+    const mean   = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const stdDev = Math.sqrt(vals.reduce((s, v) => s + Math.pow(v - mean, 2), 0) / vals.length);
+    const out    = arr.filter(([, v]) => Math.abs(v - mean) > 2 * stdDev);
+
+    if (out.length > 0) {
+        el.style.display = 'block';
+        el.innerHTML = `⚠️ <strong>تنبيه — قيم شاذة:</strong> نموذج ${out.map(([n]) => n).join(' و')} يختلف بأكثر من انحرافين معياريين عن المتوسط. تحقق من مدخلاته.`;
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+// ===== Toggle WACC Inputs =====
+document.getElementById('useWacc').addEventListener('change', function() {
+    document.getElementById('waccInputs').style.display = this.checked ? '' : 'none';
+});
 </script>
 <script data-goatcounter="https://investornote.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
