@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هل أشتري السهم؟ (تقييم التضخم) | مفكرة مستثمر</title>
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh; padding: 20px; color: #f0f4f8;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .page-header h1 {
+            font-size: 2.2rem; color: #ffffff; font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+        .page-header p {
+            font-size: 0.95rem; color: #d0e1f9; margin-top: 8px; line-height: 1.6;
+        }
+
+        /* ===== Glassmorphism Cards ===== */
+        .advisor-card {
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 24px; padding: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        .advisor-card::before {
+            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #f1c40f);
+        }
+
+        .progress-bar-wrap {
+            background: rgba(255,255,255,0.1); border-radius: 10px;
+            height: 10px; margin-bottom: 25px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px; transition: width 0.4s ease; width: 0%;
+        }
+
+        .question-number { font-size: 0.85rem; color: #3498db; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .question-text { font-size: 1.2rem; font-weight: bold; color: #ffffff; margin-bottom: 10px; line-height: 1.5; }
+        .question-hint {
+            font-size: 0.85rem; color: #c8d6e5; margin-bottom: 20px; line-height: 1.6;
+            border-right: 4px solid #3498db; background: rgba(52, 152, 219, 0.1);
+            padding: 12px; border-radius: 4px 12px 12px 4px;
+        }
+
+        .yn-buttons, .choice-buttons { display: flex; flex-direction: column; gap: 12px; }
+        .yn-buttons { flex-direction: row; }
+        .btn-choice, .btn-yn {
+            width: 100%; padding: 15px 20px; font-size: 1.05rem; font-weight: bold;
+            border: 1.5px solid rgba(255,255,255,0.2); border-radius: 14px;
+            cursor: pointer; background: rgba(255,255,255,0.05); color: #ffffff;
+            transition: all 0.2s; backdrop-filter: blur(5px);
+        }
+        .btn-choice { text-align: right; }
+        .btn-choice:hover, .btn-yn:hover { border-color: #3498db; background: rgba(52,152,219,0.15); transform: translateX(-3px); }
+        .btn-choice.selected, .btn-yn.selected { background: #3498db; color: white; border-color: #3498db; }
+
+        .btn-next {
+            width: 100%; padding: 15px; background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white; border: none; border-radius: 12px; font-size: 1.1rem;
+            font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(52,152,219,0.4);
+        }
+        .btn-next:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
+        .btn-next:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52,152,219,0.6); }
+
+        /* ===== Quant Engine ===== */
+        .quant-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px; }
+        .quant-group { display: flex; flex-direction: column; gap: 5px; }
+        .quant-group label { font-size: 0.9rem; font-weight: bold; color: #3498db; }
+        .quant-sublabel { font-size: 0.75rem; color: #94a3b8; }
+        .quant-input {
+            padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3); color: white; font-size: 1rem; direction: rtl; text-align: right;
+            transition: 0.3s;
+        }
+        .quant-input:focus { outline: none; border-color: #3498db; background: rgba(52,152,219,0.1); }
+        .input-error { border-color: #e74c3c !important; box-shadow: 0 0 0 2px rgba(231,76,60,0.3); }
+
+        /* ===== Results ===== */
+        .result-card { display: none; text-align: center; }
+        .result-icon { font-size: 4.5rem; margin-bottom: 15px; }
+        .result-title { font-size: 2rem; font-weight: 900; margin-bottom: 10px; }
+        .res-buy { color: #2ecc71; text-shadow: 0 0 15px rgba(46,204,113,0.5); }
+        .res-fair { color: #3498db; text-shadow: 0 0 15px rgba(52,152,219,0.5); }
+        .res-avoid { color: #e74c3c; text-shadow: 0 0 15px rgba(231,76,60,0.5); }
+        .res-wait { color: #f1c40f; text-shadow: 0 0 15px rgba(241,196,15,0.5); }
+
+        .result-summary { font-size: 1rem; color: #d0e1f9; line-height: 1.7; margin-bottom: 25px; padding: 0 10px; }
+        
+        .score-bar-wrap { background: rgba(0,0,0,0.3); border-radius: 20px; height: 16px; margin: 20px 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .score-bar-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .factors-section { background: rgba(0,0,0,0.2); border-radius: 16px; padding: 20px; text-align: right; border: 1px solid rgba(255,255,255,0.1); }
+        .factors-section h4 { color: #3498db; margin-bottom: 15px; }
+        .factor-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 0.9rem; color: #e2e8f0; line-height: 1.5; }
+        .dot-pos { color: #2ecc71; font-weight: bold; font-size: 1.1rem; flex-shrink: 0; }
+        .dot-neg { color: #e74c3c; font-weight: bold; font-size: 1.1rem; flex-shrink: 0; }
+
+        .override-alert { background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; color: #ffcccc; padding: 18px; border-radius: 15px; margin-bottom: 25px; text-align: right; line-height: 1.6; font-weight: bold; }
+
+        .disclaimer-box { background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 15px; margin-top: 20px; color: #f8c291; font-size: 0.8rem; text-align: center; line-height: 1.6; }
+
+        @media (max-width: 600px) { .yn-buttons { flex-direction: column; } .quant-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html" class="navbar-item">🏠 الرئيسية</a>
+                <a href="advice.html" class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="salary_calculator.html" class="navbar-item salary">💼 تقسيم الراتب</a>
+                <a href="zakat_purification.html" class="navbar-item zakat">🕌 الزكاة</a>
+                <a href="financial_freedom.html" class="navbar-item fire">🔥 الحرية المالية</a>
+                <a href="investor_tips.html" class="navbar-item tips">⚠️ نصائح</a>
+                <a href="snowball_calculator.html" class="navbar-item calculator">❄️ العائد المركب</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+                <a href="average_calculator.html" class="navbar-item average">📊 متوسط الشراء</a>
+                <a href="company_valuation.html" class="navbar-item company">🏢 تقييم الشركة</a>
+                <a href="portfolio_rating.html" class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+                <a href="stock_valuation.html" class="navbar-item calculator">📊 تقييم الأسهم</a>
+                <a href="sell_decision.html" class="navbar-item calculator">🤔 هل أبيع؟</a>
+                <a href="buy_decision.html" class="navbar-item calculator active">🛒 هل أشتري؟</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>🛒 هل السهم مناسب للشراء؟</h1>
+        <p>محرك ذكي يفحص التضخم السعري، جودة الأصول، والانحيازات السلوكية.</p>
+    </div>
+
+    <div class="advisor-card" id="questionCard">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span id="progressText" style="font-size: 0.85rem; color: #3498db; font-weight:bold;">الاستبيان السلوكي 1/5</span>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+        <div id="questionBody"></div>
+    </div>
+
+    <div class="advisor-card" id="quantCard" style="display:none;">
+        <h3 style="color:#3498db; margin-bottom:10px;">📊 التقييم الرقمي (Valuation)</h3>
+        <p style="font-size:0.85rem; color:#c8d6e5; margin-bottom:20px;">
+            أدخل أرقام الشركة لمعرفة ما إذا كان السعر يمثل تضخماً أم فرصة. الحقول المتروكة فارغة لن تُحسب.
+        </p>
+        <div class="quant-grid">
+            <div class="quant-group">
+                <label>مكرر الأرباح للسهم (P/E)</label>
+                <span class="quant-sublabel">نسبة السعر للعائد الحالي</span>
+                <input type="number" id="q_pe" class="quant-input" placeholder="مثال: 22" min="0" step="0.1">
+            </div>
+            <div class="quant-group">
+                <label>مكرر أرباح القطاع (Sector P/E)</label>
+                <span class="quant-sublabel">متوسط المنافسين للمقارنة</span>
+                <input type="number" id="q_spe" class="quant-input" placeholder="مثال: 15" min="0.1" step="0.1">
+            </div>
+            <div class="quant-group">
+                <label>نمو الأرباح المتوقع % (Growth)</label>
+                <span class="quant-sublabel">مهم لمعرفة التضخم الحقيقي (PEG)</span>
+                <input type="number" id="q_growth" class="quant-input" placeholder="مثال: 12">
+            </div>
+            <div class="quant-group">
+                <label>مكرر القيمة الدفترية (P/B)</label>
+                <span class="quant-sublabel">السعر مقابل أصول الشركة</span>
+                <input type="number" id="q_pb" class="quant-input" placeholder="مثال: 2.5" min="0" step="0.1">
+            </div>
+            <div class="quant-group">
+                <label>العائد على حقوق المساهمين % (ROE)</label>
+                <span class="quant-sublabel">يقيس جودة أرباح الشركة</span>
+                <input type="number" id="q_roe" class="quant-input" placeholder="مثال: 18">
+            </div>
+            <div class="quant-group">
+                <label>الديون إلى حقوق الملكية (D/E)</label>
+                <span class="quant-sublabel">يقيس المخاطرة المالية</span>
+                <input type="number" id="q_debt" class="quant-input" placeholder="مثال: 0.6" min="0" step="0.01">
+            </div>
+            <div class="quant-group">
+                <label>عائد التوزيعات النقدية %</label>
+                <span class="quant-sublabel">الكاش الموزع سنوياً للمساهمين</span>
+                <input type="number" id="q_div" class="quant-input" placeholder="مثال: 4.5" min="0" step="0.1">
+            </div>
+        </div>
+        <button class="btn-next" onclick="BuyDecisionApp.calculateVerdict()">تحليل التضخم وإصدار الحكم ⚖️</button>
+    </div>
+
+    <div class="advisor-card result-card" id="resultCard"></div>
+
+    <div class="disclaimer-box">
+        الأمانة والمسؤولية: هذه الأداة تعتمد على النمذجة المالية لتقييم جودة الأسعار، ولا تُعد بديلاً عن دراستك الشاملة أو استشارة مرخصة. قرارك الاستثماري يقع على عاتقك وحدك.
+    </div>
+</div>
+
+<script>
+function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('open'); }
+
+const BuyDecisionApp = (function() {
+    const questions = [
+        { 
+            id: 'q1', type: 'yn', 
+            text: 'هل تفهم بوضوح وموضوعية كيف تجني هذه الشركة أموالها؟', 
+            hint: 'القاعدة الأولى للاستثمار: لا تستثمر في عمل لا تفهمه (دائرة الكفاءة).', 
+            weightYes: 2, weightNo: 0, isIgnorance: true 
+        },
+        { 
+            id: 'q2', type: 'choice', 
+            text: 'ما هو دافعك الرئيسي لشراء هذا السهم الآن؟', 
+            choices: [
+                { label: '🧐 دراسة مالية وتقييم يوضح أنه بسعر جذاب', weight: 3 },
+                { label: '🏢 أؤمن بمستقبل الشركة القوي على المدى الطويل', weight: 1 },
+                { label: '🚀 السهم في صعود قوي وأخاف أن تفوتني الفرصة (FOMO)', weight: -3, isFOMO: true },
+                { label: '🗣️ توصية من شخص أو وسائل التواصل', weight: -3, isTip: true }
+            ]
+        },
+        { 
+            id: 'q3', type: 'choice', 
+            text: 'هل تمتلك الشركة ميزة تنافسية (خندق اقتصادي) يحميها من المنافسين؟', 
+            hint: 'مثال: علامة تجارية قوية، تكلفة إنتاج أقل، براءات اختراع، احتكار تقني.', 
+            choices: [
+                { label: '🏰 نعم، ميزة قوية جداً ومستدامة', weight: 3 },
+                { label: '🛡️ نعم، ميزة جيدة لكن قابلة للمنافسة', weight: 1 },
+                { label: '⚔️ لا، الشركة في قطاع شديد المنافسة بلا ميزة', weight: -2 }
+            ]
+        },
+        { 
+            id: 'q4', type: 'yn', 
+            text: 'هل هناك نمو واضح ومستقر في أرباح الشركة خلال الـ 3 سنوات الماضية؟', 
+            hint: 'الشركات التي لا تنمو أرباحها غالباً ما تدمر ثروة المساهمين مع التضخم.', 
+            weightYes: 2, weightNo: -2, flag: 'noGrowth'
+        },
+        { 
+            id: 'q5', type: 'yn', 
+            text: 'هل تثق بنزاهة وكفاءة مجلس الإدارة (لا يوجد تاريخ من التلاعب أو القضايا)؟', 
+            weightYes: 1, weightNo: 0, isBadManagement: true 
+        }
+    ];
+
+    let currentQ = 0, behScore = 0, behReasons = [];
+    let isIgnorant = false, isFOMO = false, isBadManagement = false;
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        document.getElementById('progressBar').style.width = (((currentQ) / questions.length) * 100) + '%';
+        document.getElementById('progressText').textContent = `الاستبيان السلوكي ${currentQ + 1} من ${questions.length}`;
+
+        let html = `
+            <div class="question-number">سؤال ${currentQ + 1}</div>
+            <div class="question-text">${q.text}</div>
+            ${q.hint ? `<div class="question-hint">💡 ${q.hint}</div>` : ''}
+        `;
+
+        if (q.type === 'choice') {
+            html += `<div class="choice-buttons">`;
+            q.choices.forEach((c, idx) => {
+                html += `<button class="btn-choice" onclick="BuyDecisionApp.selectChoice(${idx})">${c.label}</button>`;
+            });
+            html += `</div>`;
+        } else if (q.type === 'yn') {
+            html += `
+                <div class="yn-buttons">
+                    <button class="btn-yn" style="text-align:center;" onclick="BuyDecisionApp.selectYN('yes')">نعم</button>
+                    <button class="btn-yn" style="text-align:center;" onclick="BuyDecisionApp.selectYN('no')">لا</button>
+                </div>`;
+        }
+        document.getElementById('questionBody').innerHTML = html;
+    }
+
+    function selectChoice(idx) {
+        const c = questions[currentQ].choices[idx];
+        behScore += c.weight;
+        if (c.isFOMO || c.isTip) isFOMO = true;
+        if (c.weight > 0) behReasons.push({ text: c.label.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,'').trim() + " (إيجابي)", sign: 'pos' });
+        else if (c.weight < 0) behReasons.push({ text: "الدافع للشراء يستند للمضاربة العشوائية بدلاً من التقييم", sign: 'neg' });
+        nextQ();
+    }
+
+    function selectYN(ans) {
+        const q = questions[currentQ];
+        if (ans === 'yes') {
+            behScore += q.weightYes;
+            if (q.weightYes > 0 && q.id !== 'q1' && q.id !== 'q5') behReasons.push({ text: q.text.replace('هل ','') + " (إيجابي)", sign: 'pos' });
+        } else {
+            behScore += q.weightNo;
+            if (q.isIgnorance) isIgnorant = true;
+            if (q.isBadManagement) isBadManagement = true;
+            if (q.flag === 'noGrowth') behReasons.push({ text: "غياب النمو المستقر في الأرباح", sign: 'neg' });
+        }
+        nextQ();
+    }
+
+    function nextQ() {
+        currentQ++;
+        if (currentQ < questions.length) {
+            renderQuestion();
+        } else {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('quantCard').style.display = 'block';
+        }
+    }
+
+    function calculateVerdict() {
+        const getV = id => { const v = document.getElementById(id).value; return v ? parseFloat(v) : null; };
+        const pe = getV('q_pe'), spe = getV('q_spe'), gr = getV('q_growth'), 
+              pb = getV('q_pb'), roe = getV('q_roe'), debt = getV('q_debt'), div = getV('q_div');
+
+        let qScore = 0;
+        let qReasons = [];
+        let hasPegBubble = false;
+        let isValueTrap = false;
+
+        // 1. التقييم المزدوج P/E و PEG Ratio
+        if (pe !== null) {
+            if (gr !== null && gr > 0) {
+                const peg = pe / gr;
+                if (peg < 1) { qScore += 3; qReasons.push({ text: `تسعير ممتاز مقارنة بنموها (PEG = ${peg.toFixed(2)})`, sign: 'pos' }); }
+                else if (peg > 2.5) { qScore -= 3; qReasons.push({ text: `السهم متضخم جداً مقارنة بنموه (PEG = ${peg.toFixed(2)})`, sign: 'neg' }); hasPegBubble = true; }
+                else { qScore += 1; }
+            } else if (spe !== null) {
+                const ratio = pe / spe;
+                if (ratio < 0.8) { qScore += 2; qReasons.push({ text: "تتداول بخصم مقارنة بمتوسط القطاع", sign: 'pos' }); }
+                else if (ratio > 1.5) { qScore -= 2; qReasons.push({ text: "تتداول بعلاوة تضخم مقارنة بالقطاع", sign: 'neg' }); }
+            } else {
+                if (pe > 25) { qScore -= 1; qReasons.push({ text: "مكرر الأرباح مرتفع (يحتاج نمواً عالياً لتبريره)", sign: 'neg' }); }
+                else if (pe < 15) { qScore += 1; qReasons.push({ text: "مكرر الأرباح في النطاق الجذاب", sign: 'pos' }); }
+            }
+        }
+
+        // 2. الجودة (ROE & P/B)
+        if (roe !== null) {
+            if (roe > 15) { qScore += 2; qReasons.push({ text: "عائد على الحقوق (ROE) متميز", sign: 'pos' }); }
+            else if (roe < 5) { qScore -= 2; qReasons.push({ text: "جودة أرباح ضعيفة (ROE منخفض)", sign: 'neg' }); isValueTrap = true; }
+        }
+        if (pb !== null) {
+            if (pb < 1.5 && roe !== null && roe > 10) { qScore += 2; qReasons.push({ text: "قيمة دفترية جذابة مدعومة بأرباح جيدة", sign: 'pos' }); }
+            else if (pb > 5) { qScore -= 1; qReasons.push({ text: "تتداول بأضعاف قيمتها الدفترية", sign: 'neg' }); }
+        }
+
+        // 3. المخاطرة (Debt)
+        if (debt !== null) {
+            if (debt < 0.5) { qScore += 1; qReasons.push({ text: "ميزانية عمومية آمنة (ديون منخفضة)", sign: 'pos' }); }
+            else if (debt > 1.5) { qScore -= 2; qReasons.push({ text: "رافعة مالية مرتفعة (مخاطرة ديون)", sign: 'neg' }); if(isValueTrap) isValueTrap = true; }
+        }
+
+        // 4. التوزيعات
+        if (div !== null) {
+            if (div >= 4) { qScore += 1; qReasons.push({ text: `عائد توزيعات مغري (${div}%) يوفر حماية هبوطية`, sign: 'pos' }); }
+        }
+
+        // === معالجة الموانع القاطعة (Hard Stops) ===
+        document.getElementById('quantCard').style.display = 'none';
+        const rc = document.getElementById('resultCard');
+        rc.style.display = 'block';
+
+        let override = null;
+        if (isIgnorant) {
+            override = { title: "توقف فوراً! (إيقاف حماية)", icon: "✋", class: "res-avoid", 
+                         text: "القاعدة الذهبية للاستثمار: لا تضع أموالك في ما لا تفهمه. شراء سهم لا تفهم نموذج عمله هو قمار محض وليس استثماراً." };
+        } else if (isBadManagement) {
+            override = { title: "تجنب السهم تماماً", icon: "🚫", class: "res-avoid", 
+                         text: "مهما كانت الأرقام مغرية، الاستثمار مع إدارة غير نزيهة يدمر الثروات دائماً. ابحث عن فرص أخرى." };
+        } else if (isValueTrap && (pe !== null && pe < 12)) {
+            override = { title: "احذر: فخ قيمة (Value Trap)", icon: "🪤", class: "res-avoid", 
+                         text: "السهم يبدو رخيصاً جداً، لكن أساسيات الشركة (أرباح منخفضة وديون عالية) تتآكل. السعر الرخيص هنا مبرر بضعف الشركة." };
+        } else if (hasPegBubble || (isFOMO && qScore < 0)) {
+            override = { title: "تجنب الشراء: تضخم سعري حاد", icon: "🎈", class: "res-avoid", 
+                         text: "السهم يتداول بتقييمات متضخمة (فقاعة) لا يدعمها نمو الأرباح. الدخول الآن يحمل مخاطر خسارة فادحة لرأس المال الممتنع." };
+        }
+
+        if (override) {
+            rc.innerHTML = `
+                <div class="override-alert" style="text-align:center;">
+                    <div class="result-icon">${override.icon}</div>
+                    <div class="result-title ${override.class}">${override.title}</div>
+                    <p style="font-size:1.1rem;">${override.text}</p>
+                </div>
+                <button class="btn-next" onclick="location.reload()">🔄 تحليل سهم آخر</button>
+            `;
+            return;
+        }
+
+        // === الحساب الطبيعي ===
+        const totalScore = behScore + qScore;
+        let resTitle, resIcon, resClass, summary, pct, barColor;
+
+        if (totalScore >= 7) {
+            resTitle = "فرصة شراء استثنائية"; resIcon = "💎"; resClass = "res-buy"; pct = 90; barColor = "#2ecc71";
+            summary = "الشركة تجمع بين الأساسيات المتينة، الميزة التنافسية، والتقييم السعري الجذاب أو العادل. يعتبر السهم مرشحاً قوياً للشراء والتجميع الاستثماري.";
+        } else if (totalScore >= 3) {
+            resTitle = "شراء تراكمي / تقييم عادل"; resIcon = "⚖️"; resClass = "res-fair"; pct = 65; barColor = "#3498db";
+            summary = "تقييم الشركة عادل وأساسياتها جيدة. لا يوجد تضخم خطير ولا خصم كبير. الدخول على دفعات (DCA) هو الاستراتيجية الأنسب هنا.";
+        } else if (totalScore >= 0) {
+            resTitle = "انتظر تراجع السعر (Overvalued)"; resIcon = "⏳"; resClass = "res-wait"; pct = 40; barColor = "#f1c40f";
+            summary = "الشركة قد تكون جيدة لكن السعر الحالي يميل للتضخم أو لا يحمل 'هامش أمان' كافٍ. يُفضل وضع السهم في قائمة المراقبة وانتظار تصحيح سعري.";
+        } else {
+            resTitle = "تجنب الشراء حالياً"; resIcon = "🔴"; resClass = "res-avoid"; pct = 15; barColor = "#e74c3c";
+            summary = "المخاطر تفوق العوائد المتوقعة بشدة. إما أن السهم متضخم جداً أو أن أساسيات الشركة تعاني من خلل واضح. ابحث عن فرص أكثر أماناً.";
+        }
+
+        let factorsHtml = [...behReasons, ...qReasons].map(r => `
+            <div class="factor-item"><div class="${r.sign === 'pos' ? 'dot-pos' : 'dot-neg'}">${r.sign === 'pos' ? '✔️' : '❌'}</div><div>${r.text}</div></div>
+        `).join('');
+
+        rc.innerHTML = `
+            <div class="result-icon">${resIcon}</div>
+            <div class="result-title ${resClass}">${resTitle}</div>
+            <div class="result-summary">${summary}</div>
+            
+            <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${pct}%; background:${barColor};"></div></div>
+            <div style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px;">مؤشر جاذبية السعر والجودة: ${pct}%</div>
+
+            <div class="factors-section">
+                <h4>📋 مبررات المحرك المالي:</h4>
+                ${factorsHtml || '<p style="color:#888;">لم تُدخل بيانات كافية لاستخراج مبررات تفصيلية.</p>'}
+            </div>
+            
+            <button class="btn-next" onclick="location.reload()">🔄 فحص سهم آخر</button>
+        `;
+    }
+
+    return { selectChoice, selectYN, next: nextQ, valNum, calculateVerdict };
+})();
+</script>
+</body>
+</html>
