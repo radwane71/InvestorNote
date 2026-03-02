@@ -52,7 +52,7 @@
         .question-text { font-size: 1.2rem; font-weight: bold; color: #ffffff; margin-bottom: 10px; line-height: 1.5; }
         .question-hint {
             font-size: 0.85rem; color: #c8d6e5; margin-bottom: 20px; line-height: 1.6;
-            border-right: 4px solid #3498db; background: rgba(52, 152, 219, 0.1);
+            border-right: 4px solid #3498db; background: rgba(52,152,219,0.1);
             padding: 12px; border-radius: 4px 12px 12px 4px;
         }
 
@@ -75,6 +75,40 @@
         }
         .btn-next:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
         .btn-next:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52,152,219,0.6); }
+
+        /* ===== Legal Modal ===== */
+        .legal-modal {
+            display: flex; position: fixed; z-index: 99999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center;
+        }
+        .legal-modal.hidden { display: none; }
+        .legal-modal-content {
+            background: #FFD700; border: 2px solid #FFA500;
+            border-radius: 14px; padding: 32px;
+            max-width: 680px; width: 95%;
+            max-height: 90vh; overflow-y: auto;
+            direction: rtl; text-align: right;
+        }
+        .legal-modal-title {
+            font-weight: bold; font-size: 1.1rem;
+            margin-bottom: 18px; color: #000;
+        }
+        .legal-modal-text {
+            margin-bottom: 22px; line-height: 1.8;
+            color: #1a1a1a; font-size: 0.95rem;
+        }
+        .legal-checkbox { margin-bottom: 20px; font-size: 0.95rem; color: #000; }
+        .legal-checkbox input { margin-left: 10px; transform: scale(1.2); cursor: pointer; }
+        #enterButton {
+            background: #ccc; color: #333; border: none;
+            padding: 12px 28px; border-radius: 8px;
+            cursor: not-allowed; font-size: 1rem; font-weight: bold;
+            transition: all 0.3s; font-family: inherit;
+        }
+        #enterButton.enabled { background: #4a6fa5; color: white; cursor: pointer; }
+        #enterButton.enabled:hover { background: #3a5f95; }
 
         /* ===== Quant Engine ===== */
         .quant-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px; }
@@ -102,7 +136,7 @@
         .result-summary { font-size: 1rem; color: #d0e1f9; line-height: 1.7; margin-bottom: 25px; padding: 0 10px; }
 
         .score-bar-wrap { background: rgba(0,0,0,0.3); border-radius: 20px; height: 16px; margin: 20px 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .score-bar-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .score-bar-fill { height: 100%; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
 
         .factors-section { background: rgba(0,0,0,0.2); border-radius: 16px; padding: 20px; text-align: right; border: 1px solid rgba(255,255,255,0.1); }
         .factors-section h4 { color: #3498db; margin-bottom: 15px; }
@@ -112,7 +146,6 @@
 
         .override-alert { background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; color: #ffcccc; padding: 18px; border-radius: 15px; margin-bottom: 25px; text-align: right; line-height: 1.6; font-weight: bold; }
 
-        /* بطاقة تحذير المدخلات */
         .validation-box {
             background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.4);
             border-radius: 12px; padding: 14px; margin-top: 16px;
@@ -122,7 +155,6 @@
 
         .disclaimer-box { background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 15px; margin-top: 20px; color: #f8c291; font-size: 0.8rem; text-align: center; line-height: 1.6; }
 
-        /* بطاقة شرح المؤشرات */
         .metrics-guide {
             background: rgba(52,152,219,0.07); border: 1px solid rgba(52,152,219,0.25);
             border-radius: 14px; padding: 18px; margin-bottom: 20px;
@@ -137,6 +169,28 @@
     </style>
 </head>
 <body>
+
+<!-- ===== Legal Modal — يظهر كل مرة بدون استثناء ===== -->
+<div id="legalModal" class="legal-modal">
+    <div class="legal-modal-content">
+        <div class="legal-modal-title">⚠️ إقرار قانوني — اقرأه بعناية قبل المتابعة</div>
+        <div class="legal-modal-text">
+            هذه الأداة <strong>مساعد تحليلي تعليمي بحت</strong>. لا تُعدّ استشارة مالية مرخصة،
+            ولا توصية بالبيع أو الشراء بأي شكل من الأشكال.<br><br>
+            الأداة لا تعرف ظروفك الشخصية، أهدافك الاستثمارية، وضعك الضريبي، ولا حجم محفظتك.
+            النتائج مخرجات حسابية بناءً على مدخلاتك فقط.<br><br>
+            <strong>كل قرار استثماري هو مسؤوليتك الكاملة وحدك.</strong>
+            للقرارات الكبيرة، استشر مستشاراً مالياً مرخصاً من هيئة السوق المالية (CMA).
+        </div>
+        <div class="legal-checkbox">
+            <label>
+                <input type="checkbox" id="legalAccept">
+                أقر بأنني فهمت وأوافق على جميع الشروط والمسؤوليات المذكورة أعلاه
+            </label>
+        </div>
+        <button id="enterButton" disabled>موافق — دخول الأداة</button>
+    </div>
+</div>
 
 <div class="container">
     <nav class="navbar">
@@ -170,7 +224,7 @@
     <!-- بطاقة الأسئلة السلوكية -->
     <div class="advisor-card" id="questionCard">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span id="progressText" style="font-size: 0.85rem; color: #3498db; font-weight:bold;">الاستبيان السلوكي 1 من 5</span>
+            <span id="progressText" style="font-size:0.85rem; color:#3498db; font-weight:bold;">الاستبيان السلوكي 1 من 5</span>
         </div>
         <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
         <div id="questionBody"></div>
@@ -183,7 +237,6 @@
             أدخل أرقام الشركة لمعرفة ما إذا كان السعر يمثل تضخماً أم فرصة. الحقول الفارغة لن تُحسب، لكن كلما أدخلت أكثر كلما كان الحكم أدق.
         </p>
 
-        <!-- دليل المؤشرات قابل للطي -->
         <details class="metrics-guide">
             <summary>💡 دليل سريع: ماذا تعني كل نسبة؟</summary>
             <table>
@@ -251,11 +304,31 @@
 <script>
 function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('open'); }
 
+// ================================================================
+// Legal Modal — يظهر كل مرة بدون استثناء (لا localStorage)
+// ================================================================
+(function () {
+    const acceptBox = document.getElementById('legalAccept');
+    const enterBtn  = document.getElementById('enterButton');
+    const modal     = document.getElementById('legalModal');
+
+    acceptBox.addEventListener('change', function () {
+        enterBtn.disabled = !this.checked;
+        enterBtn.classList.toggle('enabled', this.checked);
+    });
+
+    enterBtn.addEventListener('click', function () {
+        if (!this.disabled) {
+            modal.classList.add('hidden');
+        }
+    });
+})();
+
+// ================================================================
+// BuyDecisionApp
+// ================================================================
 const BuyDecisionApp = (function () {
 
-    /* ─────────────────────────────────────────
-       بنك الأسئلة السلوكية
-    ───────────────────────────────────────── */
     const questions = [
         {
             id: 'q1', type: 'yn',
@@ -297,17 +370,13 @@ const BuyDecisionApp = (function () {
         }
     ];
 
-    /* ─── الحالة ─── */
-    let currentQ   = 0;
-    let behScore   = 0;
-    let behReasons = [];
+    let currentQ        = 0;
+    let behScore        = 0;
+    let behReasons      = [];
     let isIgnorant      = false;
     let isFOMO          = false;
     let isBadManagement = false;
 
-    /* ─────────────────────────────────────────
-       رسم السؤال
-    ───────────────────────────────────────── */
     function renderQuestion() {
         const q = questions[currentQ];
         const pct = (currentQ / questions.length) * 100;
@@ -338,9 +407,6 @@ const BuyDecisionApp = (function () {
         document.getElementById('questionBody').innerHTML = html;
     }
 
-    /* ─────────────────────────────────────────
-       معالجة الإجابات
-    ───────────────────────────────────────── */
     function selectChoice(idx) {
         const c = questions[currentQ].choices[idx];
         behScore += c.weight;
@@ -362,7 +428,7 @@ const BuyDecisionApp = (function () {
             }
         } else {
             behScore += q.weightNo;
-            if (q.isIgnorance)    isIgnorant      = true;
+            if (q.isIgnorance)     isIgnorant      = true;
             if (q.isBadManagement) isBadManagement = true;
             if (q.flag === 'noGrowth') {
                 behReasons.push({ text: 'غياب النمو المستقر في الأرباح خلال 3 سنوات', sign: 'neg' });
@@ -378,13 +444,10 @@ const BuyDecisionApp = (function () {
         } else {
             document.getElementById('progressBar').style.width = '100%';
             document.getElementById('questionCard').style.display = 'none';
-            document.getElementById('quantCard').style.display = 'block';
+            document.getElementById('quantCard').style.display    = 'block';
         }
     }
 
-    /* ─────────────────────────────────────────
-       التحقق من صحة المدخلات
-    ───────────────────────────────────────── */
     function getVal(id) {
         const v = document.getElementById(id).value.trim();
         return v === '' ? null : parseFloat(v);
@@ -393,11 +456,10 @@ const BuyDecisionApp = (function () {
     function validateInputs(pe, spe, gr, pb, roe, debt, div) {
         const errors = [];
         const fields = [
-            { id: 'q_pe',  err: 'err_pe',  val: pe,   label: 'P/E',  mustPos: true  },
-            { id: 'q_spe', err: 'err_spe', val: spe,  label: 'Sector P/E', mustPos: true }
+            { id: 'q_pe',  err: 'err_pe',  val: pe,  label: 'P/E',        mustPos: true },
+            { id: 'q_spe', err: 'err_spe', val: spe, label: 'Sector P/E', mustPos: true }
         ];
 
-        // إزالة كل علامات الخطأ السابقة
         document.querySelectorAll('.quant-input').forEach(el => el.classList.remove('input-error'));
         document.querySelectorAll('.input-error-msg').forEach(el => el.style.display = 'none');
 
@@ -409,9 +471,8 @@ const BuyDecisionApp = (function () {
             }
         });
 
-        if (pe !== null && spe !== null && pe > 0 && spe <= 0) {
+        if (pe !== null && spe !== null && pe > 0 && spe <= 0)
             errors.push('Sector P/E يجب أن يكون موجباً إذا أدخلته');
-        }
 
         if (div !== null && (div < 0 || div > 100)) {
             document.getElementById('q_div').classList.add('input-error');
@@ -426,9 +487,6 @@ const BuyDecisionApp = (function () {
         return errors;
     }
 
-    /* ─────────────────────────────────────────
-       محرك الحكم الرئيسي
-    ───────────────────────────────────────── */
     function calculateVerdict() {
         const pe   = getVal('q_pe');
         const spe  = getVal('q_spe');
@@ -438,7 +496,6 @@ const BuyDecisionApp = (function () {
         const debt = getVal('q_debt');
         const div  = getVal('q_div');
 
-        /* ─── التحقق من صحة المدخلات ─── */
         const errors = validateInputs(pe, spe, gr, pb, roe, debt, div);
         const vBox = document.getElementById('validationBox');
         if (errors.length > 0) {
@@ -450,28 +507,19 @@ const BuyDecisionApp = (function () {
 
         let qScore   = 0;
         let qReasons = [];
+        let hasPegBubble  = false;
+        let isValueTrap   = false;
+        let negGrowthFlag = false;
 
-        // ─── علامات الخطر ───
-        let hasPegBubble  = false;  // PEG > 2 (متضخم بالنسبة للنمو)
-        let isValueTrap   = false;  // أرباح ضعيفة + ديون عالية
-        let negGrowthFlag = false;  // نمو سالب
-
-        /* ══════════════════════════════════════
-           1. تقييم P/E مع PEG أو مقارنة القطاع
-        ══════════════════════════════════════ */
         if (pe !== null && pe > 0) {
-
             if (gr !== null) {
                 if (gr <= 0) {
-                    // نمو صفري أو سالب → PEG لا معنى له، خصم مباشر
                     qScore -= 2;
                     negGrowthFlag = true;
                     qReasons.push({ text: 'نمو الأرباح صفري أو سالب — PEG غير قابل للحساب وإشارة تحذير', sign: 'neg' });
                 } else {
-                    // PEG = P/E ÷ نمو%
                     const peg = pe / gr;
                     if (peg < 0.7) {
-                        // أقل من 0.7 يحتاج تحقق من تباطؤ الأرباح (تحذير بيتر لينش)
                         qScore += 2;
                         qReasons.push({ text: `PEG منخفض جداً (${peg.toFixed(2)}) — جذاب لكن تحقق من استدامة النمو`, sign: 'pos' });
                     } else if (peg <= 1.0) {
@@ -481,14 +529,12 @@ const BuyDecisionApp = (function () {
                         qScore += 1;
                         qReasons.push({ text: `تقييم معقول (PEG = ${peg.toFixed(2)}) — ليس رخيصاً ولا متضخماً`, sign: 'pos' });
                     } else {
-                        // PEG > 2 → متضخم (معيار جيم كريمر وجيم سلاتر)
                         qScore -= 3;
                         hasPegBubble = true;
                         qReasons.push({ text: `السهم متضخم مقارنة بنموه (PEG = ${peg.toFixed(2)} > 2)`, sign: 'neg' });
                     }
                 }
             } else if (spe !== null && spe > 0) {
-                // لا يوجد نمو → قارن بالقطاع
                 const ratio = pe / spe;
                 if (ratio < 0.75) {
                     qScore += 2;
@@ -504,7 +550,6 @@ const BuyDecisionApp = (function () {
                     qReasons.push({ text: 'تتداول بعلاوة تضخم حادة مقارنة بالقطاع', sign: 'neg' });
                 }
             } else {
-                // P/E وحده بلا مرجع
                 if (pe < 10) {
                     qScore += 1;
                     qReasons.push({ text: `مكرر الأرباح منخفض جداً (${pe}) — تحقق أنه ليس فخ قيمة`, sign: 'pos' });
@@ -518,9 +563,6 @@ const BuyDecisionApp = (function () {
             }
         }
 
-        /* ══════════════════════════════════════
-           2. جودة الأرباح: ROE
-        ══════════════════════════════════════ */
         if (roe !== null) {
             if (roe >= 20) {
                 qScore += 3;
@@ -528,8 +570,6 @@ const BuyDecisionApp = (function () {
             } else if (roe >= 15) {
                 qScore += 2;
                 qReasons.push({ text: `ROE جيد (${roe}%) يعكس جودة أرباح مقبولة`, sign: 'pos' });
-            } else if (roe >= 8) {
-                qScore += 0; // محايد
             } else if (roe < 5) {
                 qScore -= 2;
                 isValueTrap = true;
@@ -537,9 +577,6 @@ const BuyDecisionApp = (function () {
             }
         }
 
-        /* ══════════════════════════════════════
-           3. جودة الأصول: P/B مع ROE
-        ══════════════════════════════════════ */
         if (pb !== null) {
             const roeGood = (roe !== null && roe >= 10);
             if (pb < 1.0 && roeGood) {
@@ -549,7 +586,6 @@ const BuyDecisionApp = (function () {
                 qScore += 2;
                 qReasons.push({ text: `قيمة دفترية جذابة (P/B = ${pb}) مدعومة بأرباح جيدة`, sign: 'pos' });
             } else if (pb < 1.5 && !roeGood && roe !== null) {
-                // P/B منخفض مع ROE ضعيف = فخ قيمة محتمل
                 isValueTrap = true;
                 qReasons.push({ text: `P/B منخفض (${pb}) لكن ROE ضعيف — فخ قيمة محتمل`, sign: 'neg' });
             } else if (pb > 5) {
@@ -558,9 +594,6 @@ const BuyDecisionApp = (function () {
             }
         }
 
-        /* ══════════════════════════════════════
-           4. مخاطر الديون: D/E
-        ══════════════════════════════════════ */
         if (debt !== null) {
             if (debt <= 0.3) {
                 qScore += 2;
@@ -570,14 +603,10 @@ const BuyDecisionApp = (function () {
                 qReasons.push({ text: `مستوى ديون معقول (D/E = ${debt})`, sign: 'pos' });
             } else if (debt > 1.5) {
                 qScore -= 2;
-                if (isValueTrap) isValueTrap = true; // تعزيز إشارة الفخ
                 qReasons.push({ text: `رافعة مالية مرتفعة (D/E = ${debt}) — مخاطر ضغط في حالة ارتفاع الفائدة`, sign: 'neg' });
             }
         }
 
-        /* ══════════════════════════════════════
-           5. عائد التوزيعات
-        ══════════════════════════════════════ */
         if (div !== null) {
             if (div >= 5) {
                 qScore += 2;
@@ -588,14 +617,10 @@ const BuyDecisionApp = (function () {
             }
         }
 
-        /* ══════════════════════════════════════
-           الموانع القاطعة (Hard Stops)
-        ══════════════════════════════════════ */
         document.getElementById('quantCard').style.display = 'none';
         const rc = document.getElementById('resultCard');
         rc.style.display = 'block';
 
-        // فخ القيمة: أرباح ضعيفة + ديون عالية (بغض النظر عن P/E)
         const debtHigh = (debt !== null && debt > 1.5);
         let override = null;
 
@@ -638,36 +663,32 @@ const BuyDecisionApp = (function () {
                     <div class="result-title ${override.cls}">${override.title}</div>
                     <p style="font-size:1.05rem; margin-top:10px;">${override.text}</p>
                 </div>
-                <button class="btn-next" style="margin-top:20px;" onclick="location.reload()">🔄 تحليل سهم آخر</button>
+                <button class="btn-next" style="margin-top:20px;" onclick="restartApp()">🔄 تحليل سهم آخر</button>
             `;
             return;
         }
 
-        /* ══════════════════════════════════════
-           الحساب الطبيعي للحكم النهائي
-        ══════════════════════════════════════ */
         const total = behScore + qScore;
         let resTitle, resIcon, resClass, summary, pct, barColor;
 
         if (total >= 8) {
-            resTitle  = 'فرصة شراء استثنائية 💎';
-            resIcon   = '💎'; resClass = 'res-buy'; pct = 92; barColor = '#2ecc71';
-            summary   = 'الشركة تجمع بين أساسيات متينة، ميزة تنافسية واضحة، وتقييم سعري جذاب. هامش الأمان مرتفع. يُعد السهم مرشحاً قوياً للتجميع الاستثماري مع إدارة مخاطر مناسبة.';
+            resTitle = 'فرصة شراء استثنائية 💎'; resIcon = '💎'; resClass = 'res-buy';
+            pct = 92; barColor = '#2ecc71';
+            summary = 'الشركة تجمع بين أساسيات متينة، ميزة تنافسية واضحة، وتقييم سعري جذاب. هامش الأمان مرتفع. يُعد السهم مرشحاً قوياً للتجميع الاستثماري مع إدارة مخاطر مناسبة.';
         } else if (total >= 4) {
-            resTitle  = 'شراء تراكمي / تقييم عادل ⚖️';
-            resIcon   = '⚖️'; resClass = 'res-fair'; pct = 65; barColor = '#3498db';
-            summary   = 'التقييم عادل وأساسيات الشركة جيدة. لا يوجد تضخم خطير ولا خصم كبير. استراتيجية الدخول على دفعات (DCA) هي الأنسب هنا لتوسيط التكلفة وتقليل التوقيت المثالي.';
+            resTitle = 'شراء تراكمي / تقييم عادل ⚖️'; resIcon = '⚖️'; resClass = 'res-fair';
+            pct = 65; barColor = '#3498db';
+            summary = 'التقييم عادل وأساسيات الشركة جيدة. لا يوجد تضخم خطير ولا خصم كبير. استراتيجية الدخول على دفعات (DCA) هي الأنسب هنا لتوسيط التكلفة وتقليل التوقيت المثالي.';
         } else if (total >= 0) {
-            resTitle  = 'انتظر تراجع السعر ⏳';
-            resIcon   = '⏳'; resClass = 'res-wait'; pct = 38; barColor = '#f1c40f';
-            summary   = 'الشركة قد تكون جيدة لكن السعر الحالي لا يحمل هامش أمان كافياً. أضف السهم لقائمة المراقبة وانتظر تصحيحاً سعرياً أو تحسناً في أساسيات الشركة.';
+            resTitle = 'انتظر تراجع السعر ⏳'; resIcon = '⏳'; resClass = 'res-wait';
+            pct = 38; barColor = '#f1c40f';
+            summary = 'الشركة قد تكون جيدة لكن السعر الحالي لا يحمل هامش أمان كافياً. أضف السهم لقائمة المراقبة وانتظر تصحيحاً سعرياً أو تحسناً في أساسيات الشركة.';
         } else {
-            resTitle  = 'تجنب الشراء حالياً 🔴';
-            resIcon   = '🔴'; resClass = 'res-avoid'; pct = 12; barColor = '#e74c3c';
-            summary   = 'المخاطر تفوق العوائد المتوقعة بشكل واضح. إما أن السهم متضخم جداً أو أن أساسيات الشركة تعاني من ضعف مركّب. ابحث عن فرص أكثر هامش أمان.';
+            resTitle = 'تجنب الشراء حالياً 🔴'; resIcon = '🔴'; resClass = 'res-avoid';
+            pct = 12; barColor = '#e74c3c';
+            summary = 'المخاطر تفوق العوائد المتوقعة بشكل واضح. إما أن السهم متضخم جداً أو أن أساسيات الشركة تعاني من ضعف مركّب. ابحث عن فرص أكثر هامش أمان.';
         }
 
-        /* ─── بناء قائمة المبررات ─── */
         const allReasons = [...behReasons, ...qReasons];
         const factorsHtml = allReasons.length > 0
             ? allReasons.map(r => `
@@ -677,39 +698,48 @@ const BuyDecisionApp = (function () {
                 </div>`).join('')
             : '<p style="color:#888;">لم تُدخل بيانات كافية لاستخراج مبررات تفصيلية.</p>';
 
-        /* ─── عرض النتيجة ─── */
         rc.innerHTML = `
             <div class="result-icon">${resIcon}</div>
             <div class="result-title ${resClass}">${resTitle}</div>
             <div class="result-summary">${summary}</div>
-
             <div class="score-bar-wrap">
                 <div class="score-bar-fill" style="width:${pct}%; background:${barColor};"></div>
             </div>
             <div style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px;">
                 مؤشر جاذبية السعر والجودة: ${pct}% &nbsp;|&nbsp; النقاط الإجمالية: ${total}
             </div>
-
             <div class="factors-section">
                 <h4>📋 مبررات المحرك المالي والسلوكي:</h4>
                 ${factorsHtml}
             </div>
-
-            <button class="btn-next" style="margin-top:25px;" onclick="location.reload()">🔄 فحص سهم آخر</button>
+            <button class="btn-next" style="margin-top:25px;" onclick="restartApp()">🔄 فحص سهم آخر</button>
         `;
     }
 
-    /* ─── مساعد: إزالة الرموز التعبيرية ─── */
     function stripEmoji(str) {
         return str.replace(/[\u{1F000}-\u{1FFFF}]/gu, '').trim();
     }
 
-    /* ─── تشغيل عند التحميل ─── */
     renderQuestion();
-
     return { selectChoice, selectYN, calculateVerdict };
 
 })();
+
+// ================================================================
+// إعادة التشغيل — البوب آب يرجع مع كل إعادة
+// ================================================================
+function restartApp() {
+    const modal     = document.getElementById('legalModal');
+    const acceptBox = document.getElementById('legalAccept');
+    const enterBtn  = document.getElementById('enterButton');
+
+    modal.classList.remove('hidden');
+    acceptBox.checked = false;
+    enterBtn.disabled = true;
+    enterBtn.classList.remove('enabled');
+
+    location.reload();
+}
 </script>
 </body>
 </html>
