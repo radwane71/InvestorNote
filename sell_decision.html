@@ -106,6 +106,42 @@
         .back-to-top.visible { opacity:1; pointer-events:auto; }
         .back-to-top:hover { transform:translateY(-3px); }
 
+        /* ===== Legal Modal ===== */
+        .legal-modal {
+            display: flex; position: fixed; z-index: 99999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center;
+        }
+        .legal-modal.hidden { display: none; }
+        .legal-modal-content {
+            background: #FFD700; border: 2px solid #FFA500;
+            border-radius: 14px; padding: 32px;
+            max-width: 680px; width: 95%;
+            max-height: 90vh; overflow-y: auto;
+            direction: rtl; text-align: right;
+        }
+        .legal-modal-title {
+            font-weight: bold; font-size: 1.1rem;
+            margin-bottom: 18px; color: #000;
+        }
+        .legal-modal-text {
+            margin-bottom: 22px; line-height: 1.8;
+            color: #1a1a1a; font-size: 0.95rem;
+        }
+        .legal-checkbox { margin-bottom: 20px; font-size: 0.95rem; color: #000; }
+        .legal-checkbox input { margin-left: 10px; transform: scale(1.2); cursor: pointer; }
+        #enterButton {
+            background: #ccc; color: #333; border: none;
+            padding: 12px 28px; border-radius: 8px;
+            cursor: not-allowed; font-size: 1rem; font-weight: bold;
+            transition: all 0.3s; font-family: inherit;
+        }
+        #enterButton.enabled {
+            background: #4a6fa5; color: white; cursor: pointer;
+        }
+        #enterButton.enabled:hover { background: #3a5f95; }
+
         /* بطاقة الانتظار */
         .waiting-card {
             display:none; border-radius:24px; padding:30px;
@@ -192,7 +228,6 @@
         .chip-high-sell { background:rgba(231,76,60,0.2);  color:#e74c3c; border:1px solid rgba(231,76,60,0.3); }
         .chip-medium    { background:rgba(243,156,18,0.2);  color:#f39c12; border:1px solid rgba(243,156,18,0.3); }
 
-        /* input error */
         .quant-input.input-error { border-color:#e74c3c !important; box-shadow:0 0 0 2px rgba(231,76,60,0.2); }
 
         .disclaimer-box {
@@ -214,6 +249,28 @@
     </style>
 </head>
 <body>
+
+<!-- ===== Legal Modal — يظهر كل مرة بدون استثناء ===== -->
+<div id="legalModal" class="legal-modal">
+    <div class="legal-modal-content">
+        <div class="legal-modal-title">⚠️ إقرار قانوني — اقرأه بعناية قبل المتابعة</div>
+        <div class="legal-modal-text">
+            هذه الأداة <strong>مساعد تحليلي تعليمي بحت</strong>. لا تُعدّ استشارة مالية مرخصة،
+            ولا توصية بالبيع أو الشراء بأي شكل من الأشكال.<br><br>
+            الأداة لا تعرف ظروفك الشخصية، أهدافك الاستثمارية، وضعك الضريبي، ولا حجم محفظتك.
+            النتائج مخرجات حسابية بناءً على مدخلاتك فقط.<br><br>
+            <strong>كل قرار استثماري هو مسؤوليتك الكاملة وحدك.</strong>
+            للقرارات الكبيرة، استشر مستشاراً مالياً مرخصاً من هيئة السوق المالية (CMA).
+        </div>
+        <div class="legal-checkbox">
+            <label>
+                <input type="checkbox" id="legalAccept">
+                أقر بأنني فهمت وأوافق على جميع الشروط والمسؤوليات المذكورة أعلاه
+            </label>
+        </div>
+        <button id="enterButton" disabled>موافق — دخول الأداة</button>
+    </div>
+</div>
 
 <button class="back-to-top" id="backToTop"
         onclick="window.scrollTo({top:0,behavior:'smooth'})" title="العودة للأعلى">↑</button>
@@ -360,22 +417,36 @@
 
 <script>
 // ================================================================
-// الثوابت — نطاقات حقيقية محسوبة من كل الأوزان الممكنة
+// Legal Modal — يظهر كل مرة بدون استثناء (لا localStorage)
 // ================================================================
-const BEH_MIN = -26;   // أسوأ سيناريو استبيان (كل إجابة بأدنى نقطة)
-const BEH_MAX =  12;   // أفضل سيناريو استبيان (كل إجابة بأعلى نقطة)
+(function () {
+    const acceptBox = document.getElementById('legalAccept');
+    const enterBtn  = document.getElementById('enterButton');
+    const modal     = document.getElementById('legalModal');
 
-const QUANT_MIN = -16; // أسوأ سيناريو كمي (محسوب رياضياً من كل العقوبات)
-const QUANT_MAX =   9; // أفضل سيناريو كمي (محسوب رياضياً من كل المكافآت)
+    acceptBox.addEventListener('change', function () {
+        enterBtn.disabled = !this.checked;
+        enterBtn.classList.toggle('enabled', this.checked);
+    });
 
-// الأوزان الافتراضية عند توفر بيانات كافية
+    enterBtn.addEventListener('click', function () {
+        if (!this.disabled) {
+            modal.classList.add('hidden');
+        }
+    });
+})();
+
+// ================================================================
+// الثوابت
+// ================================================================
+const BEH_MIN = -26;
+const BEH_MAX =  12;
+const QUANT_MIN = -16;
+const QUANT_MAX =   9;
 const W_BEH  = 0.40;
 const W_QUAN = 0.60;
-
-// عتبات القرار النهائي (على مقياس -10 إلى +10 بعد التطبيع)
-const HOLD_THRESHOLD =  1.5;   // فوق هذا = احتفظ
-const SELL_THRESHOLD = -1.5;   // تحت هذا = بيع
-// بين -1.5 و +1.5: يُرجَّح بالاستبيان السلوكي
+const HOLD_THRESHOLD =  1.5;
+const SELL_THRESHOLD = -1.5;
 
 // ================================================================
 // 1. الاستبيان السلوكي
@@ -474,9 +545,9 @@ const questions = [
     }
 ];
 
-let currentQ       = 0;
-let behScore       = 0;
-let behReasons     = [];
+let currentQ      = 0;
+let behScore      = 0;
+let behReasons    = [];
 
 // ================================================================
 // 2. عرض الأسئلة
@@ -497,12 +568,11 @@ function renderQuestion() {
 }
 
 function answerQ(ans) {
-    const q = questions[currentQ];
+    const q     = questions[currentQ];
     const delta = (ans === 'yes') ? q.scoreYes : q.scoreNo;
-    behScore += delta;
+    behScore   += delta;
 
     const reason = (ans === 'yes') ? q.reasonYes : q.reasonNo;
-    // احفظ الأسباب ذات التأثير الكبير فقط (≥ 2 نقطة)
     if (reason && Math.abs(delta) >= 2) {
         behReasons.push({ text: reason, sign: delta < 0 ? 'negative' : 'positive' });
     }
@@ -526,7 +596,7 @@ function onBehComplete() {
 }
 
 // ================================================================
-// 3. تطبيع النقاط إلى نطاق -10..+10
+// 3. تطبيع النقاط إلى -10..+10
 // ================================================================
 function normalize(val, min, max) {
     if (max === min) return 0;
@@ -534,26 +604,23 @@ function normalize(val, min, max) {
 }
 
 // ================================================================
-// 4. المحرك الكمي — الحساب فقط، بدون نتيجة مستقلة
+// 4. المحرك الكمي
 // ================================================================
 function computeQuant() {
-    const g  = id => { const v = document.getElementById(id).value.trim(); return v !== '' ? parseFloat(v) : null; };
-    const cost    = g('q_cost');
-    const price   = g('q_price');
-    const roe     = g('q_roe');
-    const rev     = g('q_rev');
-    const debt    = g('q_debt');
-    const z       = g('q_z');
-    const pe      = g('q_pe');
-    const spe     = g('q_sectorpe');
-    const ma200   = g('q_ma200');
-    const divYld  = g('q_div');
+    const g = id => { const v = document.getElementById(id).value.trim(); return v !== '' ? parseFloat(v) : null; };
+    const cost   = g('q_cost');
+    const price  = g('q_price');
+    const roe    = g('q_roe');
+    const rev    = g('q_rev');
+    const debt   = g('q_debt');
+    const z      = g('q_z');
+    const pe     = g('q_pe');
+    const spe    = g('q_sectorpe');
+    const ma200  = g('q_ma200');
+    const divYld = g('q_div');
 
-    let score   = 0;
-    let reasons = [];
-    let fields  = 0;   // عدد الحقول الفعلية المُستخدمة
+    let score = 0, reasons = [], fields = 0;
 
-    // --- عائد الاستثمار الحالي ---
     if (cost !== null && price !== null && cost > 0 && price > 0) {
         fields++;
         const ret = ((price - cost) / cost) * 100;
@@ -563,40 +630,35 @@ function computeQuant() {
         else if (ret > 0)    { score += 1; reasons.push({ text:`السهم في ربح معقول: +${ret.toFixed(1)}%`, sign:'positive' }); }
     }
 
-    // --- ROE ---
     if (roe !== null) {
         fields++;
-        if      (roe > 25)  { score += 2; reasons.push({ text:`ROE استثنائي > 25% (${roe}%)`, sign:'positive' }); }
-        else if (roe > 15)  { score += 1; reasons.push({ text:`ROE جيد > 15% (${roe}%)`, sign:'positive' }); }
-        else if (roe > 0)   { score -= 1; reasons.push({ text:`ROE منخفض ≤ 15% (${roe}%)`, sign:'negative' }); }
-        else                { score -= 2; reasons.push({ text:`ROE سلبي — مؤشر خطر جدي (${roe}%)`, sign:'negative' }); }
+        if      (roe > 25) { score += 2; reasons.push({ text:`ROE استثنائي > 25% (${roe}%)`, sign:'positive' }); }
+        else if (roe > 15) { score += 1; reasons.push({ text:`ROE جيد > 15% (${roe}%)`, sign:'positive' }); }
+        else if (roe > 0)  { score -= 1; reasons.push({ text:`ROE منخفض ≤ 15% (${roe}%)`, sign:'negative' }); }
+        else               { score -= 2; reasons.push({ text:`ROE سلبي — مؤشر خطر جدي (${roe}%)`, sign:'negative' }); }
     }
 
-    // --- نمو الإيرادات ---
     if (rev !== null) {
         fields++;
-        if      (rev > 8)  { score += 1; reasons.push({ text:`نمو إيرادات قوي > 8% (${rev}%)`, sign:'positive' }); }
-        else if (rev < 0)  { score -= 2; reasons.push({ text:`إيرادات في تراجع (${rev}%)`, sign:'negative' }); }
+        if      (rev > 8) { score += 1; reasons.push({ text:`نمو إيرادات قوي > 8% (${rev}%)`, sign:'positive' }); }
+        else if (rev < 0) { score -= 2; reasons.push({ text:`إيرادات في تراجع (${rev}%)`, sign:'negative' }); }
     }
 
-    // --- Debt/Equity ---
     if (debt !== null) {
         fields++;
-        if      (debt < 0.5)  { score += 1; reasons.push({ text:`ديون منخفضة جداً D/E = ${debt}`, sign:'positive' }); }
-        else if (debt < 1.0)  { /* محايد — لا نقاط */ }
-        else if (debt < 1.5)  { score -= 1; reasons.push({ text:`ديون مرتفعة D/E = ${debt}`, sign:'negative' }); }
-        else                  { score -= 2; reasons.push({ text:`ديون خطيرة جداً D/E = ${debt}`, sign:'negative' }); }
+        if      (debt < 0.5) { score += 1; reasons.push({ text:`ديون منخفضة جداً D/E = ${debt}`, sign:'positive' }); }
+        else if (debt < 1.0) { /* محايد */ }
+        else if (debt < 1.5) { score -= 1; reasons.push({ text:`ديون مرتفعة D/E = ${debt}`, sign:'negative' }); }
+        else                 { score -= 2; reasons.push({ text:`ديون خطيرة جداً D/E = ${debt}`, sign:'negative' }); }
     }
 
-    // --- Altman Z ---
     if (z !== null) {
         fields++;
-        if      (z > 2.99)  { score += 2; reasons.push({ text:`Altman Z آمن > 3.0 (${z})`, sign:'positive' }); }
-        else if (z >= 1.8)  { /* منطقة رمادية — لا نقاط */ }
-        else                { score -= 3; reasons.push({ text:`🚨 Altman Z في منطقة الخطر < 1.8 (${z})`, sign:'negative' }); }
+        if      (z > 2.99) { score += 2; reasons.push({ text:`Altman Z آمن > 3.0 (${z})`, sign:'positive' }); }
+        else if (z >= 1.8) { /* منطقة رمادية */ }
+        else               { score -= 3; reasons.push({ text:`🚨 Altman Z في منطقة الخطر < 1.8 (${z})`, sign:'negative' }); }
     }
 
-    // --- P/E مقارنة بالقطاع ---
     if (pe !== null && spe !== null && spe > 0) {
         fields++;
         const ratio = pe / spe;
@@ -605,7 +667,6 @@ function computeQuant() {
         else if (ratio < 0.85) { score += 1; reasons.push({ text:`P/E أقل من القطاع — تقييم جذاب (سهم:${pe} | قطاع:${spe})`, sign:'positive' }); }
     }
 
-    // --- MA200 ---
     if (ma200 !== null && price !== null && price > 0 && ma200 > 0) {
         fields++;
         const diff = ((price - ma200) / ma200) * 100;
@@ -614,107 +675,85 @@ function computeQuant() {
         else if (price < ma200)        { score -= 1; reasons.push({ text:`الزخم سلبي: تحت MA200 بـ ${Math.abs(diff).toFixed(1)}%`, sign:'negative' }); }
     }
 
-    // --- عائد التوزيعات ---
     if (divYld !== null) {
         fields++;
-        if      (divYld >= 4)  { score += 1; reasons.push({ text:`عائد توزيعات مميز ≥ 4% (${divYld}%)`, sign:'positive' }); }
-        else if (divYld === 0) { score -= 1; reasons.push({ text:`الشركة لا توزع أرباحاً — إشارة محايدة أو سلبية`, sign:'negative' }); }
+        if      (divYld >= 4) { score += 1; reasons.push({ text:`عائد توزيعات مميز ≥ 4% (${divYld}%)`, sign:'positive' }); }
+        else if (divYld === 0){ score -= 1; reasons.push({ text:`الشركة لا توزع أرباحاً — إشارة محايدة أو سلبية`, sign:'negative' }); }
     }
 
-    // تطبيع الكمي على -10..+10
-    const normalized = normalize(score, QUANT_MIN, QUANT_MAX);
-    return { raw: score, normalized, reasons, fields };
+    return { raw: score, normalized: normalize(score, QUANT_MIN, QUANT_MAX), reasons, fields };
 }
 
 // ================================================================
-// 5. الحكم النهائي الموحد
+// 5. الحكم النهائي
 // ================================================================
 function computeFinalVerdict() {
-    // تحقق من إكمال الاستبيان
     if (currentQ < questions.length) {
         document.getElementById('quantCard').scrollIntoView({ behavior: 'smooth' });
         alert('أكمل الاستبيان السلوكي أولاً.');
         return;
     }
 
-    // التحقق من صحة الأرقام المدخلة
     const msgEl  = document.getElementById('quantValidationMsg');
     const costV  = document.getElementById('q_cost').value.trim();
     const priceV = document.getElementById('q_price').value.trim();
     document.querySelectorAll('.quant-input').forEach(el => el.classList.remove('input-error'));
 
-    // إذا أدخل سعر شراء بدون سعر حالي أو العكس
     if ((costV !== '' && priceV === '') || (costV === '' && priceV !== '')) {
         const missing = costV === '' ? 'q_cost' : 'q_price';
         document.getElementById(missing).classList.add('input-error');
-        msgEl.style.display  = 'block';
-        msgEl.innerText      = '⚠️ أدخل كلا السعرين معاً (سعر الشراء والسعر الحالي) أو اتركهما فارغين.';
+        msgEl.style.display = 'block';
+        msgEl.innerText     = '⚠️ أدخل كلا السعرين معاً أو اتركهما فارغين.';
         return;
     }
     msgEl.style.display = 'none';
 
-    const qResult = computeQuant();
-    const normBeh = normalize(behScore, BEH_MIN, BEH_MAX);
+    const qResult  = computeQuant();
+    const normBeh  = normalize(behScore, BEH_MIN, BEH_MAX);
 
-    // اختيار الأوزان بناءً على كمية البيانات المتاحة
     let wBeh, wQuan, dataQuality;
-    if (qResult.fields === 0) {
-        wBeh = 1.0;  wQuan = 0.0;  dataQuality = 'behavioral_only';
-    } else if (qResult.fields <= 2) {
-        wBeh = 0.70; wQuan = 0.30; dataQuality = 'partial';
-    } else {
-        wBeh = W_BEH; wQuan = W_QUAN; dataQuality = 'full';
-    }
+    if      (qResult.fields === 0) { wBeh = 1.0;    wQuan = 0.0;  dataQuality = 'behavioral_only'; }
+    else if (qResult.fields <= 2)  { wBeh = 0.70;   wQuan = 0.30; dataQuality = 'partial'; }
+    else                           { wBeh = W_BEH;  wQuan = W_QUAN; dataQuality = 'full'; }
 
     const finalScore = normBeh * wBeh + qResult.normalized * wQuan;
-
     displayFinalResult(finalScore, normBeh, qResult, wBeh, wQuan, dataQuality);
 }
 
 // ================================================================
-// 6. عرض النتيجة النهائية
+// 6. عرض النتيجة
 // ================================================================
 function displayFinalResult(finalScore, normBeh, qResult, wBeh, wQuan, dataQuality) {
-    // إخفاء الكمي وبطاقة الانتظار
-    document.getElementById('waitingCard').style.display  = 'none';
-    document.getElementById('quantCard').style.display    = 'none';
+    document.getElementById('waitingCard').style.display     = 'none';
+    document.getElementById('quantCard').style.display       = 'none';
     document.getElementById('finalResultCard').style.display = 'block';
 
-    // --- الحكم: لا منطقة رمادية مخفية ---
-    // إذا وقع finalScore بين -1.5 و+1.5، نُرجّح بالاستبيان لكن نُعلم المستخدم
     let isHold, isUncertain = false;
     if      (finalScore >  HOLD_THRESHOLD) { isHold = true; }
     else if (finalScore <  SELL_THRESHOLD) { isHold = false; }
-    else {
-        isUncertain = true;
-        isHold = normBeh >= 0; // ترجيح بالاستبيان فقط عند التساوي
-    }
+    else { isUncertain = true; isHold = normBeh >= 0; }
 
-    // --- مستوى الثقة ---
     const absFinal = Math.abs(finalScore);
     let confPct, confText, chipClass;
     if (absFinal >= 6) {
-        confPct  = Math.min(85 + (absFinal - 6) * 3, 95);
-        confText = isUncertain ? 'ثقة محدودة — البيانات متضاربة' : 'ثقة عالية في الحكم';
+        confPct   = Math.min(85 + (absFinal - 6) * 3, 95);
+        confText  = isUncertain ? 'ثقة محدودة — البيانات متضاربة' : 'ثقة عالية في الحكم';
         chipClass = isHold ? 'chip-high-hold' : 'chip-high-sell';
     } else if (absFinal >= 3) {
-        confPct  = 60 + (absFinal - 3) * 8;
-        confText = 'ثقة متوسطة في الحكم';
+        confPct   = 60 + (absFinal - 3) * 8;
+        confText  = 'ثقة متوسطة في الحكم';
         chipClass = 'chip-medium';
     } else {
-        confPct  = Math.min(40 + absFinal * 7, 58);
-        confText = 'ثقة محدودة — أضف المزيد من البيانات';
+        confPct   = Math.min(40 + absFinal * 7, 58);
+        confText  = 'ثقة محدودة — أضف المزيد من البيانات';
         chipClass = 'chip-medium';
     }
 
-    // ضبط الثقة بناءً على جودة البيانات
     if (dataQuality === 'behavioral_only') { confPct = Math.min(confPct, 60); confText += ' (استبيان فقط)'; }
     else if (dataQuality === 'partial')    { confPct = Math.min(confPct, 72); confText += ' (بيانات جزئية)'; }
-    if (isUncertain)                       { confPct = Math.min(confPct, 55); }
-
+    if (isUncertain) { confPct = Math.min(confPct, 55); }
     confPct = Math.round(confPct);
 
-    // --- ملء العناصر ---
     const verdictEl = document.getElementById('finalVerdict');
     const iconEl    = document.getElementById('finalIcon');
 
@@ -731,19 +770,18 @@ function displayFinalResult(finalScore, normBeh, qResult, wBeh, wQuan, dataQuali
     }
 
     if (isUncertain) {
-        iconEl.innerText = '🟡';
+        iconEl.innerText     = '🟡';
         verdictEl.innerText += ' (حكم ترجيحي)';
     }
 
-    document.getElementById('confidenceChip').innerText   = confText;
-    document.getElementById('confidenceChip').className   = `confidence-chip ${chipClass}`;
-    document.getElementById('confidenceBar').style.width  = `${confPct}%`;
-    document.getElementById('confidenceLabel').innerText  = `مستوى الثقة في الحكم: ${confPct}%`;
+    document.getElementById('confidenceChip').innerText  = confText;
+    document.getElementById('confidenceChip').className  = `confidence-chip ${chipClass}`;
+    document.getElementById('confidenceBar').style.width = `${confPct}%`;
+    document.getElementById('confidenceLabel').innerText = `مستوى الثقة في الحكم: ${confPct}%`;
 
-    // --- الدرجات ---
-    const normBehR  = +normBeh.toFixed(1);
-    const normQR    = +qResult.normalized.toFixed(1);
-    const totalR    = +(normBeh * wBeh + qResult.normalized * wQuan).toFixed(1);
+    const normBehR = +normBeh.toFixed(1);
+    const normQR   = +qResult.normalized.toFixed(1);
+    const totalR   = +(normBeh * wBeh + qResult.normalized * wQuan).toFixed(1);
 
     const setScore = (id, val, hide) => {
         const el = document.getElementById(id);
@@ -755,26 +793,21 @@ function displayFinalResult(finalScore, normBeh, qResult, wBeh, wQuan, dataQuali
     setScore('quantDisplay', normQR,   dataQuality === 'behavioral_only');
     setScore('totalDisplay', totalR,   false);
 
-    document.getElementById('fieldsDisplay').innerText = `${qResult.fields} / 10`;
-    document.getElementById('fieldsDisplay').style.color = '#fbbf24';
+    document.getElementById('fieldsDisplay').innerText    = `${qResult.fields} / 10`;
+    document.getElementById('fieldsDisplay').style.color  = '#fbbf24';
 
-    // --- قائمة الأسباب ---
-    const allReasons = [
-        ...behReasons.slice(0, 3),
-        ...qResult.reasons.slice(0, 4)
-    ];
+    const allReasons = [...behReasons.slice(0,3), ...qResult.reasons.slice(0,4)];
     const rl = document.getElementById('reasonsList');
     rl.innerHTML = '';
 
     if (isUncertain) {
         rl.innerHTML += `<div class="reason-item" style="color:#f39c12; margin-bottom:12px;">
-            ⚖️ النقاط المجمّعة في المنطقة الحدّية (${totalR}). الحكم مبني على ترجيح الاستبيان السلوكي.
-            أدخل المزيد من البيانات الكمية للحصول على حكم أكثر حسماً.
+            ⚖️ النقاط في المنطقة الحدّية (${totalR}). الحكم مبني على ترجيح الاستبيان السلوكي.
         </div>`;
     }
 
     if (allReasons.length === 0) {
-        rl.innerHTML += '<div class="reason-item" style="color:#94a3b8;">لا توجد إشارات بارزة كافية. أضف بيانات كمية للحصول على تحليل أعمق.</div>';
+        rl.innerHTML += '<div class="reason-item" style="color:#94a3b8;">لا توجد إشارات بارزة كافية. أضف بيانات كمية للتحليل الأعمق.</div>';
     } else {
         allReasons.forEach(r => {
             const icon  = r.sign === 'positive' ? '✔️' : '❌';
@@ -792,14 +825,23 @@ function displayFinalResult(finalScore, normBeh, qResult, wBeh, wQuan, dataQuali
 // 7. إعادة التشغيل
 // ================================================================
 function restartApp() {
-    currentQ    = 0;
-    behScore    = 0;
-    behReasons  = [];
+    currentQ   = 0;
+    behScore   = 0;
+    behReasons = [];
 
     ['finalResultCard', 'waitingCard'].forEach(id => document.getElementById(id).style.display = 'none');
     ['questionCard', 'quantCard'].forEach(id => document.getElementById(id).style.display = 'block');
 
-    document.getElementById('progressBar').style.width = '0%';
+    // إعادة ظهور البوب آب عند التشغيل من جديد
+    const modal     = document.getElementById('legalModal');
+    const acceptBox = document.getElementById('legalAccept');
+    const enterBtn  = document.getElementById('enterButton');
+    modal.classList.remove('hidden');
+    acceptBox.checked  = false;
+    enterBtn.disabled  = true;
+    enterBtn.classList.remove('enabled');
+
+    document.getElementById('progressBar').style.width      = '0%';
     document.getElementById('quantValidationMsg').style.display = 'none';
     document.querySelectorAll('.quant-input').forEach(el => el.classList.remove('input-error'));
 
