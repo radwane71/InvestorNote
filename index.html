@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مفكرة مستثمر — أدوات وحاسبات استثمارية متكاملة للسوق السعودي: تقييم الأسهم، الحرية المالية، التوزيعات، وإدارة المحفظة.">
     <title>مفكرة مستثمر</title>
 
-    <!-- ===== Favicon & PWA Icons ===== -->
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
@@ -15,12 +15,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="مفكرة مستثمر">
 
-    <!-- ✅ dark-theme.css في head -->
     <link rel="stylesheet" href="dark-theme.css">
     <link rel="stylesheet" href="navigation.css">
 
     <style>
-        /* ===== Container ===== */
         .container { max-width: 1200px; margin: 0 auto; }
 
         h1 {
@@ -30,7 +28,6 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
-        /* ===== بطاقات ===== */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -48,7 +45,6 @@
             display: block; position: relative; overflow: hidden;
             color: var(--text-body) !important;
         }
-
         .box::before {
             content: '';
             position: absolute; top: 0; right: 0; left: 0;
@@ -70,21 +66,11 @@
             font-size: 1.1rem;
             font-weight: bold; margin-bottom: 8px; line-height: 1.4;
         }
-        .box .url {
-            color: var(--text-muted) !important;
-            font-size: 0.82rem;
-            word-break: break-all;
-        }
-        .box small {
-            color: var(--text-muted) !important;
-            font-size: 0.75rem;
-            display: block; margin-top: 5px;
-        }
+        .box .url  { color: var(--text-muted) !important; font-size: 0.82rem; word-break: break-all; }
+        .box small { color: var(--text-muted) !important; font-size: 0.75rem; display: block; margin-top: 5px; }
 
-        /* بطاقات داخلية */
-        .box.internal {
-            border: 2px solid var(--green) !important;
-        }
+        /* بطاقة داخلية */
+        .box.internal { border: 2px solid var(--green) !important; }
         .box.internal::before {
             background: linear-gradient(90deg, var(--green), var(--green-light));
         }
@@ -97,7 +83,7 @@
             margin-bottom: 6px; font-weight: bold;
         }
 
-        /* ===== تصنيفات ===== */
+        /* تصنيفات */
         .category {
             background: var(--bg-card2) !important;
             color: var(--text-h) !important;
@@ -113,7 +99,7 @@
             border: 1px solid rgba(16,185,129,0.4) !important;
         }
 
-        /* ===== Footer ===== */
+        /* Footer */
         footer {
             background: var(--bg-card) !important;
             color: var(--text-body) !important;
@@ -134,16 +120,13 @@
             text-align: justify;
         }
 
-        /* ===== عداد الزوار ===== */
+        /* عداد الزوار */
         .visitor-counter {
             display: flex; justify-content: center;
             gap: 30px; margin-top: 25px; padding-top: 20px;
             border-top: 1px solid var(--border);
         }
-        .counter-item {
-            display: flex; flex-direction: column;
-            align-items: center; text-align: center;
-        }
+        .counter-item { display: flex; flex-direction: column; align-items: center; text-align: center; }
         .counter-label { font-size: 0.85rem; color: var(--blue-light) !important; margin-bottom: 5px; }
         .counter-number {
             font-size: 1.5rem; font-weight: bold; color: var(--green-light) !important;
@@ -151,7 +134,7 @@
         }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.75; } }
 
-        /* ===== Back to Top ===== */
+        /* Back to Top */
         .back-to-top {
             position: fixed; bottom: 30px; left: 30px;
             background: linear-gradient(135deg, var(--blue), var(--purple)) !important;
@@ -164,27 +147,24 @@
             display: flex; align-items: center; justify-content: center;
             z-index: 999;
         }
-        .back-to-top.visible {
-            opacity: 1; pointer-events: auto;
-        }
-        .back-to-top:hover { transform: translateY(-3px); }
+        .back-to-top.visible  { opacity: 1; pointer-events: auto; }
+        .back-to-top:hover    { transform: translateY(-3px); }
 
-        /* ===== GoatCounter badge ===== */
+        /* GoatCounter badge */
         .gc-badge {
-            text-align: center; margin-top: 20px;
-            padding: 12px;
+            text-align: center; margin-top: 20px; padding: 12px;
             background: var(--bg-card2) !important;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border) !important;
         }
         .gc-badge small { color: var(--text-muted) !important; font-size: 0.8rem; }
-        .gc-badge a { color: var(--green-light) !important; text-decoration: none; }
+        .gc-badge a     { color: var(--green-light) !important; text-decoration: none; }
 
-        /* ===== Responsive ===== */
+        /* Responsive */
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
-            .box { padding: 15px; }
+            .box  { padding: 15px; }
             .box h3 { font-size: 1rem; }
             footer { padding: 20px 15px; margin-top: 30px; }
             .visitor-counter { flex-direction: column; gap: 15px; align-items: center; }
@@ -192,20 +172,21 @@
         }
         @media (max-width: 480px) {
             body { padding: 10px; }
-            h1 { font-size: 1.8rem; margin-bottom: 20px; }
+            h1   { font-size: 1.8rem; margin-bottom: 20px; }
             .grid { grid-template-columns: 1fr; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
+<!-- ===== زر العودة للأعلى ===== -->
 <button class="back-to-top" id="backToTop"
         onclick="window.scrollTo({top:0,behavior:'smooth'})"
         title="العودة للأعلى" aria-label="العودة للأعلى">↑</button>
 
 <div class="container">
 
-    <!-- ✅ Nav snippet الموحد المصحح -->
+    <!-- ===== شريط التنقل — مزامن مع جميع الصفحات ===== -->
     <nav class="navbar">
         <div class="navbar-container">
             <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
@@ -226,28 +207,15 @@
                 <a href="stock_valuation.html"           class="navbar-item calculator">📊 تقييم الأسهم</a>
                 <a href="dca_calculator.html"            class="navbar-item calculator">📅 DCA</a>
                 <a href="sell_decision.html"             class="navbar-item calculator">🤔 هل أبيع؟</a>
+                <!-- ✅ مضاف: buy_decision كان مفقوداً من النافبار -->
+                <a href="buy_decision.html"              class="navbar-item calculator">🛒 هل أشتري؟</a>
             </div>
         </div>
     </nav>
 
-    <script>
-        function toggleNavbar() {
-            document.getElementById('navbarMenu').classList.toggle('open');
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            const raw  = window.location.pathname.split('/').pop() || 'index.html';
-            const page = raw.split('?')[0].split('#')[0] || 'index.html';
-            document.querySelectorAll('.navbar-item').forEach(function (item) {
-                item.classList.remove('active');
-                const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
-                if (href === page) item.classList.add('active');
-            });
-        });
-    </script>
-
     <h1>📈 مفكرة مستثمر</h1>
 
-<!-- ===== الحاسبات الداخلية ===== -->
+    <!-- ===== الحاسبات الداخلية ===== -->
     <div class="category internal-cat">🛠️ الحاسبات والأدوات الداخلية</div>
     <div class="grid">
         <a href="advice.html"                    class="box internal"><span class="badge">✦ داخلي</span><h3>💰 حاسبة الثروة</h3><span class="url">advice.html</span></a>
@@ -266,6 +234,8 @@
         <a href="allocation_calculator.html"     class="box internal"><span class="badge">✦ داخلي</span><h3>⚖️ توزيع المحفظة</h3><span class="url">allocation_calculator.html</span></a>
         <a href="investor_tips.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>⚠️ نصائح الاستثمار</h3><span class="url">investor_tips.html</span></a>
         <a href="sell_decision.html"             class="box internal"><span class="badge">✦ داخلي</span><h3>🤔 هل أبيع سهمي؟</h3><span class="url">sell_decision.html</span></a>
+        <!-- ✅ مضاف: buy_decision.html -->
+        <a href="buy_decision.html"              class="box internal"><span class="badge">✦ داخلي</span><h3>🛒 هل أشتري السهم؟</h3><span class="url">buy_decision.html</span></a>
     </div>
 
     <!-- ===== أسعار وتقييمات ===== -->
@@ -417,7 +387,24 @@
     </div>
 </footer>
 
+<!-- ===== السكريبتات في نهاية body (الممارسة الصحيحة) ===== -->
 <script>
+    function toggleNavbar() {
+        document.getElementById('navbarMenu').classList.toggle('open');
+    }
+
+    // تحديد الصفحة النشطة في النافبار
+    document.addEventListener('DOMContentLoaded', function () {
+        const raw  = window.location.pathname.split('/').pop() || 'index.html';
+        const page = raw.split('?')[0].split('#')[0] || 'index.html';
+        document.querySelectorAll('.navbar-item').forEach(function (item) {
+            item.classList.remove('active');
+            const href = (item.getAttribute('href') || '').split('?')[0].split('#')[0];
+            if (href === page) item.classList.add('active');
+        });
+    });
+
+    // زر العودة للأعلى
     window.addEventListener('scroll', function () {
         document.getElementById('backToTop')
                 .classList.toggle('visible', window.scrollY > 400);
