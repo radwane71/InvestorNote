@@ -80,7 +80,6 @@
         .score-circle-text {
             font-size: 5.5rem;
             font-weight: 900;
-            /* ⚠️ إزالة اللون الثابت — يتحكم فيه JavaScript */
             background: linear-gradient(135deg, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -98,7 +97,6 @@
             display: inline-block;
         }
 
-        /* ✅ شريط التقدم */
         .score-bar-wrapper {
             margin-top: 15px;
             background: rgba(255,255,255,0.08);
@@ -129,19 +127,12 @@
         }
         .ind-card:hover { border-color: var(--gold); transform: translateY(-3px); }
         .ind-card .ind-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-        /* ✅ اللون يأتي من JS عبر style inline */
         .ind-card .ind-val { font-size: 1.1rem; font-weight: bold; }
         .ind-card .ind-lbl { font-size: 0.78rem; color: var(--text-muted); display: block; margin-top: 5px; }
-        /* ✅ شريط صغير تحت كل كارد */
-        .ind-card .ind-bar {
-            margin-top: 8px;
-            height: 4px;
-            border-radius: 50px;
-            opacity: 0.7;
-        }
+        .ind-card .ind-bar { margin-top: 8px; height: 4px; border-radius: 50px; opacity: 0.7; }
 
         .analysis-container {
-            background: rgba(59, 130, 246, 0.05);
+            background: rgba(59,130,246,0.05);
             border-right: 5px solid var(--blue);
             padding: 25px;
             border-radius: 12px;
@@ -160,7 +151,7 @@
 
         .red-flag-zone {
             margin-top: 25px;
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239,68,68,0.1);
             border: 1px solid var(--red-light);
             padding: 20px;
             border-radius: 12px;
@@ -168,7 +159,6 @@
         }
         .red-flag-zone h5 { font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 
-        /* ✅ قسم شرح الدرجات */
         .score-guide {
             display: flex;
             justify-content: center;
@@ -183,12 +173,35 @@
             align-items: center;
             gap: 6px;
         }
-        .score-guide-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
+        .score-guide-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+        /* ===== Legal Modal ===== */
+        .legal-modal {
+            display: flex; position: fixed; z-index: 99999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center;
         }
+        .legal-modal.hidden { display: none; }
+        .legal-modal-content {
+            background: #FFD700; border: 2px solid #FFA500;
+            border-radius: 14px; padding: 32px;
+            max-width: 680px; width: 95%;
+            max-height: 90vh; overflow-y: auto;
+            direction: rtl; text-align: right;
+        }
+        .legal-modal-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 18px; color: #000; }
+        .legal-modal-text { margin-bottom: 22px; line-height: 1.8; color: #1a1a1a; font-size: 0.95rem; }
+        .legal-checkbox { margin-bottom: 20px; font-size: 0.95rem; color: #000; }
+        .legal-checkbox input { margin-left: 10px; transform: scale(1.2); cursor: pointer; }
+        #enterButton {
+            background: #ccc; color: #333; border: none;
+            padding: 12px 28px; border-radius: 8px;
+            cursor: not-allowed; font-size: 1rem; font-weight: bold;
+            transition: all 0.3s; font-family: inherit;
+        }
+        #enterButton.enabled { background: #4a6fa5; color: white; cursor: pointer; }
+        #enterButton.enabled:hover { background: #3a5f95; }
 
         @media (max-width: 768px) {
             .result-main-info { flex-direction: column; }
@@ -197,6 +210,28 @@
     </style>
 </head>
 <body>
+
+<!-- ===== Legal Modal — يظهر كل مرة بدون استثناء ===== -->
+<div id="legalModal" class="legal-modal">
+    <div class="legal-modal-content">
+        <div class="legal-modal-title">⚠️ إقرار قانوني — اقرأه بعناية قبل المتابعة</div>
+        <div class="legal-modal-text">
+            هذه الأداة <strong>مساعد تحليلي تعليمي بحت</strong>. لا تُعدّ استشارة مالية مرخصة،
+            ولا توصية بالبيع أو الشراء بأي شكل من الأشكال.<br><br>
+            الأداة لا تعرف ظروفك الشخصية، أهدافك الاستثمارية، وضعك الضريبي، ولا حجم محفظتك.
+            النتائج مخرجات حسابية بناءً على مدخلاتك فقط.<br><br>
+            <strong>كل قرار استثماري هو مسؤوليتك الكاملة وحدك.</strong>
+            للقرارات الكبيرة، استشر مستشاراً مالياً مرخصاً من هيئة السوق المالية (CMA).
+        </div>
+        <div class="legal-checkbox">
+            <label>
+                <input type="checkbox" id="legalAccept">
+                أقر بأنني فهمت وأوافق على جميع الشروط والمسؤوليات المذكورة أعلاه
+            </label>
+        </div>
+        <button id="enterButton" disabled>موافق — دخول الأداة</button>
+    </div>
+</div>
 
 <nav class="navbar">
     <div class="navbar-container">
@@ -233,7 +268,6 @@
     <h1>🏢 محلل جودة الأعمال الذكي</h1>
     <p class="subtitle">تقييم شامل يعتمد على كفاءة الإدارة والنمو الحقيقي</p>
 
-    <!-- شرح مقياس الدرجات -->
     <div class="score-guide">
         <div class="score-guide-item"><div class="score-guide-dot" style="background:#10b981"></div>80-100 استثنائية</div>
         <div class="score-guide-item"><div class="score-guide-dot" style="background:#3b82f6"></div>60-79 جيدة</div>
@@ -316,44 +350,60 @@
         </div>
     </div>
 
-    <!-- قسم النتائج -->
     <div class="results-section pending" id="resultsSection">
-
         <div class="result-main-info">
             <div class="score-box">
                 <div class="score-circle-text" id="totalScore">0</div>
-                <div style="color: var(--text-muted); font-weight: bold; font-size:0.9rem; margin-top:5px;">نقاط الجودة الإجمالية / 100</div>
+                <div style="color:var(--text-muted); font-weight:bold; font-size:0.9rem; margin-top:5px;">نقاط الجودة الإجمالية / 100</div>
                 <div id="evalBadge" class="evaluation-label" style="margin-top:10px;">تحليل البيانات...</div>
-                <!-- ✅ شريط التقدم -->
-                <div class="score-bar-wrapper" style="margin: 12px auto 0;">
+                <div class="score-bar-wrapper" style="margin:12px auto 0;">
                     <div class="score-bar-fill" id="scoreBarFill" style="width:0%; background:#f59e0b;"></div>
                 </div>
             </div>
-            <div class="chart-box" style="width: 220px; height: 220px;">
+            <div class="chart-box" style="width:220px; height:220px;">
                 <canvas id="qualityChart"></canvas>
             </div>
         </div>
 
-        <!-- بطاقات المؤشرات -->
         <div class="indicators-grid" id="indicatorsGrid"></div>
 
-        <!-- التحليل النصي -->
         <div class="analysis-container">
             <h4>🔍 ملخص التحليل الاستراتيجي:</h4>
             <ul class="analysis-list" id="analysisText"></ul>
         </div>
 
-        <!-- الأعلام الحمراء -->
         <div id="redFlagContainer" class="red-flag-zone" style="display:none;">
             <h5>🛑 تحذيرات حرجة (Red Flags):</h5>
             <div id="flagMsg"></div>
         </div>
-
     </div>
 </div>
 
 <script>
-let qChart = null;
+// ================================================================
+// Legal Modal — يظهر كل مرة بدون استثناء (لا localStorage)
+// ================================================================
+(function () {
+    const acceptBox = document.getElementById('legalAccept');
+    const enterBtn  = document.getElementById('enterButton');
+    const modal     = document.getElementById('legalModal');
+
+    acceptBox.addEventListener('change', function () {
+        enterBtn.disabled = !this.checked;
+        enterBtn.classList.toggle('enabled', this.checked);
+    });
+
+    enterBtn.addEventListener('click', function () {
+        if (!this.disabled) {
+            modal.classList.add('hidden');
+        }
+    });
+})();
+
+// ================================================================
+// App Logic
+// ================================================================
+let qChart     = null;
 let updateTimer = null;
 
 function toggleNavbar() {
@@ -365,10 +415,9 @@ function scheduleUpdate() {
     updateTimer = setTimeout(updateUI, 300);
 }
 
-// ✅ إصلاح: إخفاء النتائج عند مسح أي حقل
 function isDataComplete() {
     const ids = ['growth', 'cashCycle', 'roe', 'debt', 'cashQuality', 'assetTurnover', 'moat', 'mgmt'];
-    return ids.every(id => document.getElementById(id).value !== "");
+    return ids.every(id => document.getElementById(id).value !== '');
 }
 
 function updateChart(score, color) {
@@ -394,7 +443,6 @@ function updateChart(score, color) {
 function updateUI() {
     const section = document.getElementById('resultsSection');
 
-    // ✅ إخفاء النتائج إذا البيانات ناقصة
     if (!isDataComplete()) {
         section.classList.add('pending');
         return;
@@ -403,52 +451,39 @@ function updateUI() {
     const res = calculateSmartScore();
     section.classList.remove('pending');
 
-    // ✅ تحديث الرقم مع لونه الديناميكي
     const scoreEl = document.getElementById('totalScore');
     scoreEl.textContent = res.total;
 
     let color, badgeText, badgeColor;
     if (res.total >= 80) {
-        color = '#10b981';
-        badgeText = '🌟 شركة استثنائية';
-        badgeColor = '#10b981';
+        color = '#10b981'; badgeText = '🌟 شركة استثنائية'; badgeColor = '#10b981';
         scoreEl.style.backgroundImage = 'linear-gradient(135deg, #10b981, #34d399)';
     } else if (res.total >= 60) {
-        color = '#3b82f6';
-        badgeText = '✅ شركة جيدة';
-        badgeColor = '#3b82f6';
+        color = '#3b82f6'; badgeText = '✅ شركة جيدة'; badgeColor = '#3b82f6';
         scoreEl.style.backgroundImage = 'linear-gradient(135deg, #3b82f6, #60a5fa)';
     } else if (res.total >= 40) {
-        color = '#f59e0b';
-        badgeText = '⚠️ شركة متوسطة';
-        badgeColor = '#f59e0b';
+        color = '#f59e0b'; badgeText = '⚠️ شركة متوسطة'; badgeColor = '#f59e0b';
         scoreEl.style.backgroundImage = 'linear-gradient(135deg, #f59e0b, #fbbf24)';
     } else {
-        color = '#ef4444';
-        badgeText = '🚨 مخاطر عالية';
-        badgeColor = '#ef4444';
+        color = '#ef4444'; badgeText = '🚨 مخاطر عالية'; badgeColor = '#ef4444';
         scoreEl.style.backgroundImage = 'linear-gradient(135deg, #ef4444, #f87171)';
     }
 
-    // إعادة تطبيق خاصية background-clip بعد تغيير الـ background
     scoreEl.style.webkitBackgroundClip = 'text';
-    scoreEl.style.backgroundClip = 'text';
-    scoreEl.style.webkitTextFillColor = 'transparent';
+    scoreEl.style.backgroundClip       = 'text';
+    scoreEl.style.webkitTextFillColor  = 'transparent';
 
     const badge = document.getElementById('evalBadge');
-    badge.textContent = badgeText;
-    badge.style.color = badgeColor;
+    badge.textContent  = badgeText;
+    badge.style.color  = badgeColor;
 
-    // ✅ تحديث شريط التقدم
     const bar = document.getElementById('scoreBarFill');
-    bar.style.width = res.total + '%';
+    bar.style.width      = res.total + '%';
     bar.style.background = color;
 
     updateChart(res.total, color);
 
-    // ✅ بطاقات المؤشرات مع ألوان ديناميكية
-    const indGrid = document.getElementById('indicatorsGrid');
-    indGrid.innerHTML = res.indicators.map(i => `
+    document.getElementById('indicatorsGrid').innerHTML = res.indicators.map(i => `
         <div class="ind-card">
             <span class="ind-icon">${i.icon}</span>
             <span class="ind-val" style="color:${i.color}">${i.val}</span>
@@ -457,11 +492,9 @@ function updateUI() {
         </div>
     `).join('');
 
-    // تحديث التحليل
     document.getElementById('analysisText').innerHTML =
         res.analysis.map(a => `<li>${a}</li>`).join('');
 
-    // الأعلام الحمراء
     const flagContainer = document.getElementById('redFlagContainer');
     if (res.flags.length > 0) {
         flagContainer.style.display = 'block';
@@ -472,26 +505,20 @@ function updateUI() {
     }
 }
 
-// ========================================================
-// ✅ دالة الحساب المعدلة كلياً
-// ========================================================
 function calculateSmartScore() {
-    const g    = parseFloat(document.getElementById('growth').value);
-    const c    = parseFloat(document.getElementById('cashCycle').value);
-    const roe  = parseFloat(document.getElementById('roe').value);
-    const d    = parseFloat(document.getElementById('debt').value);
-    const q    = document.getElementById('cashQuality').value;
-    const m    = document.getElementById('moat').value;
-    const mg   = document.getElementById('mgmt').value;
-    const t    = document.getElementById('assetTurnover').value;
-    const capex = document.getElementById('capex').value; // ✅ مُفعَّل الآن
+    const g     = parseFloat(document.getElementById('growth').value);
+    const c     = parseFloat(document.getElementById('cashCycle').value);
+    const roe   = parseFloat(document.getElementById('roe').value);
+    const d     = parseFloat(document.getElementById('debt').value);
+    const q     = document.getElementById('cashQuality').value;
+    const m     = document.getElementById('moat').value;
+    const mg    = document.getElementById('mgmt').value;
+    const t     = document.getElementById('assetTurnover').value;
+    const capex = document.getElementById('capex').value;
 
-    let score = 0;
-    let analysis = [];
-    let flags = [];
+    let score = 0, analysis = [], flags = [];
 
-    // === Block 1: ROE + الديون (max 25) ===
-    // ✅ 3 تدرجات بدل تدرجين
+    // Block 1: ROE + الديون (max 25)
     if (roe >= 15) {
         if (d <= 30) {
             score += 25;
@@ -514,8 +541,7 @@ function calculateSmartScore() {
         analysis.push("العائد على حقوق المساهمين ضعيف — ابحث عن السبب الجوهري.");
     }
 
-    // === Block 2: جودة الكاش + دورة التحصيل (max 20) ===
-    // ✅ إصلاح: دورة الكاش لها وزن مستقل الآن
+    // Block 2: جودة الكاش + دورة التحصيل (max 20)
     if (q === 'high') {
         if (c <= 30) {
             score += 20;
@@ -534,7 +560,7 @@ function calculateSmartScore() {
         analysis.push("فجوة بين الربح المحاسبي والكاش الفعلي — علامة تستحق التمحيص.");
     }
 
-    // === Block 3: النمو (max 15) ===
+    // Block 3: النمو (max 15)
     if (g >= 15) {
         score += 15;
         analysis.push("نمو قوي (≥15%) يتجاوز متوسط السوق — دليل على ميزة تنافسية حقيقية.");
@@ -550,7 +576,7 @@ function calculateSmartScore() {
         analysis.push("الأرباح في تراجع — ليس كل انخفاض خطر، لكنه يستوجب السؤال.");
     }
 
-    // === Block 4: الخندق التنافسي (max 15) ===
+    // Block 4: الخندق التنافسي (max 15)
     if (m === 'strong') {
         score += 15;
         analysis.push("الخندق التنافسي يحمي الهوامش على المدى البعيد.");
@@ -558,7 +584,7 @@ function calculateSmartScore() {
         analysis.push("غياب الخندق يعرّض الهوامش للضغط التنافسي المستقبلي.");
     }
 
-    // === Block 5: CapEx ✅ مُفعَّل الآن (max 8) ===
+    // Block 5: CapEx (max 8)
     if (capex === 'light') {
         score += 8;
         analysis.push("أصول خفيفة = تدفق نقدي حر مرتفع وقدرة توزيع أفضل للمساهمين.");
@@ -567,7 +593,7 @@ function calculateSmartScore() {
         analysis.push("أصول ثقيلة تستنزف جزءاً من التدفق النقدي للصيانة والتوسع.");
     }
 
-    // === Block 6: دوران الأصول ✅ مُفعَّل الآن (max 7) ===
+    // Block 6: دوران الأصول (max 7)
     if (t === 'high') {
         score += 7;
         analysis.push("دوران أصول مرتفع — الإدارة تستخدم أصولها بكفاءة تشغيلية.");
@@ -578,16 +604,14 @@ function calculateSmartScore() {
         analysis.push("دوران أصول منخفض — الأصول لا تُنتج قيمة كافية مقارنة بحجمها.");
     }
 
-    // === Block 7: نزاهة الإدارة (عقوبة نووية) ===
+    // Block 7: نزاهة الإدارة (عقوبة نووية)
     if (mg === 'bad') {
         score -= 40;
         flags.push("خطر إداري حرج: غياب النزاهة يُبطل كل مؤشر إيجابي آخر — ابتعد.");
     }
 
-    // ✅ خط أساس 10 نقاط (floor للشركات التي لم تخسر نقاطاً)
     const total = Math.max(0, Math.min(score + 10, 100));
 
-    // ✅ بطاقات المؤشرات بألوان ديناميكية حسب الجودة
     return {
         total,
         analysis,
@@ -595,38 +619,32 @@ function calculateSmartScore() {
         indicators: [
             {
                 icon: g >= 15 ? '🚀' : g >= 8 ? '📈' : g >= 0 ? '📉' : '🔻',
-                val: g + '%',
-                label: 'نمو الأرباح',
+                val: g + '%', label: 'نمو الأرباح',
                 color: g >= 15 ? '#10b981' : g >= 8 ? '#f59e0b' : '#ef4444'
             },
             {
                 icon: d <= 30 ? '🟢' : d <= 60 ? '🟡' : '🔴',
-                val: d + '%',
-                label: 'نسبة الديون',
+                val: d + '%', label: 'نسبة الديون',
                 color: d <= 30 ? '#10b981' : d <= 60 ? '#f59e0b' : '#ef4444'
             },
             {
                 icon: roe >= 15 ? '💎' : roe >= 10 ? '✅' : '⚠️',
-                val: roe + '%',
-                label: 'ROE',
+                val: roe + '%', label: 'ROE',
                 color: roe >= 15 ? '#10b981' : roe >= 10 ? '#f59e0b' : '#ef4444'
             },
             {
                 icon: c <= 30 ? '⚡' : c <= 60 ? '🔄' : '🐢',
-                val: c + ' يوم',
-                label: 'دورة الكاش',
+                val: c + ' يوم', label: 'دورة الكاش',
                 color: c <= 30 ? '#10b981' : c <= 60 ? '#f59e0b' : '#ef4444'
             },
             {
                 icon: q === 'high' ? '💰' : '⚠️',
-                val: q === 'high' ? 'حقيقية' : 'ورقية',
-                label: 'جودة الكاش',
+                val: q === 'high' ? 'حقيقية' : 'ورقية', label: 'جودة الكاش',
                 color: q === 'high' ? '#10b981' : '#ef4444'
             },
             {
                 icon: m === 'strong' ? '🏰' : '🚧',
-                val: m === 'strong' ? 'قوي' : 'ضعيف',
-                label: 'الخندق التنافسي',
+                val: m === 'strong' ? 'قوي' : 'ضعيف', label: 'الخندق التنافسي',
                 color: m === 'strong' ? '#10b981' : '#f59e0b'
             }
         ]
