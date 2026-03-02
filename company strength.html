@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقياس قوة الشركة | مفكرة مستثمر</title>
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="dark-theme.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh; padding: 20px; color: #f0f4f8;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .page-header h1 {
+            font-size: 2.2rem; color: #ffffff; font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+        .page-header p {
+            font-size: 0.95rem; color: #d0e1f9; margin-top: 8px; line-height: 1.6;
+        }
+
+        /* ===== Glassmorphism Cards ===== */
+        .advisor-card {
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 24px; padding: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        .advisor-card::before {
+            content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px;
+            background: linear-gradient(90deg, #1abc9c, #3498db, #9b59b6);
+        }
+
+        .progress-bar-wrap {
+            background: rgba(255,255,255,0.1); border-radius: 10px;
+            height: 10px; margin-bottom: 25px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .progress-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #1abc9c, #3498db);
+            border-radius: 10px; transition: width 0.4s ease; width: 0%;
+        }
+
+        .question-number { font-size: 0.85rem; color: #1abc9c; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .question-text { font-size: 1.2rem; font-weight: bold; color: #ffffff; margin-bottom: 10px; line-height: 1.5; }
+        .question-hint {
+            font-size: 0.85rem; color: #c8d6e5; margin-bottom: 20px; line-height: 1.6;
+            border-right: 4px solid #1abc9c; background: rgba(26, 188, 156, 0.1);
+            padding: 12px; border-radius: 4px 12px 12px 4px;
+        }
+
+        .choice-buttons { display: flex; flex-direction: column; gap: 12px; }
+        .btn-choice {
+            width: 100%; padding: 15px 20px; font-size: 1.05rem; font-weight: bold;
+            border: 1.5px solid rgba(255,255,255,0.2); border-radius: 14px;
+            cursor: pointer; background: rgba(255,255,255,0.05); color: #ffffff;
+            transition: all 0.2s; backdrop-filter: blur(5px); text-align: right;
+        }
+        .btn-choice:hover { border-color: #3498db; background: rgba(52,152,219,0.15); transform: translateX(-3px); }
+        .btn-choice.selected { background: #3498db; color: white; border-color: #3498db; }
+
+        .btn-next {
+            width: 100%; padding: 15px; background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white; border: none; border-radius: 12px; font-size: 1.1rem;
+            font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.2s;
+        }
+        .btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-next:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52,152,219,0.4); }
+
+        /* ===== Quant Engine ===== */
+        .quant-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px; }
+        .quant-group { display: flex; flex-direction: column; gap: 5px; }
+        .quant-group label { font-size: 0.9rem; font-weight: bold; color: #1abc9c; }
+        .quant-sublabel { font-size: 0.75rem; color: #94a3b8; }
+        .quant-input {
+            padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3); color: white; font-size: 1rem; direction: rtl; text-align: right;
+            transition: 0.3s;
+        }
+        .quant-input:focus { outline: none; border-color: #1abc9c; background: rgba(26,188,156,0.1); }
+
+        /* ===== Results ===== */
+        .result-card { display: none; text-align: center; }
+        .result-icon { font-size: 4.5rem; margin-bottom: 15px; }
+        .result-title { font-size: 2rem; font-weight: 900; margin-bottom: 10px; }
+        
+        .res-castle { color: #2ecc71; text-shadow: 0 0 15px rgba(46,204,113,0.5); }
+        .res-good   { color: #3498db; text-shadow: 0 0 15px rgba(52,152,219,0.5); }
+        .res-weak   { color: #f39c12; text-shadow: 0 0 15px rgba(243,156,18,0.5); }
+        .res-junk   { color: #e74c3c; text-shadow: 0 0 15px rgba(231,76,60,0.5); }
+
+        .result-summary { font-size: 1.05rem; color: #d0e1f9; line-height: 1.7; margin-bottom: 25px; padding: 0 10px; }
+        
+        .score-bar-wrap { background: rgba(0,0,0,0.3); border-radius: 20px; height: 16px; margin: 20px 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .score-bar-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .factors-section { background: rgba(0,0,0,0.2); border-radius: 16px; padding: 20px; text-align: right; border: 1px solid rgba(255,255,255,0.1); }
+        .factors-section h4 { color: #1abc9c; margin-bottom: 15px; }
+        .factor-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 0.9rem; color: #e2e8f0; line-height: 1.5; }
+        .dot-pos { color: #2ecc71; font-weight: bold; font-size: 1.1rem; flex-shrink: 0; }
+        .dot-neg { color: #e74c3c; font-weight: bold; font-size: 1.1rem; flex-shrink: 0; }
+
+        .override-alert { background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; color: #ffcccc; padding: 18px; border-radius: 15px; margin-bottom: 25px; text-align: right; line-height: 1.6; font-weight: bold; }
+
+        .disclaimer-box { background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); border-radius: 12px; padding: 15px; margin-top: 20px; color: #f8c291; font-size: 0.8rem; text-align: center; line-height: 1.6; }
+
+        @media (max-width: 600px) { .quant-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">📈 مفكرة مستثمر</a>
+            <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html" class="navbar-item">🏠 الرئيسية</a>
+                <a href="advice.html" class="navbar-item calculator">💰 صافي الثروة</a>
+                <a href="salary_calculator.html" class="navbar-item salary">💼 تقسيم الراتب</a>
+                <a href="zakat_purification.html" class="navbar-item zakat">🕌 الزكاة</a>
+                <a href="financial_freedom.html" class="navbar-item fire">🔥 الحرية المالية</a>
+                <a href="investor_tips.html" class="navbar-item tips">⚠️ نصائح</a>
+                <a href="snowball_calculator.html" class="navbar-item calculator">❄️ العائد المركب</a>
+                <a href="emergency_fund_calculator.html" class="navbar-item emergency">🛡️ الطوارئ</a>
+                <a href="average_calculator.html" class="navbar-item average">📊 متوسط الشراء</a>
+                <a href="company_valuation.html" class="navbar-item company">🏢 تقييم الشركة</a>
+                <a href="portfolio_rating.html" class="navbar-item portfolio">🛡️ أمان المحفظة</a>
+                <a href="stock_valuation.html" class="navbar-item calculator">📊 تقييم الأسهم</a>
+                <a href="sell_decision.html" class="navbar-item calculator">🤔 هل أبيع؟</a>
+                <a href="buy_decision.html" class="navbar-item calculator">🛒 هل أشتري؟</a>
+                <a href="company_strength.html" class="navbar-item calculator active">🏰 هل الشركة قوية؟</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>🏰 مقياس قوة الشركة (الجودة)</h1>
+        <p>اكتشف ما إذا كانت الشركة "قلعة استثمارية" تفرح بهبوطها لتزيد كمياتك، أم "سهم خشاش" ينهار مع أول أزمة.</p>
+    </div>
+
+    <div class="advisor-card" id="questionCard">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span id="progressText" style="font-size: 0.85rem; color: #1abc9c; font-weight:bold;">التحليل النوعي والسوقي 1/6</span>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+        <div id="questionBody"></div>
+    </div>
+
+    <div class="advisor-card" id="quantCard" style="display:none;">
+        <h3 style="color:#1abc9c; margin-bottom:10px;">📊 التحليل الكمي (صلابة الأرقام)</h3>
+        <p style="font-size:0.85rem; color:#c8d6e5; margin-bottom:20px;">
+            هنا لا نسأل عن سعر السهم، بل عن كفاءة الشركة في توليد الأرباح وإدارة ديونها. (اترك الحقل فارغاً إذا كنت لا تعرفه).
+        </p>
+        <div class="quant-grid">
+            <div class="quant-group">
+                <label>العائد على حقوق المساهمين % (ROE)</label>
+                <span class="quant-sublabel">أهم مؤشر للكفاءة. ممتاز إذا > 15%</span>
+                <input type="number" id="q_roe" class="quant-input" placeholder="مثال: 18">
+            </div>
+            <div class="quant-group">
+                <label>نسبة الديون إلى حقوق الملكية (D/E)</label>
+                <span class="quant-sublabel">يقيس مخاطر الإفلاس. ممتاز إذا < 0.5</span>
+                <input type="number" id="q_debt" class="quant-input" placeholder="مثال: 0.4" min="0" step="0.01">
+            </div>
+            <div class="quant-group">
+                <label>نمو الأرباح (آخر 3 سنوات) %</label>
+                <span class="quant-sublabel">هل الشركة تكبر أم تنكمش؟</span>
+                <input type="number" id="q_growth" class="quant-input" placeholder="مثال: 12">
+            </div>
+            <div class="quant-group">
+                <label>التدفق النقدي الحر (FCF)</label>
+                <span class="quant-sublabel">هل الشركة تُدخل كاش حقيقي أم أرباح ورقية؟</span>
+                <select id="q_fcf" class="quant-input" style="padding:12px;">
+                    <option value="">-- اختر --</option>
+                    <option value="positive">موجب (الشركة تولد كاش)</option>
+                    <option value="negative">سالب (الشركة تحرق كاش)</option>
+                </select>
+            </div>
+            <div class="quant-group">
+                <label>نسبة ملكية المؤسسات / الصناديق %</label>
+                <span class="quant-sublabel">الأموال الذكية. ممتاز إذا > 50%</span>
+                <input type="number" id="q_inst" class="quant-input" placeholder="مثال: 60" min="0" max="100">
+            </div>
+        </div>
+        <button class="btn-next" onclick="StrengthEngine.calculateVerdict()">إصدار تصنيف الشركة ⚖️</button>
+    </div>
+
+    <div class="advisor-card result-card" id="resultCard"></div>
+
+    <div class="disclaimer-box">
+        ⚠️ إخلاء مسؤولية: هذا المقياس يختبر "جودة العمل التجاري" وليس "السعر". حتى أفضل الشركات قد تكون استثماراً سيئاً إذا اشتريتها بسعر مبالغ فيه. دمج هذه النتيجة مع التقييم السعري هو مسؤوليتك.
+    </div>
+</div>
+
+<script>
+function toggleNavbar() { document.getElementById('navbarMenu').classList.toggle('open'); }
+
+const StrengthEngine = (function() {
+    const questions = [
+        { 
+            id: 'q1', type: 'choice', 
+            text: 'هل يوجد في الشركة ملكية حكومية استراتيجية (مثل صندوق الاستثمارات العامة PIF)؟', 
+            hint: 'في السوق السعودي، الدعم الحكومي يمنح الشركة درعاً وحصانة قوية جداً ضد الانهيارات.', 
+            choices: [
+                { label: '🇸🇦 نعم، صندوق الاستثمارات أو جهة حكومية تملك حصة رئيسية', weight: 4 },
+                { label: '🏢 لا، الشركة مملوكة بالكامل للقطاع الخاص/أفراد', weight: 0 }
+            ]
+        },
+        { 
+            id: 'q2', type: 'choice', 
+            text: 'هل تحمل الشركة أياً من "أعلام تداول" للخسائر المتراكمة؟', 
+            hint: 'العلم الأصفر (خسائر 20%+)، البرتقالي (35%+)، الأحمر (50%+).', 
+            choices: [
+                { label: '🟢 لا، الشركة سليمة ولا تحمل أي أعلام', weight: 2 },
+                { label: '🟡 نعم، تحمل علماً أصفر (خسائر 20% إلى 35%)', weight: -3, isWarning: true },
+                { label: '🔴 نعم، تحمل علماً برتقالياً أو أحمر (خسائر فوق 35%)', weight: -10, isJunk: true }
+            ]
+        },
+        { 
+            id: 'q3', type: 'choice', 
+            text: 'ما هو التاريخ القريب للشركة في تخفيض أو زيادة رأس المال؟', 
+            hint: 'الشركات الهشة تخفض رأس مالها لإطفاء الخسائر ثم ترفعه بطلب أموال جديدة من المساهمين.', 
+            choices: [
+                { label: '✅ لم تقم بتخفيض رأس مالها لإطفاء خسائر نهائياً', weight: 2 },
+                { label: '📈 زادت رأس مالها بمنح أسهم مجانية (من الأرباح المبقاة)', weight: 3 },
+                { label: '📉 خفضت رأس مالها لإطفاء خسائر ثم طلبت زيادة حقوق أولوية', weight: -10, isJunk: true }
+            ]
+        },
+        { 
+            id: 'q4', type: 'choice', 
+            text: 'ما هو المركز السوقي للشركة وتنافسيتها؟', 
+            choices: [
+                { label: '👑 شبه احتكار أو قائد مهيمن في قطاع أساسي (بنوك، اتصالات، طاقة)', weight: 4 },
+                { label: '🛡️ شركة من ضمن الكبار في قطاعها (Oligopoly)', weight: 2 },
+                { label: '⚔️ تعمل في قطاع شديد المنافسة ولا تملك ميزة واضحة', weight: -2 }
+            ]
+        },
+        { 
+            id: 'q5', type: 'choice', 
+            text: 'كيف تتصرف إدارة الشركة مع التوزيعات النقدية تاريخياً؟', 
+            choices: [
+                { label: '💰 توزع أرباحاً نقدية بشكل مستمر وموثوق لسنوات', weight: 3 },
+                { label: '🏗️ لا توزع أرباحاً لأنها شركة تنمو بقوة وتعيد استثمار كل ريال بعائد عالٍ', weight: 2 },
+                { label: '🚫 لا توزع أرباحاً لأنها لا تحقق أرباحاً كافية أو تعاني من شح السيولة', weight: -3 }
+            ]
+        },
+        { 
+            id: 'q6', type: 'choice', 
+            text: 'لو حدث ركود اقتصادي حاد غداً، هل سيستمر الناس/الشركات في شراء منتجاتها؟', 
+            choices: [
+                { label: '🍞 نعم، تقدم خدمة أساسية لا يمكن الاستغناء عنها (غذاء، دواء، بنية تحتية)', weight: 3 },
+                { label: '🚗 ربما تقل المبيعات، لكن الطلب سيستمر بشكل معقول', weight: 1 },
+                { label: '🏖️ لا، تقدم كماليات أو سلعاً ترفيهية سيتم الاستغناء عنها فوراً', weight: -2 }
+            ]
+        }
+    ];
+
+    let currentQ = 0, qualScore = 0, qualReasons = [];
+    let isJunkFlag = false;
+
+    function renderQuestion() {
+        const q = questions[currentQ];
+        document.getElementById('progressBar').style.width = (((currentQ) / questions.length) * 100) + '%';
+        document.getElementById('progressText').textContent = `التحليل النوعي ${currentQ + 1} من ${questions.length}`;
+
+        let html = `
+            <div class="question-number">مؤشر ${currentQ + 1}</div>
+            <div class="question-text">${q.text}</div>
+            ${q.hint ? `<div class="question-hint">💡 ${q.hint}</div>` : ''}
+            <div class="choice-buttons">
+        `;
+        q.choices.forEach((c, idx) => {
+            html += `<button class="btn-choice" onclick="StrengthEngine.selectChoice(${idx})">${c.label}</button>`;
+        });
+        html += `</div>`;
+        document.getElementById('questionBody').innerHTML = html;
+    }
+
+    function selectChoice(idx) {
+        const c = questions[currentQ].choices[idx];
+        qualScore += c.weight;
+        
+        if (c.isJunk) isJunkFlag = true;
+
+        if (c.weight >= 2) {
+            qualReasons.push({ text: c.label.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,'').trim(), sign: 'pos' });
+        } else if (c.weight < 0) {
+            qualReasons.push({ text: c.label.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,'').trim(), sign: 'neg' });
+        }
+
+        currentQ++;
+        if (currentQ < questions.length) {
+            renderQuestion();
+        } else {
+            document.getElementById('questionCard').style.display = 'none';
+            document.getElementById('quantCard').style.display = 'block';
+        }
+    }
+
+    function calculateVerdict() {
+        const getV = id => { const v = document.getElementById(id).value; return v ? parseFloat(v) : null; };
+        const roe = getV('q_roe'), debt = getV('q_debt'), growth = getV('q_growth'), inst = getV('q_inst');
+        const fcf = document.getElementById('q_fcf').value;
+
+        let quantScore = 0;
+        let quantReasons = [];
+
+        // 1. ROE (Efficiency)
+        if (roe !== null) {
+            if (roe > 20) { quantScore += 4; quantReasons.push({ text: `كفاءة استثنائية: عائد على الحقوق ${roe}%`, sign: 'pos' }); }
+            else if (roe > 12) { quantScore += 2; quantReasons.push({ text: `كفاءة جيدة: عائد على الحقوق ${roe}%`, sign: 'pos' }); }
+            else if (roe < 5) { quantScore -= 3; quantReasons.push({ text: `كفاءة ضعيفة أو تدمير للقيمة: ROE ${roe}%`, sign: 'neg' }); }
+        }
+
+        // 2. Debt (Solvency)
+        if (debt !== null) {
+            if (debt < 0.5) { quantScore += 3; quantReasons.push({ text: `ميزانية قوية جداً: ديون منخفضة (D/E: ${debt})`, sign: 'pos' }); }
+            else if (debt > 1.5) { quantScore -= 3; quantReasons.push({ text: `مخاطرة مالية: ديون عالية جداً (D/E: ${debt})`, sign: 'neg' }); }
+        }
+
+        // 3. Growth
+        if (growth !== null) {
+            if (growth > 10) { quantScore += 2; quantReasons.push({ text: `نمو أرباح ممتاز: ${growth}% سنوياً`, sign: 'pos' }); }
+            else if (growth < 0) { quantScore -= 3; quantReasons.push({ text: `انكماش وتراجع في الأرباح: ${growth}%`, sign: 'neg' }); }
+        }
+
+        // 4. Free Cash Flow
+        if (fcf === 'positive') { quantScore += 3; quantReasons.push({ text: `آلة نقدية: الشركة تولد تدفقات نقدية حرة موجبة`, sign: 'pos' }); }
+        else if (fcf === 'negative') { quantScore -= 3; quantReasons.push({ text: `نزيف نقدي: الشركة تحرق الكاش (تدفق حر سالب)`, sign: 'neg' }); }
+
+        // 5. Institutional Ownership (Smart Money)
+        if (inst !== null) {
+            if (inst > 50) { quantScore += 2; quantReasons.push({ text: `ثقة مؤسسية عالية: أموال ذكية تملك ${inst}%`, sign: 'pos' }); }
+            else if (inst < 10) { quantScore -= 2; quantReasons.push({ text: `سيطرة الأفراد: عرضة للتذبذب والمضاربات العشوائية`, sign: 'neg' }); }
+        }
+
+        document.getElementById('quantCard').style.display = 'none';
+        const rc = document.getElementById('resultCard');
+        rc.style.display = 'block';
+
+        // === Hard Stop: Khashash Detection ===
+        if (isJunkFlag) {
+            rc.innerHTML = `
+                <div class="override-alert" style="text-align:center;">
+                    <div class="result-icon">🗑️</div>
+                    <div class="result-title" style="color:#e74c3c;">سهم خشاش (محرقة ثروات)</div>
+                    <p style="font-size:1.1rem; color:#fca5a5;">النظام أوقف التقييم. الشركة التي تمتلك خسائر متراكمة ضخمة أو تعبث برأس مالها لإخفاء الفشل هي قنبلة موقوتة. هبوط السهم هنا ليس فرصة للشراء، بل هو تسعير عادل لانهيار الشركة.</p>
+                </div>
+                <button class="btn-next" onclick="location.reload()">🔄 فحص شركة أخرى</button>
+            `;
+            return;
+        }
+
+        // === Normal Calculation ===
+        const totalScore = qualScore + quantScore;
+        let resTitle, resIcon, resClass, summary, pct, barColor;
+
+        if (totalScore >= 16) {
+            resTitle = "🏰 قلعة استثمارية (Blue-Chip)"; resIcon = "👑"; resClass = "res-castle"; pct = 95; barColor = "#2ecc71";
+            summary = "شركة استثنائية بكل المقاييس. تمتلك حصانة حكومية أو ميزة تنافسية كاسحة، ميزانية صلبة، وأرباح حقيقية. <strong>هذه هي الشركة التي تفرح إذا انهار السوق لتشتريها بسعر رخيص وتنام وأنت مرتاح البال.</strong>";
+        } else if (totalScore >= 7) {
+            resTitle = "🏢 شركة متينة وجيدة"; resIcon = "🛡️"; resClass = "res-good"; pct = 70; barColor = "#3498db";
+            summary = "شركة ذات أساسيات جيدة جداً. قادرة على الصمود في الأزمات وتوزيع أرباح مستقرة. تعتبر إضافة ممتازة للمحفظة الاستثمارية، وهبوط السعر بسبب ظروف السوق يمثل فرصة جيدة لزيادة الكميات.";
+        } else if (totalScore >= 0) {
+            resTitle = "⚠️ شركة دورية أو مضاربية"; resIcon = "🎢"; resClass = "res-weak"; pct = 40; barColor = "#f1c40f";
+            summary = "الشركة وضعها متذبذب. قد تكون شركة جيدة لكنها في قطاع دوري قاسي، أو شركة تعاني من ضعف في التنافسية والديون. <strong>هبوطها لا يعني بالضرورة فرصة، بل يتطلب حذراً بالغاً. لا تناسب راحة البال.</strong>";
+        } else {
+            resTitle = "🗑️ شركة هشة (عالية الخطورة)"; resIcon = "🧨"; resClass = "res-junk"; pct = 10; barColor = "#e74c3c";
+            summary = "أساسيات مدمرة وضعف هيكلي شامل. الشركة تحرق النقد أو تعاني من ديون وتراجع مستمر. هبوط أسعار هذه الشركات يعكس قيمتها الحقيقية المتدهورة. <strong>الاستثمار هنا هو مضاربة ومقامرة بحتة.</strong>";
+        }
+
+        let factorsHtml = [...qualReasons, ...quantReasons].map(r => `
+            <div class="factor-item"><div class="${r.sign === 'pos' ? 'dot-pos' : 'dot-neg'}">${r.sign === 'pos' ? '✔️' : '❌'}</div><div>${r.text}</div></div>
+        `).join('');
+
+        rc.innerHTML = `
+            <div class="result-icon">${resIcon}</div>
+            <div class="result-title ${resClass}">${resTitle}</div>
+            <div class="result-summary">${summary}</div>
+            
+            <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${pct}%; background:${barColor};"></div></div>
+            <div style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px;">مؤشر الصلابة المؤسسية: ${pct}%</div>
+
+            <div class="factors-section">
+                <h4>📋 مبررات محرك قياس الجودة:</h4>
+                ${factorsHtml || '<p style="color:#888;">لم تُدخل بيانات كافية لاستخراج مبررات تفصيلية.</p>'}
+            </div>
+            
+            <button class="btn-next" onclick="location.reload()">🔄 فحص شركة أخرى</button>
+        `;
+    }
+
+    return { selectChoice, calculateVerdict };
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+    SellDecisionApp.renderQuestion(); // Call initial render implicitly
+});
+// Need to execute the first render manually to start the app
+StrengthEngine.selectChoice = StrengthEngine.selectChoice; // Expose globally
+const initialRender = () => { document.getElementById('questionBody').innerHTML = ''; StrengthEngine.selectChoice(-1); };
+// Actually, just calling the internal render function is better. Let's patch it:
+const qBody = document.getElementById('questionBody');
+if(qBody) {
+    // Initial Render trigger
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('progressText').textContent = `التحليل النوعي 1 من 6`;
+    let q = [
+        { label: '🇸🇦 نعم، صندوق الاستثمارات أو جهة حكومية تملك حصة رئيسية', idx: 0 },
+        { label: '🏢 لا، الشركة مملوكة بالكامل للقطاع الخاص/أفراد', idx: 1 }
+    ];
+    let html = `
+        <div class="question-number">مؤشر 1</div>
+        <div class="question-text">هل يوجد في الشركة ملكية حكومية استراتيجية (مثل صندوق الاستثمارات العامة PIF)؟</div>
+        <div class="question-hint">💡 في السوق السعودي، الدعم الحكومي يمنح الشركة درعاً وحصانة قوية جداً ضد الانهيارات.</div>
+        <div class="choice-buttons">
+            <button class="btn-choice" onclick="StrengthEngine.selectChoice(0)">${q[0].label}</button>
+            <button class="btn-choice" onclick="StrengthEngine.selectChoice(1)">${q[1].label}</button>
+        </div>
+    `;
+    qBody.innerHTML = html;
+}
+</script>
+</body>
+</html>
